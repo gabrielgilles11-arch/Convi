@@ -35,17 +35,33 @@ const { meta } = getContent();
         <button type="submit">Notify me</button>
       </form>
       <p class="signup-note" id="signup-note" hidden>Thanks — we'll let you know!</p>
+      <p class="signup-error" id="signup-error" hidden>Something went wrong — try again in a moment.</p>
     </div>
   </section>
 </Layout>
 
 <script>
-  const form = document.getElementById("signup-form");
+  const form = document.getElementById("signup-form") as HTMLFormElement | null;
   const note = document.getElementById("signup-note");
-  form?.addEventListener("submit", (event) => {
+  const errorNote = document.getElementById("signup-error");
+
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    form.hidden = true;
-    if (note) note.hidden = false;
+    if (errorNote) errorNote.hidden = true;
+    const email = (new FormData(form).get("email") as string) ?? "";
+
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error("signup failed");
+      form.hidden = true;
+      if (note) note.hidden = false;
+    } catch {
+      if (errorNote) errorNote.hidden = false;
+    }
   });
 </script>
 
@@ -189,5 +205,10 @@ const { meta } = getContent();
   .signup-note {
     font-weight: 600;
     color: var(--color-primary-dark);
+  }
+
+  .signup-error {
+    font-weight: 600;
+    color: var(--color-error);
   }
 </style>
