@@ -4,7 +4,7 @@ import "./practiceGate.css";
 
 const UNLOCK_KEY = "convi:unlocked:v1";
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
-const GUMROAD_PRODUCT_PERMALINK = "kfmoj";
+const GUMROAD_PRODUCT_ID = "ZGWReIV6wROcohJeSiJF7A==";
 
 export default function PracticeGate() {
   const [checked, setChecked] = useState(false);
@@ -27,7 +27,7 @@ export default function PracticeGate() {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
-          product_permalink: GUMROAD_PRODUCT_PERMALINK,
+          product_id: GUMROAD_PRODUCT_ID,
           license_key: licenseKey.trim(),
           increment_uses_count: "false",
         }),
