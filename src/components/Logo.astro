@@ -1,0 +1,32 @@
+---
+interface Props {
+  size?: "sm" | "lg";
+}
+
+const { size = "sm" } = Astro.props;
+---
+
+<span class:list={["logo", size]}>
+  <span class="mark">¡</span>Convi<span class="mark">!</span>
+</span>
+
+<style>
+  .logo {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+  }
+
+  .logo .mark {
+    color: var(--color-primary);
+  }
+
+  .logo.sm {
+    font-size: 1.35rem;
+  }
+
+  .logo.lg {
+    font-size: clamp(2.5rem, 9vw, 4rem);
+  }
+</style>

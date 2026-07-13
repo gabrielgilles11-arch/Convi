@@ -1,0 +1,193 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Logo from "../components/Logo.astro";
+import { getContent } from "../lib/content";
+
+const { meta } = getContent();
+---
+
+<Layout>
+  <section class="hero full-bleed">
+    <div class="container">
+      <p class="kicker">Don't learn "the house is red"</p>
+      <Logo size="lg" />
+      <p class="tagline">{meta.tagline}</p>
+      <p class="sub">
+        Real Q&amp;A exchanges, slang, and "what they'll probably say back" —
+        the actual way people really talk, not textbook language.
+      </p>
+      <div class="cta">
+        <a class="button" href="/scenarios">Browse scenarios</a>
+        <a class="button secondary" href="/practice">Try Practice</a>
+      </div>
+      <p class="language-note">🇪🇸 Spanish is live now — more languages coming soon.</p>
+    </div>
+  </section>
+
+  <section class="signup full-bleed">
+    <div class="container">
+      <h2>Get Convi in your pocket</h2>
+      <p class="signup-sub">
+        Sign up and we'll email you the moment the app (and printable phrasebook) is ready.
+      </p>
+      <form class="signup-form" id="signup-form">
+        <input type="email" name="email" placeholder="you@email.com" required aria-label="Email address" />
+        <button type="submit">Notify me</button>
+      </form>
+      <p class="signup-note" id="signup-note" hidden>Thanks — we'll let you know!</p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById("signup-form");
+  const note = document.getElementById("signup-note");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    form.hidden = true;
+    if (note) note.hidden = false;
+  });
+</script>
+
+<style>
+  .hero {
+    background: #fff;
+    margin-top: -1.5rem;
+    padding: 3rem 0 3.5rem;
+  }
+
+  .hero .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .kicker {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary-dark);
+    background: #ffe6d5;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    margin: 0 0 1rem;
+  }
+
+  .tagline {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .sub {
+    color: var(--color-ink-soft);
+    margin: 0 0 1.75rem;
+    max-width: 46ch;
+  }
+
+  .cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    box-shadow: 0 4px 0 var(--color-primary-dark);
+  }
+
+  .button.secondary {
+    background: transparent;
+    color: var(--color-ink);
+    border: 2px solid var(--color-ink);
+    box-shadow: none;
+  }
+
+  @media (max-width: 480px) {
+    .cta {
+      flex-direction: column;
+    }
+
+    .button {
+      text-align: center;
+    }
+  }
+
+  .language-note {
+    margin: 1.25rem 0 0;
+    font-size: 0.85rem;
+    color: var(--color-ink-soft);
+  }
+
+  :global(main) {
+    padding-bottom: 0;
+  }
+
+  .signup {
+    background: #ffe6d5;
+    padding: 3.5rem 0;
+  }
+
+  .signup .container {
+    max-width: 560px;
+  }
+
+  .signup h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .signup-sub {
+    color: var(--color-ink-soft);
+    margin: 0 0 1.25rem;
+  }
+
+  .signup-form {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .signup-form input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    font-size: 1rem;
+    font-family: var(--font-body);
+  }
+
+  .signup-form input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .signup-form button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    border: none;
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--color-primary-dark);
+  }
+
+  .signup-note {
+    font-weight: 600;
+    color: var(--color-primary-dark);
+  }
+</style>
