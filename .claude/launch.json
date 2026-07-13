@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "convi-dev",
+      "runtimeExecutable": "/Users/gabrielgilles/.nvm/versions/node/v24.18.0/bin/node",
+      "runtimeArgs": ["/Users/gabrielgilles/Downloads/Convi/node_modules/.bin/astro", "dev"],
+      "port": 4321
+    }
+  ]
+}

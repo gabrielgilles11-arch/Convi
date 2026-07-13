@@ -1,0 +1,80 @@
+.practice-gate {
+  max-width: 420px;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  border: 2px solid var(--color-ink);
+  background: var(--color-card);
+  box-shadow: 0 6px 0 var(--color-border);
+  font-family: var(--font-body);
+}
+
+.practice-gate h2 {
+  margin: 0 0 0.5rem;
+}
+
+.practice-gate p {
+  color: var(--color-ink-soft);
+  margin: 0 0 1.25rem;
+}
+
+.gate-buy {
+  display: inline-block;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  box-shadow: 0 4px 0 var(--color-primary-dark);
+}
+
+.gate-divider {
+  margin: 1.5rem 0 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.gate-license-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.gate-license-form input {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+}
+
+.gate-license-form input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.gate-license-form button {
+  padding: 0.65rem 1.25rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-ink);
+  color: #fff;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  cursor: pointer;
+}
+
+.gate-license-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.gate-error {
+  margin: 0.75rem 0 0;
+  color: var(--color-error);
+  font-size: 0.85rem;
+}

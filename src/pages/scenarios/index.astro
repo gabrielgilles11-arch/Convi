@@ -1,0 +1,76 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCategories, countCategoryItems } from "../../lib/content";
+
+const categories = getCategories();
+---
+
+<Layout title="Scenarios — Convi" description="All Convi scenario categories.">
+  <h1>Scenarios</h1>
+  <p class="intro">Pick a category and see how the conversation actually goes.</p>
+
+  <div class="grid">
+    {
+      categories.map((category) => (
+        <a class="card" href={`/scenarios/${category.id}`}>
+          <span class="icon">{category.icon}</span>
+          <span class="title">{category.title}</span>
+          <span class="meta">
+            {category.type === "dialogue" ? "Dialogue" : "Phrasebook"} · {countCategoryItems(category)} items
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</Layout>
+
+<style>
+  h1 {
+    margin-bottom: 0.25rem;
+    font-size: 1.9rem;
+  }
+
+  .intro {
+    color: var(--color-ink-soft);
+    margin: 0 0 1.5rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.25rem;
+    border-radius: 16px;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.12s ease, border-color 0.12s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+  }
+
+  .icon {
+    font-size: 1.9rem;
+  }
+
+  .title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .meta {
+    font-size: 0.8rem;
+    color: var(--color-ink-soft);
+  }
+</style>
