@@ -17,8 +17,8 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: "Invalid email" }), { status: 400 });
   }
 
-  const apiKey = import.meta.env.RESEND_API_KEY;
-  const notifyEmail = import.meta.env.NOTIFY_EMAIL;
+  const apiKey = import.meta.env.ResendAPI;
+  const notifyEmail = import.meta.env.Email;
 
   if (apiKey && notifyEmail) {
     try {
