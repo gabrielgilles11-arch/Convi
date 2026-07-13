@@ -1,0 +1,17 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PracticeGate from "../../components/PracticeGate";
+---
+
+<Layout title="Practice — Convi" description="Practice flashcards and test yourself on Convi scenarios.">
+  <h1>Practice</h1>
+  <p class="intro">Flip through flashcards, or test yourself with multiple choice.</p>
+  <PracticeGate client:load />
+</Layout>
+
+<style>
+  .intro {
+    opacity: 0.75;
+    margin: 0 0 1.5rem;
+  }
+</style>
