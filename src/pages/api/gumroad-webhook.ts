@@ -1,11 +1,16 @@
 import type { APIRoute } from "astro";
 import { Redis } from "@upstash/redis";
+import { allowRequest, clientIp } from "../../lib/ratelimit";
 
 export const prerender = false;
 
 const GUMROAD_PRODUCT_ID = "ZGWReIV6wROcohJeSiJF7A==";
 
-export const POST: APIRoute = async ({ request, url }) => {
+export const POST: APIRoute = async ({ request, url, clientAddress }) => {
+  if (!(await allowRequest(`gumroad-webhook:${clientIp(request, clientAddress)}`))) {
+    return new Response("Too many requests", { status: 429 });
+  }
+
   const secret = url.searchParams.get("secret");
   if (!secret || secret !== import.meta.env.GUMROAD_WEBHOOK_SECRET) {
     return new Response("Unauthorized", { status: 401 });

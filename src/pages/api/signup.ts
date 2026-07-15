@@ -1,10 +1,15 @@
 import type { APIRoute } from "astro";
+import { allowRequest, clientIp } from "../../lib/ratelimit";
 
 export const prerender = false;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  if (!(await allowRequest(`signup:${clientIp(request, clientAddress)}`))) {
+    return new Response(JSON.stringify({ error: "Too many requests" }), { status: 429 });
+  }
+
   let email: unknown;
   try {
     const body = await request.json();
