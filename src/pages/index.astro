@@ -11,7 +11,7 @@ const { meta } = getContent();
     <div class="container">
       <p class="kicker">Don't learn "the house is red"</p>
       <Logo size="lg" />
-      <p class="tagline">{meta.tagline}</p>
+      <h1 class="tagline">{meta.tagline}</h1>
       <p class="sub">
         Real Q&amp;A exchanges, slang, and "what they'll probably say back" —
         the actual way people really talk, not textbook language.
@@ -24,9 +24,49 @@ const { meta } = getContent();
     </div>
   </section>
 
+  <section class="explainer full-bleed">
+    <div class="container">
+      <h2>What is Try Convi?</h2>
+      <p class="explainer-sub">
+        A pocket phrasebook and quiz built from real conversations — not
+        textbook Spanish. Browse for free, or unlock practice mode to make it stick.
+      </p>
+      <div class="tier-grid">
+        <div class="tier-card">
+          <span class="tier-badge">Free</span>
+          <h3>Browse every scenario</h3>
+          <p>
+            All 7 conversation categories — Beer &amp; Food, Slang, Flirting,
+            Getting Around, and more — free to read, anytime.
+          </p>
+          <ul>
+            <li>Real phrases people actually say</li>
+            <li>"What they'll probably say back"</li>
+            <li>No sign-up required</li>
+          </ul>
+          <a class="button secondary" href="/scenarios">Browse scenarios</a>
+        </div>
+        <div class="tier-card tier-card--highlight">
+          <span class="tier-badge tier-badge--accent">One-time purchase</span>
+          <h3>Practice mode</h3>
+          <p>
+            Flashcards and multiple-choice quizzes across every scenario, so
+            the phrases actually stick.
+          </p>
+          <ul>
+            <li>Flip-card review for every phrase</li>
+            <li>Multiple-choice quiz mode</li>
+            <li>Pay once, yours forever</li>
+          </ul>
+          <a class="button" href="/practice">Unlock Practice</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="signup full-bleed">
     <div class="container">
-      <h2>Get Convi in your pocket</h2>
+      <h2>Get Try Convi in your pocket</h2>
       <p class="signup-sub">
         Sign up and we'll email you the moment the app (and printable phrasebook) is ready.
       </p>
@@ -94,12 +134,16 @@ const { meta } = getContent();
 
   .tagline {
     font-family: var(--font-heading);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0.75rem 0 0.5rem;
+    font-size: clamp(2rem, 5.5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 1rem 0 0.75rem;
+    max-width: 16ch;
   }
 
   .sub {
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
     color: var(--color-ink-soft);
     margin: 0 0 1.75rem;
     max-width: 46ch;
@@ -148,6 +192,115 @@ const { meta } = getContent();
 
   :global(main) {
     padding-bottom: 0;
+  }
+
+  .explainer {
+    background: #fff;
+    border-top: 1px solid var(--color-border);
+    padding: 4rem 0;
+  }
+
+  .explainer .container {
+    max-width: 960px;
+  }
+
+  .explainer h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+
+  .explainer-sub {
+    color: var(--color-ink-soft);
+    font-size: 1.05rem;
+    max-width: 56ch;
+    margin: 0 0 2.5rem;
+  }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .tier-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tier-card--highlight {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 0 var(--color-primary-dark);
+  }
+
+  .tier-badge {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-ink-soft);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    margin: 0 0 1rem;
+  }
+
+  .tier-badge--accent {
+    color: var(--color-primary-dark);
+    background: #ffe6d5;
+    border-color: transparent;
+  }
+
+  .tier-card h3 {
+    font-size: 1.3rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .tier-card > p {
+    color: var(--color-ink-soft);
+    margin: 0 0 1rem;
+  }
+
+  .tier-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tier-card li {
+    padding-left: 1.4rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .tier-card li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  .tier-card .button {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  @media (max-width: 720px) {
+    .tier-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .signup {
