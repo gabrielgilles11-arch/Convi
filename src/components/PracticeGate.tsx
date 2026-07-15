@@ -17,16 +17,6 @@ export default function PracticeGate() {
     setChecked(true);
   }, []);
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://gumroad.com/js/gumroad.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   async function handleVerify(event: FormEvent) {
     event.preventDefault();
     setError("");
@@ -64,7 +54,7 @@ export default function PracticeGate() {
         Get full access to flashcards and multiple-choice quizzes across every scenario — one-time
         payment, yours forever.
       </p>
-      <a className="gumroad-button gate-buy" href={GUMROAD_PRODUCT_URL}>
+      <a className="gate-buy" href={GUMROAD_PRODUCT_URL} target="_blank" rel="noopener">
         Buy
       </a>
 
