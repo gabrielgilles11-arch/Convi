@@ -7,6 +7,23 @@ interface Props {
 }
 
 const { title = "Try Convi", description = "Learn how to speak like a local — real conversations, not textbook language." } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og-image.png", Astro.site);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Try Convi",
+  url: Astro.site?.href,
+  description: "Learn how to speak like a local — real conversations, not textbook language.",
+  publisher: {
+    "@type": "Organization",
+    name: "Try Convi",
+    url: Astro.site?.href,
+    logo: ogImage.href,
+  },
+};
 ---
 
 <html lang="en">
@@ -17,6 +34,24 @@ const { title = "Try Convi", description = "Learn how to speak like a local — 
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Try Convi" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -53,7 +88,7 @@ const { title = "Try Convi", description = "Learn how to speak like a local — 
         </div>
         <div class="footer-col">
           <h3>Contact</h3>
-          <p><a href="mailto:hello@convi.app">hello@convi.app</a></p>
+          <p><a href="mailto:hello@tryconvi.com">hello@tryconvi.com</a></p>
           <div class="footer-social">
             <a href="#">Instagram</a>
             <a href="#">TikTok</a>
@@ -62,6 +97,10 @@ const { title = "Try Convi", description = "Learn how to speak like a local — 
       </div>
       <div class="footer-bottom">
         <p>&copy; {new Date().getFullYear()} ¡Try Convi!</p>
+        <nav class="footer-legal">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </nav>
       </div>
     </footer>
   </body>
@@ -252,6 +291,22 @@ const { title = "Try Convi", description = "Learn how to speak like a local — 
     text-align: center;
     font-size: 0.8rem;
     color: #8a7768;
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .footer-legal a {
+    color: #8a7768;
+    text-decoration: none;
+  }
+
+  .footer-legal a:hover {
+    color: var(--color-accent);
   }
 
   @media (max-width: 640px) {
