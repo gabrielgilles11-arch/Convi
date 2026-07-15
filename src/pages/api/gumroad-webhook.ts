@@ -4,7 +4,7 @@ import { allowRequest, clientIp } from "../../lib/ratelimit";
 
 export const prerender = false;
 
-const GUMROAD_PRODUCT_ID = "ZGWReIV6wROcohJeSiJF7A==";
+const GUMROAD_SELLER_ID = "ReJOHaqlJJ5J-KOXu318Tw==";
 
 export const POST: APIRoute = async ({ request, url, clientAddress }) => {
   if (!(await allowRequest(`gumroad-webhook:${clientIp(request, clientAddress)}`))) {
@@ -19,10 +19,12 @@ export const POST: APIRoute = async ({ request, url, clientAddress }) => {
   const body = await request.text();
   const params = new URLSearchParams(body);
   const email = params.get("email");
-  const productId = params.get("product_id");
+  const sellerId = params.get("seller_id");
   const refunded = params.get("refunded") === "true" || params.get("disputed") === "true";
 
-  if (!email || productId !== GUMROAD_PRODUCT_ID) {
+  // The secret already authenticates this as a genuine ping from our configured
+  // Gumroad account. Guard against stray pings by checking seller_id when present.
+  if (!email || (sellerId && sellerId !== GUMROAD_SELLER_ID)) {
     return new Response("Ignored", { status: 200 });
   }
 
