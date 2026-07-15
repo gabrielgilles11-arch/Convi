@@ -30,5 +30,5 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
   const purchased = await redis.get(`purchaser:${email.trim().toLowerCase()}`);
 
-  return new Response(JSON.stringify({ unlocked: purchased === "true" }), { status: 200 });
+  return new Response(JSON.stringify({ unlocked: purchased === true || purchased === "true" }), { status: 200 });
 };
