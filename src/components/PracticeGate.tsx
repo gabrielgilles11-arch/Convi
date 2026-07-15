@@ -4,12 +4,11 @@ import "./practiceGate.css";
 
 const UNLOCK_KEY = "convi:unlocked:v1";
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
-const GUMROAD_PRODUCT_ID = "ZGWReIV6wROcohJeSiJF7A==";
 
 export default function PracticeGate() {
   const [checked, setChecked] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
-  const [licenseKey, setLicenseKey] = useState("");
+  const [email, setEmail] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
 
@@ -33,21 +32,17 @@ export default function PracticeGate() {
     setError("");
     setVerifying(true);
     try {
-      const res = await fetch("https://api.gumroad.com/v2/licenses/verify", {
+      const res = await fetch("/api/check-purchase", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          product_id: GUMROAD_PRODUCT_ID,
-          license_key: licenseKey.trim(),
-          increment_uses_count: "false",
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.unlocked) {
         localStorage.setItem(UNLOCK_KEY, "true");
         setUnlocked(true);
       } else {
-        setError(data.message || "That license key didn't work. Double-check it and try again.");
+        setError("We couldn't find a purchase for that email. Double-check it and try again.");
       }
     } catch {
       setError("Couldn't verify right now. Check your connection and try again.");
@@ -77,10 +72,10 @@ export default function PracticeGate() {
 
       <form className="gate-license-form" onSubmit={handleVerify}>
         <input
-          type="text"
-          placeholder="Enter your license key"
-          value={licenseKey}
-          onChange={(event) => setLicenseKey(event.target.value)}
+          type="email"
+          placeholder="Enter the email you paid with"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
           required
         />
         <button type="submit" disabled={verifying}>
