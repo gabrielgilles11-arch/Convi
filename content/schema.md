@@ -59,6 +59,8 @@ has no sub-grouping (single flat list of exchanges).
   "likelyReply": { "es": string, "en": string } | null, // what the local says back; null if the exchange has no reply (e.g. a farewell)
   "notes": string,                 // slang/regional/usage notes; "" if none
   "difficulty": "easy" | "medium" | "hard",
+  "region": "madrid" | "barcelona",  // optional; renders a regional badge. Omit for pan-Spanish.
+  "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
   "quizQuestions": []              // populated in Step 3
 }
 ```
@@ -95,6 +97,8 @@ Used for Slang, Cuss Words, Flirting — flat phrase lists, no Q/A/reply shape.
   "es": string,
   "en": string,           // translation or usage note
   "difficulty": "easy" | "medium" | "hard",
+  "region": "madrid" | "barcelona",  // optional; renders a regional badge. Omit for pan-Spanish.
+  "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
   "quizQuestions": []     // populated in Step 3
 }
 ```

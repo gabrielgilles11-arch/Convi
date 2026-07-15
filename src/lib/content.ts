@@ -5,6 +5,8 @@ export interface Bilingual {
   en: string | null;
 }
 
+export type Region = "madrid" | "barcelona";
+
 export interface Exchange {
   id: string;
   question: Bilingual;
@@ -12,6 +14,8 @@ export interface Exchange {
   likelyReply: Bilingual | null;
   notes: string;
   difficulty: "easy" | "medium" | "hard";
+  region?: Region;
+  young?: boolean;
   quizQuestions: unknown[];
 }
 
@@ -33,6 +37,8 @@ export interface Phrase {
   es: string;
   en: string;
   difficulty: "easy" | "medium" | "hard";
+  region?: Region;
+  young?: boolean;
   quizQuestions: unknown[];
 }
 

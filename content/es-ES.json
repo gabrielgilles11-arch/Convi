@@ -124,6 +124,45 @@
             { "es": "Cuando puedas.", "en": "When you can (no rush)." },
             { "es": "Gracias, jefe/jefa.", "en": "Very casual; use with care." }
           ]
+        },
+        {
+          "id": "beer-food-coffee",
+          "title": "The coffee ritual (Spain)",
+          "exchanges": [
+            {
+              "id": "beer-food-coffee-01",
+              "question": { "es": "¿Qué te pongo?", "en": "What can I get you?" },
+              "answers": [
+                { "es": "Un café con leche, porfa.", "en": "A coffee with milk, please." },
+                { "es": "Un cortado.", "en": "An espresso with a splash of milk." }
+              ],
+              "likelyReply": { "es": "¿Para tomar aquí?", "en": "For here?" },
+              "notes": "\"Solo\" = straight espresso; \"cortado\" = with a little milk; \"con leche\" = latte-ish.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "beer-food-coffee-02",
+              "question": { "es": "¿Frío o caliente?", "en": "Cold or hot?" },
+              "answers": [
+                { "es": "Caliente.", "en": "Hot." },
+                { "es": "Con hielo, porfa.", "en": "Over ice, please." }
+              ],
+              "likelyReply": { "es": "Marchando.", "en": "Coming right up." },
+              "notes": "\"Café con hielo\" = they give you a hot espresso and a glass of ice to pour it over.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "beer-food-coffee-03",
+              "question": { "es": "¿Tenéis algo para desayunar?", "en": "Do you have anything for breakfast?" },
+              "answers": [],
+              "likelyReply": { "es": "Tostada con tomate o con mantequilla.", "en": "Toast with tomato or with butter." },
+              "notes": "\"Tostada con tomate\" is the classic Spanish breakfast.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
         }
       ]
     },
@@ -212,6 +251,53 @@
               "likelyReply": null,
               "notes": "Closing line to end the conversation.",
               "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "starting-convo-bond",
+          "title": "Bonding over fútbol & bailing gracefully",
+          "exchanges": [
+            {
+              "id": "starting-convo-08",
+              "question": { "es": "¿De qué equipo eres?", "en": "What team do you support?" },
+              "answers": [
+                { "es": "No entiendo mucho, pero me gusta el ambiente.", "en": "I don't know much, but I love the vibe." },
+                { "es": "Del Madrid. / Del Barça.", "en": "Real Madrid. / Barça." }
+              ],
+              "likelyReply": { "es": "¡Ese es rival! Es broma.", "en": "That's the rival! Just kidding." },
+              "notes": "\"El Madrid\" and \"el Barça\" are the big two; fútbol is instant small talk.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-09",
+              "question": { "es": "¿Viste el partido?", "en": "Did you watch the game?" },
+              "answers": [
+                { "es": "No, ¿cómo quedó?", "en": "No, how'd it end?" }
+              ],
+              "likelyReply": { "es": "Ganamos dos a cero.", "en": "We won two-nil." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-10",
+              "question": { "es": "Me tengo que ir, pero encantado/a.", "en": "I've got to go, but nice meeting you." },
+              "answers": [],
+              "likelyReply": { "es": "¡Igualmente! A ver si nos vemos.", "en": "Likewise! Hope we run into each other again." },
+              "notes": "A warm, standard way to wrap up a chat.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-11",
+              "question": { "es": "Se me hace tarde, otro día seguimos.", "en": "It's getting late, let's pick this up another day." },
+              "answers": [],
+              "likelyReply": { "es": "¡Claro! Cuídate.", "en": "Of course! Take care." },
+              "notes": "\"Otro día\" is a soft, polite way to bail.",
+              "difficulty": "medium",
               "quizQuestions": []
             }
           ]
@@ -333,6 +419,18 @@
           "phrases": [
             { "id": "flirt-08", "es": "¿Te puedo decir algo?", "en": "Can I tell you something?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "flirt-09", "es": "Si te incomoda, paro.", "en": "If it makes you uncomfortable, I'll stop.", "difficulty": "medium", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "flirting-reading",
+          "title": "Reading the room (into it or just polite?)",
+          "phrases": [
+            { "id": "flirt-10", "es": "¿Nos tomamos algo?", "en": "Green light: shall we grab a drink? (mutual interest).", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-11", "es": "Me lo estoy pasando genial contigo.", "en": "Green light: I'm having a great time with you.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-12", "es": "¿Me das tu Insta?", "en": "Low-pressure modern move: can I get your Instagram?", "difficulty": "easy", "young": true, "quizQuestions": [] },
+            { "id": "flirt-13", "es": "Es que he venido con mis amigos.", "en": "Soft brush-off: the thing is, I came with my friends.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-14", "es": "Eres majo/a, pero no me interesa.", "en": "Clear no: you're nice, but I'm not interested.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-15", "es": "Sin problema, que lo pases bien.", "en": "The graceful exit: no problem, have a good one.", "difficulty": "easy", "quizQuestions": [] }
           ]
         }
       ]
@@ -480,6 +578,58 @@
               "quizQuestions": []
             }
           ]
+        },
+        {
+          "id": "getting-around-lost",
+          "title": "Late night & hopelessly lost (Spain)",
+          "exchanges": [
+            {
+              "id": "lost-01",
+              "question": { "es": "Perdona, ¿esto para __ es por aquí?", "en": "Excuse me, is this the way to __?" },
+              "answers": [],
+              "likelyReply": { "es": "Sí, todo recto y a la izquierda.", "en": "Yes, straight ahead and to the left." },
+              "notes": "\"Todo recto\" = straight ahead.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "lost-02",
+              "question": { "es": "¿Está muy lejos?", "en": "Is it far?" },
+              "answers": [],
+              "likelyReply": { "es": "Andando, diez minutos.", "en": "Ten minutes on foot." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "lost-03",
+              "question": { "es": "Creo que me he perdido.", "en": "I think I'm lost." },
+              "answers": [],
+              "likelyReply": { "es": "¿A dónde quieres ir?", "en": "Where do you want to go?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "lost-04",
+              "question": { "es": "¿Nos llevas al centro? Vamos tres.", "en": "Can you take us to the center? There's three of us." },
+              "answers": [],
+              "likelyReply": { "es": "Subid, pero de tres como mucho.", "en": "Get in, but three max." },
+              "notes": "Splitting the fare: \"pagamos a medias\" = let's split it.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "lost-05",
+              "question": { "es": "Déjanos aquí mismo, gracias.", "en": "Just drop us right here, thanks." },
+              "answers": [],
+              "likelyReply": { "es": "Son ocho euros.", "en": "That's eight euros." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
         }
       ]
     },
@@ -623,6 +773,24 @@
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "restaurant-13",
+              "question": { "es": "Perdona, esto está frío.", "en": "Sorry, this is cold." },
+              "answers": [],
+              "likelyReply": { "es": "Cuánto lo siento, te lo caliento.", "en": "So sorry, I'll heat it up for you." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "restaurant-14",
+              "question": { "es": "Yo esto no lo he pedido.", "en": "I didn't order this." },
+              "answers": [],
+              "likelyReply": { "es": "Uy, perdona, me he confundido de mesa.", "en": "Oops, sorry, I mixed up the table." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
             }
           ]
         },
@@ -653,6 +821,491 @@
               "difficulty": "medium",
               "quizQuestions": []
             }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hotel",
+      "order": 8,
+      "title": "Checking in (hotel/hostel/Airbnb)",
+      "icon": "🏨",
+      "type": "dialogue",
+      "description": "Arriving, room problems, and getting out on time.",
+      "subsections": [
+        {
+          "id": "hotel-checkin",
+          "title": "Checking in (Spain)",
+          "exchanges": [
+            {
+              "id": "hotel-01",
+              "question": { "es": "¿Tienes reserva?", "en": "Got a reservation?" },
+              "answers": [
+                { "es": "Sí, a nombre de García.", "en": "Yes, under García." },
+                { "es": "Sí, para dos noches.", "en": "Yes, for two nights." }
+              ],
+              "likelyReply": { "es": "Perfecto, ¿me dejas el pasaporte?", "en": "Great, can I have your passport?" },
+              "notes": "They'll ask for a passport or DNI (ID) at check-in.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-02",
+              "question": { "es": "¿Puedo dejar las maletas hasta la hora de entrada?", "en": "Can I leave my bags until check-in time?" },
+              "answers": [],
+              "likelyReply": { "es": "Claro, te las guardamos.", "en": "Sure, we'll keep them for you." },
+              "notes": "\"La entrada\" = check-in; \"la salida\" = checkout.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-03",
+              "question": { "es": "¿A qué hora es la salida?", "en": "What time is checkout?" },
+              "answers": [],
+              "likelyReply": { "es": "A las doce del mediodía.", "en": "At noon." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-04",
+              "question": { "es": "El aire acondicionado no funciona.", "en": "The AC isn't working." },
+              "answers": [],
+              "likelyReply": { "es": "Perdona, mando a alguien enseguida.", "en": "Sorry, I'll send someone right away." },
+              "notes": "Swap in \"la ducha\" (shower), \"la tele\" (TV), \"la calefacción\" (heating).",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-05",
+              "question": { "es": "¿El desayuno está incluido?", "en": "Is breakfast included?" },
+              "answers": [],
+              "likelyReply": { "es": "Sí, de ocho a diez. / No, son cinco euros aparte.", "en": "Yes, from eight to ten. / No, it's five euros extra." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-06",
+              "question": { "es": "¿Me das la contraseña del wifi?", "en": "Can I have the wifi password?" },
+              "answers": [],
+              "likelyReply": { "es": "Está en la tarjeta de la habitación.", "en": "It's on the room card." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-07",
+              "question": { "es": "¿Se puede hacer late checkout?", "en": "Can I do a late checkout?" },
+              "answers": [],
+              "likelyReply": { "es": "Hasta las dos, sin coste. / Son diez euros más.", "en": "Until two, no charge. / It's ten euros more." },
+              "notes": "\"Late checkout\" is used as-is in Spain; \"salida tardía\" also works.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shopping",
+      "order": 9,
+      "title": "Shopping, markets & haggling",
+      "icon": "🛍️",
+      "type": "dialogue",
+      "description": "Shops, sizes, paying — and haggling at the market.",
+      "subsections": [
+        {
+          "id": "shopping-shops",
+          "title": "Shops & paying (Spain)",
+          "exchanges": [
+            {
+              "id": "shopping-01",
+              "question": { "es": "¿Te ayudo en algo?", "en": "Can I help you with anything?" },
+              "answers": [
+                { "es": "Solo estoy mirando, gracias.", "en": "Just looking, thanks." },
+                { "es": "Sí, busco __.", "en": "Yes, I'm looking for __." }
+              ],
+              "likelyReply": { "es": "Tranquilo/a, lo que necesites.", "en": "No worries, whatever you need." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "shopping-02",
+              "question": { "es": "¿Cuánto vale?", "en": "How much is it?" },
+              "answers": [],
+              "likelyReply": { "es": "Son quince euros.", "en": "It's fifteen euros." },
+              "notes": "\"¿Cuánto vale?\" is very common in Spain (also \"¿Cuánto cuesta?\").",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "shopping-03",
+              "question": { "es": "¿Qué talla usas?", "en": "What size are you?" },
+              "answers": [
+                { "es": "La M, creo.", "en": "M, I think." },
+                { "es": "No estoy seguro/a, ¿me la puedo probar?", "en": "Not sure, can I try it on?" }
+              ],
+              "likelyReply": { "es": "Los probadores están al fondo.", "en": "The fitting rooms are at the back." },
+              "notes": "\"Talla\" = clothes size; \"número\" = shoe size.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "shopping-04",
+              "question": { "es": "¿Aceptáis tarjeta?", "en": "Do you take card?" },
+              "answers": [],
+              "likelyReply": { "es": "Sí, a partir de cinco euros.", "en": "Yes, from five euros up." },
+              "notes": "Some small shops have a card minimum.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "shopping-market",
+          "title": "Markets & haggling (Spain)",
+          "exchanges": [
+            {
+              "id": "shopping-05",
+              "question": { "es": "¡Mira, guapo/guapa! ¿Qué te pongo?", "en": "Hey, handsome/beautiful! What can I get you?" },
+              "answers": [
+                { "es": "¿A cómo están los tomates?", "en": "How much are the tomatoes?" }
+              ],
+              "likelyReply": { "es": "A dos euros el kilo.", "en": "Two euros a kilo." },
+              "notes": "\"¿A cómo está(n)…?\" is the market way to ask produce prices.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "shopping-06",
+              "question": { "es": "¿Me haces un precio si llevo dos?", "en": "Can you give me a deal if I take two?" },
+              "answers": [],
+              "likelyReply": { "es": "Va, te los dejo en cinco.", "en": "Alright, I'll give them to you for five." },
+              "notes": "Haggle at flea markets (El Rastro), not in normal shops.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "shopping-07",
+              "question": { "es": "Uf, es un poco caro. ¿Es lo último?", "en": "Oof, a bit pricey. Is that your best price?" },
+              "answers": [],
+              "likelyReply": { "es": "Te lo dejo en __ y ya está.", "en": "I'll do __ and that's it." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "shopping-08",
+              "question": { "es": "Me lo llevo. ¿Me lo pones en una bolsa?", "en": "I'll take it. Can you bag it?" },
+              "answers": [],
+              "likelyReply": { "es": "Toma, y gracias, majo/maja.", "en": "Here you go, and thanks, love." },
+              "notes": "\"Majo/maja\" = nice/friendly, very Spain.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "resacon",
+      "order": 10,
+      "title": "Resacón — hungover, pharmacy & feeling like death",
+      "icon": "🥴",
+      "type": "dialogue",
+      "description": "The morning after: the pharmacy, feeling awful, and how drunk you (say you) got.",
+      "subsections": [
+        {
+          "id": "resacon-pharmacy",
+          "title": "At the pharmacy / feeling awful (Spain)",
+          "exchanges": [
+            {
+              "id": "resacon-01",
+              "question": { "es": "Buenas, ¿me das algo para el dolor de cabeza?", "en": "Hi, can you give me something for a headache?" },
+              "answers": [],
+              "likelyReply": { "es": "¿Ibuprofeno o paracetamol?", "en": "Ibuprofen or paracetamol?" },
+              "notes": "In Spain you ask the pharmacist directly; many meds are behind the counter.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-02",
+              "question": { "es": "Tengo el estómago fatal.", "en": "My stomach is wrecked." },
+              "answers": [],
+              "likelyReply": { "es": "¿Diarrea o náuseas?", "en": "Diarrhea or nausea?" },
+              "notes": "\"Fatal\" = terrible, extremely common in Spain.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-03",
+              "question": { "es": "Creo que me ha sentado mal algo.", "en": "I think something didn't agree with me." },
+              "answers": [],
+              "likelyReply": { "es": "Toma esto y bebe mucha agua.", "en": "Take this and drink plenty of water." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-04",
+              "question": { "es": "Me he quemado con el sol. ¿Tienes algo?", "en": "I got sunburned. Do you have something?" },
+              "answers": [],
+              "likelyReply": { "es": "Con esta crema, un par de veces al día.", "en": "This cream, a couple of times a day." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-05",
+              "question": { "es": "¿Qué tal la resaca?", "en": "How's the hangover?" },
+              "answers": [
+                { "es": "Fatal, no vuelvo a beber.", "en": "Awful, I'm never drinking again." },
+                { "es": "Necesito un café y agua.", "en": "I need a coffee and water." }
+              ],
+              "likelyReply": { "es": "Eso lo dices siempre.", "en": "You say that every time." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "resacon-drunk-scale",
+          "title": "How drunk are you? — the scale",
+          "phrases": [
+            { "id": "drunk-01", "es": "achispado/a", "en": "Tipsy, pleasantly buzzed.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "drunk-02", "es": "piripi", "en": "Tipsy and cheerful (cute, old-school).", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "drunk-03", "es": "estar puesto/a", "en": "Feeling it, a bit gone.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "drunk-04", "es": "borracho/a", "en": "Drunk (the standard word).", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "drunk-05", "es": "ir/llevar un pedo", "en": "To be drunk — \"voy pedo\" works for anyone (never \"peda\").", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "drunk-06", "es": "ir ciego/a", "en": "Blind drunk.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "drunk-07", "es": "estar mamado/a", "en": "Wasted.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "drunk-08", "es": "estar cocido/a", "en": "\"Cooked\" = hammered.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "drunk-09", "es": "coger una cogorza/trompa/tajada", "en": "To get smashed.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "drunk-10", "es": "voy mazo pedo", "en": "I'm super drunk (very Madrid).", "difficulty": "medium", "region": "madrid", "young": true, "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "resacon-morning",
+          "title": "The morning after",
+          "phrases": [
+            { "id": "morning-01", "es": "resacón", "en": "A brutal hangover.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "morning-02", "es": "bajona", "en": "The comedown / feeling low after.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "morning-03", "es": "empalmar", "en": "To party straight through to the next day, no sleep.", "difficulty": "hard", "young": true, "quizQuestions": [] },
+            { "id": "morning-04", "es": "botellón", "en": "Outdoor group drinking in a park or plaza.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "morning-05", "es": "no vuelvo a beber (en la vida)", "en": "I'm never drinking again (ever) — everyone lies.", "difficulty": "easy", "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "emergencies",
+      "order": 11,
+      "title": "Robbed & emergencies",
+      "icon": "🚨",
+      "type": "dialogue",
+      "description": "When things go wrong: theft, lost stuff, getting help fast.",
+      "subsections": [
+        {
+          "id": "emergencies-theft",
+          "title": "Theft, lost things & help (Spain)",
+          "exchanges": [
+            {
+              "id": "emergencies-01",
+              "question": { "es": "¡Me han robado la cartera!", "en": "My wallet's been stolen!" },
+              "answers": [],
+              "likelyReply": { "es": "¿Dónde ha sido? Tienes que poner una denuncia.", "en": "Where did it happen? You need to file a report." },
+              "notes": "\"Poner una denuncia\" = file a police report; you need it for insurance.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-02",
+              "question": { "es": "He perdido el móvil / el pasaporte.", "en": "I've lost my phone / passport." },
+              "answers": [],
+              "likelyReply": { "es": "Mira en objetos perdidos.", "en": "Check lost and found." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-03",
+              "question": { "es": "¿Dónde está la comisaría más cercana?", "en": "Where's the nearest police station?" },
+              "answers": [],
+              "likelyReply": { "es": "A dos calles, todo recto.", "en": "Two streets away, straight ahead." },
+              "notes": "\"Comisaría\" = police station. Spain's emergency number is 112.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-04",
+              "question": { "es": "¿Me ayudas, por favor? No encuentro a mi grupo.", "en": "Can you help me? I can't find my group." },
+              "answers": [],
+              "likelyReply": { "es": "Tranquilo/a, ¿los puedes llamar?", "en": "Calm down, can you call them?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-05",
+              "question": { "es": "Necesito un médico. / Llama a una ambulancia.", "en": "I need a doctor. / Call an ambulance." },
+              "answers": [],
+              "likelyReply": { "es": "Ahora mismo llamo al 112.", "en": "I'll call 112 right now." },
+              "notes": "112 is the EU-wide emergency number, free from any phone.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "emergencies-phone",
+          "title": "Phone & essentials",
+          "exchanges": [
+            {
+              "id": "emergencies-06",
+              "question": { "es": "Se me ha quedado el móvil sin batería.", "en": "My phone's dead." },
+              "answers": [],
+              "likelyReply": { "es": "¿Quieres usar el mío?", "en": "Do you want to use mine?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-07",
+              "question": { "es": "¿Tienes un cargador que me dejes?", "en": "Do you have a charger I could borrow?" },
+              "answers": [],
+              "likelyReply": { "es": "Sí, pero es de iPhone.", "en": "Yes, but it's an iPhone one." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nightlife",
+      "order": 12,
+      "title": "Nightlife — into the club & making friends",
+      "icon": "🕺",
+      "type": "dialogue",
+      "description": "The door, the plan, and making friends before the afterparty.",
+      "subsections": [
+        {
+          "id": "nightlife-door",
+          "title": "At the door (Spain)",
+          "exchanges": [
+            {
+              "id": "nightlife-01",
+              "question": { "es": "¿Cuántos sois?", "en": "How many are you?" },
+              "answers": [
+                { "es": "Somos tres.", "en": "We're three." }
+              ],
+              "likelyReply": { "es": "Vale, id entrando.", "en": "Alright, go on in." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-02",
+              "question": { "es": "¿Hay que pagar entrada?", "en": "Is there a cover charge?" },
+              "answers": [],
+              "likelyReply": { "es": "Diez euros con consumición.", "en": "Ten euros with a drink included." },
+              "notes": "\"Con consumición\" = the price includes one drink.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-03",
+              "question": { "es": "¿Hasta qué hora estáis abiertos?", "en": "How late are you open?" },
+              "answers": [],
+              "likelyReply": { "es": "Hasta las seis.", "en": "Until six (a.m.)." },
+              "notes": "Spanish clubs go very late — 6am is normal.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-04",
+              "question": { "es": "¿Lista o entrada?", "en": "List or ticket?" },
+              "answers": [
+                { "es": "Estamos en la lista de __.", "en": "We're on __'s list." }
+              ],
+              "likelyReply": { "es": "A ver... sí, adelante.", "en": "Let's see... yes, go ahead." },
+              "notes": "Being on a promoter's \"lista\" often means free or cheaper entry before a certain time.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "nightlife-friends",
+          "title": "Making friends & going out",
+          "exchanges": [
+            {
+              "id": "nightlife-05",
+              "question": { "es": "¿De dónde sois?", "en": "Where are you (all) from?" },
+              "answers": [
+                { "es": "Somos de Estados Unidos, ¿y vosotros?", "en": "We're from the US, and you?" }
+              ],
+              "likelyReply": { "es": "¡Bienvenidos! ¿Primera vez aquí?", "en": "Welcome! First time here?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-06",
+              "question": { "es": "¿Os venís a tomar algo?", "en": "Wanna come grab a drink?" },
+              "answers": [],
+              "likelyReply": { "es": "¡Venga, vamos!", "en": "Come on, let's go!" },
+              "notes": "\"¿Os venís?\" = are you (plural) coming along?",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-07",
+              "question": { "es": "¿Qué planes hay esta noche?", "en": "What's the plan tonight?" },
+              "answers": [],
+              "likelyReply": { "es": "Vamos de after, ¿te apuntas?", "en": "We're going to an afterparty, you in?" },
+              "notes": "\"After\" = afterparty; \"¿te apuntas?\" = are you in?",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-08",
+              "question": { "es": "¿Salimos de marcha?", "en": "Wanna go out partying?" },
+              "answers": [],
+              "likelyReply": { "es": "¡Claro! ¿Dónde quedamos?", "en": "For sure! Where should we meet?" },
+              "notes": "\"Salir de marcha\" = go out partying (nightlife = \"la marcha\").",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-09",
+              "question": { "es": "Me piro, que estoy muerto/a.", "en": "I'm off, I'm dead tired." },
+              "answers": [],
+              "likelyReply": { "es": "¡Vale, escríbeme! / Nos vemos.", "en": "Okay, text me! / See you." },
+              "notes": "\"Me piro\" = I'm out of here (casual).",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "nightlife-slang",
+          "title": "Going-out slang",
+          "phrases": [
+            { "id": "night-01", "es": "salir de marcha", "en": "To go out partying (nightlife = \"la marcha\").", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "night-02", "es": "estar de after", "en": "To be at an afterparty.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "night-03", "es": "¡qué guay!", "en": "How cool!", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "night-05", "es": "nen/nena", "en": "Dude / girl — Catalan term you'll hear in Barcelona.", "difficulty": "easy", "region": "barcelona", "young": true, "quizQuestions": [] },
+            { "id": "night-06", "es": "¿te apuntas?", "en": "You in? / Are you joining?", "difficulty": "easy", "young": true, "quizQuestions": [] },
+            { "id": "night-07", "es": "quedar", "en": "To meet up / make plans (\"¿quedamos?\").", "difficulty": "easy", "quizQuestions": [] }
           ]
         }
       ]
