@@ -42,6 +42,9 @@ const { category } = Astro.props;
               <p class="question">
                 <span class="label">Q</span> {exchange.question.es}
                 <span class="translation"> — {exchange.question.en}</span>
+                {exchange.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
+                {exchange.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
+                {exchange.young && <span class="tag tag--young">young</span>}
               </p>
 
               {exchange.answers.length > 0 && (
@@ -78,7 +81,12 @@ const { category } = Astro.props;
           <ul class="phrases">
             {(sub as PhrasebookSubsection).phrases.map((phrase) => (
               <li>
-                <span class="es">{phrase.es}</span>
+                <span class="es">
+                  {phrase.es}
+                  {phrase.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
+                  {phrase.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
+                  {phrase.young && <span class="tag tag--young">young</span>}
+                </span>
                 <span class="translation">{phrase.en}</span>
               </li>
             ))}
@@ -206,5 +214,34 @@ const { category } = Astro.props;
 
   .phrases .es {
     font-weight: 600;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .tag--madrid {
+    background: #e8622c;
+    color: #fff;
+  }
+
+  .tag--barcelona {
+    background: #1a5fb4;
+    color: #fff;
+  }
+
+  .tag--young {
+    background: #ffe6d5;
+    color: var(--color-primary-dark);
+    border: 1px solid #f5c8a3;
   }
 </style>
