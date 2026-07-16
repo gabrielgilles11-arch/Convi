@@ -2,22 +2,26 @@
 import Layout from "../../layouts/Layout.astro";
 import ScenarioGate from "../../components/ScenarioGate";
 import {
-  getCategories,
+  getCategoryById,
   isDialogueSubsection,
   isPremiumCategory,
   type DialogueSubsection,
   type PhrasebookSubsection,
 } from "../../lib/content";
+import { ENT_COOKIE, verifyEntitlement } from "../../lib/entitlement";
 
-export function getStaticPaths() {
-  return getCategories().map((category) => ({
-    params: { id: category.id },
-    props: { category },
-  }));
+// Rendered on demand so premium content can be gated per-request: locked
+// content is never sent to the browser for unentitled visitors.
+export const prerender = false;
+
+const category = getCategoryById(Astro.params.id ?? "");
+if (!category) {
+  return new Response("Not found", { status: 404 });
 }
 
-const { category } = Astro.props;
 const isPremium = isPremiumCategory(category.id);
+const entitled = !!verifyEntitlement(Astro.cookies.get(ENT_COOKIE)?.value);
+const showContent = !isPremium || entitled;
 ---
 
 <Layout title={`${category.title} — Try Convi`} description={category.description}>
@@ -25,9 +29,10 @@ const isPremium = isPremiumCategory(category.id);
   <h1><span class="icon">{category.icon}</span> {category.title}</h1>
   <p class="description">{category.description}</p>
 
-  {isPremium && <ScenarioGate client:load />}
+  {isPremium && !entitled && <ScenarioGate client:load />}
 
-  <div id="premium-content" class:list={[{ locked: isPremium }]}>
+  {showContent && (
+  <div id="premium-content">
   {
     category.note && category.note.es && (
       <div class="note">
@@ -103,14 +108,14 @@ const isPremium = isPremiumCategory(category.id);
     ))
   }
   </div>
+  )}
 </Layout>
 
-<script define:vars={{ categoryId: category.id, isPremium }}>
-  // Mark this category "completed" once it's been opened. Skip premium
-  // categories that are still locked, since their content isn't visible yet.
+<script define:vars={{ categoryId: category.id, showContent }}>
+  // Mark this category "completed" once its content has actually been shown
+  // (free categories, or premium ones the visitor is entitled to).
   const KEY = "convi:progress:v1";
-  const unlocked = localStorage.getItem("convi:unlocked:v1") === "true";
-  if (!isPremium || unlocked) {
+  if (showContent) {
     try {
       const parsed = JSON.parse(localStorage.getItem(KEY) || "{}");
       const visited = parsed.visitedCategoryIds ?? [];
@@ -124,10 +129,6 @@ const isPremium = isPremiumCategory(category.id);
 </script>
 
 <style>
-  #premium-content.locked {
-    display: none;
-  }
-
   .back {
     display: inline-block;
     margin-bottom: 1rem;
