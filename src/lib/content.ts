@@ -16,6 +16,7 @@ export interface Exchange {
   difficulty: "easy" | "medium" | "hard";
   region?: Region;
   young?: boolean;
+  women?: boolean;
   quizQuestions: unknown[];
 }
 

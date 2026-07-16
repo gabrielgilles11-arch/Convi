@@ -61,6 +61,7 @@ has no sub-grouping (single flat list of exchanges).
   "difficulty": "easy" | "medium" | "hard",
   "region": "madrid" | "barcelona",  // optional; renders a regional badge. Omit for pan-Spanish.
   "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
+  "women": true,                     // optional; renders a "women" badge for women's-safety content (creeps, harassment). Omit otherwise.
   "quizQuestions": []              // populated in Step 3
 }
 ```

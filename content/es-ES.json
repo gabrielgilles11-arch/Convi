@@ -1106,7 +1106,7 @@
       "title": "Robbed & emergencies",
       "icon": "🚨",
       "type": "dialogue",
-      "description": "When things go wrong: theft, lost stuff, getting help fast.",
+      "description": "When things go wrong: theft, lost stuff, creeps and getting help fast.",
       "subsections": [
         {
           "id": "emergencies-theft",
@@ -1179,6 +1179,146 @@
               "likelyReply": { "es": "Sí, pero es de iPhone.", "en": "Yes, but it's an iPhone one." },
               "notes": "",
               "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "emergencies-creeps",
+          "title": "Creeps & catcalling — what it sounds like & how to shut it down (Spain)",
+          "exchanges": [
+            {
+              "id": "emergencies-08",
+              "question": { "es": "¡Guapa! ¿Adónde vas tan sola? Anda, dame una sonrisa.", "en": "Hey gorgeous! Where you off to all alone? Come on, give us a smile." },
+              "answers": [
+                { "es": "Déjame en paz.", "en": "Leave me alone." },
+                { "es": "No me interesa. Para ya.", "en": "Not interested. Stop it." },
+                { "es": "Que me dejes, pesado.", "en": "Just leave me alone, creep." }
+              ],
+              "likelyReply": null,
+              "notes": "In Spain these street comments are called 'piropos' — you owe zero reply. Keep walking and step into the nearest shop or bar. Emergencies: 112. Spain's free gender-violence helpline is 016 — it never shows up on your phone bill.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-09",
+              "question": { "es": "Qué buena estás, morena. Venga, tómate algo conmigo, no seas así.", "en": "Damn, you're hot. Come on, have a drink with me, don't be like that. (he starts following you)" },
+              "answers": [
+                { "es": "¡Que no! Déjame.", "en": "No! Leave me." },
+                { "es": "Vete a la mierda.", "en": "Piss off. (aggressive)" },
+                { "es": "¡Que te den, gilipollas! ¡Pírate!", "en": "Screw you, asshole! Get lost! (very aggressive — Spain)" }
+              ],
+              "likelyReply": null,
+              "notes": "If he won't back off or starts following, get loud to pull attention and move toward people or staff. In many Spanish clubs and festivals you can 'preguntar por Ángela' at the bar — a discreet code that tells staff you need help.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-10",
+              "question": { "es": "No me toques.", "en": "Don't touch me." },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Say it loud and clear. Louder still: '¡Que no me toques!'",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-11",
+              "question": { "es": "¡Quítame las manos de encima!", "en": "Get your hands off me!" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "'Quitar las manos de encima' is the natural Spain phrasing for someone grabbing you.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-12",
+              "question": { "es": "¡Suéltame!", "en": "Let go of me!" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "For when someone is holding your arm or wrist.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-13",
+              "question": { "es": "Para. Esto no me gusta. No sigas, por favor.", "en": "Stop. I don't like this. Don't keep going, please." },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "A clear, firm 'no' — no need to be polite about it if you don't feel safe.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "emergencies-help",
+          "title": "Getting away & telling someone (Spain)",
+          "exchanges": [
+            {
+              "id": "emergencies-14",
+              "question": { "es": "¿Me acompañas hasta el taxi, por favor? No me siento segura.", "en": "Can you walk me to the taxi, please? I don't feel safe." },
+              "answers": [],
+              "likelyReply": { "es": "Claro, te acompaño. No te preocupes.", "en": "Of course, I'll walk with you. Don't worry." },
+              "notes": "Ask staff, a couple, or a group of women — not a lone stranger. 'Acompañar' = to go with / walk with someone.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-15",
+              "question": { "es": "¿Puedes acompañarme a casa? Ese tío me está siguiendo.", "en": "Can you walk me home? That guy is following me." },
+              "answers": [],
+              "likelyReply": { "es": "Vale, vamos. ¿Quieres que llame a alguien?", "en": "Okay, let's go. Want me to call someone?" },
+              "notes": "'Tío' = guy (Spain). If you're being followed, head somewhere busy and with staff rather than home directly.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-16",
+              "question": { "es": "Perdona, creo que me han echado algo en la copa. ¿Me ayudas?", "en": "Excuse me, I think someone spiked my drink. Can you help me?" },
+              "answers": [],
+              "likelyReply": { "es": "Vale, siéntate aquí. Llamo a seguridad y a un médico.", "en": "Okay, sit here. I'll call security and a doctor." },
+              "notes": "Tell the bar staff, not just your friends. Spiking is 'sumisión química' in Spain; needle-spiking ('pinchazo') has also been reported. Keep the drink as evidence and get to 112 / a medic.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-17",
+              "question": { "es": "¿Puedes llamar a la policía, por favor?", "en": "Can you call the police, please?" },
+              "answers": [],
+              "likelyReply": { "es": "Ahora mismo llamo al 112.", "en": "I'll call 112 right now." },
+              "notes": "112 reaches police, ambulance and fire, free from any phone.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-18",
+              "question": { "es": "Ese hombre de ahí nos está acosando.", "en": "That man over there is harassing us." },
+              "answers": [],
+              "likelyReply": { "es": "Venid conmigo, os llevo con seguridad.", "en": "Come with me, I'll take you to security." },
+              "notes": "'Acosar' = to harass. Say it to staff or security ('los de seguridad').",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-19",
+              "question": { "es": "Perdona, ese tío de ahí me está agobiando y me incomoda.", "en": "Excuse me, that guy over there is crowding me and making me uncomfortable." },
+              "answers": [],
+              "likelyReply": { "es": "Quédate aquí, yo me encargo.", "en": "Stay here, I'll handle it." },
+              "notes": "'Agobiar' = to crowd/overwhelm; 'incomodar' = to make uncomfortable. Natural, non-dramatic way to flag a creep to staff.",
+              "difficulty": "medium",
+              "women": true,
               "quizQuestions": []
             }
           ]

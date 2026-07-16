@@ -51,6 +51,7 @@ const isPremium = isPremiumCategory(category.id);
                 {exchange.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
                 {exchange.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
                 {exchange.young && <span class="tag tag--young">young</span>}
+                {exchange.women && <span class="tag tag--women">women</span>}
               </p>
 
               {exchange.answers.length > 0 && (
@@ -254,5 +255,10 @@ const isPremium = isPremiumCategory(category.id);
     background: #ffe6d5;
     color: var(--color-primary-dark);
     border: 1px solid #f5c8a3;
+  }
+
+  .tag--women {
+    background: #8a4fbe;
+    color: #fff;
   }
 </style>
