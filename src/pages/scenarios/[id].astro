@@ -1,8 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ScenarioGate from "../../components/ScenarioGate";
 import {
   getCategories,
   isDialogueSubsection,
+  isPremiumCategory,
   type DialogueSubsection,
   type PhrasebookSubsection,
 } from "../../lib/content";
@@ -15,6 +17,7 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
+const isPremium = isPremiumCategory(category.id);
 ---
 
 <Layout title={`${category.title} — Try Convi`} description={category.description}>
@@ -22,6 +25,9 @@ const { category } = Astro.props;
   <h1><span class="icon">{category.icon}</span> {category.title}</h1>
   <p class="description">{category.description}</p>
 
+  {isPremium && <ScenarioGate client:load />}
+
+  <div id="premium-content" class:list={[{ locked: isPremium }]}>
   {
     category.note && category.note.es && (
       <div class="note">
@@ -95,9 +101,14 @@ const { category } = Astro.props;
       )
     ))
   }
+  </div>
 </Layout>
 
 <style>
+  #premium-content.locked {
+    display: none;
+  }
+
   .back {
     display: inline-block;
     margin-bottom: 1rem;

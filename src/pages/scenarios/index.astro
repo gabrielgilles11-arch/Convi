@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCategories, countCategoryItems } from "../../lib/content";
+import { getCategories, countCategoryItems, isPremiumCategory } from "../../lib/content";
 
 const categories = getCategories();
 ---
@@ -9,10 +9,19 @@ const categories = getCategories();
   <h1>Scenarios</h1>
   <p class="intro">Pick a category and see how the conversation actually goes.</p>
 
+  <p class="intro-hint">Test a category to 90%+ in Practice and it gets marked complete here.</p>
+
   <div class="grid">
     {
       categories.map((category) => (
-        <a class="card" href={`/scenarios/${category.id}`}>
+        <a
+          class="card"
+          href={`/scenarios/${category.id}`}
+          data-category-id={category.id}
+          data-premium={isPremiumCategory(category.id) ? "true" : undefined}
+        >
+          <span class="badge" hidden>✓ Completed</span>
+          {isPremiumCategory(category.id) && <span class="lock" hidden>🔒 Paid</span>}
           <span class="icon">{category.icon}</span>
           <span class="title">{category.title}</span>
           <span class="meta">
@@ -41,7 +50,14 @@ const categories = getCategories();
     gap: 0.85rem;
   }
 
+  .intro-hint {
+    font-size: 0.85rem;
+    color: var(--color-ink-soft);
+    margin: -0.75rem 0 1.25rem;
+  }
+
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -59,6 +75,34 @@ const categories = getCategories();
     border-color: var(--color-primary);
   }
 
+  .card.completed {
+    border-color: var(--color-success);
+    background: var(--color-success-bg);
+  }
+
+  .badge,
+  .lock {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .badge {
+    color: var(--color-success);
+    background: var(--color-card);
+    border: 1px solid var(--color-success);
+  }
+
+  .lock {
+    color: var(--color-primary-dark);
+    background: #ffe6d5;
+    border: 1px solid #f5c8a3;
+  }
+
   .icon {
     font-size: 1.9rem;
   }
@@ -74,3 +118,28 @@ const categories = getCategories();
     color: var(--color-ink-soft);
   }
 </style>
+
+<script>
+  const MASTERED_SCORE = 90;
+  const unlocked = localStorage.getItem("convi:unlocked:v1") === "true";
+  try {
+    const raw = localStorage.getItem("convi:progress:v1");
+    const bestScores = raw ? JSON.parse(raw).bestScores ?? {} : {};
+    document.querySelectorAll<HTMLElement>(".card[data-category-id]").forEach((card) => {
+      const id = card.dataset.categoryId;
+      const premium = card.dataset.premium === "true";
+
+      if (premium && !unlocked) {
+        const lock = card.querySelector(".lock");
+        if (lock) lock.removeAttribute("hidden");
+        return; // don't show a completed badge on a still-locked category
+      }
+
+      if (id && (bestScores[id] ?? 0) >= MASTERED_SCORE) {
+        card.classList.add("completed");
+        const badge = card.querySelector(".badge");
+        if (badge) badge.removeAttribute("hidden");
+      }
+    });
+  } catch {}
+</script>
