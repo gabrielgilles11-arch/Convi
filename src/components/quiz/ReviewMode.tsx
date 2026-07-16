@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { QuizItem } from "../../lib/quizItems";
-import { markItemReviewed } from "../../lib/progress";
+import { markItemReviewed, markItemKnown, markItemUnknown } from "../../lib/progress";
 
 interface Props {
   items: QuizItem[];
@@ -19,43 +19,92 @@ export default function ReviewMode({ items }: Props) {
   const [order, setOrder] = useState<QuizItem[]>(() => shuffle(items));
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
+  const [knownCount, setKnownCount] = useState(0);
+  const [missed, setMissed] = useState<QuizItem[]>([]);
+  const [done, setDone] = useState(false);
+
+  function startDeck(deck: QuizItem[]) {
+    setOrder(shuffle(deck));
+    setIndex(0);
+    setFlipped(false);
+    setKnownCount(0);
+    setMissed([]);
+    setDone(false);
+  }
 
   // Reset the deck whenever the filtered item set changes (e.g. category switch)
   const itemsKey = useMemo(() => items.map((i) => i.id).join(","), [items]);
   const [lastKey, setLastKey] = useState(itemsKey);
   if (itemsKey !== lastKey) {
     setLastKey(itemsKey);
-    setOrder(shuffle(items));
-    setIndex(0);
-    setFlipped(false);
+    startDeck(items);
   }
 
   if (order.length === 0) {
     return <p>No cards in this category yet.</p>;
   }
 
-  const card = order[index];
-
   function flip() {
     setFlipped((f) => !f);
-    if (!flipped) markItemReviewed(card.id);
+    if (!flipped) markItemReviewed(order[index].id);
   }
 
-  function next() {
-    setFlipped(false);
-    setIndex((i) => (i + 1) % order.length);
+  function advance() {
+    if (index + 1 >= order.length) {
+      setDone(true);
+    } else {
+      setIndex((i) => i + 1);
+      setFlipped(false);
+    }
   }
 
-  function prev() {
-    setFlipped(false);
-    setIndex((i) => (i - 1 + order.length) % order.length);
+  function mark(known: boolean) {
+    const card = order[index];
+    if (known) {
+      markItemKnown(card.id);
+      setKnownCount((c) => c + 1);
+    } else {
+      markItemUnknown(card.id);
+      setMissed((m) => [...m, card]);
+    }
+    advance();
   }
 
-  function reshuffle() {
-    setOrder(shuffle(items));
-    setIndex(0);
-    setFlipped(false);
+  if (done) {
+    return (
+      <div className="review-done">
+        <p className="review-done-score">
+          {knownCount} / {order.length} got it
+        </p>
+        {missed.length > 0 ? (
+          <>
+            <p className="review-done-sub">
+              You marked {missed.length} card{missed.length === 1 ? "" : "s"} as still learning.
+            </p>
+            <div className="controls">
+              <button type="button" className="review-primary" onClick={() => startDeck(missed)}>
+                Review the {missed.length} you missed
+              </button>
+              <button type="button" onClick={() => startDeck(items)}>
+                Restart deck
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="review-done-sub">Nice — you knew every card in this deck.</p>
+            <div className="controls">
+              <button type="button" className="review-primary" onClick={() => startDeck(items)}>
+                Restart deck
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    );
   }
+
+  const card = order[index];
 
   return (
     <div className="review-mode">
@@ -79,17 +128,22 @@ export default function ReviewMode({ items }: Props) {
         )}
       </button>
 
-      <div className="controls">
-        <button type="button" onClick={prev}>
-          &larr; Prev
-        </button>
-        <button type="button" onClick={reshuffle}>
-          Shuffle
-        </button>
-        <button type="button" onClick={next}>
-          Next &rarr;
-        </button>
-      </div>
+      {flipped ? (
+        <div className="controls">
+          <button type="button" className="mark-unknown" onClick={() => mark(false)}>
+            ✗ Still learning
+          </button>
+          <button type="button" className="mark-known" onClick={() => mark(true)}>
+            ✓ Got it
+          </button>
+        </div>
+      ) : (
+        <div className="controls">
+          <button type="button" onClick={flip}>
+            Show answer
+          </button>
+        </div>
+      )}
     </div>
   );
 }
