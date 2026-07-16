@@ -20,7 +20,7 @@
           "exchanges": [
             {
               "id": "beer-food-01",
-              "question": { "es": "¿Qué vas a tomar?/¿Que quieres beber?", "en": "What are you having?" },
+              "question": { "es": "¿Qué vas a tomar?/¿Qué quieres beber?", "en": "What are you having?" },
               "answers": [
                 { "es": "Una caña/una jarra/un doble, porfa.", "en": "A small/pint-size beer, please." },
                 { "es": "Una cerveza, por favor.", "en": "A beer, please." }
@@ -120,9 +120,9 @@
           "title": "Tiny upgrades that sound natural (Spain)",
           "type": "tips",
           "items": [
-            { "es": "¿Una caña porfa?", "en": "Super common way to ask for a beer." },
+            { "es": "¿Una caña porfa?", "en": "A beer, please? (the small draft — how locals order)" },
             { "es": "Cuando puedas.", "en": "When you can (no rush)." },
-            { "es": "Gracias, jefe/jefa.", "en": "Very casual; use with care." }
+            { "es": "Gracias, jefe/jefa.", "en": "Thanks, boss. (very casual — use with care)" }
           ]
         },
         {
@@ -362,7 +362,7 @@
           "phrases": [
             { "id": "cuss-01", "es": "Joder.", "en": "Roughly: \"damn/f*ck\" (Spain).", "difficulty": "easy", "quizQuestions": [] },
             { "id": "cuss-02", "es": "Mierda.", "en": "Sh*t.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "cuss-03", "es": "Hostia.", "en": "Strong exclamation (Spain).", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "cuss-03", "es": "Hostia.", "en": "Damn! / Bloody hell! (strong exclamation, Spain)", "difficulty": "medium", "quizQuestions": [] }
           ]
         },
         {
