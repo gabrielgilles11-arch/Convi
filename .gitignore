@@ -26,3 +26,7 @@ pnpm-debug.log*
 
 # local Claude Code permissions (machine-specific)
 .claude/settings.local.json
+
+# local Claude working files & generated assets (never pushed)
+HANDOFF.md
+try-convi-wordmark*.png
