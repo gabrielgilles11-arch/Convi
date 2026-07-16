@@ -1,5 +1,7 @@
 export interface Progress {
   reviewedItemIds: string[];
+  knownItemIds: string[];
+  unknownItemIds: string[];
   streak: number;
   bestScores: Record<string, number>; // categoryId -> best % score (0-100)
 }
@@ -7,7 +9,7 @@ export interface Progress {
 const STORAGE_KEY = "convi:progress:v1";
 
 function defaultProgress(): Progress {
-  return { reviewedItemIds: [], streak: 0, bestScores: {} };
+  return { reviewedItemIds: [], knownItemIds: [], unknownItemIds: [], streak: 0, bestScores: {} };
 }
 
 export function loadProgress(): Progress {
@@ -32,6 +34,26 @@ export function markItemReviewed(itemId: string): Progress {
   if (!progress.reviewedItemIds.includes(itemId)) {
     progress.reviewedItemIds.push(itemId);
   }
+  saveProgress(progress);
+  return progress;
+}
+
+function without(list: string[], itemId: string): string[] {
+  return list.filter((id) => id !== itemId);
+}
+
+export function markItemKnown(itemId: string): Progress {
+  const progress = loadProgress();
+  progress.unknownItemIds = without(progress.unknownItemIds, itemId);
+  if (!progress.knownItemIds.includes(itemId)) progress.knownItemIds.push(itemId);
+  saveProgress(progress);
+  return progress;
+}
+
+export function markItemUnknown(itemId: string): Progress {
+  const progress = loadProgress();
+  progress.knownItemIds = without(progress.knownItemIds, itemId);
+  if (!progress.unknownItemIds.includes(itemId)) progress.unknownItemIds.push(itemId);
   saveProgress(progress);
   return progress;
 }

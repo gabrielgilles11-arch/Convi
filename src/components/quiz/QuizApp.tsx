@@ -2,9 +2,10 @@ import { useMemo, useState } from "react";
 import { quizItems, getCategoryList } from "../../lib/quizItems";
 import ReviewMode from "./ReviewMode";
 import TestMode from "./TestMode";
+import ProgressPanel from "./ProgressPanel";
 import "./quiz.css";
 
-type Mode = "review" | "test";
+type Mode = "review" | "test" | "progress";
 
 export default function QuizApp() {
   const [mode, setMode] = useState<Mode>("review");
@@ -30,23 +31,30 @@ export default function QuizApp() {
           <button type="button" className={mode === "test" ? "active" : ""} onClick={() => setMode("test")}>
             Test
           </button>
+          <button
+            type="button"
+            className={mode === "progress" ? "active" : ""}
+            onClick={() => setMode("progress")}
+          >
+            Progress
+          </button>
         </div>
 
-        <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
-          <option value="all">All categories</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.title}
-            </option>
-          ))}
-        </select>
+        {mode !== "progress" && (
+          <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+            <option value="all">All categories</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.title}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
-      {mode === "review" ? (
-        <ReviewMode items={filteredItems} />
-      ) : (
-        <TestMode items={filteredItems} categoryFilter={categoryFilter} />
-      )}
+      {mode === "review" && <ReviewMode items={filteredItems} />}
+      {mode === "test" && <TestMode items={filteredItems} categoryFilter={categoryFilter} />}
+      {mode === "progress" && <ProgressPanel />}
     </div>
   );
 }
