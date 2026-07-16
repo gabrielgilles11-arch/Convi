@@ -2,6 +2,7 @@ export interface Progress {
   reviewedItemIds: string[];
   knownItemIds: string[];
   unknownItemIds: string[];
+  visitedCategoryIds: string[];
   streak: number;
   bestScores: Record<string, number>; // categoryId -> best % score (0-100)
 }
@@ -9,7 +10,7 @@ export interface Progress {
 const STORAGE_KEY = "convi:progress:v1";
 
 function defaultProgress(): Progress {
-  return { reviewedItemIds: [], knownItemIds: [], unknownItemIds: [], streak: 0, bestScores: {} };
+  return { reviewedItemIds: [], knownItemIds: [], unknownItemIds: [], visitedCategoryIds: [], streak: 0, bestScores: {} };
 }
 
 export function loadProgress(): Progress {

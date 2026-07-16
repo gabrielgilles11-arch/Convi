@@ -23,10 +23,16 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return new Response(JSON.stringify({ error: "Invalid email" }), { status: 400 });
   }
 
-  const redis = new Redis({
-    url: import.meta.env.KV_REST_API_URL,
-    token: import.meta.env.KV_REST_API_TOKEN,
-  });
+  const url = import.meta.env.KV_REST_API_URL;
+  const token = import.meta.env.KV_REST_API_TOKEN;
+
+  // No store configured (e.g. local dev without creds): treat as not unlocked
+  // instead of throwing an Upstash "invalid URL" error.
+  if (!url || !token) {
+    return new Response(JSON.stringify({ unlocked: false }), { status: 200 });
+  }
+
+  const redis = new Redis({ url, token });
 
   const purchased = await redis.get(`purchaser:${email.trim().toLowerCase()}`);
 
