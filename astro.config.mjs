@@ -9,7 +9,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://tryconvi.com',
   integrations: [react(), sitemap()],
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   // Astro's default Origin-header CSRF check blocks legitimate cross-origin
   // POSTs like the Gumroad Ping webhook. Our API routes don't use
   // cookies/sessions — they're protected by a secret token (webhook) and
