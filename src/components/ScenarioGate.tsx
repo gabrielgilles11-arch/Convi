@@ -1,27 +1,12 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import "./practiceGate.css";
 
-const UNLOCK_KEY = "convi:unlocked:v1";
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
 
-function revealContent() {
-  document.getElementById("premium-content")?.classList.remove("locked");
-}
-
 export default function ScenarioGate() {
-  const [checked, setChecked] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
   const [email, setEmail] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (localStorage.getItem(UNLOCK_KEY) === "true") {
-      setUnlocked(true);
-      revealContent();
-    }
-    setChecked(true);
-  }, []);
 
   async function handleVerify(event: FormEvent) {
     event.preventDefault();
@@ -35,9 +20,14 @@ export default function ScenarioGate() {
       });
       const data = await res.json();
       if (data.unlocked) {
-        localStorage.setItem(UNLOCK_KEY, "true");
-        setUnlocked(true);
-        revealContent();
+        // Reload so the server renders the now-unlocked content.
+        window.location.reload();
+        return;
+      }
+      if (data.reason === "device_limit") {
+        setError(
+          "This purchase is already active on 2 devices. Use one of those, or email hello@tryconvi.com for help."
+        );
       } else {
         setError("We couldn't find a purchase for that email. Double-check it and try again.");
       }
@@ -47,8 +37,6 @@ export default function ScenarioGate() {
       setVerifying(false);
     }
   }
-
-  if (!checked || unlocked) return null;
 
   return (
     <div className="practice-gate">

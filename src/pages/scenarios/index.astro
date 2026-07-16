@@ -124,25 +124,32 @@ const categories = getCategories().sort(
 </style>
 
 <script>
-  const unlocked = localStorage.getItem("convi:unlocked:v1") === "true";
-  try {
-    const raw = localStorage.getItem("convi:progress:v1");
-    const visited: string[] = raw ? JSON.parse(raw).visitedCategoryIds ?? [] : [];
-    document.querySelectorAll<HTMLElement>(".card[data-category-id]").forEach((card) => {
-      const id = card.dataset.categoryId;
-      const premium = card.dataset.premium === "true";
+  (async () => {
+    let unlocked = false;
+    try {
+      const res = await fetch("/api/entitlement");
+      unlocked = !!(await res.json()).entitled;
+    } catch {}
 
-      if (premium && !unlocked) {
-        const lock = card.querySelector(".lock");
-        if (lock) lock.removeAttribute("hidden");
-        return; // don't show a completed badge on a still-locked category
-      }
+    try {
+      const raw = localStorage.getItem("convi:progress:v1");
+      const visited: string[] = raw ? JSON.parse(raw).visitedCategoryIds ?? [] : [];
+      document.querySelectorAll<HTMLElement>(".card[data-category-id]").forEach((card) => {
+        const id = card.dataset.categoryId;
+        const premium = card.dataset.premium === "true";
 
-      if (id && visited.includes(id)) {
-        card.classList.add("completed");
-        const badge = card.querySelector(".badge");
-        if (badge) badge.removeAttribute("hidden");
-      }
-    });
-  } catch {}
+        if (premium && !unlocked) {
+          const lock = card.querySelector(".lock");
+          if (lock) lock.removeAttribute("hidden");
+          return; // don't show a completed badge on a still-locked category
+        }
+
+        if (id && visited.includes(id)) {
+          card.classList.add("completed");
+          const badge = card.querySelector(".badge");
+          if (badge) badge.removeAttribute("hidden");
+        }
+      });
+    } catch {}
+  })();
 </script>

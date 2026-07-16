@@ -2,7 +2,6 @@ import { useEffect, useState, type FormEvent } from "react";
 import QuizApp from "./quiz/QuizApp";
 import "./practiceGate.css";
 
-const UNLOCK_KEY = "convi:unlocked:v1";
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
 
 export default function PracticeGate() {
@@ -13,8 +12,11 @@ export default function PracticeGate() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setUnlocked(localStorage.getItem(UNLOCK_KEY) === "true");
-    setChecked(true);
+    fetch("/api/entitlement")
+      .then((res) => res.json())
+      .then((data) => setUnlocked(!!data.entitled))
+      .catch(() => {})
+      .finally(() => setChecked(true));
   }, []);
 
   async function handleVerify(event: FormEvent) {
@@ -29,8 +31,11 @@ export default function PracticeGate() {
       });
       const data = await res.json();
       if (data.unlocked) {
-        localStorage.setItem(UNLOCK_KEY, "true");
         setUnlocked(true);
+      } else if (data.reason === "device_limit") {
+        setError(
+          "This purchase is already active on 2 devices. Use one of those, or email hello@tryconvi.com for help."
+        );
       } else {
         setError("We couldn't find a purchase for that email. Double-check it and try again.");
       }
