@@ -385,10 +385,10 @@
     {
       "id": "flirting",
       "order": 10,
-      "title": "Calling someone attractive (not cringe)",
+      "title": "Calling someone attractive",
       "icon": "😏",
       "type": "phrasebook",
-      "description": "Flirt lines (not cringe)",
+      "description": "Flirt lines",
       "note": {
         "es": "Tip: keep it short, smile, and don't overdo it. Consent and context matter.",
         "en": null
