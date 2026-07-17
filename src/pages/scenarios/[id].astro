@@ -22,6 +22,14 @@ if (!category) {
 const isPremium = isPremiumCategory(category.id);
 const entitled = !!verifyEntitlement(Astro.cookies.get(ENT_COOKIE)?.value);
 const showContent = !isPremium || entitled;
+
+const gateCopy =
+  category.id === "for-the-girls"
+    ? {
+        heading: "For the girls",
+        body: "Learn how to recognize and deal with creeps and ask for help in Spain. For a small one-time purchase you unlock this pack — and you also unlock the full Practice section. Yours forever.",
+      }
+    : {};
 ---
 
 <Layout title={`${category.title} — Try Convi`} description={category.description}>
@@ -29,7 +37,7 @@ const showContent = !isPremium || entitled;
   <h1><span class="icon">{category.icon}</span> {category.title}</h1>
   <p class="description">{category.description}</p>
 
-  {isPremium && !entitled && <ScenarioGate client:load />}
+  {isPremium && !entitled && <ScenarioGate client:load {...gateCopy} />}
 
   {showContent && (
   <div id="premium-content">

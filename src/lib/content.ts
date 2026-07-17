@@ -81,7 +81,14 @@ export function getCategoryById(id: string): Category | undefined {
 }
 
 // Categories that require a purchase to view (same unlock as Practice mode).
-const PREMIUM_CATEGORY_IDS = new Set(["cuss-words", "flirting", "nightlife", "emergencies", "resacon"]);
+const PREMIUM_CATEGORY_IDS = new Set([
+  "for-the-girls",
+  "cuss-words",
+  "flirting",
+  "nightlife",
+  "emergencies",
+  "resacon",
+]);
 
 export function isPremiumCategory(id: string): boolean {
   return PREMIUM_CATEGORY_IDS.has(id);
