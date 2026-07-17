@@ -20,18 +20,49 @@ function buildItems(): QuizItem[] {
       const dialogue = sub as DialogueSubsection;
       if (dialogue.exchanges) {
         for (const exchange of dialogue.exchanges) {
-          if (!exchange.likelyReply) continue;
-          items.push({
-            id: exchange.id,
-            categoryId: category.id,
-            categoryTitle: category.title,
-            kind: "dialogue",
-            prompt: "What would they probably say back?",
-            front: exchange.question.es,
-            frontTranslation: exchange.question.en,
-            correctAnswer: exchange.likelyReply.es,
-            correctAnswerTranslation: exchange.likelyReply.en,
-          });
+          if (exchange.likelyReply) {
+            items.push({
+              id: exchange.id,
+              categoryId: category.id,
+              categoryTitle: category.title,
+              kind: "dialogue",
+              prompt: "What would they probably say back?",
+              front: exchange.question.es,
+              frontTranslation: exchange.question.en,
+              correctAnswer: exchange.likelyReply.es,
+              correctAnswerTranslation: exchange.likelyReply.en,
+            });
+            continue;
+          }
+          // No likelyReply (e.g. women's-safety lines). If the exchange
+          // suggests responses, test the first one as the comeback;
+          // otherwise treat the line itself as a phrase to translate.
+          if (exchange.answers.length > 0) {
+            const reply = exchange.answers[0];
+            items.push({
+              id: exchange.id,
+              categoryId: category.id,
+              categoryTitle: category.title,
+              kind: "dialogue",
+              prompt: "How would you shut this down?",
+              front: exchange.question.es,
+              frontTranslation: exchange.question.en,
+              correctAnswer: reply.es,
+              correctAnswerTranslation: reply.en,
+            });
+          } else if (exchange.question.en) {
+            items.push({
+              id: exchange.id,
+              categoryId: category.id,
+              categoryTitle: category.title,
+              kind: "phrase",
+              prompt: "What does this mean?",
+              front: exchange.question.es,
+              frontTranslation: null,
+              correctAnswer: exchange.question.en,
+              correctAnswerTranslation: null,
+            });
+          }
         }
       }
 

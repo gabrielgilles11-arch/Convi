@@ -54,6 +54,14 @@ const categories = getCategories().sort(
     gap: 0.85rem;
   }
 
+  /* Once the grid is two columns, drop a lone final card (odd count) into
+     the right-hand column instead of leaving it alone on the left. */
+  @media (min-width: 448px) {
+    .card:last-child:nth-child(odd) {
+      grid-column: 2;
+    }
+  }
+
   .intro-hint {
     font-size: 0.85rem;
     color: var(--color-ink-soft);

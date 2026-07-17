@@ -3,7 +3,15 @@ import "./practiceGate.css";
 
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
 
-export default function ScenarioGate() {
+interface Props {
+  heading?: string;
+  body?: string;
+}
+
+export default function ScenarioGate({
+  heading = "This one's part of the paid pack",
+  body = "For the girls, cuss words, flirting, nightlife, emergencies and the hungover pack unlock with a one-time purchase — the same buy that unlocks Practice. Yours forever.",
+}: Props) {
   const [email, setEmail] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
@@ -40,11 +48,8 @@ export default function ScenarioGate() {
 
   return (
     <div className="practice-gate">
-      <h2>This one's part of the paid pack</h2>
-      <p>
-        Cuss words, flirting, nightlife, emergencies and the hungover pack unlock with a one-time
-        purchase — the same buy that unlocks Practice. Yours forever.
-      </p>
+      <h2>{heading}</h2>
+      <p>{body}</p>
       <a className="gate-buy" href={GUMROAD_PRODUCT_URL} target="_blank" rel="noopener">
         Buy
       </a>
