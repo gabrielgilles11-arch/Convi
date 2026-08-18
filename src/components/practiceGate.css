@@ -44,7 +44,8 @@
   background: var(--color-primary);
   color: #fff;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   box-shadow: 0 4px 0 var(--color-primary-dark);
 }
 
