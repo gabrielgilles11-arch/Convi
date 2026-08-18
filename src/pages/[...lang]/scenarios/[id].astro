@@ -1,20 +1,29 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import ScenarioGate from "../../components/ScenarioGate";
+import Layout from "../../../layouts/Layout.astro";
+import ScenarioGate from "../../../components/ScenarioGate";
 import {
   getCategoryById,
   isDialogueSubsection,
   isPremiumCategory,
+  localeFromSlug,
+  localePath,
   type DialogueSubsection,
   type PhrasebookSubsection,
-} from "../../lib/content";
-import { ENT_COOKIE, verifyEntitlement } from "../../lib/entitlement";
+} from "../../../lib/content";
+import { ENT_COOKIE, verifyEntitlement } from "../../../lib/entitlement";
 
 // Rendered on demand so premium content can be gated per-request: locked
 // content is never sent to the browser for unentitled visitors.
 export const prerender = false;
 
-const category = getCategoryById(Astro.params.id ?? "");
+const locale = localeFromSlug(Astro.params.lang);
+if (!locale) {
+  return new Response("Not found", { status: 404 });
+}
+
+// Scoped to the locale on purpose: /sv/scenarios/cuss-words (a Spanish id)
+// must 404 rather than render Spanish content under a Swedish URL.
+const category = getCategoryById(Astro.params.id ?? "", locale);
 if (!category) {
   return new Response("Not found", { status: 404 });
 }
@@ -32,8 +41,8 @@ const gateCopy =
     : {};
 ---
 
-<Layout title={`${category.title} — Try Convi`} description={category.description}>
-  <a class="back" href="/scenarios">&larr; All scenarios</a>
+<Layout title={`${category.title} — Try Convi`} description={category.description} locale={locale}>
+  <a class="back" href={localePath(locale, "/scenarios")}>&larr; All scenarios</a>
   <h1><span class="icon">{category.icon}</span> {category.title}</h1>
   <p class="description">{category.description}</p>
 
@@ -63,6 +72,8 @@ const gateCopy =
                 <span class="translation"> — {exchange.question.en}</span>
                 {exchange.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
                 {exchange.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
+                {exchange.region === "stockholm" && <span class="tag tag--stockholm">Stockholm</span>}
+                {exchange.region === "bayern" && <span class="tag tag--bayern">Bayern</span>}
                 {exchange.young && <span class="tag tag--young">young</span>}
                 {exchange.women && <span class="tag tag--women">women</span>}
               </p>
@@ -105,6 +116,8 @@ const gateCopy =
                   {phrase.es}
                   {phrase.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
                   {phrase.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
+                  {phrase.region === "stockholm" && <span class="tag tag--stockholm">Stockholm</span>}
+                  {phrase.region === "bayern" && <span class="tag tag--bayern">Bayern</span>}
                   {phrase.young && <span class="tag tag--young">young</span>}
                 </span>
                 <span class="translation">{phrase.en}</span>
@@ -161,8 +174,8 @@ const gateCopy =
   }
 
   .note {
-    background: #ffe6d5;
-    border: 1px solid #f5c8a3;
+    background: var(--color-primary-tint);
+    border: 1px solid var(--color-primary-tint-border);
     border-radius: 12px;
     padding: 0.9rem 1rem;
     margin-bottom: 1.5rem;
@@ -278,10 +291,20 @@ const gateCopy =
     color: #fff;
   }
 
+  .tag--stockholm {
+    background: #2f6fa8;
+    color: #fff;
+  }
+
+  .tag--bayern {
+    background: #3a6ea5;
+    color: #fff;
+  }
+
   .tag--young {
-    background: #ffe6d5;
+    background: var(--color-primary-tint);
     color: var(--color-primary-dark);
-    border: 1px solid #f5c8a3;
+    border: 1px solid var(--color-primary-tint-border);
   }
 
   .tag--women {

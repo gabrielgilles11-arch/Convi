@@ -1,0 +1,871 @@
+{
+  "language": "sv-SE",
+  "meta": {
+    "sourceTitle": "Speak Now: Swedish Edition (Stockholm)",
+    "tagline": "Duolingo won't teach you this — Stockholm edition (what you actually hear).",
+    "region": "Stockholm"
+  },
+  "categories": [
+    {
+      "id": "sv-beer-food",
+      "order": 1,
+      "title": "Ordering a beer/food like a local (Sweden)",
+      "icon": "🍺",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "sv-beer-food-main",
+          "title": null,
+          "exchanges": [
+            {
+              "id": "sv-beer-food-01",
+              "question": {
+                "es": "Vad får det lov att vara?",
+                "en": "What can I get you?"
+              },
+              "answers": [
+                {
+                  "es": "En öl, tack.",
+                  "en": "A beer, please."
+                },
+                {
+                  "es": "En stor stark, tack.",
+                  "en": "A \"standard\" lager, please."
+                }
+              ],
+              "likelyReply": {
+                "es": "På fat eller flaska?",
+                "en": "Draft or bottle?"
+              },
+              "notes": "The bartender opens with this. \"En stor stark\" is the default 50cl lager.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-02",
+              "question": {
+                "es": "På fat eller flaska?",
+                "en": "Draft or bottle?"
+              },
+              "answers": [
+                {
+                  "es": "På fat, tack.",
+                  "en": "Draft, please."
+                },
+                {
+                  "es": "Flaska funkar.",
+                  "en": "Bottle's fine."
+                }
+              ],
+              "likelyReply": {
+                "es": "Vilken vill du ha? / Nån särskild?",
+                "en": "Which one do you want? / Any specific one?"
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-03",
+              "question": {
+                "es": "Vill du ha något att äta också?",
+                "en": "Want food too?"
+              },
+              "answers": [
+                {
+                  "es": "Bara lite snacks, tack.",
+                  "en": "Just some snacks, please."
+                },
+                {
+                  "es": "Nåt litet bara.",
+                  "en": "Just something small."
+                }
+              ],
+              "likelyReply": {
+                "es": "Varsågod. / Det blir [BELOPP] kronor.",
+                "en": "Here you go. / That'll be [AMOUNT] SEK."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-04",
+              "question": {
+                "es": "Vill du ha kvittot?",
+                "en": "Receipt?"
+              },
+              "answers": [
+                {
+                  "es": "Nej tack.",
+                  "en": "No thanks."
+                },
+                {
+                  "es": "Ja tack.",
+                  "en": "Yes please."
+                }
+              ],
+              "likelyReply": {
+                "es": "Ha det!",
+                "en": "Take care!"
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-beer-food-tips",
+          "title": "Tiny upgrades that sound natural (Stockholm)",
+          "type": "tips",
+          "items": [
+            {
+              "es": "En bärs, tack.",
+              "en": "A very casual \"beer, please.\""
+            },
+            {
+              "es": "Kan jag få…?",
+              "en": "Can I get…?"
+            },
+            {
+              "es": "Swish går bra?",
+              "en": "Is Swish okay? (only relevant with friends and some places)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sv-starting-convo",
+      "order": 2,
+      "title": "Starting a convo/basic survival (Stockholm)",
+      "icon": "👋",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "sv-starting-convo-main",
+          "title": null,
+          "exchanges": [
+            {
+              "id": "sv-starting-convo-01",
+              "question": {
+                "es": "Tja!",
+                "en": "Hi!"
+              },
+              "answers": [
+                {
+                  "es": "Tja!",
+                  "en": "Hi!"
+                },
+                {
+                  "es": "Hej!",
+                  "en": "Hello!"
+                }
+              ],
+              "likelyReply": {
+                "es": "Läget?",
+                "en": "How's it going?"
+              },
+              "notes": "\"Tja\" is the casual Stockholm hello.",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-starting-convo-02",
+              "question": {
+                "es": "Läget?",
+                "en": "How's it going?"
+              },
+              "answers": [
+                {
+                  "es": "Bra, själv?",
+                  "en": "Good, you?"
+                }
+              ],
+              "likelyReply": {
+                "es": "Nice. / Soft.",
+                "en": "Nice. / Chill."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-starting-convo-03",
+              "question": {
+                "es": "Pratar du engelska?",
+                "en": "Do you speak English?"
+              },
+              "answers": [
+                {
+                  "es": "Ja, absolut.",
+                  "en": "Yes, absolutely."
+                },
+                {
+                  "es": "Lite grann.",
+                  "en": "A little bit."
+                }
+              ],
+              "likelyReply": {
+                "es": "Vad behöver du?",
+                "en": "What do you need?"
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-starting-convo-04",
+              "question": {
+                "es": "Förlåt, jag fattar inte.",
+                "en": "Sorry, I don't get it."
+              },
+              "answers": [
+                {
+                  "es": "Ingen fara.",
+                  "en": "No worries."
+                }
+              ],
+              "likelyReply": {
+                "es": "Jag kan säga det på engelska.",
+                "en": "I can say it in English."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-starting-convo-05",
+              "question": {
+                "es": "Hur säger man [ORD] på svenska?",
+                "en": "How do you say [WORD] in Swedish?"
+              },
+              "answers": [
+                {
+                  "es": "Man säger [ORD].",
+                  "en": "You say [WORD]."
+                }
+              ],
+              "likelyReply": {
+                "es": "Typ så. / Ungefär.",
+                "en": "More or less."
+              },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-starting-convo-06",
+              "question": {
+                "es": "Var ligger [PLATS]?",
+                "en": "Where is [PLACE]?"
+              },
+              "answers": [
+                {
+                  "es": "Där borta. / Rakt fram. / Till vänster/höger.",
+                  "en": "Over there. / Straight ahead. / To the left/right."
+                }
+              ],
+              "likelyReply": {
+                "es": "Det är nära. / Det tar typ [ANTAL] minuter.",
+                "en": "It's close. / It takes about [NUMBER] minutes."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sv-slang",
+      "order": 3,
+      "title": "Slang (Stockholm)",
+      "icon": "🗣️",
+      "type": "phrasebook",
+      "description": "Stockholm-first slang",
+      "note": {
+        "es": "Slang level: medium → heavy. Items marked young are more common among younger people and online.",
+        "en": "If you want to sound local but safe, stick to the ones without a young badge."
+      },
+      "subsections": [
+        {
+          "id": "sv-slang-everyday",
+          "title": "Everyday casual (safe-ish)",
+          "phrases": [
+            {
+              "id": "sv-slang-01",
+              "es": "asså",
+              "en": "Filler: \"like\" / \"I mean\".",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-02",
+              "es": "typ",
+              "en": "Like / kind of.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-03",
+              "es": "Nu kör vi",
+              "en": "Let's go.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-04",
+              "es": "ba",
+              "en": "Short for bara — \"just\", often as filler.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-05",
+              "es": "fatta",
+              "en": "To get / to understand.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-06",
+              "es": "haja",
+              "en": "To get / to understand — a bit slangy.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-07",
+              "es": "pallar inte / orkar inte",
+              "en": "Can't be bothered / don't have the energy.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-08",
+              "es": "softa",
+              "en": "To chill.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-09",
+              "es": "taggad",
+              "en": "Hyped / excited.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-10",
+              "es": "sjukt",
+              "en": "Insanely / really — \"sjukt bra\" = really good.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-slang-reactions",
+          "title": "Cool / nice / strong reaction",
+          "phrases": [
+            {
+              "id": "sv-slang-11",
+              "es": "fett",
+              "en": "Really / very — an intensifier.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-12",
+              "es": "skitbra / skitkul",
+              "en": "Really good / really fun. Not as strong as the English equivalent.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-13",
+              "es": "nice",
+              "en": "Loanword, very common.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-slang-stockholm",
+          "title": "Stockholm-specific",
+          "phrases": [
+            {
+              "id": "sv-slang-14",
+              "es": "tuben",
+              "en": "The metro (Tunnelbanan).",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-15",
+              "es": "bulle",
+              "en": "Taxi.",
+              "difficulty": "medium",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-16",
+              "es": "tjacka",
+              "en": "To buy.",
+              "difficulty": "medium",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-17",
+              "es": "TC / T-Centralen",
+              "en": "Shorthand for the central station.",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-18",
+              "es": "Medis",
+              "en": "Medborgarplatsen.",
+              "difficulty": "medium",
+              "region": "stockholm",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-slang-party",
+          "title": "Party / going out",
+          "phrases": [
+            {
+              "id": "sv-slang-19",
+              "es": "bärs / bira",
+              "en": "Beer. Casual — \"bärs\" feels Stockholm-y.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-20",
+              "es": "ta en afterwork / AW",
+              "en": "After-work drinks.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-slang-micro",
+          "title": "Micro-phrases you'll actually hear",
+          "phrases": [
+            {
+              "id": "sv-slang-21",
+              "es": "Asså…",
+              "en": "Starting a sentence while thinking.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-22",
+              "es": "Orka.",
+              "en": "Standalone: \"ugh, no way\".",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-23",
+              "es": "Vi tar tuben.",
+              "en": "We'll take the metro.",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-24",
+              "es": "Vi splittar en bulle.",
+              "en": "We'll split a taxi.",
+              "difficulty": "hard",
+              "region": "stockholm",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sv-cuss-words",
+      "order": 4,
+      "title": "Cuss words & “don’t get punched” warnings (Sweden)",
+      "icon": "🤬",
+      "type": "phrasebook",
+      "description": "Contains profanity",
+      "note": {
+        "es": "Swedish profanity is common in speech, but still context-sensitive.",
+        "en": "Avoid it around kids and in formal settings."
+      },
+      "subsections": [
+        {
+          "id": "sv-cuss-common",
+          "title": "Common (mild → stronger)",
+          "phrases": [
+            {
+              "id": "sv-cuss-01",
+              "es": "fan",
+              "en": "Damn — extremely common.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-02",
+              "es": "jävlar",
+              "en": "Damn / \"holy hell\".",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-03",
+              "es": "skit-",
+              "en": "Prefix — skitbra = really good.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-cuss-aggressive",
+          "title": "Aggressive — don't use with strangers",
+          "phrases": [
+            {
+              "id": "sv-cuss-04",
+              "es": "dra åt helvete",
+              "en": "Go to hell.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-05",
+              "es": "håll käften",
+              "en": "Shut up.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sv-flirting",
+      "order": 5,
+      "title": "Calling someone attractive (Sweden)",
+      "icon": "😏",
+      "type": "phrasebook",
+      "description": "Flirt lines that don't land badly",
+      "note": {
+        "es": "Only flirt if it feels mutual. Keep it light and accept a no immediately.",
+        "en": "Back off without arguing or guilt-tripping."
+      },
+      "subsections": [
+        {
+          "id": "sv-flirt-safe",
+          "title": "Compliments (safe)",
+          "phrases": [
+            {
+              "id": "sv-flirt-01",
+              "es": "Du är snygg.",
+              "en": "You're attractive.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-02",
+              "es": "Du är fin.",
+              "en": "You're cute/pretty.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-03",
+              "es": "Jag gillar din stil.",
+              "en": "I like your style.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-04",
+              "es": "Du har ett fint leende.",
+              "en": "You have a nice smile.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-flirt-bolder",
+          "title": "A bit bolder",
+          "phrases": [
+            {
+              "id": "sv-flirt-05",
+              "es": "Jag tycker du är riktigt snygg.",
+              "en": "I think you're really attractive.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-06",
+              "es": "Ska vi ta en öl nån gång?",
+              "en": "Want to grab a beer sometime?",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-flirt-respect",
+          "title": "Respect + consent",
+          "phrases": [
+            {
+              "id": "sv-flirt-07",
+              "es": "Ingen press om du inte vill.",
+              "en": "No pressure if you don't want to.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-08",
+              "es": "Säg bara till om du inte är bekväm.",
+              "en": "Just say if you're not comfortable.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-09",
+              "es": "Helt lugnt, jag respekterar det.",
+              "en": "All good, I respect that.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-flirt-consent",
+          "title": "Quick consent check",
+          "phrases": [
+            {
+              "id": "sv-flirt-10",
+              "es": "Är det okej om jag säger en grej?",
+              "en": "Is it okay if I say something?",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-11",
+              "es": "Är det okej om jag bjuder dig på en drink?",
+              "en": "Is it okay if I buy you a drink?",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sv-getting-around",
+      "order": 6,
+      "title": "Getting around (taxi + metro) — Stockholm",
+      "icon": "🚕",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "sv-getting-around-taxi",
+          "title": "Taxi",
+          "exchanges": [
+            {
+              "id": "sv-getting-around-01",
+              "question": {
+                "es": "Vart ska du?",
+                "en": "Where to?"
+              },
+              "answers": [
+                {
+                  "es": "Till [ADRESS], tack.",
+                  "en": "To [ADDRESS], please."
+                }
+              ],
+              "likelyReply": {
+                "es": "Okej. / Kreditkort?",
+                "en": "Okay. / Credit card?"
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-02",
+              "question": {
+                "es": "Kan du stanna här, tack?",
+                "en": "Can you stop here, please?"
+              },
+              "answers": [
+                {
+                  "es": "Absolut.",
+                  "en": "Absolutely."
+                }
+              ],
+              "likelyReply": {
+                "es": "Det blir [BELOPP] kronor.",
+                "en": "That'll be [AMOUNT] kronor."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-getting-around-metro",
+          "title": "Metro (Tunnelbanan)",
+          "exchanges": [
+            {
+              "id": "sv-getting-around-03",
+              "question": {
+                "es": "Var är tuben? / Var är Tunnelbanan?",
+                "en": "Where's the metro?"
+              },
+              "answers": [
+                {
+                  "es": "Där borta.",
+                  "en": "Over there."
+                }
+              ],
+              "likelyReply": {
+                "es": "Följ skyltarna.",
+                "en": "Follow the signs."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-04",
+              "question": {
+                "es": "Jag ska till [PLATS]. Vilken linje?",
+                "en": "I'm going to [PLACE]. Which line?"
+              },
+              "answers": [
+                {
+                  "es": "Gröna/röda/blå linjen, mot [PLATS].",
+                  "en": "The green/red/blue line, toward [PLACE]."
+                }
+              ],
+              "likelyReply": {
+                "es": "Byt vid [STATION].",
+                "en": "Transfer at [STATION]."
+              },
+              "notes": "",
+              "difficulty": "medium",
+              "region": "stockholm",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sv-restaurant",
+      "order": 7,
+      "title": "At a restaurant (Sweden)",
+      "icon": "🍽️",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "sv-restaurant-main",
+          "title": null,
+          "exchanges": [
+            {
+              "id": "sv-restaurant-01",
+              "question": {
+                "es": "Har ni bord för två?",
+                "en": "Table for two?"
+              },
+              "answers": [
+                {
+                  "es": "Ja, följ med.",
+                  "en": "Yes, follow me."
+                },
+                {
+                  "es": "Tyvärr, det är fullt.",
+                  "en": "Unfortunately, it's full."
+                }
+              ],
+              "likelyReply": {
+                "es": "Har ni bokat?",
+                "en": "Do you have a reservation?"
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-restaurant-02",
+              "question": {
+                "es": "Kan vi få notan, tack?",
+                "en": "Can we get the bill, please?"
+              },
+              "answers": [
+                {
+                  "es": "Absolut.",
+                  "en": "Absolutely."
+                }
+              ],
+              "likelyReply": {
+                "es": "Vill ni betala tillsammans eller separat?",
+                "en": "Do you want to pay together or separately?"
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-restaurant-03",
+              "question": {
+                "es": "Vill ni ha vatten?",
+                "en": "Do you want water?"
+              },
+              "answers": [
+                {
+                  "es": "Ja tack.",
+                  "en": "Yes please."
+                },
+                {
+                  "es": "Kranvatten går bra.",
+                  "en": "Tap water is fine."
+                }
+              ],
+              "likelyReply": {
+                "es": "Varsågod.",
+                "en": "Here you go."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

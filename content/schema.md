@@ -59,7 +59,7 @@ has no sub-grouping (single flat list of exchanges).
   "likelyReply": { "es": string, "en": string } | null, // what the local says back; null if the exchange has no reply (e.g. a farewell)
   "notes": string,                 // slang/regional/usage notes; "" if none
   "difficulty": "easy" | "medium" | "hard",
-  "region": "madrid" | "barcelona",  // optional; renders a regional badge. Omit for pan-Spanish.
+  "region": "madrid" | "barcelona" | "stockholm" | "bayern",  // optional; renders a regional badge. Omit for pan-regional.
   "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
   "women": true,                     // optional; renders a "women" badge for women's-safety content (creeps, harassment). Omit otherwise.
   "quizQuestions": []              // populated in Step 3
@@ -98,7 +98,7 @@ Used for Slang, Cuss Words, Flirting — flat phrase lists, no Q/A/reply shape.
   "es": string,
   "en": string,           // translation or usage note
   "difficulty": "easy" | "medium" | "hard",
-  "region": "madrid" | "barcelona",  // optional; renders a regional badge. Omit for pan-Spanish.
+  "region": "madrid" | "barcelona" | "stockholm" | "bayern",  // optional; renders a regional badge. Omit for pan-regional.
   "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
   "quizQuestions": []     // populated in Step 3
 }
@@ -123,9 +123,40 @@ in the same category if this array is empty.
 
 ## Adding a new language
 
-1. Create `content/{locale}.json` with the same `categories` structure,
-   translated `es`/`en` pairs stay as `es`/`en` keys (the source language is
-   always `es`, the gloss is always `en` — this doesn't change per file).
-2. Keep every `id` identical to `es-ES.json` so progress tracking and quiz
-   state (keyed by id) carries over across languages.
-3. No component changes required — pages iterate over `categories` generically.
+Live locales: `es-ES` (Spanish/Spain), `sv-SE` (Swedish/Stockholm),
+`de-DE` (German/Germany + Bayern).
+
+1. Create `content/{locale}.json` with the same structural shape. The
+   `es`/`en` keys stay as-is: **`es` always holds the source language of that
+   file** (Swedish in `sv-SE.json`, German in `de-DE.json`) and `en` is always
+   the English gloss. The key is not renamed per locale so every component can
+   read one shape.
+2. **Namespace every `id` with the locale prefix** (`sv-beer-food`,
+   `de-flirt-01`). Editions are independent bodies of content, not translations
+   of each other — Swedish has 7 categories, German has 8 including Bayern
+   slang, Spanish has 13. Progress is keyed by item id in localStorage, so
+   sharing ids across languages would make marking a Spanish card "Got it"
+   silently mark an unrelated Swedish one. Ids must be unique across *all*
+   locale files.
+3. Register it in `src/lib/content.ts`: import the file, add it to `FILES`, and
+   add a `LOCALES` entry with its URL `slug`, `language`, `flag`, `accent`
+   colour and `region`.
+4. Add its premium category ids to `PREMIUM_CATEGORY_IDS` in the same file.
+   One purchase unlocks every language, so this is a single flat set.
+5. If it introduces a new `region` value, add it to the `Region` union and add
+   a `.tag--{region}` style plus the badge markup in
+   `src/pages/[...lang]/scenarios/[id].astro`.
+
+No page changes are needed — `src/pages/[...lang]/` serves every edition from
+one set of templates. Spanish uses an empty slug so it keeps its original,
+already-indexed URLs (`/scenarios`, `/practice`); others are prefixed
+(`/sv/scenarios`, `/de/practice`).
+
+## Paywall
+
+Practice is paywalled for **every** language. Quiz data is never bundled into
+client JS — it comes from `GET /api/quiz-items?locale=…`, which verifies the
+signed entitlement cookie server-side and returns 403 otherwise. `quizItems.ts`
+is server-only for this reason; client components import types and
+`buildOptions` from `quizTypes.ts`. Premium scenario pages are SSR and omit
+locked content from the HTML entirely.

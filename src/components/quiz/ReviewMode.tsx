@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { QuizItem } from "../../lib/quizItems";
+import type { QuizItem } from "../../lib/quizTypes";
 import { markItemReviewed, markItemKnown, markItemUnknown } from "../../lib/progress";
 
 interface Props {

@@ -1,0 +1,236 @@
+---
+import { LOCALES, localePath, type Locale } from "../lib/content";
+
+interface Props {
+  /** In-site path inside each edition, e.g. "/scenarios" or "/practice". */
+  path: string;
+  label: string;
+  /** Visual treatment: header nav link, or a hero/tier-card button. */
+  variant?: "nav" | "primary" | "secondary";
+  /** Edition currently being read, so the menu can mark it. */
+  current?: Locale;
+}
+
+const { path, label, variant = "nav", current } = Astro.props;
+
+// Unique id so each menu's summary can label its own panel for screen readers.
+const id = `lang-menu-${path.replace(/\W+/g, "-")}-${variant}`;
+---
+
+<details class:list={["lang-menu", `lang-menu--${variant}`]}>
+  <summary aria-haspopup="menu" aria-controls={id}>
+    <span>{label}</span>
+    <svg class="caret" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
+      <path d="M1 1.5 L6 6.5 L11 1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </summary>
+
+  <div class="panel" id={id} role="menu" aria-label={`${label} — choose a language`}>
+    {
+      LOCALES.map((l) => (
+        <a
+          role="menuitem"
+          href={localePath(l.locale, path)}
+          class:list={["item", { current: l.locale === current }]}
+          aria-current={l.locale === current ? "page" : undefined}
+        >
+          <span class="flag" aria-hidden="true">{l.flag}</span>
+          <span class="names">
+            <span class="lang">{l.language}</span>
+            <span class="region">{l.region}</span>
+          </span>
+          {l.locale === current && <span class="check" aria-hidden="true">✓</span>}
+        </a>
+      ))
+    }
+  </div>
+</details>
+
+<script>
+  // Progressive enhancement only — <details> already opens, closes and takes
+  // keyboard focus on its own. This just adds the dismiss behaviour a menu is
+  // expected to have. Astro bundles this once no matter how many menus render.
+  const menus = () => document.querySelectorAll<HTMLDetailsElement>("details.lang-menu");
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as Node;
+    for (const menu of menus()) {
+      if (menu.open && !menu.contains(target)) menu.open = false;
+    }
+  });
+
+  // Opening one menu closes the others.
+  for (const menu of menus()) {
+    menu.addEventListener("toggle", () => {
+      if (!menu.open) return;
+      for (const other of menus()) {
+        if (other !== menu) other.open = false;
+      }
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    for (const menu of menus()) {
+      if (!menu.open) continue;
+      menu.open = false;
+      menu.querySelector("summary")?.focus();
+    }
+  });
+</script>
+
+<style>
+  .lang-menu {
+    position: relative;
+    display: inline-block;
+  }
+
+  summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-heading);
+  }
+
+  /* Safari still paints the default disclosure triangle without this. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 999px;
+  }
+
+  .caret {
+    width: 0.7em;
+    height: auto;
+    transition: transform 0.15s ease;
+  }
+
+  .lang-menu[open] .caret {
+    transform: rotate(180deg);
+  }
+
+  /* --- nav variant: matches the plain header links --- */
+  .lang-menu--nav summary {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .lang-menu--nav summary:hover {
+    color: var(--color-primary-dark);
+  }
+
+  /* --- button variants: mirror .button / .button.secondary --- */
+  .lang-menu--primary summary,
+  .lang-menu--secondary summary {
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+
+  .lang-menu--primary summary {
+    background: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 4px 0 var(--color-primary-dark);
+  }
+
+  .lang-menu--secondary summary {
+    background: transparent;
+    color: var(--color-ink);
+    border: 2px solid var(--color-ink);
+  }
+
+  /* --- the panel --- */
+  .panel {
+    position: absolute;
+    z-index: 40;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    min-width: 13.5rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(42, 27, 18, 0.16);
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .item:hover,
+  .item:focus-visible {
+    background: var(--color-primary-tint);
+    outline: none;
+  }
+
+  .item.current {
+    background: var(--color-primary-tint);
+  }
+
+  .check {
+    margin-left: auto;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .flag {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .names {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .lang {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .region {
+    font-size: 0.75rem;
+    color: var(--color-ink-soft);
+  }
+
+  /* Right-align the panel when the menu sits near the viewport edge. */
+  @media (max-width: 480px) {
+    .panel {
+      left: auto;
+      right: 0;
+    }
+
+    .lang-menu--primary,
+    .lang-menu--secondary {
+      display: block;
+    }
+
+    .lang-menu--primary summary,
+    .lang-menu--secondary summary {
+      justify-content: center;
+    }
+
+    .lang-menu--primary .panel,
+    .lang-menu--secondary .panel {
+      left: 0;
+      right: 0;
+    }
+  }
+</style>

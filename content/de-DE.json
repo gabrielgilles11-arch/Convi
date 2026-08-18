@@ -1,0 +1,459 @@
+{
+  "language": "de-DE",
+  "meta": {
+    "sourceTitle": "Speak Now: German Edition (Germany)",
+    "tagline": "Duolingo won't teach you this — Germany edition (plus Bayern mode).",
+    "region": "Germany"
+  },
+  "categories": [
+    {
+      "id": "de-beer-food",
+      "order": 1,
+      "title": "Ordering a beer/food like a local (Germany)",
+      "icon": "🍺",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-beer-food-main",
+          "title": null,
+          "exchanges": [
+            {
+              "id": "de-beer-food-01",
+              "question": { "es": "Was möchten Sie trinken?", "en": "What would you like to drink?" },
+              "answers": [
+                { "es": "Ein Bier, bitte.", "en": "A beer, please." },
+                { "es": "Ein Helles, bitte.", "en": "A pale lager, please — common in the south." }
+              ],
+              "likelyReply": { "es": "Vom Fass oder aus der Flasche?", "en": "Draft or bottle?" },
+              "notes": "\"Ein Helles\" is the southern default. Servers open with the formal Sie.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-02",
+              "question": { "es": "Vom Fass oder aus der Flasche?", "en": "Draft or bottle?" },
+              "answers": [
+                { "es": "Vom Fass, bitte.", "en": "Draft, please." },
+                { "es": "Aus der Flasche, bitte.", "en": "Bottle, please." }
+              ],
+              "likelyReply": { "es": "Welche Marke?", "en": "Which brand?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-03",
+              "question": { "es": "Möchten Sie auch was zu essen?", "en": "Want food too?" },
+              "answers": [
+                { "es": "Nur was Kleines.", "en": "Just something small." },
+                { "es": "Vielleicht Pommes.", "en": "Maybe fries." }
+              ],
+              "likelyReply": { "es": "Kommt sofort.", "en": "Coming right up." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-04",
+              "question": { "es": "Zahlen Sie zusammen oder getrennt?", "en": "Together or split?" },
+              "answers": [
+                { "es": "Zusammen.", "en": "Together." },
+                { "es": "Getrennt, bitte.", "en": "Separately, please." }
+              ],
+              "likelyReply": { "es": "Mit Karte oder bar?", "en": "Card or cash?" },
+              "notes": "Splitting the bill is completely normal and expected.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-beer-food-bayern",
+          "title": "Bayern add-on (if you're in Munich / Bavaria)",
+          "type": "tips",
+          "items": [
+            { "es": "Einen Maß, bitte.", "en": "A 1-litre beer — very Bavaria." },
+            { "es": "Servus!", "en": "Hello/bye, informal." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-starting-convo",
+      "order": 2,
+      "title": "Starting a convo/basic survival (Germany)",
+      "icon": "👋",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-starting-convo-main",
+          "title": null,
+          "exchanges": [
+            {
+              "id": "de-starting-convo-01",
+              "question": { "es": "Hallo!", "en": "Hi!" },
+              "answers": [
+                { "es": "Hallo!", "en": "Hi!" },
+                { "es": "Hi!", "en": "Hey!" }
+              ],
+              "likelyReply": { "es": "Wie geht's?", "en": "How's it going?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-02",
+              "question": { "es": "Wie geht's?", "en": "How's it going?" },
+              "answers": [
+                { "es": "Gut, und dir?", "en": "Good, and you?" },
+                { "es": "Passt.", "en": "All good (casual)." }
+              ],
+              "likelyReply": { "es": "Nice. / Und sonst so?", "en": "Nice. / What else?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-03",
+              "question": { "es": "Sprichst du Englisch?", "en": "Do you speak English?" },
+              "answers": [
+                { "es": "Ja, klar.", "en": "Yes, of course." },
+                { "es": "Ein bisschen.", "en": "A little bit." }
+              ],
+              "likelyReply": { "es": "Was/worum geht's?", "en": "What's it about?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-04",
+              "question": { "es": "Sorry, ich check's nicht.", "en": "Sorry, I don't get it." },
+              "answers": [
+                { "es": "Kein Ding.", "en": "No big deal." },
+                { "es": "Kein Problem.", "en": "No problem." }
+              ],
+              "likelyReply": { "es": "Ich sag's nochmal.", "en": "I'll say it again." },
+              "notes": "\"Ich check's nicht\" is casual — fine with peers, not in a formal setting.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-05",
+              "question": {
+                "es": "Wie sagt man [WORT] auf Deutsch?",
+                "en": "How do you say [WORD] in German?"
+              },
+              "answers": [{ "es": "Man sagt [WORT].", "en": "You say [WORD]." }],
+              "likelyReply": { "es": "Genau. / So ungefähr.", "en": "Exactly. / More or less." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-06",
+              "question": { "es": "Wo ist [ORT]?", "en": "Where is [PLACE]?" },
+              "answers": [
+                {
+                  "es": "Da drüben. / Geradeaus. / Links/rechts.",
+                  "en": "Over there. / Straight ahead. / Left/right."
+                }
+              ],
+              "likelyReply": { "es": "Ist nicht weit.", "en": "It's not far." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-slang",
+      "order": 3,
+      "title": "Slang (Germany-wide)",
+      "icon": "🗣️",
+      "type": "phrasebook",
+      "description": "\"Normal\" German slang, works nationwide",
+      "note": {
+        "es": "Slang level: medium → heavy. Items marked young are more common with younger people, online, and in friend groups.",
+        "en": "If you want local but safe, use the ones without a young badge. Items marked very casual are not for work."
+      },
+      "subsections": [
+        {
+          "id": "de-slang-reactions",
+          "title": "Everyday reactions (common)",
+          "phrases": [
+            { "id": "de-slang-01", "es": "krass", "en": "Intense / crazy / wow.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-02", "es": "geil", "en": "Awesome. Can sound crude in other contexts, but common as \"cool\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-03", "es": "mega", "en": "Super.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-04", "es": "safe", "en": "For sure.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-05", "es": "stabil", "en": "Solid / good.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-06", "es": "läuft gut", "en": "It's going / all good.", "difficulty": "easy", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-slang-want",
+          "title": "Want / don't want",
+          "phrases": [
+            { "id": "de-slang-07", "es": "(kein) Bock", "en": "(Not) in the mood / up for it.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-08", "es": "ich bin dabei", "en": "I'm in.", "difficulty": "easy", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-slang-address",
+          "title": "Addressing friends (tone matters)",
+          "phrases": [
+            { "id": "de-slang-09", "es": "Alter!", "en": "Dude! / bro! — tone matters.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-10", "es": "Digga/Digger", "en": "Bro / dude. Very casual.", "difficulty": "hard", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-11", "es": "Bruder / Bro", "en": "Bro.", "difficulty": "medium", "young": true, "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-slang-micro",
+          "title": "Useful micro-phrases",
+          "phrases": [
+            { "id": "de-slang-12", "es": "keine Ahnung → kp", "en": "No idea. Shortened to \"kp\" in texts.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-13", "es": "ich schwöre", "en": "I swear.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-14", "es": "Bist du lost?", "en": "Are you clueless? Can come across as rude.", "difficulty": "hard", "young": true, "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-bayern-slang",
+      "order": 4,
+      "title": "Bayern slang / Bavarian flavour",
+      "icon": "🥨",
+      "type": "phrasebook",
+      "description": "Identity language for Bavaria and parts of Austria",
+      "note": {
+        "es": "Standard German works everywhere. Bavarian is regional identity language — use it in Bayern and Austria.",
+        "en": "Don't drop it in Hamburg and expect the same vibe. Outside the south you'll sound very regional."
+      },
+      "subsections": [
+        {
+          "id": "de-bayern-greetings",
+          "title": "Greetings / easy wins",
+          "phrases": [
+            { "id": "de-bayern-01", "es": "Servus!", "en": "Hi / bye.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            { "id": "de-bayern-02", "es": "Grüß Gott!", "en": "Hello.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            { "id": "de-bayern-03", "es": "Pfiat di! / Pfiat eich!", "en": "Bye — singular / plural.", "difficulty": "hard", "region": "bayern", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-bayern-flavor",
+          "title": "Bavaria flavour words",
+          "phrases": [
+            { "id": "de-bayern-04", "es": "fei", "en": "Emphasis particle — roughly \"you know\" / \"mind you\" / \"really\".", "difficulty": "hard", "region": "bayern", "quizQuestions": [] },
+            { "id": "de-bayern-05", "es": "Mei…", "en": "Sighing interjection: \"oh man…\".", "difficulty": "medium", "region": "bayern", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-bayern-extra",
+          "title": "A couple extra Bayern lines",
+          "phrases": [
+            { "id": "de-bayern-06", "es": "Passt scho.", "en": "It's fine / all good.", "difficulty": "medium", "region": "bayern", "quizQuestions": [] },
+            { "id": "de-bayern-07", "es": "I mog di.", "en": "I like you — dialect-y.", "difficulty": "hard", "region": "bayern", "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-cuss-words",
+      "order": 5,
+      "title": "Cuss words & \"don't get punched\" warnings (Germany)",
+      "icon": "🤬",
+      "type": "phrasebook",
+      "description": "Contains profanity",
+      "note": {
+        "es": "Profanity is common, but don't use it with strangers unless you really know the vibe.",
+        "en": "Read the room first."
+      },
+      "subsections": [
+        {
+          "id": "de-cuss-common",
+          "title": "Common",
+          "phrases": [
+            { "id": "de-cuss-01", "es": "Scheiße.", "en": "Shit.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-02", "es": "Verdammt.", "en": "Damn.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-03", "es": "Mist.", "en": "A milder \"crap\".", "difficulty": "easy", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-cuss-aggressive",
+          "title": "Aggressive",
+          "phrases": [
+            { "id": "de-cuss-04", "es": "Halt die Klappe.", "en": "Shut it.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-cuss-05", "es": "Verpiss dich.", "en": "Piss off.", "difficulty": "hard", "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-flirting",
+      "order": 6,
+      "title": "Calling someone attractive (Germany)",
+      "icon": "😏",
+      "type": "phrasebook",
+      "description": "Flirt lines that don't land badly",
+      "note": {
+        "es": "Only flirt if it feels mutual. Keep it light and accept a no immediately.",
+        "en": "Back off without arguing or guilt-tripping."
+      },
+      "subsections": [
+        {
+          "id": "de-flirt-safe",
+          "title": "Compliments (safe)",
+          "phrases": [
+            { "id": "de-flirt-01", "es": "Du siehst gut aus.", "en": "You look good.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-02", "es": "Du bist echt süß.", "en": "You're really cute.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-03", "es": "Ich mag deinen Style.", "en": "I like your style.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-04", "es": "Du hast ein schönes Lächeln.", "en": "You have a nice smile.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-05", "es": "Du hast schöne Augen.", "en": "You have beautiful eyes.", "difficulty": "easy", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-flirt-bolder",
+          "title": "A bit bolder",
+          "phrases": [
+            { "id": "de-flirt-06", "es": "Ich find dich echt attraktiv.", "en": "I find you attractive.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-07", "es": "Hast du Lust auf ein Bier?", "en": "Want to grab a beer?", "difficulty": "medium", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-flirt-respect",
+          "title": "Respect",
+          "phrases": [
+            { "id": "de-flirt-08", "es": "Kein Stress, wenn nicht.", "en": "No pressure if not.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-09", "es": "Alles gut, ich respektiere das.", "en": "All good, I respect that.", "difficulty": "medium", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-flirt-consent",
+          "title": "Quick consent check",
+          "phrases": [
+            { "id": "de-flirt-10", "es": "Darf ich dir was sagen?", "en": "Can I tell you something?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-11", "es": "Ist es okay, wenn ich dich auf einen Drink einlade?", "en": "Is it okay if I ask you for a drink?", "difficulty": "medium", "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-getting-around",
+      "order": 7,
+      "title": "Getting around (taxi + metro) (Germany)",
+      "icon": "🚕",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-getting-around-taxi",
+          "title": "Taxi",
+          "exchanges": [
+            {
+              "id": "de-getting-around-01",
+              "question": { "es": "Wohin soll's gehen?", "en": "Where to?" },
+              "answers": [
+                { "es": "Zur [ADRESSE], bitte.", "en": "To [ADDRESS], please." },
+                { "es": "Zu dieser Adresse, bitte: [ADRESSE].", "en": "To this address, please: [ADDRESS]." }
+              ],
+              "likelyReply": { "es": "Alles klar.", "en": "All right." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-02",
+              "question": { "es": "Können Sie hier kurz anhalten?", "en": "Can you stop here?" },
+              "answers": [{ "es": "Klar.", "en": "Sure." }],
+              "likelyReply": { "es": "Das macht [BETRAG] Euro.", "en": "That'll be [AMOUNT] euros." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-getting-around-metro",
+          "title": "Metro / U-Bahn",
+          "exchanges": [
+            {
+              "id": "de-getting-around-03",
+              "question": { "es": "Wo ist die U-Bahn?", "en": "Where's the subway?" },
+              "answers": [{ "es": "Da drüben. / Unten.", "en": "Over there. / Downstairs." }],
+              "likelyReply": { "es": "Einfach den Schildern folgen.", "en": "Just follow the signs." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-04",
+              "question": {
+                "es": "Ich muss nach [ORT]. Welche Linie?",
+                "en": "I need to go to [PLACE]. Which line?"
+              },
+              "answers": [
+                { "es": "Linie [LINIE] Richtung [ORT].", "en": "Line [LINE] toward [PLACE]." }
+              ],
+              "likelyReply": { "es": "Umsteigen bei [STATION].", "en": "Transfer at [STATION]." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-restaurant",
+      "order": 8,
+      "title": "At a restaurant (Germany)",
+      "icon": "🍽️",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-restaurant-main",
+          "title": null,
+          "exchanges": [
+            {
+              "id": "de-restaurant-01",
+              "question": { "es": "Haben Sie einen Tisch für zwei?", "en": "Table for two?" },
+              "answers": [
+                { "es": "Ja.", "en": "Yes." },
+                { "es": "Leider ausgebucht.", "en": "Unfortunately fully booked." }
+              ],
+              "likelyReply": { "es": "Mit Reservierung?", "en": "Do you have a reservation?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-restaurant-02",
+              "question": { "es": "Die Rechnung, bitte.", "en": "The bill, please." },
+              "answers": [{ "es": "Kommt sofort.", "en": "Coming right up." }],
+              "likelyReply": { "es": "Mit Karte oder bar?", "en": "Card or cash?" },
+              "notes": "Cash is still common — plenty of places are card-shy.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-restaurant-03",
+              "question": { "es": "Ein Leitungswasser, bitte.", "en": "Tap water, please." },
+              "answers": [
+                { "es": "Geht klar.", "en": "Sure thing." },
+                { "es": "Haben wir.", "en": "We have that." }
+              ],
+              "likelyReply": { "es": "Sonst noch was?", "en": "Anything else?" },
+              "notes": "Tap water isn't automatic in Germany — you have to ask for it by name.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -4,7 +4,11 @@ import "./practiceGate.css";
 
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
 
-export default function PracticeGate() {
+interface Props {
+  locale?: string; // which language's practice deck this gate fronts
+}
+
+export default function PracticeGate({ locale }: Props) {
   const [checked, setChecked] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
   const [email, setEmail] = useState("");
@@ -49,7 +53,7 @@ export default function PracticeGate() {
   if (!checked) return null;
 
   if (unlocked) {
-    return <QuizApp />;
+    return <QuizApp locale={locale} />;
   }
 
   return (
@@ -58,6 +62,13 @@ export default function PracticeGate() {
       <p>
         Get full access to flashcards and multiple-choice quizzes across every scenario — one-time
         payment, yours forever.
+      </p>
+      <p className="gate-all-langs">
+        <span className="gate-flags" aria-hidden="true">
+          🇪🇸 🇸🇪 🇩🇪
+        </span>
+        One purchase unlocks <strong>all three languages</strong> — Spanish, Swedish and German —
+        plus every members-only scenario pack.
       </p>
       <a className="gate-buy" href={GUMROAD_PRODUCT_URL} target="_blank" rel="noopener">
         Buy

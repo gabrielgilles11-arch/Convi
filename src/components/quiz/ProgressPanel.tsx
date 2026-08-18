@@ -1,8 +1,12 @@
 import { useMemo } from "react";
-import { quizItems } from "../../lib/quizItems";
+import type { QuizItem } from "../../lib/quizTypes";
 import { loadProgress } from "../../lib/progress";
 
 const MASTERED_SCORE = 90; // best test score that counts as "completed"
+
+interface Props {
+  items: QuizItem[]; // the full unfiltered set — progress is reported per category
+}
 
 interface Row {
   id: string;
@@ -12,13 +16,13 @@ interface Row {
   bestScore: number;
 }
 
-export default function ProgressPanel() {
+export default function ProgressPanel({ items }: Props) {
   const rows = useMemo<Row[]>(() => {
     const progress = loadProgress();
     const known = new Set(progress.knownItemIds);
 
     const byCategory = new Map<string, Row>();
-    for (const item of quizItems) {
+    for (const item of items) {
       let row = byCategory.get(item.categoryId);
       if (!row) {
         row = { id: item.categoryId, title: item.categoryTitle, total: 0, known: 0, bestScore: 0 };
@@ -33,7 +37,7 @@ export default function ProgressPanel() {
     }
 
     return [...byCategory.values()];
-  }, []);
+  }, [items]);
 
   const totalKnown = rows.reduce((sum, r) => sum + r.known, 0);
   const totalCards = rows.reduce((sum, r) => sum + r.total, 0);
