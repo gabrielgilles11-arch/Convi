@@ -553,12 +553,18 @@ const marquee = editions.flatMap((e) => [
     font-size: 0.95rem;
   }
 
+  /* Check mark drawn from two borders rather than a glyph, so the list keeps
+     its affordance without any emoji character. */
   .tier-card li::before {
-    content: "✓";
+    content: "";
     position: absolute;
-    left: 0;
-    color: var(--color-primary);
-    font-weight: 700;
+    left: 0.15rem;
+    top: 0.4rem;
+    width: 0.5rem;
+    height: 0.28rem;
+    border-left: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    transform: rotate(-45deg);
   }
 
   .tier-card .button {
