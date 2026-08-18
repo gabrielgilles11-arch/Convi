@@ -26,7 +26,6 @@
   background: var(--color-card);
   cursor: pointer;
   font-weight: 700;
-  font-family: var(--font-heading);
   color: var(--color-ink);
 }
 
@@ -75,7 +74,6 @@
 }
 
 .flashcard .es {
-  font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 600;
 }
@@ -121,7 +119,6 @@
 .mark-known,
 .mark-unknown {
   font-weight: 700;
-  font-family: var(--font-heading);
 }
 
 .mark-known {
@@ -157,7 +154,6 @@
 }
 
 .review-done-score {
-  font-family: var(--font-heading);
   font-size: 1.6rem;
   font-weight: 700;
   margin: 0;
@@ -173,7 +169,6 @@
   color: #fff;
   border-color: var(--color-primary);
   font-weight: 700;
-  font-family: var(--font-heading);
 }
 
 .review-primary:hover {
@@ -223,7 +218,6 @@
 }
 
 .progress-row-title {
-  font-family: var(--font-heading);
   font-weight: 600;
 }
 
@@ -266,7 +260,6 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  font-family: var(--font-heading);
   font-weight: 600;
   color: var(--color-primary-dark);
 }
@@ -280,7 +273,6 @@
 
 .quiz-prompt {
   font-weight: 700;
-  font-family: var(--font-heading);
   margin: 0 0 0.5rem;
 }
 
@@ -337,7 +329,6 @@
   color: #fff;
   cursor: pointer;
   font-weight: 700;
-  font-family: var(--font-heading);
   box-shadow: 0 4px 0 var(--color-primary-dark);
 }
 
