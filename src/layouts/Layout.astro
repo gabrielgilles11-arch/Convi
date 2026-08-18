@@ -72,7 +72,7 @@ const structuredData = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:wght@600;700&family=Fredoka:wght@700&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -126,8 +126,13 @@ const structuredData = {
   :root {
     color-scheme: light;
 
-    --font-heading: "Fredoka", system-ui, sans-serif;
-    --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* Three roles, deliberately separate. The wordmark keeps Fredoka so the
+       logo is unchanged; headings are the serif; everything else — body copy
+       and all UI chrome (buttons, badges, chips, card titles) — is the sans.
+       Serif buttons read dated, so UI never uses --font-display. */
+    --font-wordmark: "Fredoka", system-ui, sans-serif;
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
 
     --color-bg: #fff6ec;
     --color-ink: #2a1b12;
@@ -172,6 +177,7 @@ const structuredData = {
     margin: 0;
     color: var(--color-ink);
     background: var(--color-bg);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -179,7 +185,9 @@ const structuredData = {
   h1,
   h2,
   h3 {
-    font-family: var(--font-heading);
+    font-family: var(--font-display);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
   }
 
   main {
@@ -256,8 +264,8 @@ const structuredData = {
     color: #fff;
     text-decoration: none;
     font-weight: 700;
-    font-family: var(--font-heading);
     font-size: 0.85rem;
+    letter-spacing: 0.01em;
     white-space: nowrap;
   }
 
@@ -292,7 +300,8 @@ const structuredData = {
   }
 
   .footer-col h3 {
-    font-family: var(--font-heading);
+    /* Small uppercase label — the serif would look wrong at this size. */
+    font-family: var(--font-body);
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
