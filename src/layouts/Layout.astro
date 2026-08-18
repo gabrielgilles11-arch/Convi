@@ -72,7 +72,7 @@ const structuredData = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:wght@600;700&family=Fredoka:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -126,13 +126,12 @@ const structuredData = {
   :root {
     color-scheme: light;
 
-    /* Three roles, deliberately separate. The wordmark keeps Fredoka so the
-       logo is unchanged; headings are the serif; everything else — body copy
-       and all UI chrome (buttons, badges, chips, card titles) — is the sans.
-       Serif buttons read dated, so UI never uses --font-display. */
+    /* Duolingo's system: the display face is also the logo face, paired with a
+       rounded sans for everything else. Wordmark stays its own variable so the
+       logo can never be changed by a heading decision. */
     --font-wordmark: "Fredoka", system-ui, sans-serif;
-    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-    --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-display: "Fredoka", system-ui, sans-serif;
+    --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 
     --color-bg: #fff6ec;
     --color-ink: #2a1b12;
@@ -177,7 +176,9 @@ const structuredData = {
     margin: 0;
     color: var(--color-ink);
     background: var(--color-bg);
-    line-height: 1.6;
+    font-weight: 500;
+    font-size: 1.0625rem;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -186,8 +187,9 @@ const structuredData = {
   h2,
   h3 {
     font-family: var(--font-display);
+    font-weight: 700;
     line-height: 1.15;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
   }
 
   main {
@@ -263,9 +265,9 @@ const structuredData = {
     background: var(--color-primary);
     color: #fff;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 0.85rem;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.04em;
     white-space: nowrap;
   }
 
