@@ -1,12 +1,29 @@
 ---
 import Logo from "../components/Logo.astro";
+import LangMenu from "../components/LangMenu.astro";
+import { localePath, localeFromSlug, DEFAULT_LOCALE, type Locale } from "../lib/content";
 
 interface Props {
   title?: string;
   description?: string;
+  /** Drives the per-edition accent colour via [data-locale] below. */
+  locale?: string;
 }
 
-const { title = "Try Convi", description = "Learn how to speak like a local — real conversations, not textbook language." } = Astro.props;
+const { title = "Try Convi", description = "Learn how to speak like a local — real conversations, not textbook language.", locale } = Astro.props;
+
+// Header links stay inside the edition you're reading, so switching pages
+// doesn't silently drop you back into Spanish.
+const navLocale: Locale =
+  (locale as Locale | undefined) ??
+  localeFromSlug(Astro.url.pathname.split("/")[1]) ??
+  DEFAULT_LOCALE;
+const navPath = (path: string) => localePath(navLocale, path);
+
+// Only edition pages pass `locale`, and only they should tick a language in the
+// menus. The home and legal pages sit outside any edition, so nothing is ticked
+// there even though their nav links resolve to the default edition.
+const navCurrent = locale as Locale | undefined;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL("/og-image.png", Astro.site);
@@ -26,7 +43,7 @@ const structuredData = {
 };
 ---
 
-<html lang="en">
+<html lang="en" data-locale={locale}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -65,11 +82,11 @@ const structuredData = {
         <a class="brand-link" href="/">
           <Logo />
         </a>
-        <nav>
-          <a href="/scenarios">Scenarios</a>
-          <a href="/practice">Practice</a>
+        <nav aria-label="Main">
+          <LangMenu path="/scenarios" label="Scenarios" current={navCurrent} />
+          <LangMenu path="/practice" label="Practice" current={navCurrent} />
         </nav>
-        <a class="nav-cta" href="/scenarios">Get started</a>
+        <a class="nav-cta" href={navPath("/scenarios")}>Get started</a>
       </div>
     </header>
     <main>
@@ -83,7 +100,7 @@ const structuredData = {
         </div>
         <div class="footer-col">
           <h3>About</h3>
-          <p>¡Try Convi! is a language platform that will teach you to speak like a local, built from real conversations you'll have — starting with Spanish.</p>
+          <p>¡Try Convi! is a language platform that will teach you to speak like a local, built from real conversations you'll have — in Spanish, Swedish and German.</p>
         </div>
         <div class="footer-col">
           <h3>Contact</h3>
@@ -117,6 +134,8 @@ const structuredData = {
     --color-ink-soft: #6b5748;
     --color-primary: #e8622c;
     --color-primary-dark: #c94e1f;
+    --color-primary-tint: #ffe6d5;
+    --color-primary-tint-border: #f5c8a3;
     --color-accent: #f4a623;
     --color-card: #ffffff;
     --color-border: #f0dcc8;
@@ -126,6 +145,23 @@ const structuredData = {
     --color-error-bg: #fbeaea;
 
     font-family: var(--font-body);
+  }
+
+  /* Per-edition accents. The Spanish orange stays the default (and the brand),
+     so only the newer editions override it. Everything downstream reads these
+     variables, so nothing else needs to know which language it's rendering. */
+  [data-locale="sv-SE"] {
+    --color-primary: #2f6fa8;
+    --color-primary-dark: #24567f;
+    --color-primary-tint: #dfeaf5;
+    --color-primary-tint-border: #b3cbe2;
+  }
+
+  [data-locale="de-DE"] {
+    --color-primary: #c8952b;
+    --color-primary-dark: #9c7220;
+    --color-primary-tint: #faeed2;
+    --color-primary-tint-border: #e6cf9a;
   }
 
   * {
@@ -198,7 +234,9 @@ const structuredData = {
     margin-left: 1.5rem;
   }
 
-  .site-header nav a {
+  /* Direct children only — the nav also holds LangMenu dropdowns, and these
+     rules are global, so a descendant selector would leak into their panels. */
+  .site-header nav > a {
     text-decoration: none;
     color: var(--color-ink);
     font-weight: 600;
@@ -206,7 +244,7 @@ const structuredData = {
     padding: 0.5rem 0;
   }
 
-  .site-header nav a:hover {
+  .site-header nav > a:hover {
     color: var(--color-primary);
   }
 

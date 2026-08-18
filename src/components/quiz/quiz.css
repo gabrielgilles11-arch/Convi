@@ -340,3 +340,15 @@
   font-family: var(--font-heading);
   box-shadow: 0 4px 0 var(--color-primary-dark);
 }
+
+/* Quiz data is fetched from /api/quiz-items, so there are now load states. */
+.quiz-loading,
+.quiz-error {
+  opacity: 0.75;
+  margin: 1.5rem 0;
+}
+
+.quiz-error {
+  color: #b3261e;
+  opacity: 1;
+}

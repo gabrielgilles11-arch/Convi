@@ -1,36 +1,37 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Logo from "../components/Logo.astro";
-import { getContent } from "../lib/content";
+import LangMenu from "../components/LangMenu.astro";
+import {
+  LOCALES,
+  getCategories,
+  isPremiumCategory,
+} from "../lib/content";
 
-const { meta } = getContent();
+// Counts come from the content files so this copy can never drift out of date
+// as categories are added to any edition.
+const editions = LOCALES.map((l) => {
+  const categories = getCategories(l.locale);
+  const paid = categories.filter((c) => isPremiumCategory(c.id)).length;
+  return { ...l, total: categories.length, free: categories.length - paid, paid };
+});
 
-const slang = [
-  "¿Qué tal?",
-  "una caña, porfa",
-  "¡qué guay!",
-  "guiri",
-  "molón",
-  "¿me pones...?",
-  "vale, vale",
-  "tío",
-  "¡flipas!",
-  "majo",
-  "sobremesa",
-  "¡nos vemos!",
-  "¡qué fuerte!",
-  "venga, va",
-  "mola mazo",
-  "de nada",
-  "¿quedamos?",
-  "ni de coña",
-  "en plan...",
-  "¡madre mía!",
-  "currar",
-  "¡qué chulo!",
-  "no pasa nada",
-  "resacón",
-];
+const freeCount = editions.reduce((n, e) => n + e.free, 0);
+const paidCount = editions.reduce((n, e) => n + e.paid, 0);
+
+// One marquee band per edition, each led by its flag, so the strip itself shows
+// which three languages the site covers. Flags come from LOCALES.
+const MARQUEE_WORDS: Record<string, string[]> = {
+  "es-ES": ["¿Qué tal?", "una caña, porfa", "¡qué guay!", "guiri", "¿me pones...?", "vale, vale", "tío", "¡flipas!", "sobremesa", "mola mazo", "en plan...", "resacón"],
+  "sv-SE": ["asså", "typ", "Nu kör vi", "taggad", "sjukt", "fett", "skitbra", "vi tar tuben", "bärs", "ta en AW"],
+  "de-DE": ["krass", "geil", "mega", "stabil", "läuft gut", "kein Bock", "Alter!", "Servus!", "Passt scho.", "Mei…"],
+};
+
+const marquee = editions.flatMap((e) => [
+  { flag: e.flag, word: null },
+  ...(MARQUEE_WORDS[e.locale] ?? []).map((word) => ({ flag: null, word })),
+]);
+
 ---
 
 <Layout>
@@ -40,15 +41,29 @@ const slang = [
         <p class="eyebrow"><Logo size="sm" /> <span>· for travelers with somewhere to be</span></p>
         <h1 class="tagline">Learn how to speak like a local.</h1>
         <p class="sub">
-          Skip the textbook. This is the Spanish you'll actually use — ordering
-          the second round, flirting in a plaza, arguing with a taxi driver, and
-          catching the slang locals fire back at you.
+          Skip the textbook. This is the Spanish, Swedish and German you'll
+          actually use — ordering the second round, flirting at the bar, arguing
+          with a taxi driver, and catching the slang locals fire back at you.
         </p>
         <div class="cta">
-          <a class="button" href="/scenarios">Start exploring</a>
-          <a class="button secondary" href="/practice">Try Practice</a>
+          <LangMenu path="/scenarios" label="Start exploring" variant="primary" />
+          <LangMenu path="/practice" label="Try Practice" variant="secondary" />
         </div>
-        <p class="language-note">🇪🇸 Spanish is live now — more languages boarding soon.</p>
+        <p class="language-note">
+          <strong>Three editions live now</strong> — pick your language above.
+          {
+            editions.map((e, i) => (
+              <>
+                {i > 0 && <span class="dot" aria-hidden="true"> · </span>}
+                <span class="edition">
+                  <span class="edition-flag" aria-hidden="true">{e.flag}</span>
+                  <span>{e.language}</span>
+                  <span class="edition-region">({e.region})</span>
+                </span>
+              </>
+            ))
+          }
+        </p>
       </div>
 
       <div class="hero-art reveal" aria-hidden="true">
@@ -76,7 +91,15 @@ const slang = [
 
   <section class="marquee full-bleed" aria-hidden="true">
     <div class="marquee-track">
-      {[...slang, ...slang].map((word) => <span class="chip">{word}</span>)}
+      {
+        [...marquee, ...marquee].map((entry) =>
+          entry.word === null ? (
+            <span class="chip chip--flag">{entry.flag}</span>
+          ) : (
+            <span class="chip">{entry.word}</span>
+          )
+        )
+      }
     </div>
   </section>
 
@@ -86,39 +109,44 @@ const slang = [
       <p class="explainer-sub reveal">
         A language platform built to make you conversational and speak like a
         local — the stuff you overhear on the street, not the stuff in
-        Chapter 3. Browse the core scenarios free, then unlock practice mode
-        and the full library to make it stick before you land.
+        Chapter 3. Three independent editions — Spanish, Swedish and German.
+        Browse the core scenarios free, then unlock practice mode and the full
+        library to make it stick before you land.
       </p>
       <div class="tier-grid reveal">
         <div class="tier-card">
           <span class="tier-badge">Free</span>
           <h3>Browse the core scenarios</h3>
           <p>
-            7 everyday conversation categories — Beer &amp; Food, Slang,
-            Getting Around, and more — free to read, anytime.
+            {freeCount} everyday conversation categories across all three
+            languages — Beer &amp; Food, Slang, Getting Around, and more — free
+            to read, anytime.
           </p>
           <ul>
             <li>Real phrases people actually say</li>
             <li>"What they'll probably say back"</li>
+            <li>Spanish, Swedish and German editions</li>
             <li>No sign-up required</li>
           </ul>
-          <a class="button secondary" href="/scenarios">Browse scenarios</a>
+          <LangMenu path="/scenarios" label="Browse scenarios" variant="secondary" />
         </div>
         <div class="tier-card tier-card--highlight">
           <span class="tier-badge tier-badge--accent">One-time purchase</span>
           <h3>Practice mode + full library</h3>
           <p>
-            Flashcards and multiple-choice quizzes across every scenario, plus
-            the members-only packs — for the girls, cuss words, flirting,
-            nightlife, emergencies and the hungover survival guide.
+            Flashcards and multiple-choice quizzes across every scenario in
+            every language, plus the members-only packs — for the girls, cuss
+            words, flirting, nightlife, emergencies and the hungover survival
+            guide.
           </p>
           <ul>
             <li>Flip-card review for every phrase</li>
             <li>Multiple-choice quiz mode</li>
-            <li>Unlocks the 6 members-only scenario packs</li>
+            <li>Unlocks {paidCount} members-only scenario packs</li>
+            <li>One purchase covers Spanish, Swedish <em>and</em> German</li>
             <li>Pay once, yours forever</li>
           </ul>
-          <a class="button" href="/practice">Unlock Practice</a>
+          <LangMenu path="/practice" label="Unlock Practice" variant="primary" />
         </div>
       </div>
     </div>
@@ -398,6 +426,37 @@ const slang = [
     margin: 1.25rem 0 0;
     font-size: 0.85rem;
     color: var(--color-ink-soft);
+    max-width: 46ch;
+    line-height: 1.7;
+  }
+
+  .language-note strong {
+    color: var(--color-ink);
+  }
+
+  .edition {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+
+  .edition-region {
+    opacity: 0.75;
+  }
+
+  .chip--flag {
+    background: #fff;
+    border-color: #fff;
+    font-size: 1.05rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  /* The tier-card buttons are LangMenu dropdowns, which bring their own
+     styling; they just need the same bottom alignment the links had. */
+  .tier-card :global(.lang-menu) {
+    margin-top: auto;
+    align-self: flex-start;
   }
 
   :global(main) {
