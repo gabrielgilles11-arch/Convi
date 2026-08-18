@@ -45,7 +45,6 @@
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  font-family: var(--font-heading);
   box-shadow: 0 4px 0 var(--color-primary-dark);
 }
 
@@ -84,7 +83,6 @@
   background: var(--color-ink);
   color: #fff;
   font-weight: 700;
-  font-family: var(--font-heading);
   cursor: pointer;
 }
 
