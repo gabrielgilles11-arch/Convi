@@ -131,10 +131,10 @@ export default function ReviewMode({ items }: Props) {
       {flipped ? (
         <div className="controls">
           <button type="button" className="mark-unknown" onClick={() => mark(false)}>
-            ✗ Still learning
+            Still learning
           </button>
           <button type="button" className="mark-known" onClick={() => mark(true)}>
-            ✓ Got it
+            Got it
           </button>
         </div>
       ) : (

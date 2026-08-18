@@ -58,7 +58,7 @@ export default function ProgressPanel({ items }: Props) {
               <div className="progress-row-head">
                 <span className="progress-row-title">{row.title}</span>
                 <span className="progress-row-status">
-                  {completed ? "✓ Completed" : row.bestScore > 0 ? `Best ${row.bestScore}%` : ""}
+                  {completed ? "Completed" : row.bestScore > 0 ? `Best ${row.bestScore}%` : ""}
                 </span>
               </div>
               <div className="progress-bar">

@@ -26,7 +26,8 @@ shape onto the other:
   "id": string,           // slug, e.g. "beer-food"
   "order": number,        // display order, 1-7
   "title": string,
-  "icon": string,         // single emoji, used as a visual tag
+  "icon": string,         // single emoji; retained in content but no longer
+                          // rendered — scenario cards and headings are text-only
   "type": "dialogue" | "phrasebook",
   "description": string,
   "note": { "es": string|null, "en": string|null } | null,  // optional callout, phrasebook only
