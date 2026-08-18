@@ -17,6 +17,25 @@
   margin: 0 0 1.25rem;
 }
 
+/* Cross-language unlock callout — the one purchase covers every edition. */
+.gate-all-langs {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-primary-tint-border);
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+}
+
+.practice-gate .gate-all-langs strong {
+  color: var(--color-ink);
+}
+
+.gate-flags {
+  margin-right: 0.35rem;
+  white-space: nowrap;
+}
+
 .gate-buy {
   display: inline-block;
   padding: 0.7rem 1.5rem 1rem;
