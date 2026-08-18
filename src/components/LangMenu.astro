@@ -39,7 +39,6 @@ const id = `lang-menu-${path.replace(/\W+/g, "-")}-${variant}`;
             <span class="lang">{l.language}</span>
             <span class="region">{l.region}</span>
           </span>
-          {l.locale === current && <span class="check" aria-hidden="true">✓</span>}
         </a>
       ))
     }
@@ -182,10 +181,16 @@ const id = `lang-menu-${path.replace(/\W+/g, "-")}-${variant}`;
     background: var(--color-primary-tint);
   }
 
-  .check {
-    margin-left: auto;
-    font-weight: 700;
+  /* The current edition is marked by weight and colour rather than a tick
+     glyph — the tinted row plus aria-current already carry the state. */
+  .item.current .lang {
     color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  .item.current .region {
+    color: var(--color-primary-dark);
+    opacity: 0.8;
   }
 
   .flag {
