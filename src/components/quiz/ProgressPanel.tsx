@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import type { QuizItem } from "../../lib/quizTypes";
+import { STAGE_CLEAR_SCORE, type QuizItem, type Stage } from "../../lib/quizTypes";
 import { loadProgress } from "../../lib/progress";
-import { STAGE_CLEAR_SCORE, sortCategoriesByPath } from "../../lib/quizTypes";
 
 interface Props {
-  items: QuizItem[]; // the full unfiltered set — progress is reported per category
+  items: QuizItem[]; // the full unfiltered set
+  stages: Stage[]; // path-ordered, so this list matches the Test dropdown
 }
 
 interface Row {
@@ -15,30 +15,23 @@ interface Row {
   bestScore: number;
 }
 
-export default function ProgressPanel({ items }: Props) {
+export default function ProgressPanel({ items, stages }: Props) {
   const rows = useMemo<Row[]>(() => {
     const progress = loadProgress();
     const known = new Set(progress.knownItemIds);
 
-    const byCategory = new Map<string, Row>();
-    for (const item of items) {
-      let row = byCategory.get(item.categoryId);
-      if (!row) {
-        row = { id: item.categoryId, title: item.categoryTitle, total: 0, known: 0, bestScore: 0 };
-        byCategory.set(item.categoryId, row);
-      }
-      row.total += 1;
-      if (known.has(item.id)) row.known += 1;
-    }
-
-    for (const row of byCategory.values()) {
-      row.bestScore = progress.bestScores[row.id] ?? 0;
-    }
-
-    // Same order as the Test-mode dropdown, so the two screens agree on
-    // what "stage 1" means.
-    return sortCategoriesByPath([...byCategory.values()]);
-  }, [items]);
+    return stages.map((stage) => {
+      const ids = new Set(stage.itemIds);
+      const inStage = items.filter((i) => ids.has(i.id));
+      return {
+        id: stage.id,
+        title: stage.title,
+        total: inStage.length,
+        known: inStage.filter((i) => known.has(i.id)).length,
+        bestScore: progress.bestScores[stage.id] ?? 0,
+      };
+    });
+  }, [items, stages]);
 
   const totalKnown = rows.reduce((sum, r) => sum + r.known, 0);
   const totalCards = rows.reduce((sum, r) => sum + r.total, 0);
@@ -46,8 +39,8 @@ export default function ProgressPanel({ items }: Props) {
   return (
     <div className="progress-panel">
       <p className="progress-summary">
-        {totalKnown} of {totalCards} cards marked <strong>Got it</strong>. Test out of a category at{" "}
-        {STAGE_CLEAR_SCORE}%+ to complete it.
+        {totalKnown} of {totalCards} cards marked Got it. Test out of a stage at {STAGE_CLEAR_SCORE}%+ to
+        complete it.
       </p>
 
       <ul className="progress-list">
@@ -65,9 +58,9 @@ export default function ProgressPanel({ items }: Props) {
               <div className="progress-bar">
                 <div className="progress-bar-fill" style={{ width: `${pct}%` }} />
               </div>
-              <span className="progress-row-meta">
+              <p className="progress-row-meta">
                 {row.known} / {row.total} cards known
-              </span>
+              </p>
             </li>
           );
         })}
