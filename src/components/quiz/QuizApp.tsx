@@ -2,31 +2,30 @@ import { useEffect, useMemo, useState } from "react";
 import {
   buildStages,
   recommendedStageId,
+  allStagesCleared,
+  slangFinalItems,
   MISTAKES_STAGE_ID,
+  SLANG_FINAL_ID,
   type QuizPayload,
   type Stage,
 } from "../../lib/quizTypes";
 import { loadProgress, missedItemIds } from "../../lib/progress";
-import ReviewMode from "./ReviewMode";
+import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
 import "./quiz.css";
 
-type Mode = "review" | "test" | "progress";
-
-const ALL = "all";
+type Mode = "path" | "test" | "progress";
 
 interface Props {
   locale?: string; // which language deck to load; the API validates it
 }
 
 export default function QuizApp({ locale }: Props) {
-  const [mode, setMode] = useState<Mode>("review");
-  // Pinned to the first uncleared stage once the deck arrives. Landing on "all"
-  // gave no sense of where to start; the dropdown still selects anything.
-  const [stageId, setStageId] = useState<string>(ALL);
-  const [pinned, setPinned] = useState(false);
+  const [mode, setMode] = useState<Mode>("path");
+  const [stageId, setStageId] = useState<string>("");
   const [mistakes, setMistakes] = useState<string[]>([]);
+  const [scoreVersion, setScoreVersion] = useState(0);
 
   const [payload, setPayload] = useState<QuizPayload | null>(null);
   const [error, setError] = useState("");
@@ -58,37 +57,39 @@ export default function QuizApp({ locale }: Props) {
     [payload]
   );
 
-  useEffect(() => {
-    if (!payload) return;
-    setMistakes(missedItemIds());
-  }, [payload, mode, stageId]);
-
-  const [scoreVersion, setScoreVersion] = useState(0);
-  const suggestedId = useMemo(() => {
-    if (!stages.length) return null;
-    return recommendedStageId(stages, loadProgress().bestScores);
-    // scoreVersion is the dependency that matters: bestScores lives in
-    // localStorage, so nothing else tells React the answer changed.
-  }, [stages, scoreVersion]);
+  const bestScores = useMemo(
+    () => loadProgress().bestScores,
+    // Re-read after each scored round; the source of truth is localStorage, so
+    // nothing else signals React that it changed.
+    [scoreVersion, payload]
+  );
 
   useEffect(() => {
-    if (!payload || pinned) return;
-    setPinned(true);
-    if (suggestedId) setStageId(suggestedId);
-  }, [payload, suggestedId, pinned]);
+    if (payload) setMistakes(missedItemIds());
+  }, [payload, mode, stageId, scoreVersion]);
+
+  const suggestedId = useMemo(
+    () => (stages.length ? recommendedStageId(stages, bestScores) : null),
+    [stages, bestScores]
+  );
+
+  const finalUnlocked = useMemo(
+    () => allStagesCleared(stages, bestScores),
+    [stages, bestScores]
+  );
 
   const stageIndex = stages.findIndex((s) => s.id === stageId);
   const nextStage = stageIndex >= 0 && stageIndex + 1 < stages.length ? stages[stageIndex + 1] : null;
 
   const items = useMemo(() => {
     if (!payload) return [];
-    if (stageId === ALL) return payload.items;
     if (stageId === MISTAKES_STAGE_ID) {
       const set = new Set(mistakes);
       return payload.items.filter((i) => set.has(i.id));
     }
+    if (stageId === SLANG_FINAL_ID) return slangFinalItems(payload.items);
     const stage = stages.find((s) => s.id === stageId);
-    if (!stage) return payload.items;
+    if (!stage) return [];
     const set = new Set(stage.itemIds);
     return payload.items.filter((i) => set.has(i.id));
   }, [payload, stages, stageId, mistakes]);
@@ -96,78 +97,91 @@ export default function QuizApp({ locale }: Props) {
   if (error) return <p className="quiz-error">{error}</p>;
   if (!payload) return <p className="quiz-loading">Loading your deck...</p>;
 
-  // Ad-hoc sets (everything / the mistake queue) aren't a stage, so they don't
-  // record a stage score.
-  const scoreKey = stageId === ALL || stageId === MISTAKES_STAGE_ID ? null : stageId;
+  const currentTitle =
+    stageId === MISTAKES_STAGE_ID
+      ? `Mistakes (${items.length})`
+      : stageId === SLANG_FINAL_ID
+        ? "Slang final"
+        : (stages.find((s) => s.id === stageId)?.title ?? "");
+
+  // The mistake drill isn't a stage, so it records no stage score. The final is
+  // scored under its own id so the path can show it cleared.
+  const scoreKey = stageId === MISTAKES_STAGE_ID ? null : stageId;
+
+  function startStage(id: string) {
+    setStageId(id);
+    setMode("test");
+  }
 
   return (
     <div className="quiz-app">
       <div className="quiz-toolbar">
         <div className="mode-toggle" role="tablist">
-          <button type="button" className={mode === "review" ? "active" : ""} onClick={() => setMode("review")}>
-            Review
-          </button>
-          <button type="button" className={mode === "test" ? "active" : ""} onClick={() => setMode("test")}>
-            Test
+          <button type="button" className={mode !== "progress" ? "active" : ""} onClick={() => setMode("path")}>
+            Path
           </button>
           <button type="button" className={mode === "progress" ? "active" : ""} onClick={() => setMode("progress")}>
             Progress
           </button>
         </div>
 
-        {mode !== "progress" && (
-          <select value={stageId} onChange={(e) => setStageId(e.target.value)}>
-            <option value={ALL}>All categories</option>
-            {mistakes.length > 0 && (
-              <option value={MISTAKES_STAGE_ID}>Mistakes ({mistakes.length})</option>
-            )}
-            {stages.map((s, i) => (
-              <option key={s.id} value={s.id}>
-                {i + 1}. {s.title}
-              </option>
-            ))}
-          </select>
+        {mode === "test" && mistakes.length > 0 && stageId !== MISTAKES_STAGE_ID && (
+          <button
+            type="button"
+            className="mistake-link"
+            onClick={() => startStage(MISTAKES_STAGE_ID)}
+          >
+            Mistakes ({mistakes.length})
+          </button>
         )}
       </div>
 
-      {mode === "test" && stageIndex >= 0 && (
-        <p className="stage-line">
-          Stage {stageIndex + 1} of {stages.length}
-          {suggestedId === stageId && <span className="stage-flag">Suggested next</span>}
-          {suggestedId && suggestedId !== stageId && (
-            <button type="button" className="stage-jump" onClick={() => setStageId(suggestedId)}>
-              Back to suggested
+      {mode === "path" && (
+        <>
+          <p className="path-intro">
+            Work along the path. Each stone is one round of 10 — clear it at {80}% to move on.
+          </p>
+          <PracticePath
+            stages={stages}
+            bestScores={bestScores}
+            suggestedId={suggestedId}
+            finalUnlocked={finalUnlocked}
+            finalId={SLANG_FINAL_ID}
+            onStart={startStage}
+          />
+          {mistakes.length > 0 && (
+            <button type="button" className="path-mistakes" onClick={() => startStage(MISTAKES_STAGE_ID)}>
+              Drill your {mistakes.length} mistake{mistakes.length === 1 ? "" : "s"}
             </button>
           )}
-        </p>
+        </>
       )}
 
-      {mode === "test" && stageId === MISTAKES_STAGE_ID && (
-        <p className="stage-line">Drilling the {items.length} you keep getting wrong.</p>
-      )}
-
-      {mode === "review" && <ReviewMode items={items} />}
       {mode === "test" && (
-        <TestMode
-          items={items}
-          allItems={payload.items}
-          locale={locale ?? "es-ES"}
-          setId={stageId}
-          scoreKey={scoreKey}
-          nextStageId={nextStage?.id ?? null}
-          nextStageTitle={nextStage?.title ?? null}
-          onChooseStage={setStageId}
-          onRoundComplete={() => {
-            setMistakes(missedItemIds());
-            setScoreVersion((v) => v + 1);
-          }}
-          onDrillMistakes={() => {
-            setMistakes(missedItemIds());
-            setStageId(MISTAKES_STAGE_ID);
-          }}
-        />
+        <>
+          <p className="stage-line">
+            <button type="button" className="stage-jump" onClick={() => setMode("path")}>
+              Back to path
+            </button>
+            <span>{currentTitle}</span>
+          </p>
+          <TestMode
+            items={items}
+            allItems={payload.items}
+            locale={locale ?? "es-ES"}
+            setId={stageId}
+            scoreKey={scoreKey}
+            nextStageId={nextStage?.id ?? null}
+            nextStageTitle={nextStage?.title ?? null}
+            onChooseStage={startStage}
+            onDrillMistakes={() => startStage(MISTAKES_STAGE_ID)}
+            onRoundComplete={() => setScoreVersion((v) => v + 1)}
+            onBackToPath={() => setMode("path")}
+          />
+        </>
       )}
-      {mode === "progress" && <ProgressPanel items={payload.items} stages={stages} />}
+
+      {mode === "progress" && <ProgressPanel stages={stages} bestScores={bestScores} />}
     </div>
   );
 }

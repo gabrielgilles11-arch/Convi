@@ -60,8 +60,8 @@ export default function PracticeGate({ locale }: Props) {
     <div className="practice-gate">
       <h2>Unlock Practice</h2>
       <p>
-        Get full access to flashcards and multiple-choice quizzes across every scenario — one-time
-        payment, yours forever.
+        Get full access to Practice: a guided path through every scenario, in rounds of ten, with
+        typed answers, word building and multiple choice — one-time payment, yours forever.
       </p>
       <p className="gate-all-langs">
         <span className="gate-flags" aria-hidden="true">
