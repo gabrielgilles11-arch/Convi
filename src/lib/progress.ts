@@ -11,6 +11,8 @@ export interface Progress {
   dayStreak: number;
   /** Rounds finished on `lastRoundDay`, for the daily goal. */
   roundsToday: number;
+  /** Items answered wrong and not yet answered right since — the mistake queue. */
+  missedItemIds: string[];
 }
 
 /** Rounds per day that count as hitting the daily goal. */
@@ -29,6 +31,7 @@ function defaultProgress(): Progress {
     lastRoundDay: null,
     dayStreak: 0,
     roundsToday: 0,
+    missedItemIds: [],
   };
 }
 
@@ -144,6 +147,26 @@ export function currentDayStreak(progress: Progress = loadProgress()): number {
   // Today or yesterday keeps it alive; yesterday is still "unbroken" until
   // midnight passes again, so only a gap of 2+ days zeroes it out.
   return gap <= 1 ? progress.dayStreak : 0;
+}
+
+/**
+ * Mistake queue. An item enters when answered wrong and leaves when answered
+ * right, so the queue is always "things I currently get wrong" rather than a
+ * permanent record of every slip.
+ */
+export function recordQuestionResult(itemId: string, correct: boolean): Progress {
+  const progress = loadProgress();
+  if (correct) {
+    progress.missedItemIds = progress.missedItemIds.filter((id) => id !== itemId);
+  } else if (!progress.missedItemIds.includes(itemId)) {
+    progress.missedItemIds.push(itemId);
+  }
+  saveProgress(progress);
+  return progress;
+}
+
+export function missedItemIds(progress: Progress = loadProgress()): string[] {
+  return progress.missedItemIds;
 }
 
 export function roundsCompletedToday(progress: Progress = loadProgress()): number {

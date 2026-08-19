@@ -453,3 +453,113 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+
+/* ---- Typed answers ---- */
+
+.type-answer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.type-answer input {
+  flex: 1;
+  min-width: 190px;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-border);
+  background: var(--color-card);
+  font: inherit;
+  font-weight: 600;
+}
+
+.type-answer input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.type-answer input:disabled {
+  opacity: 0.7;
+}
+
+.type-answer button {
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-primary);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.type-answer button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.type-hint {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-ink-soft);
+}
+
+/* ---- Word bank ---- */
+
+.word-bank {
+  margin-top: 0.4rem;
+}
+
+.bank-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 3.1rem;
+  padding: 0.6rem;
+  border-radius: 12px;
+  border: 2px dashed var(--color-border);
+  background: var(--color-card);
+}
+
+.bank-placeholder {
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+.bank-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0.9rem;
+}
+
+.tile {
+  padding: 0.45rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 3px;
+  background: var(--color-card);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.tile:hover:not(:disabled) {
+  border-color: var(--color-primary);
+}
+
+.tile.placed {
+  background: var(--color-primary-tint);
+  border-color: var(--color-primary-tint-border);
+}
+
+.tile:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
