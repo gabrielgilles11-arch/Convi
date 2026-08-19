@@ -9,6 +9,13 @@ import { useEffect, useState } from "react";
  * how the feature stays invisible until the audio is actually generated.
  */
 
+/**
+ * Audio is switched off for now. The generator hasn't been run, and without
+ * this flag the speakers would appear on their own the moment any clip landed
+ * in public/audio — flip it to true when the audio is generated and checked.
+ */
+const AUDIO_ENABLED = false;
+
 // Probe results are shared across every button and survive question changes.
 const known = new Map<string, string | null>();
 
@@ -41,7 +48,7 @@ export default function AudioButton({ locale, audioId, label = "Hear it" }: Prop
 
   useEffect(() => {
     let cancelled = false;
-    if (!audioId) {
+    if (!AUDIO_ENABLED || !audioId) {
       setUrl(null);
       return;
     }
@@ -53,7 +60,7 @@ export default function AudioButton({ locale, audioId, label = "Hear it" }: Prop
     };
   }, [locale, audioId]);
 
-  if (!url) return null;
+  if (!AUDIO_ENABLED || !url) return null;
 
   return (
     <button
