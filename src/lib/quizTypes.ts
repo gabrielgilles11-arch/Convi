@@ -95,6 +95,23 @@ export interface Stage {
 export const MISTAKES_STAGE_ID = "__mistakes__";
 
 /**
+ * Capstone at the end of the path: the slang from every section at once, rather
+ * than one category at a time. Phrasebook items *are* the slang across an
+ * edition — slang, cuss words, flirting, Bayern — so the final draws from every
+ * phrase-kind item in the deck.
+ */
+export const SLANG_FINAL_ID = "__slang-final__";
+
+export function slangFinalItems(items: QuizItem[]): QuizItem[] {
+  return items.filter((i) => i.kind === "phrase");
+}
+
+/** The final stays locked until every ordinary stage has been cleared. */
+export function allStagesCleared(stages: Stage[], bestScores: Record<string, number>): boolean {
+  return stages.length > 0 && stages.every((s) => (bestScores[s.id] ?? 0) >= STAGE_CLEAR_SCORE);
+}
+
+/**
  * Splits each category into stages of at most ROUND_LENGTH items so a stage is
  * always exactly one round's worth. A trailing remainder smaller than 4 is
  * folded back into the previous part rather than becoming a stage of one or two

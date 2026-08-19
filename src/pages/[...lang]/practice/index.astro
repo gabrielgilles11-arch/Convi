@@ -19,11 +19,11 @@ const info = getLocaleInfo(locale);
 
 <Layout
   title={`${info.language} practice — Try Convi`}
-  description={`Practice flashcards and test yourself on Try Convi ${info.language} scenarios.`}
+  description={`Practise Try Convi ${info.language} scenarios along a guided path, in rounds of ten.`}
   locale={locale}
 >
   <h1>{info.flag} {info.language} practice</h1>
-  <p class="intro">Flip through flashcards, or test yourself with multiple choice.</p>
+  <p class="intro">Work along the path, one round at a time.</p>
 
   <PracticeGate client:load locale={locale} />
 </Layout>

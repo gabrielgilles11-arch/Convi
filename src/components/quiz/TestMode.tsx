@@ -31,6 +31,7 @@ interface Props {
   nextStageTitle: string | null;
   onChooseStage: (id: string) => void;
   onDrillMistakes: () => void;
+  onBackToPath: () => void;
   /** Lets the parent refresh its own mistake count once a round is scored. */
   onRoundComplete: () => void;
 }
@@ -73,6 +74,7 @@ export default function TestMode({
   onChooseStage,
   onDrillMistakes,
   onRoundComplete,
+  onBackToPath,
 }: Props) {
   const [round, setRound] = useState<Question[]>(() => buildRound(items, allItems));
   const [index, setIndex] = useState(0);
@@ -208,6 +210,9 @@ export default function TestMode({
               Next: {nextStageTitle}
             </button>
           )}
+          <button type="button" onClick={onBackToPath}>
+            Back to path
+          </button>
         </div>
       </div>
     );
