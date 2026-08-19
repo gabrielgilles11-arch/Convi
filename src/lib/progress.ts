@@ -5,12 +5,45 @@ export interface Progress {
   visitedCategoryIds: string[];
   streak: number;
   bestScores: Record<string, number>; // categoryId -> best % score (0-100)
+  /** Local calendar day (YYYY-MM-DD) of the last completed round. */
+  lastRoundDay: string | null;
+  /** Consecutive days with at least one completed round. */
+  dayStreak: number;
+  /** Rounds finished on `lastRoundDay`, for the daily goal. */
+  roundsToday: number;
 }
+
+/** Rounds per day that count as hitting the daily goal. */
+export const DAILY_GOAL = 3;
 
 const STORAGE_KEY = "convi:progress:v1";
 
 function defaultProgress(): Progress {
-  return { reviewedItemIds: [], knownItemIds: [], unknownItemIds: [], visitedCategoryIds: [], streak: 0, bestScores: {} };
+  return {
+    reviewedItemIds: [],
+    knownItemIds: [],
+    unknownItemIds: [],
+    visitedCategoryIds: [],
+    streak: 0,
+    bestScores: {},
+    lastRoundDay: null,
+    dayStreak: 0,
+    roundsToday: 0,
+  };
+}
+
+/** Local calendar day, not UTC — a streak should follow the user's midnight. */
+function dayKey(date = new Date()): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function daysBetween(from: string, to: string): number {
+  const [fy, fm, fd] = from.split("-").map(Number);
+  const [ty, tm, td] = to.split("-").map(Number);
+  const a = Date.UTC(fy, fm - 1, fd);
+  const b = Date.UTC(ty, tm - 1, td);
+  return Math.round((b - a) / 86400000);
 }
 
 export function loadProgress(): Progress {
@@ -74,4 +107,45 @@ export function recordCategoryScore(categoryId: string, scorePercent: number): P
   }
   saveProgress(progress);
   return progress;
+}
+
+/**
+ * Called once when a round finishes — never per answer. Scoring per answer meant
+ * the first correct answer recorded 1/1 = 100%, which cleared the category
+ * outright and made the progress panel meaningless.
+ */
+export function recordRoundComplete(categoryId: string | null, scorePercent: number): Progress {
+  const progress = loadProgress();
+  const today = dayKey();
+
+  if (progress.lastRoundDay === today) {
+    progress.roundsToday += 1;
+  } else {
+    const gap = progress.lastRoundDay ? daysBetween(progress.lastRoundDay, today) : null;
+    // Consecutive day continues the streak; any longer gap restarts it at 1.
+    progress.dayStreak = gap === 1 ? progress.dayStreak + 1 : 1;
+    progress.lastRoundDay = today;
+    progress.roundsToday = 1;
+  }
+
+  if (categoryId) {
+    const current = progress.bestScores[categoryId] ?? 0;
+    if (scorePercent > current) progress.bestScores[categoryId] = scorePercent;
+  }
+
+  saveProgress(progress);
+  return progress;
+}
+
+/** Day streak, corrected for days elapsed since the last round. */
+export function currentDayStreak(progress: Progress = loadProgress()): number {
+  if (!progress.lastRoundDay) return 0;
+  const gap = daysBetween(progress.lastRoundDay, dayKey());
+  // Today or yesterday keeps it alive; yesterday is still "unbroken" until
+  // midnight passes again, so only a gap of 2+ days zeroes it out.
+  return gap <= 1 ? progress.dayStreak : 0;
+}
+
+export function roundsCompletedToday(progress: Progress = loadProgress()): number {
+  return progress.lastRoundDay === dayKey() ? progress.roundsToday : 0;
 }
