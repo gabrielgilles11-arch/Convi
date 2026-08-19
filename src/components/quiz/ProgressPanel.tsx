@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import type { QuizItem } from "../../lib/quizTypes";
 import { loadProgress } from "../../lib/progress";
-
-const MASTERED_SCORE = 90; // best test score that counts as "completed"
+import { STAGE_CLEAR_SCORE, sortCategoriesByPath } from "../../lib/quizTypes";
 
 interface Props {
   items: QuizItem[]; // the full unfiltered set — progress is reported per category
@@ -36,7 +35,9 @@ export default function ProgressPanel({ items }: Props) {
       row.bestScore = progress.bestScores[row.id] ?? 0;
     }
 
-    return [...byCategory.values()];
+    // Same order as the Test-mode dropdown, so the two screens agree on
+    // what "stage 1" means.
+    return sortCategoriesByPath([...byCategory.values()]);
   }, [items]);
 
   const totalKnown = rows.reduce((sum, r) => sum + r.known, 0);
@@ -46,13 +47,13 @@ export default function ProgressPanel({ items }: Props) {
     <div className="progress-panel">
       <p className="progress-summary">
         {totalKnown} of {totalCards} cards marked <strong>Got it</strong>. Test out of a category at{" "}
-        {MASTERED_SCORE}%+ to complete it.
+        {STAGE_CLEAR_SCORE}%+ to complete it.
       </p>
 
       <ul className="progress-list">
         {rows.map((row) => {
           const pct = row.total > 0 ? Math.round((row.known / row.total) * 100) : 0;
-          const completed = row.bestScore >= MASTERED_SCORE;
+          const completed = row.bestScore >= STAGE_CLEAR_SCORE;
           return (
             <li key={row.id} className={`progress-row${completed ? " completed" : ""}`}>
               <div className="progress-row-head">

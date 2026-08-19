@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import type { QuizPayload } from "../../lib/quizTypes";
+import {
+  sortCategoriesByPath,
+  recommendedCategoryId,
+  type QuizPayload,
+} from "../../lib/quizTypes";
+import { loadProgress } from "../../lib/progress";
 import ReviewMode from "./ReviewMode";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
@@ -13,7 +18,11 @@ interface Props {
 
 export default function QuizApp({ locale }: Props) {
   const [mode, setMode] = useState<Mode>("review");
+  // Left null until the deck arrives, then pinned to the first uncleared stage.
+  // Landing on "all categories" gave no sense of where to start; the dropdown
+  // still lets anyone override it.
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [pinnedStage, setPinnedStage] = useState(false);
 
   // Quiz data is fetched rather than bundled: /api/quiz-items verifies the
   // entitlement cookie server-side, so paid content never reaches an
@@ -44,6 +53,29 @@ export default function QuizApp({ locale }: Props) {
       cancelled = true;
     };
   }, []);
+
+  // Categories in path order, plus which stage to push the user into.
+  const orderedCategories = useMemo(
+    () => (payload ? sortCategoriesByPath(payload.categories) : []),
+    [payload]
+  );
+
+  const suggestedId = useMemo(() => {
+    if (!payload) return null;
+    return recommendedCategoryId(payload.categories, loadProgress().bestScores);
+  }, [payload]);
+
+  useEffect(() => {
+    if (!payload || pinnedStage) return;
+    setPinnedStage(true);
+    if (suggestedId) setCategoryFilter(suggestedId);
+  }, [payload, suggestedId, pinnedStage]);
+
+  const stageIndex = orderedCategories.findIndex((c) => c.id === categoryFilter);
+  const nextStage =
+    stageIndex >= 0 && stageIndex + 1 < orderedCategories.length
+      ? orderedCategories[stageIndex + 1]
+      : null;
 
   const filteredItems = useMemo(() => {
     if (!payload) return [];
@@ -81,17 +113,38 @@ export default function QuizApp({ locale }: Props) {
         {mode !== "progress" && (
           <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
             <option value="all">All categories</option>
-            {payload.categories.map((c) => (
+            {orderedCategories.map((c, i) => (
               <option key={c.id} value={c.id}>
-                {c.title}
+                {i + 1}. {c.title}
               </option>
             ))}
           </select>
         )}
       </div>
 
+      {mode === "test" && stageIndex >= 0 && (
+        <p className="stage-line">
+          Stage {stageIndex + 1} of {orderedCategories.length}
+          {suggestedId === categoryFilter && <span className="stage-flag">Suggested next</span>}
+          {suggestedId && suggestedId !== categoryFilter && (
+            <button type="button" className="stage-jump" onClick={() => setCategoryFilter(suggestedId)}>
+              Back to suggested
+            </button>
+          )}
+        </p>
+      )}
+
       {mode === "review" && <ReviewMode items={filteredItems} />}
-      {mode === "test" && <TestMode items={filteredItems} categoryFilter={categoryFilter} />}
+      {mode === "test" && (
+        <TestMode
+          items={filteredItems}
+          allItems={payload.items}
+          categoryFilter={categoryFilter}
+          nextStageId={nextStage?.id ?? null}
+          nextStageTitle={nextStage?.title ?? null}
+          onChooseCategory={setCategoryFilter}
+        />
+      )}
       {mode === "progress" && <ProgressPanel items={payload.items} />}
     </div>
   );
