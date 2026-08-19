@@ -6,6 +6,7 @@ import {
   type Question,
   type QuizItem,
 } from "../../lib/quizTypes";
+import AudioButton from "./AudioButton";
 import {
   recordAnswer,
   recordQuestionResult,
@@ -20,6 +21,8 @@ interface Props {
   items: QuizItem[];
   /** The whole deck, used only to backfill distractors and decoys. */
   allItems: QuizItem[];
+  /** Which edition's audio to look for. */
+  locale: string;
   /** Identity of the current set — stage id, "all", or the mistakes id. */
   setId: string;
   /** Stage id to score against, or null for ad-hoc sets (all / mistakes). */
@@ -32,9 +35,37 @@ interface Props {
   onRoundComplete: () => void;
 }
 
+/**
+ * Renders a line that contains a fill-in slot. `__` and `[BELOPP]` are authored
+ * content, not missing data — the line genuinely has a blank in it, because the
+ * amount or station changes every time you say it. Styling them makes that
+ * legible instead of looking like text that failed to load.
+ */
+// Split keeps the delimiters; the anchored twin does the testing. A /g regex is
+// stateful across .test() calls, so the two must be separate patterns.
+const SLOT_SPLIT = /(_{2,}|\[[^\]]+\])/g;
+const IS_SLOT = /^(_{2,}|\[[^\]]+\])$/;
+
+function withBlanks(text: string) {
+  const parts = text.split(SLOT_SPLIT);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) => {
+    if (!IS_SLOT.test(part)) return part;
+    // A bracketed slot names what goes in it ([BELOPP]); a bare ____ doesn't,
+    // so the underline alone carries the meaning.
+    const label = part.startsWith("[") ? part.slice(1, -1) : "\u00a0\u00a0";
+    return (
+      <span key={i} className="blank" title="This part changes each time">
+        {label}
+      </span>
+    );
+  });
+}
+
 export default function TestMode({
   items,
   allItems,
+  locale,
   setId,
   scoreKey,
   nextStageId,
@@ -205,8 +236,9 @@ export default function TestMode({
       <p className="category-tag">{q.categoryTitle}</p>
       <p className="quiz-prompt">{q.prompt}</p>
       <p className="quiz-front">
-        {q.shown}
+        {withBlanks(q.shown)}
         {q.shownSub && <span className="en">{" \u2014 "}{q.shownSub}</span>}
+        <AudioButton locale={locale} audioId={q.shownAudio} label="Hear the prompt" />
       </p>
 
       {q.form === "choice" && (
@@ -225,7 +257,7 @@ export default function TestMode({
                 onClick={() => submitChoice(option)}
                 disabled={answered}
               >
-                {option}
+                {withBlanks(option)}
               </button>
             );
           })}
@@ -308,7 +340,8 @@ export default function TestMode({
       {answered && (
         <>
           <p className={`answer-feedback ${wasRight ? "right" : "wrong"}`}>
-            {wasRight ? "Correct" : `Answer: ${q.answer}`}
+            {wasRight ? "Correct" : <>Answer: {withBlanks(q.answer)}</>}
+            <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
             {!wasRight && q.answerSub && <span className="en">{" \u2014 "}{q.answerSub}</span>}
           </p>
           <button type="button" className="next-question" onClick={next}>

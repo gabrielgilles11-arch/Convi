@@ -63,10 +63,13 @@ export default function QuizApp({ locale }: Props) {
     setMistakes(missedItemIds());
   }, [payload, mode, stageId]);
 
+  const [scoreVersion, setScoreVersion] = useState(0);
   const suggestedId = useMemo(() => {
     if (!stages.length) return null;
     return recommendedStageId(stages, loadProgress().bestScores);
-  }, [stages]);
+    // scoreVersion is the dependency that matters: bestScores lives in
+    // localStorage, so nothing else tells React the answer changed.
+  }, [stages, scoreVersion]);
 
   useEffect(() => {
     if (!payload || pinned) return;
@@ -148,12 +151,16 @@ export default function QuizApp({ locale }: Props) {
         <TestMode
           items={items}
           allItems={payload.items}
+          locale={locale ?? "es-ES"}
           setId={stageId}
           scoreKey={scoreKey}
           nextStageId={nextStage?.id ?? null}
           nextStageTitle={nextStage?.title ?? null}
           onChooseStage={setStageId}
-          onRoundComplete={() => setMistakes(missedItemIds())}
+          onRoundComplete={() => {
+            setMistakes(missedItemIds());
+            setScoreVersion((v) => v + 1);
+          }}
           onDrillMistakes={() => {
             setMistakes(missedItemIds());
             setStageId(MISTAKES_STAGE_ID);
