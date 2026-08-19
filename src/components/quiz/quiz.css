@@ -343,3 +343,113 @@
   color: #b3261e;
   opacity: 1;
 }
+
+/* ---- Round structure (Test mode) ---- */
+
+.round-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-border);
+  overflow: hidden;
+  margin: 0 0 0.9rem;
+}
+
+.round-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-primary);
+  transition: width 0.25s ease;
+}
+
+.stage-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+  margin: 0 0 0.75rem;
+}
+
+.stage-flag {
+  font-weight: 700;
+  font-size: 0.7rem;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-primary-tint-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+}
+
+.stage-jump {
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.answer-feedback {
+  margin: 0.9rem 0 0;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.answer-feedback.right {
+  color: var(--color-success);
+}
+
+.answer-feedback.wrong {
+  color: var(--color-error);
+}
+
+.answer-feedback .en {
+  font-weight: 500;
+  color: var(--color-ink-soft);
+}
+
+/* ---- Round completion ---- */
+
+.round-done {
+  text-align: center;
+  padding: 1.5rem 0.5rem 0.5rem;
+}
+
+.round-done-score {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+}
+
+.round-done-pct {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: 0.3rem 0 0;
+}
+
+.round-done-sub {
+  color: var(--color-ink-soft);
+  margin: 0.6rem 0 1.1rem;
+}
+
+.round-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  margin: 0 0 1.25rem;
+}
+
+.round-done .controls {
+  justify-content: center;
+  flex-wrap: wrap;
+}
