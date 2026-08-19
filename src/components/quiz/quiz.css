@@ -563,3 +563,43 @@
   cursor: default;
   opacity: 0.75;
 }
+
+/* Authored fill-in slot — the line really does have a blank in it (the amount,
+   the station), so it gets a deliberate look rather than reading as missing. */
+.blank {
+  display: inline-block;
+  min-width: 2.5rem;
+  padding: 0 0.3rem;
+  border-bottom: 2px solid var(--color-primary);
+  color: var(--color-primary-dark);
+  font-size: 0.85em;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+.audio-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  margin-left: 0.45rem;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-primary-dark);
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.audio-button:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+}
+
+.audio-button svg {
+  width: 1rem;
+  height: 1rem;
+}

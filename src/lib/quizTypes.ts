@@ -197,8 +197,17 @@ export interface Question {
   answer: string;
   answerSub: string | null;
   answerLang: AnswerLang;
+  /** Audio ids for the source-language sides only; English is never spoken. */
+  shownAudio: string | null;
+  answerAudio: string | null;
   options: string[]; // choice only
   tiles: string[]; // bank only
+}
+
+/** Matches the ids scripts/generate-audio.mjs writes. */
+function audioIds(item: QuizItem): { front: string; answer: string } | null {
+  if (item.kind === "phrase") return { front: item.id, answer: item.id };
+  return { front: `${item.id}-q`, answer: `${item.id}-r` };
 }
 
 /** The item's answer text in a given language, or "" when it has none. */
@@ -263,6 +272,9 @@ export function buildQuestion(
 
   if (!answer) return null;
 
+  const ids = audioIds(item);
+  // Both kinds show the source-language side only in the forward direction.
+  const sourceIsShown = !reverse;
   const question: Question = {
     itemId: item.id,
     categoryId: item.categoryId,
@@ -274,6 +286,9 @@ export function buildQuestion(
     answer,
     answerSub,
     answerLang,
+    // A side gets audio only when it is in the source language.
+    shownAudio: ids && sourceIsShown ? ids.front : null,
+    answerAudio: ids && answerLang === "source" ? ids.answer : null,
     options: [],
     tiles: [],
   };
@@ -391,16 +406,17 @@ export function buildRound(
   // Decide direction first — it determines the answer text, which decides
   // which forms are even possible.
   const drafts = picked.map((item) => {
-    const reverse = Math.random() < 0.5;
-    const base =
-      buildQuestion(item, reverse, "choice", items, fallbackPool) ??
-      buildQuestion(item, !reverse, "choice", items, fallbackPool);
-    return { item, question: base };
+    const wanted = Math.random() < 0.5;
+    const first = buildQuestion(item, wanted, "choice", items, fallbackPool);
+    if (first) return { item, question: first, reverse: wanted };
+    const flipped = buildQuestion(item, !wanted, "choice", items, fallbackPool);
+    return { item, question: flipped, reverse: !wanted };
   });
 
   const usable = drafts.filter((d) => d.question !== null) as {
     item: QuizItem;
     question: Question;
+    reverse: boolean;
   }[];
 
   const typedIdx = new Set<number>();
@@ -417,9 +433,6 @@ export function buildRound(
   return usable.map((d, i) => {
     const form: QuestionForm = typedIdx.has(i) ? "type" : bankIdx.has(i) ? "bank" : "choice";
     if (form === "choice") return d.question;
-    const reverseUsed = d.question.shown !== d.item.front;
-    return (
-      buildQuestion(d.item, reverseUsed, form, items, fallbackPool) ?? d.question
-    );
+    return buildQuestion(d.item, d.reverse, form, items, fallbackPool) ?? d.question;
   });
 }
