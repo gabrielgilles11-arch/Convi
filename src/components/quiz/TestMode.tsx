@@ -1,13 +1,14 @@
 import { useMemo, useState } from "react";
 import {
-  buildOptions,
   buildRound,
-  ROUND_LENGTH,
+  answersMatch,
   STAGE_CLEAR_SCORE,
+  type Question,
   type QuizItem,
 } from "../../lib/quizTypes";
 import {
   recordAnswer,
+  recordQuestionResult,
   recordRoundComplete,
   currentDayStreak,
   roundsCompletedToday,
@@ -15,53 +16,74 @@ import {
 } from "../../lib/progress";
 
 interface Props {
-  /** Items inside the current category filter. */
+  /** Items in the current stage. */
   items: QuizItem[];
-  /** The whole deck, used only to backfill distractors in small categories. */
+  /** The whole deck, used only to backfill distractors and decoys. */
   allItems: QuizItem[];
-  categoryFilter: string; // "all" or a category id
-  /** Next uncleared stage on the path, if there is one. */
+  /** Identity of the current set — stage id, "all", or the mistakes id. */
+  setId: string;
+  /** Stage id to score against, or null for ad-hoc sets (all / mistakes). */
+  scoreKey: string | null;
   nextStageId: string | null;
   nextStageTitle: string | null;
-  onChooseCategory: (id: string) => void;
+  onChooseStage: (id: string) => void;
+  onDrillMistakes: () => void;
+  /** Lets the parent refresh its own mistake count once a round is scored. */
+  onRoundComplete: () => void;
 }
 
 export default function TestMode({
   items,
   allItems,
-  categoryFilter,
+  setId,
+  scoreKey,
   nextStageId,
   nextStageTitle,
-  onChooseCategory,
+  onChooseStage,
+  onDrillMistakes,
+  onRoundComplete,
 }: Props) {
-  const [round, setRound] = useState<QuizItem[]>(() => buildRound(items));
+  const [round, setRound] = useState<Question[]>(() => buildRound(items, allItems));
   const [index, setIndex] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [answered, setAnswered] = useState(false);
+  const [wasRight, setWasRight] = useState(false);
+  const [choice, setChoice] = useState<string | null>(null);
+  const [typed, setTyped] = useState("");
+  const [assembled, setAssembled] = useState<string[]>([]);
   const [correctCount, setCorrectCount] = useState(0);
-  const [missed, setMissed] = useState<QuizItem[]>([]);
   const [done, setDone] = useState(false);
   const [dayStreak, setDayStreak] = useState(() => currentDayStreak());
   const [roundsToday, setRoundsToday] = useState(() => roundsCompletedToday());
+  // Read from the progress this round just wrote — a count passed in as a prop
+  // is stale by the time the round ends.
+  const [mistakeCount, setMistakeCount] = useState(0);
 
   const question = round[index] ?? null;
-  const options = useMemo(
-    () => (question ? buildOptions(question, items, allItems) : []),
-    // A fresh option set per question; `selected` is excluded so answering
-    // doesn't reshuffle the buttons under the user's finger.
-    [question, items, allItems]
-  );
+
+  function resetQuestion() {
+    setAnswered(false);
+    setWasRight(false);
+    setChoice(null);
+    setTyped("");
+    setAssembled([]);
+  }
 
   function startRound(pool: QuizItem[]) {
-    setRound(buildRound(pool));
+    setRound(buildRound(pool, allItems));
     setIndex(0);
-    setSelected(null);
+    resetQuestion();
     setCorrectCount(0);
-    setMissed([]);
     setDone(false);
   }
 
-  // Rebuild when the filter changes.
-  const itemsKey = useMemo(() => items.map((i) => i.id).join(","), [items]);
+  // Rebuild when the set changes. Keyed on the set's identity as well as its
+  // contents: drilling mistakes can select exactly the items of the stage you
+  // just failed, in the same order, so an items-only key stays byte-identical
+  // and the round never restarts.
+  const itemsKey = useMemo(
+    () => `${setId}|${items.map((i) => i.id).join(",")}`,
+    [setId, items]
+  );
   const [lastKey, setLastKey] = useState(itemsKey);
   if (itemsKey !== lastKey) {
     setLastKey(itemsKey);
@@ -69,32 +91,47 @@ export default function TestMode({
   }
 
   if (!question && !done) {
-    return <p>No questions in this category yet.</p>;
+    return <p>No questions in this set yet.</p>;
   }
 
-  function choose(option: string) {
-    if (selected) return;
-    setSelected(option);
+  function settle(correct: boolean) {
+    setAnswered(true);
+    setWasRight(correct);
+    recordAnswer(correct);
+    recordQuestionResult(question!.itemId, correct);
+    if (correct) setCorrectCount((c) => c + 1);
+  }
 
-    const isCorrect = option === question!.correctAnswer;
-    recordAnswer(isCorrect);
-    if (isCorrect) setCorrectCount((c) => c + 1);
-    else setMissed((m) => [...m, question!]);
+  function submitChoice(option: string) {
+    if (answered) return;
+    setChoice(option);
+    settle(answersMatch(option, question!.answer));
+  }
+
+  function submitTyped(event: React.FormEvent) {
+    event.preventDefault();
+    if (answered || !typed.trim()) return;
+    settle(answersMatch(typed, question!.answer));
+  }
+
+  function submitBank() {
+    if (answered || assembled.length === 0) return;
+    const words = assembled.map((token) => token.slice(0, token.lastIndexOf("\u0000")));
+    settle(answersMatch(words.join(" "), question!.answer));
   }
 
   function next() {
-    const finished = index + 1 >= round.length;
-    if (!finished) {
+    if (index + 1 < round.length) {
       setIndex((i) => i + 1);
-      setSelected(null);
+      resetQuestion();
       return;
     }
-
-    // Score is recorded once, here — not per answer.
     const pct = Math.round((correctCount / round.length) * 100);
-    const progress = recordRoundComplete(categoryFilter === "all" ? null : categoryFilter, pct);
+    const progress = recordRoundComplete(scoreKey, pct);
     setDayStreak(currentDayStreak(progress));
     setRoundsToday(roundsCompletedToday(progress));
+    setMistakeCount(progress.missedItemIds.length);
+    onRoundComplete();
     setDone(true);
   }
 
@@ -109,37 +146,34 @@ export default function TestMode({
           {correctCount} / {round.length}
         </p>
         <p className="round-done-pct">{pct}%</p>
-
         <p className="round-done-sub">
           {cleared
-            ? categoryFilter === "all"
-              ? "Strong round."
-              : "Stage cleared."
-            : `${STAGE_CLEAR_SCORE}% clears this stage — one more go?`}
+            ? scoreKey
+              ? "Stage cleared."
+              : "Strong round."
+            : `${STAGE_CLEAR_SCORE}% clears this stage \u2014 one more go?`}
         </p>
 
         <div className="round-meta">
           <span>{dayStreak === 1 ? "1 day streak" : `${dayStreak} day streak`}</span>
-          <span>
-            {goalHit ? "Daily goal hit" : `${roundsToday} / ${DAILY_GOAL} rounds today`}
-          </span>
+          <span>{goalHit ? "Daily goal hit" : `${roundsToday} / ${DAILY_GOAL} rounds today`}</span>
         </div>
 
         <div className="controls">
-          {missed.length > 0 && (
-            <button type="button" className="review-primary" onClick={() => startRound(missed)}>
-              Retry the {missed.length} you missed
+          {mistakeCount > 0 && (
+            <button type="button" className="review-primary" onClick={onDrillMistakes}>
+              Fix your {mistakeCount} mistake{mistakeCount === 1 ? "" : "s"}
             </button>
           )}
           <button
             type="button"
-            className={missed.length > 0 ? "" : "review-primary"}
+            className={mistakeCount > 0 ? "" : "review-primary"}
             onClick={() => startRound(items)}
           >
             Another round
           </button>
-          {cleared && nextStageId && nextStageId !== categoryFilter && (
-            <button type="button" onClick={() => onChooseCategory(nextStageId)}>
+          {cleared && nextStageId && (
+            <button type="button" onClick={() => onChooseStage(nextStageId)}>
               Next: {nextStageTitle}
             </button>
           )}
@@ -148,16 +182,15 @@ export default function TestMode({
     );
   }
 
-  const answered = selected !== null;
-  const gotItRight = answered && selected === question!.correctAnswer;
+  const q = question!;
+  // Tiles are tracked as `word\u0000index` so a repeated word stays distinct.
+  const tokenOf = (tile: string, i: number) => `${tile}\u0000${i}`;
+  const wordOf = (token: string) => token.slice(0, token.lastIndexOf("\u0000"));
 
   return (
     <div className="test-mode">
       <div className="round-bar" aria-hidden="true">
-        <div
-          className="round-bar-fill"
-          style={{ width: `${(index / round.length) * 100}%` }}
-        />
+        <div className="round-bar-fill" style={{ width: `${(index / round.length) * 100}%` }} />
       </div>
 
       <div className="stats">
@@ -165,50 +198,121 @@ export default function TestMode({
           Question {index + 1} of {round.length}
         </span>
         <span>
-          {correctCount} correct{dayStreak > 0 && ` · ${dayStreak}d streak`}
+          {correctCount} correct{dayStreak > 0 && ` \u00b7 ${dayStreak}d streak`}
         </span>
       </div>
 
-      <p className="category-tag">{question!.categoryTitle}</p>
-      <p className="quiz-prompt">{question!.prompt}</p>
+      <p className="category-tag">{q.categoryTitle}</p>
+      <p className="quiz-prompt">{q.prompt}</p>
       <p className="quiz-front">
-        {question!.front}
-        {question!.frontTranslation && <span className="en"> — {question!.frontTranslation}</span>}
+        {q.shown}
+        {q.shownSub && <span className="en">{" \u2014 "}{q.shownSub}</span>}
       </p>
 
-      <div className="options">
-        {options.map((option) => {
-          const isCorrectOption = option === question!.correctAnswer;
-          const isSelected = option === selected;
-          let className = "option";
-          if (answered) {
-            if (isCorrectOption) className += " correct";
-            else if (isSelected) className += " incorrect";
-          }
-          return (
-            <button
-              key={option}
-              type="button"
-              className={className}
-              onClick={() => choose(option)}
-              disabled={answered}
-            >
-              {option}
+      {q.form === "choice" && (
+        <div className="options">
+          {q.options.map((option) => {
+            let className = "option";
+            if (answered) {
+              if (answersMatch(option, q.answer)) className += " correct";
+              else if (option === choice) className += " incorrect";
+            }
+            return (
+              <button
+                key={option}
+                type="button"
+                className={className}
+                onClick={() => submitChoice(option)}
+                disabled={answered}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {q.form === "type" && (
+        <form className="type-answer" onSubmit={submitTyped}>
+          <input
+            type="text"
+            value={typed}
+            onChange={(e) => setTyped(e.target.value)}
+            placeholder="Type your answer"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            disabled={answered}
+            aria-label="Type your answer"
+          />
+          {!answered && (
+            <button type="submit" disabled={!typed.trim()}>
+              Check
             </button>
-          );
-        })}
-      </div>
+          )}
+          <p className="type-hint">Accents and punctuation are not marked wrong.</p>
+        </form>
+      )}
+
+      {q.form === "bank" && (
+        <div className="word-bank">
+          <div className="bank-line" aria-label="Your answer">
+            {assembled.length === 0 && (
+              <span className="bank-placeholder">Tap the words in order</span>
+            )}
+            {assembled.map((token) => (
+              <button
+                key={token}
+                type="button"
+                className="tile placed"
+                disabled={answered}
+                onClick={() => setAssembled((a) => a.filter((t) => t !== token))}
+              >
+                {wordOf(token)}
+              </button>
+            ))}
+          </div>
+
+          <div className="bank-pool">
+            {q.tiles.map((tile, i) => {
+              const token = tokenOf(tile, i);
+              if (assembled.includes(token)) return null;
+              return (
+                <button
+                  key={token}
+                  type="button"
+                  className="tile"
+                  disabled={answered}
+                  onClick={() => setAssembled((a) => [...a, token])}
+                >
+                  {tile}
+                </button>
+              );
+            })}
+          </div>
+
+          {!answered && (
+            <button
+              type="button"
+              className="next-question"
+              onClick={submitBank}
+              disabled={assembled.length === 0}
+            >
+              Check
+            </button>
+          )}
+        </div>
+      )}
 
       {answered && (
         <>
-          <p className={`answer-feedback ${gotItRight ? "right" : "wrong"}`}>
-            {gotItRight ? "Correct" : `Answer: ${question!.correctAnswer}`}
-            {!gotItRight && question!.correctAnswerTranslation && (
-              <span className="en"> — {question!.correctAnswerTranslation}</span>
-            )}
+          <p className={`answer-feedback ${wasRight ? "right" : "wrong"}`}>
+            {wasRight ? "Correct" : `Answer: ${q.answer}`}
+            {!wasRight && q.answerSub && <span className="en">{" \u2014 "}{q.answerSub}</span>}
           </p>
           <button type="button" className="next-question" onClick={next}>
-            {index + 1 >= round.length ? "Finish round" : "Next question →"}
+            {index + 1 >= round.length ? "Finish round" : "Next question"}
           </button>
         </>
       )}
