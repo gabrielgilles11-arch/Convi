@@ -24,66 +24,99 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
       const dialogue = sub as DialogueSubsection;
       if (dialogue.exchanges) {
         for (const exchange of dialogue.exchanges) {
-          if (exchange.likelyReply) {
+          const base = {
+            categoryId: category.id,
+            categoryTitle: category.title,
+            front: exchange.question.es,
+            frontTranslation: exchange.question.en,
+            frontAudioId: `${exchange.id}-q`,
+          };
+
+          // The next line of the exchange. This used to be dropped on the floor
+          // whenever an exchange also had a likelyReply, which threw away most
+          // of the deck's production material.
+          //
+          // The prompt deliberately does not say whose line it is. The schema
+          // calls `answers` your model answers, and in beer-food they are — the
+          // bartender asks "¿Qué vas a tomar?" and you answer. But in
+          // getting-around the question is yours ("¿Aceptas tarjeta?") and the
+          // answers belong to the driver ("Sí." / "Solo efectivo."). Nothing in
+          // the content marks who speaks, so any prompt naming a speaker would
+          // be wrong for roughly half the deck. "What comes next?" is true
+          // either way. Give an exchange a speaker field and this can sharpen.
+          const next = exchange.answers[0];
+          if (next?.es) {
             items.push({
-              id: exchange.id,
-              categoryId: category.id,
-              categoryTitle: category.title,
+              ...base,
+              id: `${exchange.id}-say`,
               kind: "dialogue",
+              role: "say",
+              prompt: "What comes next?",
+              correctAnswer: next.es,
+              correctAnswerTranslation: next.en,
+              answerAudioId: `${exchange.id}-a0`,
+            });
+          }
+
+          // What they come back with. Kept on the bare exchange id so an
+          // already-recorded mistake on one of these survives this change.
+          if (exchange.likelyReply?.es) {
+            items.push({
+              ...base,
+              id: exchange.id,
+              kind: "dialogue",
+              role: "reply",
               prompt: "What would they probably say back?",
-              front: exchange.question.es,
-              frontTranslation: exchange.question.en,
               correctAnswer: exchange.likelyReply.es,
               correctAnswerTranslation: exchange.likelyReply.en,
+              answerAudioId: `${exchange.id}-r`,
             });
-            continue;
           }
-          // No likelyReply (e.g. women's-safety lines). If the exchange
-          // suggests responses, test the first one as the comeback;
-          // otherwise treat the line itself as a phrase to translate.
-          if (exchange.answers.length > 0) {
-            const reply = exchange.answers[0];
+
+          // Whose line the question is depends on whether the exchange offers
+          // answers. With answers, someone asks you something and `yours` above
+          // is your reply. Without them, the question is the thing *you* say —
+          // "¡Me han robado la cartera!" is not a prompt you respond to, it's
+          // the sentence you need — so it becomes production material in its
+          // own right. The whole Emergencies category is built this way, and
+          // without this it contributed nothing but comebacks.
+          if (!next?.es && exchange.question.en) {
             items.push({
-              id: exchange.id,
-              categoryId: category.id,
-              categoryTitle: category.title,
-              kind: "dialogue",
-              prompt: "How would you shut this down?",
-              front: exchange.question.es,
-              frontTranslation: exchange.question.en,
-              correctAnswer: reply.es,
-              correctAnswerTranslation: reply.en,
-            });
-          } else if (exchange.question.en) {
-            items.push({
-              id: exchange.id,
-              categoryId: category.id,
-              categoryTitle: category.title,
+              ...base,
+              id: `${exchange.id}-ask`,
               kind: "phrase",
+              role: "say",
               prompt: "What does this mean?",
-              front: exchange.question.es,
               frontTranslation: null,
               correctAnswer: exchange.question.en,
               correctAnswerTranslation: null,
+              answerAudioId: `${exchange.id}-q`,
             });
           }
         }
       }
 
       if (dialogue.items) {
-        for (const tip of dialogue.items) {
+        dialogue.items.forEach((tip, i) => {
+          // Id matches what scripts/generate-audio.mjs writes. It used to be
+          // keyed on the Spanish text, which no audio file was ever named
+          // after, so tip audio could never resolve.
+          const id = `${sub.id}-tip${i}`;
           items.push({
-            id: `${sub.id}-${tip.es}`,
+            id,
             categoryId: category.id,
             categoryTitle: category.title,
             kind: "phrase",
+            role: "phrase",
             prompt: "What does this mean?",
             front: tip.es,
             frontTranslation: null,
             correctAnswer: tip.en,
             correctAnswerTranslation: null,
+            frontAudioId: id,
+            answerAudioId: id,
           });
-        }
+        });
       }
 
       const phrasebook = sub as PhrasebookSubsection;
@@ -94,11 +127,14 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
             categoryId: category.id,
             categoryTitle: category.title,
             kind: "phrase",
+            role: "phrase",
             prompt: "What does this mean?",
             front: phrase.es,
             frontTranslation: null,
             correctAnswer: phrase.en,
             correctAnswerTranslation: null,
+            frontAudioId: phrase.id,
+            answerAudioId: phrase.id,
           });
         }
       }
