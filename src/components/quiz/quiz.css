@@ -355,16 +355,11 @@
   gap: 0.6rem;
 }
 
-/* Each slot carries its own hue through these three variables, so every state
-   below is written once against --opt and re-colours itself per option. The
-   edition accent is the fallback if a colour class ever goes missing. */
+/* All four boxes share the edition tint. They used to take a hue each, which
+   read as meaning rather than decoration — with green and red already spoken
+   for by right and wrong, six colours were saying six different things and the
+   two that mattered stopped standing out. Only the letter tells them apart now. */
 .option {
-  --opt: var(--color-primary);
-  --opt-deep: var(--color-primary-dark);
-  --opt-tint: var(--color-primary-tint);
-  --opt-fill: var(--color-primary-dark);
-  --opt-on: #fff;
-
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -372,8 +367,8 @@
   text-align: left;
   padding: 0.8rem 1rem;
   border-radius: 16px;
-  border: 2px solid var(--opt);
-  background: var(--opt-tint);
+  border: 2px solid var(--color-primary-tint-border);
+  background: var(--color-primary-tint);
   color: var(--color-ink);
   font: inherit;
   font-weight: 600;
@@ -383,40 +378,6 @@
     border-color 0.12s ease, color 0.12s ease, opacity 0.2s ease;
 }
 
-.option.opt-1 {
-  --opt: var(--opt-a);
-  --opt-deep: var(--opt-a-deep);
-  --opt-tint: var(--opt-a-tint);
-  --opt-fill: var(--opt-a-deep);
-  --opt-on: #fff;
-}
-
-.option.opt-2 {
-  --opt: var(--opt-b);
-  --opt-deep: var(--opt-b-deep);
-  --opt-tint: var(--opt-b-tint);
-  --opt-fill: var(--opt-b-deep);
-  --opt-on: #fff;
-}
-
-.option.opt-3 {
-  --opt: var(--opt-c);
-  --opt-deep: var(--opt-c-deep);
-  --opt-tint: var(--opt-c-tint);
-  --opt-fill: var(--opt-c-deep);
-  --opt-on: #fff;
-}
-
-/* Amber is the exception: darkening it far enough to carry white text turns it
-   olive, so it fills at full brightness and carries ink instead. */
-.option.opt-4 {
-  --opt: var(--opt-d);
-  --opt-deep: var(--opt-d-deep);
-  --opt-tint: var(--opt-d-tint);
-  --opt-fill: var(--opt-d);
-  --opt-on: var(--color-ink);
-}
-
 .option-key {
   flex: none;
   display: grid;
@@ -424,8 +385,8 @@
   width: 1.9rem;
   height: 1.9rem;
   border-radius: 50%;
-  background: var(--opt-fill);
-  color: var(--opt-on);
+  background: var(--color-primary-dark);
+  color: #fff;
   font-family: var(--font-display);
   font-size: 0.9rem;
   font-weight: 700;
@@ -447,26 +408,26 @@
    touchscreen, which would light an option you already moved on from. */
 @media (hover: hover) {
   .option:hover:not(:disabled) {
-    background: var(--opt-fill);
-    border-color: var(--opt-fill);
-    color: var(--opt-on);
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 12px 22px -12px var(--opt);
+    box-shadow: 0 12px 22px -12px var(--color-primary);
   }
 
   .option:hover:not(:disabled) .option-key {
-    background: var(--opt-on);
-    color: var(--opt-fill);
+    background: #fff;
+    color: var(--color-primary-dark);
   }
 
   .option:hover:not(:disabled) .blank {
-    color: var(--opt-on);
-    border-bottom-color: var(--opt-on);
+    color: #fff;
+    border-bottom-color: rgba(255, 255, 255, 0.7);
   }
 }
 
 .option:focus-visible {
-  outline: 3px solid var(--opt-deep);
+  outline: 3px solid var(--color-primary-dark);
   outline-offset: 3px;
 }
 
@@ -508,11 +469,6 @@
 /* A blank inside an option takes the slot's own colour rather than the edition
    accent, which would fight it — and its usual colours disappear entirely once
    the option floods. */
-.option .blank {
-  color: var(--opt-fill);
-  border-bottom-color: var(--opt-fill);
-}
-
 .option.correct .blank,
 .option.incorrect .blank {
   color: #fff;
@@ -572,6 +528,103 @@
 .next-question:active:not(:disabled) {
   transform: translateY(3px);
   box-shadow: 0 1px 0 var(--color-primary-dark);
+}
+
+/* ---- Matching pairs ---- */
+
+.match-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.match-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.match-tile {
+  display: flex;
+  align-items: center;
+  min-height: 3.4rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 14px;
+  border: 2px solid var(--color-primary-tint-border);
+  background: var(--color-card);
+  color: var(--color-ink);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease,
+    transform 0.12s ease;
+}
+
+/* The tile you're holding. One from each column makes a guess, so the picked
+   state has to be unmistakable at a glance across the gap. */
+.match-tile.is-picked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.match-tile.is-solved {
+  background: var(--color-success-bg);
+  border-color: var(--color-success-deep);
+  color: var(--color-success-deep);
+  cursor: default;
+}
+
+/* Solved rows stay on the board rather than vanishing — removing them would
+   reflow the columns under the finger that just tapped. */
+.match-tile.is-solved::after {
+  content: "\2713";
+  margin-left: auto;
+  padding-left: 0.5rem;
+  font-weight: 800;
+}
+
+.match-tile.is-wrong {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  animation: option-shake 0.34s ease;
+}
+
+.match-tile:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .match-tile:hover:not(:disabled) {
+    border-color: var(--color-primary);
+  }
+}
+
+.match-progress {
+  grid-column: 1 / -1;
+  margin: 0.35rem 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 420px) {
+  .match-board {
+    gap: 0.45rem;
+  }
+
+  .match-tile {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.7rem;
+  }
 }
 
 /* Quiz data is fetched from /api/quiz-items, so there are now load states. */
@@ -1159,7 +1212,8 @@
   .option,
   .answer-feedback,
   .stone,
-  .tile {
+  .tile,
+  .match-tile {
     animation: none;
     transition: none;
   }

@@ -7,6 +7,7 @@ import {
   type QuizItem,
 } from "../../lib/quizTypes";
 import AudioButton from "./AudioButton";
+import MatchQuestion from "./MatchQuestion";
 import {
   recordAnswer,
   recordQuestionResult,
@@ -47,8 +48,10 @@ interface Props {
 const SLOT_SPLIT = /(_{2,}|\[[^\]]+\])/g;
 const IS_SLOT = /^(_{2,}|\[[^\]]+\])$/;
 
-// Each choice gets a letter and a colour of its own, so an option is something
-// you can aim at ("the teal one") rather than the third identical grey box.
+// Each choice gets a letter so it can be named. Colour used to vary per slot
+// too, which turned out to read as meaning — four hues plus green and red is
+// too many things for colour to be saying at once. All four boxes now share
+// the edition tint and only the letter tells them apart.
 // buildOptions caps a round at four; the modulo only guards against that
 // changing underneath us.
 const OPTION_KEYS = ["A", "B", "C", "D"];
@@ -158,11 +161,20 @@ export default function TestMode({
     return <p>No questions in this set yet.</p>;
   }
 
-  function settle(correct: boolean) {
+  /**
+   * Scores the current question. `results` overrides which items go to the
+   * mistake queue — a matching screen settles several items at once, and only
+   * the rows that actually went wrong belong in the queue.
+   */
+  function settle(correct: boolean, results?: { itemId: string; correct: boolean }[]) {
     setAnswered(true);
     setWasRight(correct);
     recordAnswer(correct);
-    recordQuestionResult(question!.itemId, correct);
+    if (results) {
+      for (const r of results) recordQuestionResult(r.itemId, r.correct);
+    } else {
+      recordQuestionResult(question!.itemId, correct);
+    }
     if (correct) setCorrectCount((c) => c + 1);
   }
 
@@ -276,12 +288,20 @@ export default function TestMode({
           page. */}
       <div className="question-card">
         <p className="category-tag">{q.categoryTitle}</p>
-        <p className="quiz-prompt">{q.prompt}</p>
-        <p className="quiz-front">
-          {withBlanks(q.shown)}
-          {q.shownSub && <span className="en">{q.shownSub}</span>}
-          <AudioButton locale={locale} audioId={q.shownAudio} label="Hear the prompt" />
-        </p>
+        {/* A matching screen is its own instruction — there's no single line to
+            show above it, so the card carries only the prompt. */}
+        {q.form === "match" ? (
+          <p className="quiz-front">{q.prompt}</p>
+        ) : (
+          <>
+            <p className="quiz-prompt">{q.prompt}</p>
+            <p className="quiz-front">
+              {withBlanks(q.shown)}
+              {q.shownSub && <span className="en">{q.shownSub}</span>}
+              <AudioButton locale={locale} audioId={q.shownAudio} label="Hear the prompt" />
+            </p>
+          </>
+        )}
       </div>
 
       {q.form === "choice" && (
@@ -289,7 +309,7 @@ export default function TestMode({
           {q.options.map((option, i) => {
             const isAnswer = answersMatch(option, q.answer);
             const isPicked = option === choice;
-            let className = `option opt-${(i % OPTION_KEYS.length) + 1}`;
+            let className = "option";
             if (answered) {
               // Everything that isn't the answer or your pick steps back, so
               // the two that matter are the two that stay lit.
@@ -314,6 +334,15 @@ export default function TestMode({
             );
           })}
         </div>
+      )}
+
+      {q.form === "match" && (
+        <MatchQuestion
+          key={`${index}-${q.itemId}`}
+          pairs={q.pairs}
+          answered={answered}
+          onDone={(clean, results) => settle(clean, results)}
+        />
       )}
 
       {q.form === "type" && (
@@ -395,10 +424,22 @@ export default function TestMode({
             <MarkIcon right={wasRight} />
           </span>
           <p className="feedback-body">
-            <span className="feedback-title">{wasRight ? "Correct!" : "Answer"}</span>
-            {!wasRight && <> {withBlanks(q.answer)}</>}
-            <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
-            {!wasRight && q.answerSub && <span className="en">{q.answerSub}</span>}
+            <span className="feedback-title">
+              {q.form === "match"
+                ? wasRight
+                  ? "All matched!"
+                  : "Matched \u2014 but not first time"
+                : wasRight
+                  ? "Correct!"
+                  : "Answer"}
+            </span>
+            {q.form !== "match" && (
+              <>
+                {!wasRight && <> {withBlanks(q.answer)}</>}
+                <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
+                {!wasRight && q.answerSub && <span className="en">{q.answerSub}</span>}
+              </>
+            )}
           </p>
           <button type="button" className="next-question" onClick={next}>
             {index + 1 >= round.length ? "Finish round" : "Next question"}
