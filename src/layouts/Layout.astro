@@ -134,8 +134,8 @@ const structuredData = {
     --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 
     --color-bg: #fff6ec;
-    --color-ink: #2a1b12;
-    --color-ink-soft: #6b5748;
+    --color-ink: #241610;
+    --color-ink-soft: #5f4c3e;
     --color-primary: #e8622c;
     --color-primary-dark: #c94e1f;
     --color-primary-tint: #ffe6d5;
@@ -144,9 +144,35 @@ const structuredData = {
     --color-card: #ffffff;
     --color-border: #f0dcc8;
     --color-success: #2e7d32;
+    --color-success-deep: #17804a;
     --color-success-bg: #eaf6ec;
     --color-error: #c62828;
     --color-error-bg: #fbeaea;
+
+    /* The page is a warm cream, which is easy on the eyes but goes flat over a
+       full screen. Two soft washes give it depth; every edition tints them to
+       its own accent so the background belongs to the language you're in. */
+    --color-wash-1: #ffe3cd;
+    --color-wash-2: #f1ecff;
+
+    /* Answer-choice hues. Four fixed colours, one per slot, so the options read
+       as four distinct things rather than four identical grey boxes.
+       Deliberately no green and no red among them: those two stay reserved for
+       right/wrong, so a colour never means two things at once.
+       `-deep` is the variant that carries white text at 4.5:1 or better; the
+       bare hue is for borders, badges and glows. */
+    --opt-a: #f2683c;
+    --opt-a-deep: #c9491f;
+    --opt-a-tint: #fff0e8;
+    --opt-b: #6d5ce7;
+    --opt-b-deep: #4f3fc4;
+    --opt-b-tint: #f0edff;
+    --opt-c: #12a3a3;
+    --opt-c-deep: #0a7676;
+    --opt-c-tint: #e4f7f7;
+    --opt-d: #f0a91b;
+    --opt-d-deep: #8f5e04;
+    --opt-d-tint: #fff4d9;
 
     font-family: var(--font-body);
   }
@@ -159,6 +185,8 @@ const structuredData = {
     --color-primary-dark: #24567f;
     --color-primary-tint: #dfeaf5;
     --color-primary-tint-border: #b3cbe2;
+    --color-wash-1: #dceaf7;
+    --color-wash-2: #e4f5f1;
   }
 
   [data-locale="de-DE"] {
@@ -166,6 +194,8 @@ const structuredData = {
     --color-primary-dark: #9c7220;
     --color-primary-tint: #faeed2;
     --color-primary-tint-border: #e6cf9a;
+    --color-wash-1: #fbedcd;
+    --color-wash-2: #f6e6e0;
   }
 
   * {
@@ -175,7 +205,13 @@ const structuredData = {
   body {
     margin: 0;
     color: var(--color-ink);
-    background: var(--color-bg);
+    /* Fixed so the washes stay put while you scroll a long scenario, instead
+       of sliding past and drawing attention to themselves. */
+    background: radial-gradient(70rem 38rem at 8% -8%, var(--color-wash-1), transparent 62%),
+      radial-gradient(58rem 34rem at 102% 2%, var(--color-wash-2), transparent 58%),
+      var(--color-bg);
+    background-attachment: fixed;
+    background-color: var(--color-bg);
     font-weight: 500;
     font-size: 1.0625rem;
     line-height: 1.55;

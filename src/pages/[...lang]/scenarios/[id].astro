@@ -151,12 +151,24 @@ const gateCopy =
 
 <style>
   .back {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     margin-bottom: 1rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-primary-tint-border);
+    background: var(--color-primary-tint);
     text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.85rem;
     color: var(--color-primary-dark);
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
+
+  .back:hover {
+    background: var(--color-primary);
+    color: #fff;
   }
 
   h1 {
@@ -172,8 +184,8 @@ const gateCopy =
   .note {
     background: var(--color-primary-tint);
     border: 1px solid var(--color-primary-tint-border);
-    border-radius: 12px;
-    padding: 0.9rem 1rem;
+    border-radius: 18px;
+    padding: 0.9rem 1.1rem;
     margin-bottom: 1.5rem;
   }
 
@@ -185,23 +197,41 @@ const gateCopy =
     margin-bottom: 2rem;
   }
 
+  /* Section headings get the accent bar rather than a colour change alone —
+     at 1.1rem a coloured heading on cream is doing too little work. */
   .subsection h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     font-size: 1.1rem;
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.85rem;
     color: var(--color-primary-dark);
   }
 
+  .subsection h2::before {
+    content: "";
+    flex: none;
+    width: 0.35rem;
+    height: 1.15rem;
+    border-radius: 999px;
+    background: var(--color-primary);
+  }
+
+  /* Every line of content sits on white. Black-on-cream over a whole page of
+     dialogue is what made this hard to read; the cream is now only the ground
+     the cards sit on. */
   .exchange {
     background: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 1rem;
+    border-radius: 18px;
+    padding: 1.1rem 1.2rem;
     margin-bottom: 0.75rem;
+    box-shadow: 0 10px 22px -20px rgba(36, 22, 16, 0.6);
   }
 
   .exchange p,
   .exchange ul {
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.6rem;
   }
 
   .exchange p:last-child,
@@ -215,15 +245,43 @@ const gateCopy =
   }
 
   .answers li {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.4rem;
   }
 
+  .answers li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Q, A and "They'll say" are the three voices in an exchange, so each gets
+     its own colour and they stay consistent down the page. */
   .label {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.4rem;
+    height: 1.4rem;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    background: var(--opt-a-deep);
+    color: #fff;
+    font-family: var(--font-display);
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
-    color: var(--color-primary);
-    margin-right: 0.25rem;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+  }
+
+  .answers .label {
+    background: var(--opt-c-deep);
+  }
+
+  .reply .label {
+    background: var(--opt-b-deep);
+  }
+
+  .question {
+    font-weight: 600;
   }
 
   .translation {
@@ -235,11 +293,17 @@ const gateCopy =
     font-size: 0.85rem;
     font-style: italic;
     color: var(--color-ink-soft);
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--color-border);
   }
 
   .tip {
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--color-border);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--opt-d);
+    border-radius: 14px;
+    padding: 0.7rem 0.9rem;
+    margin: 0 0 0.5rem;
   }
 
   .phrases {
@@ -250,18 +314,45 @@ const gateCopy =
     gap: 0.5rem;
   }
 
+  /* Rows cycle the same four hues as everything else — a phrasebook is a long
+     list of near-identical lines, and one repeated accent colour down all of
+     them just reads as a ruled margin. */
   .phrases li {
+    --row: var(--opt-a);
+
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     gap: 1rem;
     background: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--row);
+    border-radius: 14px;
+    padding: 0.8rem 1rem;
+    transition: box-shadow 0.12s ease, transform 0.12s ease;
+  }
+
+  .phrases li:nth-child(4n + 2) {
+    --row: var(--opt-b);
+  }
+
+  .phrases li:nth-child(4n + 3) {
+    --row: var(--opt-c);
+  }
+
+  .phrases li:nth-child(4n + 4) {
+    --row: var(--opt-d);
+  }
+
+  @media (hover: hover) {
+    .phrases li:hover {
+      transform: translateX(2px);
+      box-shadow: 0 10px 20px -18px rgba(36, 22, 16, 0.9);
+    }
   }
 
   .phrases .es {
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .tag {
@@ -278,7 +369,7 @@ const gateCopy =
   }
 
   .tag--madrid {
-    background: #e8622c;
+    background: #c9491f;
     color: #fff;
   }
 
@@ -298,13 +389,12 @@ const gateCopy =
   }
 
   .tag--young {
-    background: var(--color-primary-tint);
-    color: var(--color-primary-dark);
-    border: 1px solid var(--color-primary-tint-border);
+    background: var(--opt-c-deep);
+    color: #fff;
   }
 
   .tag--women {
-    background: #8a4fbe;
+    background: #7a3fae;
     color: #fff;
   }
 </style>
