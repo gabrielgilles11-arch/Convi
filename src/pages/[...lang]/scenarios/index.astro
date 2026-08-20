@@ -42,13 +42,25 @@ const categories = getCategories(locale).sort(
 
   <div class="grid">
     {
-      categories.map((category) => (
+      categories.map((category, i) => (
         <a
-          class="card"
+          class={`card hue-${(i % 4) + 1}`}
           href={localePath(locale, `/scenarios/${category.id}`)}
           data-category-id={category.id}
           data-premium={isPremiumCategory(category.id) ? "true" : undefined}
         >
+          <span class="card-mark" aria-hidden="true">
+            {category.type === "dialogue" ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 5.5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H9l-4 3v-3a2 2 0 0 1-2-2v-5a2 2 0 0 1 1-1.7" />
+                <path d="M19 9.5h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2v2.5l-3-2.5" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4.5 7h15M4.5 12h15M4.5 17h9" />
+              </svg>
+            )}
+          </span>
           <span class="title">{category.title}</span>
           <span class="card-foot">
             <span class="meta">
@@ -94,28 +106,110 @@ const categories = getCategories(locale).sort(
     margin: -0.5rem 0 1.25rem;
   }
 
+  /* Cards cycle through the same four hues the answer choices use, so a
+     category is something you recognise by colour before you read it. Each card
+     sets the three variables once and everything below reads them. */
   .card {
+    --hue: var(--opt-a);
+    --hue-deep: var(--opt-a-deep);
+    --hue-tint: var(--opt-a-tint);
+    --hue-fill: var(--opt-a-deep);
+    --hue-on: #fff;
+
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
     padding: 1.25rem;
-    border-radius: 16px;
+    padding-top: 1.5rem;
+    border-radius: 20px;
     background: var(--color-card);
     border: 1px solid var(--color-border);
     text-decoration: none;
     color: inherit;
-    transition: transform 0.12s ease, border-color 0.12s ease;
+    overflow: hidden;
+    transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
   }
 
-  .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-primary);
+  .card.hue-2 {
+    --hue: var(--opt-b);
+    --hue-deep: var(--opt-b-deep);
+    --hue-tint: var(--opt-b-tint);
+    --hue-fill: var(--opt-b-deep);
+    --hue-on: #fff;
+  }
+
+  .card.hue-3 {
+    --hue: var(--opt-c);
+    --hue-deep: var(--opt-c-deep);
+    --hue-tint: var(--opt-c-tint);
+    --hue-fill: var(--opt-c-deep);
+    --hue-on: #fff;
+  }
+
+  /* Amber fills bright and carries ink — darkened far enough for white text it
+     goes olive. Same exception the answer choices make. */
+  .card.hue-4 {
+    --hue: var(--opt-d);
+    --hue-deep: var(--opt-d-deep);
+    --hue-tint: var(--opt-d-tint);
+    --hue-fill: var(--opt-d);
+    --hue-on: var(--color-ink);
+  }
+
+  /* A band of the card's colour across the top edge — enough to identify the
+     card at a glance without tinting the text behind it. */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 6px;
+    background: var(--hue);
+  }
+
+  .card-mark {
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 12px;
+    background: var(--hue-tint);
+    color: var(--hue-deep);
+    transition: background-color 0.14s ease, color 0.14s ease;
+  }
+
+  .card-mark svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  /* Gated on a real pointer: a tap leaves :hover stuck on a touchscreen, so a
+     card you opened and came back from would still be lifted. */
+  @media (hover: hover) {
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--hue);
+      box-shadow: 0 16px 26px -18px var(--hue);
+    }
+
+    .card:hover .card-mark {
+      background: var(--hue-fill);
+      color: var(--hue-on);
+    }
+  }
+
+  .card:focus-visible {
+    outline: 3px solid var(--hue-deep);
+    outline-offset: 3px;
   }
 
   .card.completed {
     border-color: var(--color-success);
     background: var(--color-success-bg);
+  }
+
+  .card.completed::before {
+    background: var(--color-success-deep);
   }
 
   .card-foot {
@@ -125,6 +219,7 @@ const categories = getCategories(locale).sort(
     flex-wrap: wrap;
     gap: 0.4rem 0.5rem;
     margin-top: auto;
+    padding-top: 0.5rem;
   }
 
   .badge,
@@ -137,21 +232,23 @@ const categories = getCategories(locale).sort(
   }
 
   .badge {
-    color: var(--color-success);
-    background: var(--color-card);
-    border: 1px solid var(--color-success);
+    color: #fff;
+    background: var(--color-success-deep);
+    border: 1px solid var(--color-success-deep);
   }
 
   .lock {
-    color: var(--color-primary-dark);
-    background: var(--color-primary-tint);
-    border: 1px solid var(--color-primary-tint-border);
+    color: #fff;
+    background: var(--color-primary-dark);
+    border: 1px solid var(--color-primary-dark);
   }
 
   .title {
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-weight: 700;
     font-size: 1.05rem;
     line-height: 1.25;
+    margin-top: 0.15rem;
   }
 
   .meta {

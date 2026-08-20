@@ -47,6 +47,37 @@ interface Props {
 const SLOT_SPLIT = /(_{2,}|\[[^\]]+\])/g;
 const IS_SLOT = /^(_{2,}|\[[^\]]+\])$/;
 
+// Each choice gets a letter and a colour of its own, so an option is something
+// you can aim at ("the teal one") rather than the third identical grey box.
+// buildOptions caps a round at four; the modulo only guards against that
+// changing underneath us.
+const OPTION_KEYS = ["A", "B", "C", "D"];
+
+function MarkIcon({ right }: { right: boolean }) {
+  return (
+    <svg className="option-mark" viewBox="0 0 24 24" aria-hidden="true">
+      {right ? (
+        <path
+          d="M5 12.5 L10 17.5 L19 7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ) : (
+        <path
+          d="M7 7 L17 17 M17 7 L7 17"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      )}
+    </svg>
+  );
+}
+
 function withBlanks(text: string) {
   const parts = text.split(SLOT_SPLIT);
   if (parts.length === 1) return text;
@@ -225,34 +256,46 @@ export default function TestMode({
 
   return (
     <div className="test-mode">
-      <div className="round-bar" aria-hidden="true">
-        <div className="round-bar-fill" style={{ width: `${(index / round.length) * 100}%` }} />
+      <div className="round-head">
+        <div className="round-bar" aria-hidden="true">
+          <div className="round-bar-fill" style={{ width: `${(index / round.length) * 100}%` }} />
+        </div>
+
+        <div className="stats">
+          <span>
+            Question {index + 1} of {round.length}
+          </span>
+          <span>
+            {correctCount} correct{dayStreak > 0 && ` \u00b7 ${dayStreak}d streak`}
+          </span>
+        </div>
       </div>
 
-      <div className="stats">
-        <span>
-          Question {index + 1} of {round.length}
-        </span>
-        <span>
-          {correctCount} correct{dayStreak > 0 && ` \u00b7 ${dayStreak}d streak`}
-        </span>
+      {/* The question lives on its own white card so the thing you're being
+          asked always sits apart from the answers, instead of running into the
+          page. */}
+      <div className="question-card">
+        <p className="category-tag">{q.categoryTitle}</p>
+        <p className="quiz-prompt">{q.prompt}</p>
+        <p className="quiz-front">
+          {withBlanks(q.shown)}
+          {q.shownSub && <span className="en">{q.shownSub}</span>}
+          <AudioButton locale={locale} audioId={q.shownAudio} label="Hear the prompt" />
+        </p>
       </div>
-
-      <p className="category-tag">{q.categoryTitle}</p>
-      <p className="quiz-prompt">{q.prompt}</p>
-      <p className="quiz-front">
-        {withBlanks(q.shown)}
-        {q.shownSub && <span className="en">{" \u2014 "}{q.shownSub}</span>}
-        <AudioButton locale={locale} audioId={q.shownAudio} label="Hear the prompt" />
-      </p>
 
       {q.form === "choice" && (
         <div className="options">
-          {q.options.map((option) => {
-            let className = "option";
+          {q.options.map((option, i) => {
+            const isAnswer = answersMatch(option, q.answer);
+            const isPicked = option === choice;
+            let className = `option opt-${(i % OPTION_KEYS.length) + 1}`;
             if (answered) {
-              if (answersMatch(option, q.answer)) className += " correct";
-              else if (option === choice) className += " incorrect";
+              // Everything that isn't the answer or your pick steps back, so
+              // the two that matter are the two that stay lit.
+              if (isAnswer) className += " correct";
+              else if (isPicked) className += " incorrect";
+              else className += " faded";
             }
             return (
               <button
@@ -262,7 +305,11 @@ export default function TestMode({
                 onClick={() => submitChoice(option)}
                 disabled={answered}
               >
-                {withBlanks(option)}
+                <span className="option-key" aria-hidden="true">
+                  {OPTION_KEYS[i % OPTION_KEYS.length]}
+                </span>
+                <span className="option-text">{withBlanks(option)}</span>
+                {answered && (isAnswer || isPicked) && <MarkIcon right={isAnswer} />}
               </button>
             );
           })}
@@ -343,16 +390,20 @@ export default function TestMode({
       )}
 
       {answered && (
-        <>
-          <p className={`answer-feedback ${wasRight ? "right" : "wrong"}`}>
-            {wasRight ? "Correct" : <>Answer: {withBlanks(q.answer)}</>}
+        <div className={`answer-feedback ${wasRight ? "right" : "wrong"}`} role="status">
+          <span className="feedback-badge" aria-hidden="true">
+            <MarkIcon right={wasRight} />
+          </span>
+          <p className="feedback-body">
+            <span className="feedback-title">{wasRight ? "Correct!" : "Answer"}</span>
+            {!wasRight && <> {withBlanks(q.answer)}</>}
             <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
-            {!wasRight && q.answerSub && <span className="en">{" \u2014 "}{q.answerSub}</span>}
+            {!wasRight && q.answerSub && <span className="en">{q.answerSub}</span>}
           </p>
           <button type="button" className="next-question" onClick={next}>
             {index + 1 >= round.length ? "Finish round" : "Next question"}
           </button>
-        </>
+        </div>
       )}
     </div>
   );
