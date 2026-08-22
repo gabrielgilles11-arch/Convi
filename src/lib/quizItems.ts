@@ -40,6 +40,7 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
             id: exchange.id,
             categoryId: category.id,
             categoryTitle: category.title,
+            subsectionId: sub.id,
             kind: "situation",
             // The prompt is the situation, in English. It is the whole question:
             // nothing in the target language is shown until you've answered.
@@ -66,6 +67,7 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
             id,
             categoryId: category.id,
             categoryTitle: category.title,
+            subsectionId: sub.id,
             kind: "phrase",
             prompt: "What does this mean?",
             front: tip.es,
@@ -86,6 +88,7 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
             id: phrase.id,
             categoryId: category.id,
             categoryTitle: category.title,
+            subsectionId: sub.id,
             kind: "phrase",
             prompt: "What does this mean?",
             front: phrase.es,

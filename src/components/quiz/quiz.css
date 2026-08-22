@@ -718,6 +718,12 @@
   z-index: 30;
   border-top: 3px solid;
   animation: drawer-in 0.22s ease;
+  /* A long answer plus a long reply on a short screen would otherwise grow the
+     drawer past the viewport and clip its top off. Cap it and let the contents
+     scroll; the Continue button is anchored below the scroll area. */
+  max-height: 72svh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .answer-drawer.right {
