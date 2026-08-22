@@ -11,7 +11,10 @@ import { STAGE_CLEAR_SCORE, type Stage } from "../../lib/quizTypes";
  * without scaling.
  */
 const COLUMN = 320;
-const ROW = 124;
+// Row spacing follows the label type size: at the larger, heavier .stone-label
+// a long two-part title runs to four lines, which at the old 124 overlapped the
+// stone below it.
+const ROW = 146;
 const TOP = 56;
 const WIND = [0, 62, 0, -62];
 
