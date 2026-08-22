@@ -35,7 +35,7 @@
             {
               "id": "beer-food-02",
               "speaker": "them",
-              "situation": { "en": "You've ordered a beer and they ask how you want it." },
+              "situation": { "en": "You've ordered a beer and they ask whether you want it draft or bottled." },
               "question": { "es": "¿De barril o de botella?", "en": "Draft or bottle?" },
               "answers": [
                 { "es": "De barril, gracias.", "en": "Draft, thanks." },
@@ -49,7 +49,7 @@
             {
               "id": "beer-food-03",
               "speaker": "them",
-              "situation": { "en": "The bartender asks which kind of beer you want." },
+              "situation": { "en": "The bartender asks whether you want a lager or an amber." },
               "question": { "es": "¿Rubia o tostada?", "en": "Blonde (lager) or amber?" },
               "answers": [
                 { "es": "Rubia.", "en": "Blonde/lager." },
@@ -536,7 +536,7 @@
             {
               "id": "taxi-04",
               "speaker": "you",
-              "situation": { "en": "You have no cash and want to know if you can pay by card." },
+              "situation": { "en": "You're paying the taxi driver and have no cash on you." },
               "question": { "es": "¿Aceptas tarjeta?", "en": "Do you take card?" },
               "answers": [
                 { "es": "Sí.", "en": "Yes." },
@@ -1079,7 +1079,7 @@
             {
               "id": "shopping-04",
               "speaker": "you",
-              "situation": { "en": "You're at the till with no cash on you." },
+              "situation": { "en": "You're at a shop till and want to check the shop takes cards." },
               "question": { "es": "¿Aceptáis tarjeta?", "en": "Do you take card?" },
               "answers": [],
               "likelyReply": { "es": "Sí, a partir de cinco euros.", "en": "Yes, from five euros up." },
@@ -1096,7 +1096,7 @@
             {
               "id": "shopping-05",
               "speaker": "them",
-              "situation": { "en": "A market stallholder calls you over." },
+              "situation": { "en": "A market stallholder calls you over and you want to know the price of the tomatoes." },
               "question": { "es": "¡Mira, guapo/guapa! ¿Qué te pongo?", "en": "Hey, handsome/beautiful! What can I get you?" },
               "answers": [
                 { "es": "¿A cómo están los tomates?", "en": "How much are the tomatoes?" }
@@ -1358,7 +1358,7 @@
             {
               "id": "emergencies-08",
               "speaker": "them",
-              "situation": { "en": "A stranger starts catcalling you in the street." },
+              "situation": { "en": "A man shouts at you from across the street and you want him to drop it." },
               "question": { "es": "¡Guapa! ¿Adónde vas tan sola? Anda, dame una sonrisa.", "en": "Hey gorgeous! Where you off to all alone? Come on, give us a smile." },
               "answers": [
                 { "es": "Déjame en paz.", "en": "Leave me alone." },
@@ -1396,7 +1396,7 @@
             {
               "id": "emergencies-11",
               "speaker": "you",
-              "situation": { "en": "Someone has grabbed you and you need them off." },
+              "situation": { "en": "A stranger has put their hands on you and you want them off." },
               "question": { "es": "¡Quítame las manos de encima!", "en": "Get your hands off me!" },
               "answers": [],
               "likelyReply": null,
@@ -1406,7 +1406,7 @@
             {
               "id": "emergencies-12",
               "speaker": "you",
-              "situation": { "en": "Someone is holding onto you and won't let go." },
+              "situation": { "en": "Someone has hold of your arm and won't release it." },
               "question": { "es": "¡Suéltame!", "en": "Let go of me!" },
               "answers": [],
               "likelyReply": null,
@@ -1416,7 +1416,7 @@
             {
               "id": "emergencies-13",
               "speaker": "you",
-              "situation": { "en": "Someone is pushing past your limits and you need it to stop." },
+              "situation": { "en": "Someone won't stop what they're doing to you and you need them to hear that you mean it." },
               "question": { "es": "Para. Esto no me gusta. No sigas, por favor.", "en": "Stop. I don't like this. Don't keep going, please." },
               "answers": [],
               "likelyReply": null,
