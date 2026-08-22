@@ -20,6 +20,8 @@
           "exchanges": [
             {
               "id": "beer-food-01",
+              "speaker": "them",
+              "situation": { "en": "You're at a bar and the bartender asks what you're drinking." },
               "question": { "es": "¿Qué vas a tomar?/¿Qué quieres beber?", "en": "What are you having?" },
               "answers": [
                 { "es": "Una caña/una jarra/un doble, porfa.", "en": "A small/pint-size beer, please." },
@@ -32,6 +34,8 @@
             },
             {
               "id": "beer-food-02",
+              "speaker": "them",
+              "situation": { "en": "You've ordered a beer and they ask how you want it." },
               "question": { "es": "¿De barril o de botella?", "en": "Draft or bottle?" },
               "answers": [
                 { "es": "De barril, gracias.", "en": "Draft, thanks." },
@@ -44,6 +48,8 @@
             },
             {
               "id": "beer-food-03",
+              "speaker": "them",
+              "situation": { "en": "The bartender asks which kind of beer you want." },
               "question": { "es": "¿Rubia o tostada?", "en": "Blonde (lager) or amber?" },
               "answers": [
                 { "es": "Rubia.", "en": "Blonde/lager." },
@@ -56,6 +62,8 @@
             },
             {
               "id": "beer-food-04",
+              "speaker": "them",
+              "situation": { "en": "The bartender asks if you want anything else." },
               "question": { "es": "¿Algo más?", "en": "Anything else?" },
               "answers": [
                 { "es": "Nada más, gracias.", "en": "Nothing else, thanks." },
@@ -68,6 +76,8 @@
             },
             {
               "id": "beer-food-05",
+              "speaker": "them",
+              "situation": { "en": "They ask whether you're staying or taking it away." },
               "question": { "es": "¿Para aquí o para llevar?", "en": "For here or to go?" },
               "answers": [
                 { "es": "Para aquí.", "en": "For here." },
@@ -80,6 +90,8 @@
             },
             {
               "id": "beer-food-06",
+              "speaker": "them",
+              "situation": { "en": "Your glass is empty and the bartender offers another." },
               "question": { "es": "¿Te pongo otra?", "en": "Want another one?" },
               "answers": [
                 { "es": "Sí, una más.", "en": "Yes, one more." },
@@ -92,6 +104,8 @@
             },
             {
               "id": "beer-food-07",
+              "speaker": "them",
+              "situation": { "en": "It's time to pay and they ask how you're paying." },
               "question": { "es": "¿Cómo quieres pagar?", "en": "How do you want to pay?" },
               "answers": [
                 { "es": "Con tarjeta.", "en": "By card." },
@@ -104,6 +118,8 @@
             },
             {
               "id": "beer-food-08",
+              "speaker": "them",
+              "situation": { "en": "The waiter comes over and offers you the check." },
               "question": { "es": "¿La cuenta? / ¿Queréis la cuenta?", "en": "The check? / Do you want the check?" },
               "answers": [
                 { "es": "La cuenta, porfa.", "en": "The check, please." }
@@ -131,6 +147,8 @@
           "exchanges": [
             {
               "id": "beer-food-coffee-01",
+              "speaker": "them",
+              "situation": { "en": "You're at a café counter and the barista asks what you want." },
               "question": { "es": "¿Qué te pongo?", "en": "What can I get you?" },
               "answers": [
                 { "es": "Un café con leche, porfa.", "en": "A coffee with milk, please." },
@@ -143,6 +161,8 @@
             },
             {
               "id": "beer-food-coffee-02",
+              "speaker": "them",
+              "situation": { "en": "You've ordered a coffee and they ask how you want it." },
               "question": { "es": "¿Frío o caliente?", "en": "Cold or hot?" },
               "answers": [
                 { "es": "Caliente.", "en": "Hot." },
@@ -155,6 +175,8 @@
             },
             {
               "id": "beer-food-coffee-03",
+              "speaker": "you",
+              "situation": { "en": "It's morning at a café and you want to know what they do for breakfast." },
               "question": { "es": "¿Tenéis algo para desayunar?", "en": "Do you have anything for breakfast?" },
               "answers": [],
               "likelyReply": { "es": "Tostada con tomate o con mantequilla.", "en": "Toast with tomato or with butter." },
@@ -180,6 +202,8 @@
           "exchanges": [
             {
               "id": "starting-convo-01",
+              "speaker": "you",
+              "situation": { "en": "You want to get a stranger's attention politely." },
               "question": { "es": "¡Perdona! / ¡Oye!", "en": "Excuse me! / Hey!" },
               "answers": [],
               "likelyReply": { "es": "Dime. / ¿Sí?", "en": "Tell me. / Yes?" },
@@ -189,6 +213,8 @@
             },
             {
               "id": "starting-convo-02",
+              "speaker": "them",
+              "situation": { "en": "Someone you've just met asks where you're from." },
               "question": { "es": "¿De dónde eres?", "en": "Where are you from?" },
               "answers": [
                 { "es": "Yo soy de los Estados Unidos.", "en": "I am from the US." }
@@ -200,6 +226,8 @@
             },
             {
               "id": "starting-convo-03",
+              "speaker": "you",
+              "situation": { "en": "You need help and want to check whether they speak English." },
               "question": { "es": "¿Hablas inglés?", "en": "Do you speak English?" },
               "answers": [
                 { "es": "Un poco.", "en": "A little." },
@@ -212,6 +240,8 @@
             },
             {
               "id": "starting-convo-04",
+              "speaker": "them",
+              "situation": { "en": "Someone asks how long you've been in the country." },
               "question": { "es": "¿Cuánto tiempo llevas aquí?", "en": "How long have you been here?" },
               "answers": [
                 { "es": "Llevo __ días/semanas.", "en": "I've been here __ days/weeks." },
@@ -224,6 +254,8 @@
             },
             {
               "id": "starting-convo-05",
+              "speaker": "them",
+              "situation": { "en": "Someone says something and you don't catch it." },
               "question": { "es": "Cuando no entiendes lo que dijeron", "en": "When someone says something you don't understand" },
               "answers": [
                 { "es": "Perdona. No entiendo.", "en": "Sorry, I don't understand." }
@@ -235,6 +267,8 @@
             },
             {
               "id": "starting-convo-06",
+              "speaker": "you",
+              "situation": { "en": "You don't know a word and want to ask what it is." },
               "question": { "es": "¿Cómo se dice __ en español?", "en": "How do you say __ in Spanish?" },
               "answers": [
                 { "es": "Se dice __.", "en": "It's said __." }
@@ -246,6 +280,8 @@
             },
             {
               "id": "starting-convo-07",
+              "speaker": "you",
+              "situation": { "en": "You're leaving a casual conversation." },
               "question": { "es": "Hasta luego.", "en": "See you later!" },
               "answers": [],
               "likelyReply": null,
@@ -261,6 +297,8 @@
           "exchanges": [
             {
               "id": "starting-convo-08",
+              "speaker": "them",
+              "situation": { "en": "Someone asks which football team you support." },
               "question": { "es": "¿De qué equipo eres?", "en": "What team do you support?" },
               "answers": [
                 { "es": "No entiendo mucho, pero me gusta el ambiente.", "en": "I don't know much, but I love the vibe." },
@@ -273,6 +311,8 @@
             },
             {
               "id": "starting-convo-09",
+              "speaker": "them",
+              "situation": { "en": "Someone asks whether you watched last night's game." },
               "question": { "es": "¿Viste el partido?", "en": "Did you watch the game?" },
               "answers": [
                 { "es": "No, ¿cómo quedó?", "en": "No, how'd it end?" }
@@ -284,6 +324,8 @@
             },
             {
               "id": "starting-convo-10",
+              "speaker": "you",
+              "situation": { "en": "You need to leave, but you enjoyed meeting them." },
               "question": { "es": "Me tengo que ir, pero encantado/a.", "en": "I've got to go, but nice meeting you." },
               "answers": [],
               "likelyReply": { "es": "¡Igualmente! A ver si nos vemos.", "en": "Likewise! Hope we run into each other again." },
@@ -293,6 +335,8 @@
             },
             {
               "id": "starting-convo-11",
+              "speaker": "you",
+              "situation": { "en": "It's getting late and you want to wrap up warmly." },
               "question": { "es": "Se me hace tarde, otro día seguimos.", "en": "It's getting late, let's pick this up another day." },
               "answers": [],
               "likelyReply": { "es": "¡Claro! Cuídate.", "en": "Of course! Take care." },
@@ -449,6 +493,8 @@
           "exchanges": [
             {
               "id": "taxi-01",
+              "speaker": "them",
+              "situation": { "en": "You get into a taxi and the driver asks where you're going." },
               "question": { "es": "¿A dónde vamos?", "en": "Where to?" },
               "answers": [
                 { "es": "A la calle __, número __, por favor.", "en": "To __ street, number __, please." },
@@ -461,6 +507,8 @@
             },
             {
               "id": "taxi-02",
+              "speaker": "them",
+              "situation": { "en": "The driver suggests a route and checks it's fine with you." },
               "question": { "es": "¿Te viene bien por aquí?", "en": "Is this route OK?" },
               "answers": [
                 { "es": "Sí, perfecto.", "en": "Yes, perfect." },
@@ -473,6 +521,8 @@
             },
             {
               "id": "taxi-03",
+              "speaker": "you",
+              "situation": { "en": "The meter isn't running and you want it switched on." },
               "question": { "es": "¿Puedes poner el taxímetro, por favor?", "en": "Can you turn on the meter?" },
               "answers": [
                 { "es": "Sí, claro.", "en": "Yes, of course." },
@@ -485,6 +535,8 @@
             },
             {
               "id": "taxi-04",
+              "speaker": "you",
+              "situation": { "en": "You have no cash and want to know if you can pay by card." },
               "question": { "es": "¿Aceptas tarjeta?", "en": "Do you take card?" },
               "answers": [
                 { "es": "Sí.", "en": "Yes." },
@@ -497,6 +549,8 @@
             },
             {
               "id": "taxi-05",
+              "speaker": "you",
+              "situation": { "en": "You've arrived and want the driver to stop here." },
               "question": { "es": "Aquí está bien, gracias.", "en": "Here is fine, thanks." },
               "answers": [],
               "likelyReply": { "es": "Son __ euros.", "en": "It's __ euros." },
@@ -506,6 +560,8 @@
             },
             {
               "id": "taxi-06",
+              "speaker": "you",
+              "situation": { "en": "You need a receipt for the ride." },
               "question": { "es": "¿Me das un recibo?", "en": "Can I get a receipt?" },
               "answers": [
                 { "es": "Sí, un momento.", "en": "Yes, one moment." }
@@ -523,6 +579,8 @@
           "exchanges": [
             {
               "id": "metro-01",
+              "speaker": "you",
+              "situation": { "en": "You're on the street looking for the metro." },
               "question": { "es": "Perdona, ¿dónde está la entrada del metro?", "en": "Where's the metro entrance?" },
               "answers": [
                 { "es": "Allí, al fondo.", "en": "Over there, at the back." },
@@ -535,6 +593,8 @@
             },
             {
               "id": "metro-02",
+              "speaker": "you",
+              "situation": { "en": "You know where you're going but not which line to take." },
               "question": { "es": "Quiero ir a __. ¿Qué línea cojo?", "en": "I want to go to __. Which line?" },
               "answers": [
                 { "es": "La línea __, dirección __.", "en": "Line __, direction __." }
@@ -546,6 +606,8 @@
             },
             {
               "id": "metro-03",
+              "speaker": "you",
+              "situation": { "en": "You've been told to change lines and need to know where." },
               "question": { "es": "¿Dónde hago transbordo?", "en": "Where do I transfer?" },
               "answers": [
                 { "es": "En __.", "en": "At __." }
@@ -557,6 +619,8 @@
             },
             {
               "id": "metro-04",
+              "speaker": "you",
+              "situation": { "en": "You want to know how far your stop is." },
               "question": { "es": "¿Cuántas paradas son?", "en": "How many stops?" },
               "answers": [
                 { "es": "Son __ paradas.", "en": "It's __ stops." }
@@ -568,6 +632,8 @@
             },
             {
               "id": "metro-05",
+              "speaker": "you",
+              "situation": { "en": "You're on the metro and think you've boarded the wrong way." },
               "question": { "es": "Creo que voy en dirección contraria.", "en": "I think I'm going the wrong way." },
               "answers": [
                 { "es": "Te bajas en la siguiente y cambias de andén.", "en": "Get off at the next one and change platforms." }
@@ -585,6 +651,8 @@
           "exchanges": [
             {
               "id": "lost-01",
+              "speaker": "you",
+              "situation": { "en": "You're unsure you're heading the right way and stop someone." },
               "question": { "es": "Perdona, ¿esto para __ es por aquí?", "en": "Excuse me, is this the way to __?" },
               "answers": [],
               "likelyReply": { "es": "Sí, todo recto y a la izquierda.", "en": "Yes, straight ahead and to the left." },
@@ -594,6 +662,8 @@
             },
             {
               "id": "lost-02",
+              "speaker": "you",
+              "situation": { "en": "You've been pointed in a direction and want to know how far." },
               "question": { "es": "¿Está muy lejos?", "en": "Is it far?" },
               "answers": [],
               "likelyReply": { "es": "Andando, diez minutos.", "en": "Ten minutes on foot." },
@@ -603,6 +673,8 @@
             },
             {
               "id": "lost-03",
+              "speaker": "you",
+              "situation": { "en": "You have no idea where you are and need help." },
               "question": { "es": "Creo que me he perdido.", "en": "I think I'm lost." },
               "answers": [],
               "likelyReply": { "es": "¿A dónde quieres ir?", "en": "Where do you want to go?" },
@@ -612,6 +684,8 @@
             },
             {
               "id": "lost-04",
+              "speaker": "you",
+              "situation": { "en": "It's late, there are three of you, and you need a taxi to the centre." },
               "question": { "es": "¿Nos llevas al centro? Vamos tres.", "en": "Can you take us to the center? There's three of us." },
               "answers": [],
               "likelyReply": { "es": "Subid, pero de tres como mucho.", "en": "Get in, but three max." },
@@ -622,6 +696,8 @@
             },
             {
               "id": "lost-05",
+              "speaker": "you",
+              "situation": { "en": "You want the driver to drop you right where you are." },
               "question": { "es": "Déjanos aquí mismo, gracias.", "en": "Just drop us right here, thanks." },
               "answers": [],
               "likelyReply": { "es": "Son ocho euros.", "en": "That's eight euros." },
@@ -647,6 +723,8 @@
           "exchanges": [
             {
               "id": "restaurant-01",
+              "speaker": "you",
+              "situation": { "en": "You walk into a restaurant with one other person." },
               "question": { "es": "¿Tenéis mesa para dos?", "en": "Table for two?" },
               "answers": [
                 { "es": "Sí, ahora mismo.", "en": "Yes, right away." },
@@ -659,6 +737,8 @@
             },
             {
               "id": "restaurant-02",
+              "speaker": "them",
+              "situation": { "en": "The host asks whether you've booked." },
               "question": { "es": "¿Con reserva?", "en": "Reservation?" },
               "answers": [
                 { "es": "No, sin reserva.", "en": "No, no reservation." },
@@ -671,6 +751,8 @@
             },
             {
               "id": "restaurant-03",
+              "speaker": "them",
+              "situation": { "en": "The host asks how many are in your party." },
               "question": { "es": "¿Cuántos sois?", "en": "How many are you?" },
               "answers": [
                 { "es": "Somos dos.", "en": "We are two." },
@@ -683,6 +765,8 @@
             },
             {
               "id": "restaurant-04",
+              "speaker": "you",
+              "situation": { "en": "You've been told to wait and want to know how long." },
               "question": { "es": "¿Cuánto tarda?", "en": "How long?" },
               "answers": [
                 { "es": "Unos 10 minutos.", "en": "About 10 minutes." },
@@ -701,6 +785,8 @@
           "exchanges": [
             {
               "id": "restaurant-05",
+              "speaker": "them",
+              "situation": { "en": "The waiter comes over to take your order." },
               "question": { "es": "¿Qué vais a tomar?", "en": "What are you having?" },
               "answers": [
                 { "es": "Para mí __.", "en": "For me, __." },
@@ -713,6 +799,8 @@
             },
             {
               "id": "restaurant-06",
+              "speaker": "you",
+              "situation": { "en": "You want the waiter to recommend something local." },
               "question": { "es": "¿Qué es lo más típico de aquí?", "en": "What's typical here?" },
               "answers": [
                 { "es": "La tortilla / las croquetas / el pulpo…", "en": "The tortilla / croquettes / octopus…" }
@@ -724,6 +812,8 @@
             },
             {
               "id": "restaurant-07",
+              "speaker": "them",
+              "situation": { "en": "The waiter asks whether you want bread." },
               "question": { "es": "¿Queréis pan?", "en": "Do you want bread?" },
               "answers": [
                 { "es": "Sí, por favor.", "en": "Yes, please." },
@@ -736,6 +826,8 @@
             },
             {
               "id": "restaurant-08",
+              "speaker": "you",
+              "situation": { "en": "You want a dish made without one of its ingredients." },
               "question": { "es": "¿Me lo pones sin __?", "en": "Without __?" },
               "answers": [
                 { "es": "Sí, sin problema.", "en": "Yes, no problem." },
@@ -754,6 +846,8 @@
           "exchanges": [
             {
               "id": "restaurant-09",
+              "speaker": "you",
+              "situation": { "en": "A dish arrives that you didn't order." },
               "question": { "es": "Perdona, creo que esto no es lo mío.", "en": "I think this isn't mine." },
               "answers": [
                 { "es": "Uy, perdona. Ahora te lo cambio.", "en": "Oh, sorry. I'll change it now." }
@@ -765,6 +859,8 @@
             },
             {
               "id": "restaurant-10",
+              "speaker": "you",
+              "situation": { "en": "Something's wrong with your dish and you want it swapped." },
               "question": { "es": "¿Me lo cambias, por favor?", "en": "Can you change it?" },
               "answers": [
                 { "es": "Sí, claro.", "en": "Yes, of course." }
@@ -776,6 +872,8 @@
             },
             {
               "id": "restaurant-13",
+              "speaker": "you",
+              "situation": { "en": "Your food has arrived cold." },
               "question": { "es": "Perdona, esto está frío.", "en": "Sorry, this is cold." },
               "answers": [],
               "likelyReply": { "es": "Cuánto lo siento, te lo caliento.", "en": "So sorry, I'll heat it up for you." },
@@ -785,6 +883,8 @@
             },
             {
               "id": "restaurant-14",
+              "speaker": "you",
+              "situation": { "en": "The waiter puts down a plate that isn't yours." },
               "question": { "es": "Yo esto no lo he pedido.", "en": "I didn't order this." },
               "answers": [],
               "likelyReply": { "es": "Uy, perdona, me he confundido de mesa.", "en": "Oops, sorry, I mixed up the table." },
@@ -800,6 +900,8 @@
           "exchanges": [
             {
               "id": "restaurant-11",
+              "speaker": "you",
+              "situation": { "en": "You've finished eating and want to pay." },
               "question": { "es": "La cuenta, porfa.", "en": "The check, please." },
               "answers": [
                 { "es": "Ahora mismo.", "en": "Right away." }
@@ -811,6 +913,8 @@
             },
             {
               "id": "restaurant-12",
+              "speaker": "you",
+              "situation": { "en": "You're paying with others and want to split the bill." },
               "question": { "es": "¿Me puedes cobrar por separado?", "en": "Split it?" },
               "answers": [
                 { "es": "Sí, sin problema.", "en": "Yes, no problem." },
@@ -839,6 +943,8 @@
           "exchanges": [
             {
               "id": "hotel-01",
+              "speaker": "them",
+              "situation": { "en": "You arrive at your hotel and reception asks if you've booked." },
               "question": { "es": "¿Tienes reserva?", "en": "Got a reservation?" },
               "answers": [
                 { "es": "Sí, a nombre de García.", "en": "Yes, under García." },
@@ -851,6 +957,8 @@
             },
             {
               "id": "hotel-02",
+              "speaker": "you",
+              "situation": { "en": "You've arrived before check-in and are carrying your bags." },
               "question": { "es": "¿Puedo dejar las maletas hasta la hora de entrada?", "en": "Can I leave my bags until check-in time?" },
               "answers": [],
               "likelyReply": { "es": "Claro, te las guardamos.", "en": "Sure, we'll keep them for you." },
@@ -860,6 +968,8 @@
             },
             {
               "id": "hotel-03",
+              "speaker": "you",
+              "situation": { "en": "You want to know when you have to be out of the room." },
               "question": { "es": "¿A qué hora es la salida?", "en": "What time is checkout?" },
               "answers": [],
               "likelyReply": { "es": "A las doce del mediodía.", "en": "At noon." },
@@ -869,6 +979,8 @@
             },
             {
               "id": "hotel-04",
+              "speaker": "you",
+              "situation": { "en": "The air conditioning in your room has stopped working." },
               "question": { "es": "El aire acondicionado no funciona.", "en": "The AC isn't working." },
               "answers": [],
               "likelyReply": { "es": "Perdona, mando a alguien enseguida.", "en": "Sorry, I'll send someone right away." },
@@ -878,6 +990,8 @@
             },
             {
               "id": "hotel-05",
+              "speaker": "you",
+              "situation": { "en": "You want to know whether breakfast comes with the room." },
               "question": { "es": "¿El desayuno está incluido?", "en": "Is breakfast included?" },
               "answers": [],
               "likelyReply": { "es": "Sí, de ocho a diez. / No, son cinco euros aparte.", "en": "Yes, from eight to ten. / No, it's five euros extra." },
@@ -887,6 +1001,8 @@
             },
             {
               "id": "hotel-06",
+              "speaker": "you",
+              "situation": { "en": "You need to get online and want the wifi password." },
               "question": { "es": "¿Me das la contraseña del wifi?", "en": "Can I have the wifi password?" },
               "answers": [],
               "likelyReply": { "es": "Está en la tarjeta de la habitación.", "en": "It's on the room card." },
@@ -896,6 +1012,8 @@
             },
             {
               "id": "hotel-07",
+              "speaker": "you",
+              "situation": { "en": "Your flight is late in the day and you want to stay longer." },
               "question": { "es": "¿Se puede hacer late checkout?", "en": "Can I do a late checkout?" },
               "answers": [],
               "likelyReply": { "es": "Hasta las dos, sin coste. / Son diez euros más.", "en": "Until two, no charge. / It's ten euros more." },
@@ -921,6 +1039,8 @@
           "exchanges": [
             {
               "id": "shopping-01",
+              "speaker": "them",
+              "situation": { "en": "You walk into a shop and an assistant offers to help." },
               "question": { "es": "¿Te ayudo en algo?", "en": "Can I help you with anything?" },
               "answers": [
                 { "es": "Solo estoy mirando, gracias.", "en": "Just looking, thanks." },
@@ -933,6 +1053,8 @@
             },
             {
               "id": "shopping-02",
+              "speaker": "you",
+              "situation": { "en": "Something catches your eye and you want to know the price." },
               "question": { "es": "¿Cuánto vale?", "en": "How much is it?" },
               "answers": [],
               "likelyReply": { "es": "Son quince euros.", "en": "It's fifteen euros." },
@@ -942,6 +1064,8 @@
             },
             {
               "id": "shopping-03",
+              "speaker": "them",
+              "situation": { "en": "The assistant asks what size you take." },
               "question": { "es": "¿Qué talla usas?", "en": "What size are you?" },
               "answers": [
                 { "es": "La M, creo.", "en": "M, I think." },
@@ -954,6 +1078,8 @@
             },
             {
               "id": "shopping-04",
+              "speaker": "you",
+              "situation": { "en": "You're at the till with no cash on you." },
               "question": { "es": "¿Aceptáis tarjeta?", "en": "Do you take card?" },
               "answers": [],
               "likelyReply": { "es": "Sí, a partir de cinco euros.", "en": "Yes, from five euros up." },
@@ -969,6 +1095,8 @@
           "exchanges": [
             {
               "id": "shopping-05",
+              "speaker": "them",
+              "situation": { "en": "A market stallholder calls you over." },
               "question": { "es": "¡Mira, guapo/guapa! ¿Qué te pongo?", "en": "Hey, handsome/beautiful! What can I get you?" },
               "answers": [
                 { "es": "¿A cómo están los tomates?", "en": "How much are the tomatoes?" }
@@ -980,6 +1108,8 @@
             },
             {
               "id": "shopping-06",
+              "speaker": "you",
+              "situation": { "en": "You want two of something and are angling for a discount." },
               "question": { "es": "¿Me haces un precio si llevo dos?", "en": "Can you give me a deal if I take two?" },
               "answers": [],
               "likelyReply": { "es": "Va, te los dejo en cinco.", "en": "Alright, I'll give them to you for five." },
@@ -989,6 +1119,8 @@
             },
             {
               "id": "shopping-07",
+              "speaker": "you",
+              "situation": { "en": "The price is higher than you'd like." },
               "question": { "es": "Uf, es un poco caro. ¿Es lo último?", "en": "Oof, a bit pricey. Is that your best price?" },
               "answers": [],
               "likelyReply": { "es": "Te lo dejo en __ y ya está.", "en": "I'll do __ and that's it." },
@@ -998,6 +1130,8 @@
             },
             {
               "id": "shopping-08",
+              "speaker": "you",
+              "situation": { "en": "You've decided to buy it and want it bagged." },
               "question": { "es": "Me lo llevo. ¿Me lo pones en una bolsa?", "en": "I'll take it. Can you bag it?" },
               "answers": [],
               "likelyReply": { "es": "Toma, y gracias, majo/maja.", "en": "Here you go, and thanks, love." },
@@ -1023,6 +1157,8 @@
           "exchanges": [
             {
               "id": "resacon-01",
+              "speaker": "you",
+              "situation": { "en": "You wake up with a splitting headache and go to a pharmacy." },
               "question": { "es": "Buenas, ¿me das algo para el dolor de cabeza?", "en": "Hi, can you give me something for a headache?" },
               "answers": [],
               "likelyReply": { "es": "¿Ibuprofeno o paracetamol?", "en": "Ibuprofen or paracetamol?" },
@@ -1032,6 +1168,8 @@
             },
             {
               "id": "resacon-02",
+              "speaker": "you",
+              "situation": { "en": "Your stomach is in a bad way and you need something for it." },
               "question": { "es": "Tengo el estómago fatal.", "en": "My stomach is wrecked." },
               "answers": [],
               "likelyReply": { "es": "¿Diarrea o náuseas?", "en": "Diarrhea or nausea?" },
@@ -1041,6 +1179,8 @@
             },
             {
               "id": "resacon-03",
+              "speaker": "you",
+              "situation": { "en": "You think something you ate has disagreed with you." },
               "question": { "es": "Creo que me ha sentado mal algo.", "en": "I think something didn't agree with me." },
               "answers": [],
               "likelyReply": { "es": "Toma esto y bebe mucha agua.", "en": "Take this and drink plenty of water." },
@@ -1050,6 +1190,8 @@
             },
             {
               "id": "resacon-04",
+              "speaker": "you",
+              "situation": { "en": "You've caught the sun badly and need something for it." },
               "question": { "es": "Me he quemado con el sol. ¿Tienes algo?", "en": "I got sunburned. Do you have something?" },
               "answers": [],
               "likelyReply": { "es": "Con esta crema, un par de veces al día.", "en": "This cream, a couple of times a day." },
@@ -1059,6 +1201,8 @@
             },
             {
               "id": "resacon-05",
+              "speaker": "them",
+              "situation": { "en": "A friend asks how your hangover is." },
               "question": { "es": "¿Qué tal la resaca?", "en": "How's the hangover?" },
               "answers": [
                 { "es": "Fatal, no vuelvo a beber.", "en": "Awful, I'm never drinking again." },
@@ -1114,6 +1258,8 @@
           "exchanges": [
             {
               "id": "emergencies-01",
+              "speaker": "you",
+              "situation": { "en": "Your wallet has just been stolen and you need help." },
               "question": { "es": "¡Me han robado la cartera!", "en": "My wallet's been stolen!" },
               "answers": [],
               "likelyReply": { "es": "¿Dónde ha sido? Tienes que poner una denuncia.", "en": "Where did it happen? You need to file a report." },
@@ -1123,6 +1269,8 @@
             },
             {
               "id": "emergencies-02",
+              "speaker": "you",
+              "situation": { "en": "You've lost your phone or your passport." },
               "question": { "es": "He perdido el móvil / el pasaporte.", "en": "I've lost my phone / passport." },
               "answers": [],
               "likelyReply": { "es": "Mira en objetos perdidos.", "en": "Check lost and found." },
@@ -1132,6 +1280,8 @@
             },
             {
               "id": "emergencies-03",
+              "speaker": "you",
+              "situation": { "en": "You need to find the nearest police station." },
               "question": { "es": "¿Dónde está la comisaría más cercana?", "en": "Where's the nearest police station?" },
               "answers": [],
               "likelyReply": { "es": "A dos calles, todo recto.", "en": "Two streets away, straight ahead." },
@@ -1141,6 +1291,8 @@
             },
             {
               "id": "emergencies-04",
+              "speaker": "you",
+              "situation": { "en": "You've been separated from the people you're with." },
               "question": { "es": "¿Me ayudas, por favor? No encuentro a mi grupo.", "en": "Can you help me? I can't find my group." },
               "answers": [],
               "likelyReply": { "es": "Tranquilo/a, ¿los puedes llamar?", "en": "Calm down, can you call them?" },
@@ -1150,6 +1302,8 @@
             },
             {
               "id": "emergencies-05",
+              "speaker": "you",
+              "situation": { "en": "Someone needs medical help urgently." },
               "question": { "es": "Necesito un médico. / Llama a una ambulancia.", "en": "I need a doctor. / Call an ambulance." },
               "answers": [],
               "likelyReply": { "es": "Ahora mismo llamo al 112.", "en": "I'll call 112 right now." },
@@ -1165,6 +1319,8 @@
           "exchanges": [
             {
               "id": "emergencies-06",
+              "speaker": "you",
+              "situation": { "en": "Your phone has died and you need to reach someone." },
               "question": { "es": "Se me ha quedado el móvil sin batería.", "en": "My phone's dead." },
               "answers": [],
               "likelyReply": { "es": "¿Quieres usar el mío?", "en": "Do you want to use mine?" },
@@ -1174,6 +1330,8 @@
             },
             {
               "id": "emergencies-07",
+              "speaker": "you",
+              "situation": { "en": "You need to borrow a charger." },
               "question": { "es": "¿Tienes un cargador que me dejes?", "en": "Do you have a charger I could borrow?" },
               "answers": [],
               "likelyReply": { "es": "Sí, pero es de iPhone.", "en": "Yes, but it's an iPhone one." },
@@ -1199,6 +1357,8 @@
           "exchanges": [
             {
               "id": "emergencies-08",
+              "speaker": "them",
+              "situation": { "en": "A stranger starts catcalling you in the street." },
               "question": { "es": "¡Guapa! ¿Adónde vas tan sola? Anda, dame una sonrisa.", "en": "Hey gorgeous! Where you off to all alone? Come on, give us a smile." },
               "answers": [
                 { "es": "Déjame en paz.", "en": "Leave me alone." },
@@ -1211,6 +1371,8 @@
             },
             {
               "id": "emergencies-09",
+              "speaker": "them",
+              "situation": { "en": "He won't take no for an answer and starts following you." },
               "question": { "es": "Qué buena estás, morena. Venga, tómate algo conmigo, no seas así.", "en": "Damn, you're hot. Come on, have a drink with me, don't be like that. (he starts following you)" },
               "answers": [
                 { "es": "¡Que no! Déjame.", "en": "No! Leave me." },
@@ -1223,6 +1385,8 @@
             },
             {
               "id": "emergencies-10",
+              "speaker": "you",
+              "situation": { "en": "Someone puts a hand on you without asking." },
               "question": { "es": "No me toques.", "en": "Don't touch me." },
               "answers": [],
               "likelyReply": null,
@@ -1231,6 +1395,8 @@
             },
             {
               "id": "emergencies-11",
+              "speaker": "you",
+              "situation": { "en": "Someone has grabbed you and you need them off." },
               "question": { "es": "¡Quítame las manos de encima!", "en": "Get your hands off me!" },
               "answers": [],
               "likelyReply": null,
@@ -1239,6 +1405,8 @@
             },
             {
               "id": "emergencies-12",
+              "speaker": "you",
+              "situation": { "en": "Someone is holding onto you and won't let go." },
               "question": { "es": "¡Suéltame!", "en": "Let go of me!" },
               "answers": [],
               "likelyReply": null,
@@ -1247,6 +1415,8 @@
             },
             {
               "id": "emergencies-13",
+              "speaker": "you",
+              "situation": { "en": "Someone is pushing past your limits and you need it to stop." },
               "question": { "es": "Para. Esto no me gusta. No sigas, por favor.", "en": "Stop. I don't like this. Don't keep going, please." },
               "answers": [],
               "likelyReply": null,
@@ -1261,6 +1431,8 @@
           "exchanges": [
             {
               "id": "emergencies-14",
+              "speaker": "you",
+              "situation": { "en": "You don't feel safe leaving alone and want someone to walk you to a taxi." },
               "question": { "es": "¿Me acompañas hasta el taxi, por favor? No me siento segura.", "en": "Can you walk me to the taxi, please? I don't feel safe." },
               "answers": [],
               "likelyReply": { "es": "Claro, te acompaño. No te preocupes.", "en": "Of course, I'll walk with you. Don't worry." },
@@ -1269,6 +1441,8 @@
             },
             {
               "id": "emergencies-15",
+              "speaker": "you",
+              "situation": { "en": "A man is following you and you want someone to walk you home." },
               "question": { "es": "¿Puedes acompañarme a casa? Ese tío me está siguiendo.", "en": "Can you walk me home? That guy is following me." },
               "answers": [],
               "likelyReply": { "es": "Vale, vamos. ¿Quieres que llame a alguien?", "en": "Okay, let's go. Want me to call someone?" },
@@ -1277,6 +1451,8 @@
             },
             {
               "id": "emergencies-16",
+              "speaker": "you",
+              "situation": { "en": "Your drink doesn't feel right and you think it's been spiked." },
               "question": { "es": "Perdona, creo que me han echado algo en la copa. ¿Me ayudas?", "en": "Excuse me, I think someone spiked my drink. Can you help me?" },
               "answers": [],
               "likelyReply": { "es": "Vale, siéntate aquí. Llamo a seguridad y a un médico.", "en": "Okay, sit here. I'll call security and a doctor." },
@@ -1285,6 +1461,8 @@
             },
             {
               "id": "emergencies-17",
+              "speaker": "you",
+              "situation": { "en": "You need someone to call the police for you." },
               "question": { "es": "¿Puedes llamar a la policía, por favor?", "en": "Can you call the police, please?" },
               "answers": [],
               "likelyReply": { "es": "Ahora mismo llamo al 112.", "en": "I'll call 112 right now." },
@@ -1293,6 +1471,8 @@
             },
             {
               "id": "emergencies-18",
+              "speaker": "you",
+              "situation": { "en": "A man is harassing you and you want staff to know." },
               "question": { "es": "Ese hombre de ahí nos está acosando.", "en": "That man over there is harassing us." },
               "answers": [],
               "likelyReply": { "es": "Venid conmigo, os llevo con seguridad.", "en": "Come with me, I'll take you to security." },
@@ -1301,6 +1481,8 @@
             },
             {
               "id": "emergencies-19",
+              "speaker": "you",
+              "situation": { "en": "A man is crowding you and you want to flag it to someone." },
               "question": { "es": "Perdona, ese tío de ahí me está agobiando y me incomoda.", "en": "Excuse me, that guy over there is crowding me and making me uncomfortable." },
               "answers": [],
               "likelyReply": { "es": "Quédate aquí, yo me encargo.", "en": "Stay here, I'll handle it." },
@@ -1325,6 +1507,8 @@
           "exchanges": [
             {
               "id": "nightlife-01",
+              "speaker": "them",
+              "situation": { "en": "You reach the door of a club and the bouncer asks about your group." },
               "question": { "es": "¿Cuántos sois?", "en": "How many are you?" },
               "answers": [
                 { "es": "Somos tres.", "en": "We're three." }
@@ -1336,6 +1520,8 @@
             },
             {
               "id": "nightlife-02",
+              "speaker": "you",
+              "situation": { "en": "You want to know whether there's an entry fee." },
               "question": { "es": "¿Hay que pagar entrada?", "en": "Is there a cover charge?" },
               "answers": [],
               "likelyReply": { "es": "Diez euros con consumición.", "en": "Ten euros with a drink included." },
@@ -1345,6 +1531,8 @@
             },
             {
               "id": "nightlife-03",
+              "speaker": "you",
+              "situation": { "en": "You want to know how late the place stays open." },
               "question": { "es": "¿Hasta qué hora estáis abiertos?", "en": "How late are you open?" },
               "answers": [],
               "likelyReply": { "es": "Hasta las seis.", "en": "Until six (a.m.)." },
@@ -1354,6 +1542,8 @@
             },
             {
               "id": "nightlife-04",
+              "speaker": "them",
+              "situation": { "en": "The bouncer asks whether you're on a list or have tickets." },
               "question": { "es": "¿Lista o entrada?", "en": "List or ticket?" },
               "answers": [
                 { "es": "Estamos en la lista de __.", "en": "We're on __'s list." }
@@ -1371,6 +1561,8 @@
           "exchanges": [
             {
               "id": "nightlife-05",
+              "speaker": "them",
+              "situation": { "en": "Someone at the bar asks where your group is from." },
               "question": { "es": "¿De dónde sois?", "en": "Where are you (all) from?" },
               "answers": [
                 { "es": "Somos de Estados Unidos, ¿y vosotros?", "en": "We're from the US, and you?" }
@@ -1382,6 +1574,8 @@
             },
             {
               "id": "nightlife-06",
+              "speaker": "you",
+              "situation": { "en": "You've been chatting to someone and want to invite them for a drink." },
               "question": { "es": "¿Os venís a tomar algo?", "en": "Wanna come grab a drink?" },
               "answers": [],
               "likelyReply": { "es": "¡Venga, vamos!", "en": "Come on, let's go!" },
@@ -1392,6 +1586,8 @@
             },
             {
               "id": "nightlife-07",
+              "speaker": "you",
+              "situation": { "en": "You want to know what everyone's doing tonight." },
               "question": { "es": "¿Qué planes hay esta noche?", "en": "What's the plan tonight?" },
               "answers": [],
               "likelyReply": { "es": "Vamos de after, ¿te apuntas?", "en": "We're going to an afterparty, you in?" },
@@ -1402,6 +1598,8 @@
             },
             {
               "id": "nightlife-08",
+              "speaker": "you",
+              "situation": { "en": "You want to ask someone out for a night out." },
               "question": { "es": "¿Salimos de marcha?", "en": "Wanna go out partying?" },
               "answers": [],
               "likelyReply": { "es": "¡Claro! ¿Dónde quedamos?", "en": "For sure! Where should we meet?" },
@@ -1412,6 +1610,8 @@
             },
             {
               "id": "nightlife-09",
+              "speaker": "you",
+              "situation": { "en": "You're exhausted and want to head home." },
               "question": { "es": "Me piro, que estoy muerto/a.", "en": "I'm off, I'm dead tired." },
               "answers": [],
               "likelyReply": { "es": "¡Vale, escríbeme! / Nos vemos.", "en": "Okay, text me! / See you." },

@@ -278,6 +278,19 @@
   gap: 1rem;
 }
 
+/* Scroll anchor around whatever the current question's answer surface is —
+   options, typing, word bank or match board. Lays out as its own column so the
+   gap between its children is preserved. */
+.answer-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* Keeps the scroll clear of the sticky header above and the verdict drawer
+     below, so scrollIntoView parks the answers in the gap between them. */
+  scroll-margin-top: 5rem;
+  scroll-margin-bottom: 15rem;
+}
+
 .round-head {
   display: flex;
   flex-direction: column;
@@ -692,35 +705,51 @@
   text-decoration: underline;
 }
 
-/* The verdict is a banner rather than a line of coloured text: it carries the
-   right answer, its audio and the way forward, so it needs to be one block you
-   land on, not three things scattered under the options. */
-.answer-feedback {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.2rem 0.85rem;
-  align-items: center;
-  margin: 0.15rem 0 0;
-  padding: 1rem 1.1rem;
-  border-radius: 22px;
-  border: 2px solid;
-  line-height: 1.45;
-  animation: feedback-in 0.22s ease;
+/* The verdict arrives as a drawer pinned to the bottom of the screen rather
+   than a banner in the flow. It carries the answer and — the reason it exists —
+   what the other person says back, which is the end of the exchange you just
+   took part in. Pinned so the Continue button lands under the thumb in the same
+   place every time, instead of wherever the question happened to end. */
+.answer-drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  border-top: 3px solid;
+  animation: drawer-in 0.22s ease;
 }
 
-.answer-feedback.right {
+.answer-drawer.right {
   border-color: var(--color-success-deep);
   background: var(--color-success-bg);
 }
 
-.answer-feedback.wrong {
+.answer-drawer.wrong {
   border-color: var(--color-error);
   background: var(--color-error-bg);
+}
+
+.drawer-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.drawer-verdict {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0;
 }
 
 .feedback-badge {
   display: grid;
   place-items: center;
+  flex: none;
   width: 2.1rem;
   height: 2.1rem;
   border-radius: 50%;
@@ -732,56 +761,91 @@
   height: 1.2rem;
 }
 
-.answer-feedback.right .feedback-badge {
+.answer-drawer.right .feedback-badge {
   background: var(--color-success-deep);
 }
 
-.answer-feedback.wrong .feedback-badge {
+.answer-drawer.wrong .feedback-badge {
   background: var(--color-error);
-}
-
-.feedback-body {
-  margin: 0;
-  font-weight: 700;
 }
 
 .feedback-title {
   font-family: var(--font-display);
-  font-size: 1.05rem;
-  margin-right: 0.3rem;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
-.answer-feedback.right .feedback-title {
+.answer-drawer.right .feedback-title {
   color: var(--color-success-deep);
 }
 
-.answer-feedback.wrong .feedback-title {
+.answer-drawer.wrong .feedback-title {
   color: var(--color-error);
 }
 
-.answer-feedback .en {
+.drawer-answer {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.drawer-answer .en,
+.drawer-reply-line .en {
   display: block;
+  margin-top: 0.15rem;
   font-weight: 500;
+  font-size: 0.9rem;
   color: var(--color-ink-soft);
 }
 
-/* Second row, under the verdict — the badge column stays empty so the button
-   lines up with the text above it. */
-.answer-feedback .next-question {
-  grid-column: 2;
-  justify-self: start;
-  margin-top: 0.6rem;
+/* Their line sits on white inside the drawer — it's the one bit of new target
+   language here, and it shouldn't read as part of the verdict. */
+.drawer-reply {
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  padding: 0.7rem 0.9rem;
 }
 
-@keyframes feedback-in {
+.drawer-reply-label {
+  margin: 0 0 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.drawer-reply-line {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.answer-drawer .next-question {
+  align-self: stretch;
+  text-align: center;
+}
+
+@keyframes drawer-in {
   from {
-    opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(100%);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* The drawer floats over the page, so the round needs room to scroll clear of
+   it — otherwise the last option sits permanently underneath. */
+.test-mode {
+  padding-bottom: 0;
+}
+
+/* Room to scroll the answers clear of the drawer floating over them. */
+.test-mode.is-answered {
+  padding-bottom: 14rem;
 }
 
 /* ---- Round completion ---- */
@@ -1210,7 +1274,7 @@
    nothing. */
 @media (prefers-reduced-motion: reduce) {
   .option,
-  .answer-feedback,
+  .answer-drawer,
   .stone,
   .tile,
   .match-tile {

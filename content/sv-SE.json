@@ -20,6 +20,8 @@
           "exchanges": [
             {
               "id": "sv-beer-food-01",
+              "speaker": "them",
+              "situation": { "en": "You're at a Swedish bar and the bartender asks what you want." },
               "question": {
                 "es": "Vad får det lov att vara?",
                 "en": "What can I get you?"
@@ -44,6 +46,8 @@
             },
             {
               "id": "sv-beer-food-02",
+              "speaker": "them",
+              "situation": { "en": "You've ordered a beer and they ask how you want it." },
               "question": {
                 "es": "På fat eller flaska?",
                 "en": "Draft or bottle?"
@@ -68,6 +72,8 @@
             },
             {
               "id": "sv-beer-food-03",
+              "speaker": "them",
+              "situation": { "en": "The bartender asks whether you want food as well." },
               "question": {
                 "es": "Vill du ha något att äta också?",
                 "en": "Want food too?"
@@ -92,6 +98,8 @@
             },
             {
               "id": "sv-beer-food-04",
+              "speaker": "them",
+              "situation": { "en": "You've paid and they ask whether you want a receipt." },
               "question": {
                 "es": "Vill du ha kvittot?",
                 "en": "Receipt?"
@@ -151,6 +159,8 @@
           "exchanges": [
             {
               "id": "sv-starting-convo-01",
+              "speaker": "them",
+              "situation": { "en": "Someone greets you." },
               "question": {
                 "es": "Tja!",
                 "en": "Hi!"
@@ -176,6 +186,8 @@
             },
             {
               "id": "sv-starting-convo-02",
+              "speaker": "them",
+              "situation": { "en": "Someone asks how you're doing." },
               "question": {
                 "es": "Läget?",
                 "en": "How's it going?"
@@ -196,6 +208,8 @@
             },
             {
               "id": "sv-starting-convo-03",
+              "speaker": "you",
+              "situation": { "en": "You need help and want to check whether they speak English." },
               "question": {
                 "es": "Pratar du engelska?",
                 "en": "Do you speak English?"
@@ -220,6 +234,8 @@
             },
             {
               "id": "sv-starting-convo-04",
+              "speaker": "you",
+              "situation": { "en": "You didn't catch what someone just said." },
               "question": {
                 "es": "Förlåt, jag fattar inte.",
                 "en": "Sorry, I don't get it."
@@ -240,6 +256,8 @@
             },
             {
               "id": "sv-starting-convo-05",
+              "speaker": "you",
+              "situation": { "en": "You don't know a word and want to ask what it is." },
               "question": {
                 "es": "Hur säger man [ORD] på svenska?",
                 "en": "How do you say [WORD] in Swedish?"
@@ -260,6 +278,8 @@
             },
             {
               "id": "sv-starting-convo-06",
+              "speaker": "you",
+              "situation": { "en": "You're looking for a place and stop someone to ask." },
               "question": {
                 "es": "Var ligger [PLATS]?",
                 "en": "Where is [PLACE]?"
@@ -693,6 +713,8 @@
           "exchanges": [
             {
               "id": "sv-getting-around-01",
+              "speaker": "them",
+              "situation": { "en": "You get into a taxi and the driver asks where to." },
               "question": {
                 "es": "Vart ska du?",
                 "en": "Where to?"
@@ -713,6 +735,8 @@
             },
             {
               "id": "sv-getting-around-02",
+              "speaker": "you",
+              "situation": { "en": "You've arrived and want the driver to pull over." },
               "question": {
                 "es": "Kan du stanna här, tack?",
                 "en": "Can you stop here, please?"
@@ -739,6 +763,8 @@
           "exchanges": [
             {
               "id": "sv-getting-around-03",
+              "speaker": "you",
+              "situation": { "en": "You're on the street looking for the metro." },
               "question": {
                 "es": "Var är tuben? / Var är Tunnelbanan?",
                 "en": "Where's the metro?"
@@ -760,6 +786,8 @@
             },
             {
               "id": "sv-getting-around-04",
+              "speaker": "you",
+              "situation": { "en": "You know your destination but not which line to take." },
               "question": {
                 "es": "Jag ska till [PLATS]. Vilken linje?",
                 "en": "I'm going to [PLACE]. Which line?"
@@ -797,6 +825,8 @@
           "exchanges": [
             {
               "id": "sv-restaurant-01",
+              "speaker": "you",
+              "situation": { "en": "You arrive at a restaurant with one other person." },
               "question": {
                 "es": "Har ni bord för två?",
                 "en": "Table for two?"
@@ -821,6 +851,8 @@
             },
             {
               "id": "sv-restaurant-02",
+              "speaker": "you",
+              "situation": { "en": "You've finished eating and want to pay." },
               "question": {
                 "es": "Kan vi få notan, tack?",
                 "en": "Can we get the bill, please?"
@@ -841,6 +873,8 @@
             },
             {
               "id": "sv-restaurant-03",
+              "speaker": "them",
+              "situation": { "en": "The waiter asks whether you want water." },
               "question": {
                 "es": "Vill ni ha vatten?",
                 "en": "Do you want water?"
