@@ -8,6 +8,7 @@ import {
 } from "../../lib/quizTypes";
 import AudioButton from "./AudioButton";
 import MatchQuestion from "./MatchQuestion";
+import { playCorrect, playWrong } from "./sound";
 import {
   recordAnswer,
   recordQuestionResult,
@@ -111,7 +112,17 @@ export default function TestMode({
   onBackToPath,
 }: Props) {
   const [round, setRound] = useState<Question[]>(() => buildRound(items, allItems));
-  const [index, setIndex] = useState(0);
+  /**
+   * Positions in `round` still to be answered correctly. A wrong answer sends
+   * its question to the back rather than dropping it, so a round is not over
+   * until every question in it has been got right — the set repeats what you
+   * missed until you finish it.
+   */
+  const [queue, setQueue] = useState<number[]>(() => round.map((_, i) => i));
+  /** Positions already attempted once, which is what the score is taken from. */
+  const [attempted, setAttempted] = useState<number[]>([]);
+  /** Bumped on every question change so a repeated screen remounts clean. */
+  const [attempt, setAttempt] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [wasRight, setWasRight] = useState(false);
   const [choice, setChoice] = useState<string | null>(null);
@@ -125,7 +136,11 @@ export default function TestMode({
   // is stale by the time the round ends.
   const [mistakeCount, setMistakeCount] = useState(0);
 
-  const question = round[index] ?? null;
+  const position = queue.length > 0 ? queue[0] : -1;
+  const question = round[position] ?? null;
+  const cleared = round.length - queue.length;
+  /** True when this question has come back around after being missed. */
+  const isRepeat = attempted.includes(position);
 
   // The verdict drawer is pinned to the bottom of the viewport, so on a short
   // screen it can land on top of the options you just answered. Bring them back
@@ -141,7 +156,7 @@ export default function TestMode({
     // counted the drawer-clearance padding as content and pushed the options
     // up behind the header.
     el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "end" });
-  }, [answered, index]);
+  }, [answered, position, attempt]);
 
   function resetQuestion() {
     setAnswered(false);
@@ -152,8 +167,11 @@ export default function TestMode({
   }
 
   function startRound(pool: QuizItem[]) {
-    setRound(buildRound(pool, allItems));
-    setIndex(0);
+    const next = buildRound(pool, allItems);
+    setRound(next);
+    setQueue(next.map((_, i) => i));
+    setAttempted([]);
+    setAttempt(0);
     resetQuestion();
     setCorrectCount(0);
     setDone(false);
@@ -186,6 +204,16 @@ export default function TestMode({
     setAnswered(true);
     setWasRight(correct);
     recordAnswer(correct);
+    if (correct) playCorrect();
+    else playWrong();
+
+    // Only the first go at a question counts. Without this the round would
+    // always end at 100% — you cannot leave it until everything is right — and
+    // the clear threshold would stop meaning anything. It also keeps the
+    // mistake queue honest: getting it on the third attempt inside one round
+    // shouldn't erase the fact that you missed it.
+    if (attempted.includes(position)) return;
+    setAttempted((a) => [...a, position]);
     if (results) {
       for (const r of results) recordQuestionResult(r.itemId, r.correct);
     } else {
@@ -213,11 +241,25 @@ export default function TestMode({
   }
 
   function next() {
-    if (index + 1 < round.length) {
-      setIndex((i) => i + 1);
+    // Right: the question leaves the set. Wrong: it goes to the back and comes
+    // round again later. The queue is left untouched on the last one so the
+    // summary can render without the current question vanishing from under it.
+    //
+    // A matching screen is the exception. It only ends when every row has been
+    // paired correctly, so by the time you leave it there is nothing left to
+    // re-answer — "wrong" there means you needed more than one go, which costs
+    // the score but is not a reason to rebuild the board. Repeating it would
+    // trap anyone who slipped once into redoing all four rows until they
+    // managed a clean sweep.
+    const settled = wasRight || question?.form === "match";
+    const remaining = settled ? queue.slice(1) : [...queue.slice(1), position];
+    if (remaining.length > 0) {
+      setQueue(remaining);
+      setAttempt((a) => a + 1);
       resetQuestion();
       return;
     }
+
     const pct = Math.round((correctCount / round.length) * 100);
     const progress = recordRoundComplete(scoreKey, pct);
     setDayStreak(currentDayStreak(progress));
@@ -286,12 +328,15 @@ export default function TestMode({
     <div className={`test-mode${answered ? " is-answered" : ""}`}>
       <div className="round-head">
         <div className="round-bar" aria-hidden="true">
-          <div className="round-bar-fill" style={{ width: `${(index / round.length) * 100}%` }} />
+          <div className="round-bar-fill" style={{ width: `${(cleared / round.length) * 100}%` }} />
         </div>
 
         <div className="stats">
           <span>
-            Question {index + 1} of {round.length}
+            {/* Counts questions put away, not screens seen — a repeat is the
+                same question coming back, so it must not advance the count. */}
+            Question {cleared + 1} of {round.length}
+            {isRepeat && <span className="repeat-flag">Again</span>}
           </span>
           <span>
             {correctCount} correct{dayStreak > 0 && ` \u00b7 ${dayStreak}d streak`}
@@ -355,7 +400,7 @@ export default function TestMode({
       <div className="answer-area" ref={answerArea}>
       {q.form === "match" && (
         <MatchQuestion
-          key={`${index}-${q.itemId}`}
+          key={`${position}-${attempt}`}
           pairs={q.pairs}
           answered={answered}
           onDone={(clean, results) => settle(clean, results)}
@@ -478,7 +523,7 @@ export default function TestMode({
             )}
 
             <button type="button" className="next-question" onClick={next}>
-              {index + 1 >= round.length ? "Finish round" : "Continue"}
+              {(wasRight || q.form === "match") && queue.length === 1 ? "Finish round" : "Continue"}
             </button>
           </div>
         </div>
