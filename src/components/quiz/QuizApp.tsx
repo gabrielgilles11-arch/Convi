@@ -15,6 +15,7 @@ import { loadProgress, missedItemIds } from "../../lib/progress";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
+import { soundEnabled, setSoundEnabled } from "./sound";
 import "./quiz.css";
 
 type Mode = "path" | "test" | "progress";
@@ -31,6 +32,11 @@ export default function QuizApp({ locale }: Props) {
 
   const [payload, setPayload] = useState<QuizPayload | null>(null);
   const [error, setError] = useState("");
+  // Read after mount, never during render: the setting lives in localStorage,
+  // which the server has no view of, so seeding state from it directly would
+  // make the first client render disagree with the server's HTML.
+  const [sound, setSound] = useState(true);
+  useEffect(() => setSound(soundEnabled()), []);
 
   useEffect(() => {
     let cancelled = false;
@@ -126,6 +132,40 @@ export default function QuizApp({ locale }: Props) {
             Progress
           </button>
         </div>
+
+        <button
+          type="button"
+          className="sound-toggle"
+          aria-pressed={sound}
+          title={sound ? "Sound on" : "Sound off"}
+          onClick={() => {
+            const next = !sound;
+            setSound(next);
+            setSoundEnabled(next);
+          }}
+        >
+          <span className="sr-only">{sound ? "Turn sound off" : "Turn sound on"}</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" />
+            {sound ? (
+              <path
+                d="M16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.9"
+                strokeLinecap="round"
+              />
+            ) : (
+              <path
+                d="M16.5 9.5l5 5M21.5 9.5l-5 5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.9"
+                strokeLinecap="round"
+              />
+            )}
+          </svg>
+        </button>
 
         {mode === "test" && mistakes.length > 0 && stageId !== MISTAKES_STAGE_ID && (
           <button
