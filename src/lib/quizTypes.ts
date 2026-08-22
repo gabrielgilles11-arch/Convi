@@ -27,6 +27,8 @@ export interface QuizItem {
   id: string;
   categoryId: string;
   categoryTitle: string;
+  /** The subsection it came from — the ring of items closest to it in meaning. */
+  subsectionId: string;
   kind: ItemKind;
   prompt: string;
   /** Situation: the English scene. Phrase: the target-language phrase. */
@@ -109,8 +111,20 @@ export const RECALL_PER_ROUND = 1;
  */
 export const STAGE_SIZE = 12;
 
-/** Best-score percentage at which a stage counts as cleared. */
-export const STAGE_CLEAR_SCORE = 80;
+/**
+ * Best-score percentage at which a stage counts as cleared.
+ *
+ * Set from the miss allowance rather than picked as a round number: a round is
+ * ROUND_LENGTH questions and you may drop two of them, which is what clearing
+ * has always meant here. Leaving this at 80 while the round shrank from ten
+ * questions to eight quietly moved the bar to 7/8 (88%), because 6/8 is 75%
+ * and no longer reaches it. Anything reading this — including the copy on the
+ * path — must use the constant, never the number.
+ */
+export const CLEAR_MISS_ALLOWANCE = 2;
+export const STAGE_CLEAR_SCORE = Math.round(
+  ((ROUND_LENGTH - CLEAR_MISS_ALLOWANCE) / ROUND_LENGTH) * 100
+);
 
 /** `sv-beer-food` -> `beer-food`; Spanish ids are already bare. */
 export function stageKeyOf(categoryId: string): string {
@@ -390,7 +404,7 @@ export function buildQuestion(
   };
 
   if (form === "choice") {
-    question.options = buildOptions(answer, answerLang, pool, fallbackPool);
+    question.options = buildOptions(answer, answerLang, pool, fallbackPool, item);
   } else if (form === "bank") {
     question.tiles = buildTiles(answer, answerLang, pool, fallbackPool);
   }
@@ -414,12 +428,26 @@ export function buildOptions(
   answer: string,
   answerLang: AnswerLang,
   pool: QuizItem[],
-  fallbackPool: QuizItem[] = []
+  fallbackPool: QuizItem[] = [],
+  self?: QuizItem
 ): string[] {
   const seen = new Set([normalizeAnswer(answer)]);
   const distractors: string[] = [];
 
-  for (const source of [pool, fallbackPool]) {
+  // A subsection is a ring of lines about one moment, and in some of them —
+  // "Déjame en paz", "No me toques", "¡Suéltame!" — several are a defensible
+  // answer to the same situation. Drawing a distractor from that ring marks a
+  // right instinct wrong, so siblings go last: the two wider pools are tried
+  // first, and same-subsection lines fill in only when nothing else can.
+  const sibling = (i: QuizItem) => !!self && i.subsectionId === self.subsectionId && i.id !== self.id;
+  const near = (list: QuizItem[]) => list.filter(sibling);
+  const far = (list: QuizItem[]) => list.filter((i) => !sibling(i));
+
+  const sources = self
+    ? [far(pool), far(fallbackPool), near(pool), near(fallbackPool)]
+    : [pool, fallbackPool];
+
+  for (const source of sources) {
     for (const candidate of shuffle(source.map((i) => answerTextFor(i, answerLang)))) {
       if (distractors.length >= 3) break;
       if (!candidate) continue;
@@ -510,7 +538,14 @@ function pairFor(item: QuizItem): MatchPair | null {
 export function buildMatchQuestion(
   pool: QuizItem[],
   fallbackPool: QuizItem[] = [],
-  count: number = MATCH_PAIRS
+  count: number = MATCH_PAIRS,
+  /**
+   * What this round has already claimed: item ids, and the normalised lines
+   * themselves. Ids alone are not enough — the same line can exist as two
+   * items (German has "Servus" twice), and excluding one leaves the other free
+   * to give the answer away.
+   */
+  exclude: Set<string> = new Set()
 ): Question | null {
   const pairs: MatchPair[] = [];
   const sources = new Set<string>();
@@ -519,11 +554,18 @@ export function buildMatchQuestion(
   for (const source of [pool, fallbackPool]) {
     for (const item of shuffle(source)) {
       if (pairs.length >= count) break;
+      // The board shows each phrase next to its meaning. Pairing a line that a
+      // later question asks for hands over that answer, and since the order is
+      // shuffled the board lands first about half the time.
+      if (exclude.has(item.id)) continue;
       const pair = pairFor(item);
       if (!pair) continue;
       const sk = normalizeAnswer(pair.source);
       const ek = normalizeAnswer(pair.en);
       if (!sk || !ek || sources.has(sk) || meanings.has(ek)) continue;
+      // Either half of the pair giving away a question is a leak: the board
+      // shows both sides at once, so it doesn't matter which one is asked for.
+      if (exclude.has(sk) || exclude.has(ek)) continue;
       sources.add(sk);
       meanings.add(ek);
       pairs.push(pair);
@@ -631,37 +673,29 @@ export function buildRound(
   length: number = ROUND_LENGTH
 ): Question[] {
   const scale = length / ROUND_LENGTH;
-  const wantSituations = Math.max(1, Math.round(SITUATIONS_PER_ROUND * scale));
+  const wantSituations = Math.max(0, Math.round(SITUATIONS_PER_ROUND * scale));
   const wantTranslation = Math.max(1, Math.round(TRANSLATION_PER_ROUND * scale));
 
-  const inStage = <T extends QuizItem>(kind: ItemKind) => {
-    const mine = items.filter((i) => i.kind === kind);
-    const extra = fallbackPool.filter(
-      (i) => i.kind === kind && !items.some((x) => x.id === i.id)
-    );
-    return [mine, extra] as [T[], T[]];
-  };
+  const stageSituations = items.filter((i) => i.kind === "situation");
+  const stagePhrases = items.filter((i) => i.kind === "phrase");
+  const morePhrases = fallbackPool.filter(
+    (i) => i.kind === "phrase" && !items.some((x) => x.id === i.id)
+  );
 
-  const [stageSituations, moreSituations] = inStage("situation");
-  const [stagePhrases, morePhrases] = inStage("phrase");
-
-  // Situations first from the stage, topped up from the deck only if short.
+  // Compose from what this stage actually holds. Situations are never borrowed
+  // from elsewhere: a stage is one category, and a Slang round filled with
+  // five taxi situations is no longer a Slang round. Two thirds of the stages
+  // in this deck are phrasebook-only, so this is the common case, not an edge
+  // one — whatever a stage can't fill with situations it fills with its own
+  // translation questions instead, and a phrasebook stage is simply all
+  // translation and matching.
   const situations = drawQuestions(stageSituations, wantSituations, items, fallbackPool, false);
-  if (situations.length < wantSituations) {
-    situations.push(
-      ...drawQuestions(
-        moreSituations,
-        wantSituations - situations.length,
-        items,
-        fallbackPool,
-        false
-      )
-    );
-  }
+  const shortfall = wantSituations - situations.length;
+  const translationSlots = wantTranslation + shortfall;
 
   const translation = drawQuestions(
-    stagePhrases.length >= wantTranslation ? stagePhrases : [...stagePhrases, ...morePhrases],
-    wantTranslation,
+    stagePhrases.length >= translationSlots ? stagePhrases : [...stagePhrases, ...morePhrases],
+    translationSlots,
     items,
     fallbackPool,
     Math.random() < 0.5
@@ -687,13 +721,24 @@ export function buildRound(
     return d.question;
   });
 
-  const match = MATCH_PER_ROUND > 0 ? buildMatchQuestion(items, fallbackPool) : null;
+  // Built last, from what the questions didn't claim, so the board can't show
+  // a line the round is about to ask for.
+  const spokenFor = new Set<string>();
+  for (const d of [...situations, ...translation]) {
+    spokenFor.add(d.item.id);
+    spokenFor.add(normalizeAnswer(d.question.answer));
+    spokenFor.add(normalizeAnswer(d.question.shown));
+  }
+  const match =
+    MATCH_PER_ROUND > 0 ? buildMatchQuestion(items, fallbackPool, MATCH_PAIRS, spokenFor) : null;
 
   const situationQs = situations.map((d) => d.question);
-  const opener = situationQs.length > 0 ? [situationQs[0]] : [];
+  // A round opens on a situation wherever it has one; a phrasebook stage has
+  // none, so it opens on translation instead.
+  const opener = situationQs.length > 0 ? [situationQs[0]] : translated.slice(0, 1);
   const rest = shuffle([
     ...situationQs.slice(1),
-    ...translated,
+    ...(situationQs.length > 0 ? translated : translated.slice(1)),
     ...(match ? [match] : []),
   ]);
 

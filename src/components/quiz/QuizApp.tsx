@@ -4,6 +4,8 @@ import {
   recommendedStageId,
   allStagesCleared,
   slangFinalItems,
+  ROUND_LENGTH,
+  STAGE_CLEAR_SCORE,
   MISTAKES_STAGE_ID,
   SLANG_FINAL_ID,
   type QuizPayload,
@@ -139,7 +141,8 @@ export default function QuizApp({ locale }: Props) {
       {mode === "path" && (
         <>
           <p className="path-intro">
-            Work along the path. Each stone is one round of 10 — clear it at {80}% to move on.
+            Work along the path. Each stone is one round of {ROUND_LENGTH} — clear it at{" "}
+            {STAGE_CLEAR_SCORE}% to move on.
           </p>
           <PracticePath
             stages={stages}
