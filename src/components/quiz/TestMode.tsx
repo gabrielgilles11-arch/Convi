@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildRound,
   answersMatch,
@@ -126,6 +126,22 @@ export default function TestMode({
   const [mistakeCount, setMistakeCount] = useState(0);
 
   const question = round[index] ?? null;
+
+  // The verdict drawer is pinned to the bottom of the viewport, so on a short
+  // screen it can land on top of the options you just answered. Bring them back
+  // into view rather than leaving the learner to guess there's more above it.
+  const answerArea = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!answered) return;
+    const el = answerArea.current;
+    if (!el) return;
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    // "end" plus the scroll margins in CSS parks the answers in the gap between
+    // the sticky header and the drawer. Centring instead over-scrolled: it
+    // counted the drawer-clearance padding as content and pushed the options
+    // up behind the header.
+    el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "end" });
+  }, [answered, index]);
 
   function resetQuestion() {
     setAnswered(false);
@@ -267,7 +283,7 @@ export default function TestMode({
   const wordOf = (token: string) => token.slice(0, token.lastIndexOf("\u0000"));
 
   return (
-    <div className="test-mode">
+    <div className={`test-mode${answered ? " is-answered" : ""}`}>
       <div className="round-head">
         <div className="round-bar" aria-hidden="true">
           <div className="round-bar-fill" style={{ width: `${(index / round.length) * 100}%` }} />
@@ -336,6 +352,7 @@ export default function TestMode({
         </div>
       )}
 
+      <div className="answer-area" ref={answerArea}>
       {q.form === "match" && (
         <MatchQuestion
           key={`${index}-${q.itemId}`}
@@ -418,32 +435,52 @@ export default function TestMode({
         </div>
       )}
 
+      </div>
+
       {answered && (
-        <div className={`answer-feedback ${wasRight ? "right" : "wrong"}`} role="status">
-          <span className="feedback-badge" aria-hidden="true">
-            <MarkIcon right={wasRight} />
-          </span>
-          <p className="feedback-body">
-            <span className="feedback-title">
-              {q.form === "match"
-                ? wasRight
-                  ? "All matched!"
-                  : "Matched \u2014 but not first time"
-                : wasRight
-                  ? "Correct!"
-                  : "Answer"}
-            </span>
-            {q.form !== "match" && (
-              <>
-                {!wasRight && <> {withBlanks(q.answer)}</>}
+        <div className={`answer-drawer ${wasRight ? "right" : "wrong"}`} role="status">
+          <div className="drawer-inner">
+            <p className="drawer-verdict">
+              <span className="feedback-badge" aria-hidden="true">
+                <MarkIcon right={wasRight} />
+              </span>
+              <span className="feedback-title">
+                {q.form === "match"
+                  ? wasRight
+                    ? "All matched!"
+                    : "Matched \u2014 but not first time"
+                  : wasRight
+                    ? "Correct!"
+                    : "Not quite"}
+              </span>
+            </p>
+
+            {/* The right answer, when you didn't get there. */}
+            {q.form !== "match" && !wasRight && (
+              <p className="drawer-answer">
+                {withBlanks(q.answer)}
                 <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
-                {!wasRight && q.answerSub && <span className="en">{q.answerSub}</span>}
-              </>
+                {q.answerSub && <span className="en">{q.answerSub}</span>}
+              </p>
             )}
-          </p>
-          <button type="button" className="next-question" onClick={next}>
-            {index + 1 >= round.length ? "Finish round" : "Next question"}
-          </button>
+
+            {/* The payoff: what comes back at you. Never asked as a question —
+                shown here, right or wrong, so you always see the exchange
+                through to its end. */}
+            {q.reply && (
+              <div className="drawer-reply">
+                <p className="drawer-reply-label">They'd say back</p>
+                <p className="drawer-reply-line">
+                  {withBlanks(q.reply.source)}
+                  {q.reply.en && <span className="en">{q.reply.en}</span>}
+                </p>
+              </div>
+            )}
+
+            <button type="button" className="next-question" onClick={next}>
+              {index + 1 >= round.length ? "Finish round" : "Continue"}
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -55,9 +55,31 @@ has no sub-grouping (single flat list of exchanges).
 ```
 {
   "id": string,                    // unique across the whole file
+  "speaker": "you" | "them",       // who says `question` — see below
+  "situation": { "en": string },   // the moment, in English; the practice prompt
   "question": { "es": string, "en": string },
   "answers": Array<{ "es": string, "en": string }>,   // 1-2 model-answer variants; can be empty []
   "likelyReply": { "es": string, "en": string } | null, // what the local says back; null if the exchange has no reply (e.g. a farewell)
+```
+
+**`speaker` and `situation`** — `speaker` says who utters `question`, and it is
+not inferable from the other fields. Both patterns occur, sometimes inside one
+subsection:
+
+- `"speaker": "them"` — they ask, and `answers` are **your** model replies.
+  Beer/Food is all of this: the bartender asks *¿Qué vas a tomar?* and you say
+  *Una caña, porfa.*
+- `"speaker": "you"` — the question is **your** line, and `answers` are what
+  the local says back. Getting Around is mostly this: you ask *¿Aceptas
+  tarjeta?* and the driver says *Sí.* or *Solo efectivo.*
+
+Practice reads it to decide which line the learner produces, and shows the
+other side afterwards as what they'd say back. `situation` is the English
+prompt that sets the scene — it is the whole question, so write it as one
+sentence in the second person ("You have no cash and want to know if you can
+pay by card."), never as a translation of a line.
+
+```
   "notes": string,                 // slang/regional/usage notes; "" if none
   "difficulty": "easy" | "medium" | "hard",
   "region": "madrid" | "barcelona" | "stockholm" | "bayern",  // optional; renders a regional badge. Omit for pan-regional.

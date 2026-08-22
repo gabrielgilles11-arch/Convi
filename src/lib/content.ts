@@ -15,6 +15,15 @@ export type Region = "madrid" | "barcelona" | "stockholm" | "bayern";
 
 export interface Exchange {
   id: string;
+  /**
+   * Who says `question`. The field exists because it cannot be inferred: in
+   * beer-food the bartender asks and `answers` are yours, while in
+   * getting-around the question is yours and `answers` are the driver's. The
+   * practice deck needs to know which line the learner produces.
+   */
+  speaker: "you" | "them";
+  /** English description of the moment, used as the prompt in practice. */
+  situation: { en: string };
   question: Bilingual;
   answers: Bilingual[];
   likelyReply: Bilingual | null;
