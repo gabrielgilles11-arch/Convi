@@ -7,27 +7,36 @@
 // here would silently re-open the paywall hole this split exists to close.
 
 /**
- * What an item asks of you:
- *   say    — the line you produce in a situation ("what do you say?")
- *   reply  — what the other person comes back with
- *   phrase — a phrase and its meaning, testable in either direction
+ * What an item is:
+ *   situation — a moment described in English; you produce the line it calls for
+ *   phrase    — a phrase and its meaning, testable in either direction
  *
- * A round is composed by role, not by shuffling everything together: guessing
- * their comeback is a minority of the work, not the bulk of it.
+ * There is deliberately no "what would they say back" kind. Guessing someone
+ * else's line is not the skill this deck teaches; their reply is shown after
+ * you answer, as the payoff, never asked as a question.
  */
-export type ItemRole = "say" | "reply" | "phrase";
+export type ItemKind = "situation" | "phrase";
+
+/** A line of the target language with its English meaning. */
+export interface Line {
+  source: string;
+  en: string | null;
+}
 
 export interface QuizItem {
   id: string;
   categoryId: string;
   categoryTitle: string;
-  kind: "dialogue" | "phrase";
-  role: ItemRole;
-  prompt: string; // instruction shown in test mode, e.g. "What do you say?"
-  front: string; // source-language text shown on the flashcard front
+  kind: ItemKind;
+  prompt: string;
+  /** Situation: the English scene. Phrase: the target-language phrase. */
+  front: string;
   frontTranslation: string | null;
-  correctAnswer: string; // source language (dialogue) or English gloss (phrase) — the thing being tested
+  /** Situation: the line you produce. Phrase: the English meaning. */
+  correctAnswer: string;
   correctAnswerTranslation: string | null;
+  /** What they say back, revealed once the question is settled. */
+  reply: Line | null;
   /** Ids of the generated clips, or null where the side has no spoken line. */
   frontAudioId: string | null;
   answerAudioId: string | null;
@@ -71,36 +80,32 @@ export const PRACTICE_PATH = [
 ];
 
 /**
- * What one round is made of.
+ * What one round is made of: five situations, one matching screen, two
+ * translation questions. Order is shuffled every run, except that a round
+ * always opens on a situation — that is the thing being taught.
  *
- * The shape is fixed; the order is not. A round always holds four translation
- * questions, one matching screen and at most three "what would they say back",
- * but they are dealt in a different order every time so the rhythm doesn't
- * become a script you can play from memory. The one ordering rule that does
- * hold: a round never opens on a comeback question — the first thing you do is
- * always produce something yourself.
+ * Nothing asks what the other person would say. Their reply is shown after
+ * each situation settles instead.
  */
-export const TRANSLATION_PER_ROUND = 4;
+export const SITUATIONS_PER_ROUND = 5;
 export const MATCH_PER_ROUND = 1;
-export const REPLY_MAX_PER_ROUND = 3;
-export const ROUND_LENGTH = TRANSLATION_PER_ROUND + MATCH_PER_ROUND + REPLY_MAX_PER_ROUND;
+export const TRANSLATION_PER_ROUND = 2;
+export const ROUND_LENGTH = SITUATIONS_PER_ROUND + MATCH_PER_ROUND + TRANSLATION_PER_ROUND;
 
 /** Phrases paired off on one matching screen. */
 export const MATCH_PAIRS = 4;
 
 /**
- * Typed and assembled questions folded into the round. Both are recall rather
- * than recognition, so they stay — but never as the opening question, and never
- * in place of the matching screen.
+ * At most one of the two translation slots may become a typed or assembled
+ * question. Both are recall rather than recognition and worth keeping, but with
+ * only two slots, converting both would leave the round with no translation
+ * multiple choice at all. Situations are always multiple choice.
  */
-export const TYPED_PER_ROUND = 1;
-export const BANK_PER_ROUND = 1;
+export const RECALL_PER_ROUND = 1;
 
 /**
- * Items per stage. Deliberately not ROUND_LENGTH: a round samples from a stage,
- * so a stage wants more material than one round uses, and tying the two
- * together would have doubled the length of the path when `say` items were
- * restored to the deck.
+ * Items per stage. Deliberately larger than a round: a round samples from a
+ * stage, so a stage wants more material than one round uses.
  */
 export const STAGE_SIZE = 12;
 
@@ -155,33 +160,27 @@ export function allStagesCleared(stages: Stage[], bestScores: Record<string, num
 }
 
 /**
- * Spreads a category's production items and comeback items evenly before it is
- * chunked into stages.
- *
- * Items come out of the content file grouped by exchange, so a category whose
- * later exchanges all carry a `likelyReply` and no answers used to hand a whole
- * stage nothing but comebacks — and a round built from that stage was entirely
- * "what would they say back", which is the shape this deck is explicitly not
- * meant to have. Interleaving by ratio means every stage carries something to
- * produce.
+ * Spreads a category's situation items and phrase items evenly before it is
+ * chunked into stages, so no stage ends up made of only one kind and unable to
+ * build a full round.
  */
-function interleaveByRole(items: QuizItem[]): QuizItem[] {
-  const production = items.filter((i) => i.role !== "reply");
-  const replies = items.filter((i) => i.role === "reply");
-  if (production.length === 0 || replies.length === 0) return items;
+function interleaveByKind(items: QuizItem[]): QuizItem[] {
+  const situations = items.filter((i) => i.kind === "situation");
+  const phrases = items.filter((i) => i.kind === "phrase");
+  if (situations.length === 0 || phrases.length === 0) return items;
 
   const out: QuizItem[] = [];
-  let p = 0;
-  let r = 0;
-  // Take from whichever bucket has fallen furthest behind its share, so the
-  // mix stays even at every prefix — which is what chunking actually reads.
-  while (p < production.length || r < replies.length) {
-    const pShare = p / production.length;
-    const rShare = r / replies.length;
-    if (r >= replies.length || (p < production.length && pShare <= rShare)) {
-      out.push(production[p++]);
+  let a = 0;
+  let b = 0;
+  // Take from whichever bucket has fallen furthest behind its share, so the mix
+  // stays even at every prefix — which is what chunking actually reads.
+  while (a < situations.length || b < phrases.length) {
+    const aShare = a / situations.length;
+    const bShare = b / phrases.length;
+    if (b >= phrases.length || (a < situations.length && aShare <= bShare)) {
+      out.push(situations[a++]);
     } else {
-      out.push(replies[r++]);
+      out.push(phrases[b++]);
     }
   }
   return out;
@@ -209,7 +208,7 @@ export function buildStages(items: QuizItem[], categories: QuizCategory[]): Stag
     const mine = items.filter((i) => i.categoryId === category.id);
     if (mine.length === 0) continue;
 
-    const ids = interleaveByRole(mine).map((i) => i.id);
+    const ids = interleaveByKind(mine).map((i) => i.id);
 
     const chunks: string[][] = [];
     for (let i = 0; i < ids.length; i += STAGE_SIZE) {
@@ -295,6 +294,8 @@ export interface Question {
   /** Audio ids for the source-language sides only; English is never spoken. */
   shownAudio: string | null;
   answerAudio: string | null;
+  /** Shown after the question settles: what they'd come back with. */
+  reply: Line | null;
   options: string[]; // choice only
   tiles: string[]; // bank only
   pairs: MatchPair[]; // match only
@@ -305,16 +306,6 @@ export interface MatchPair {
   itemId: string;
   source: string;
   en: string;
-}
-
-/**
- * The clip ids for an item's two sides. These are carried on the item now
- * rather than derived from its id: a `say` item and the `reply` item from the
- * same exchange share a front clip but have different answer clips, which no
- * rule based on the item id alone could express.
- */
-function audioIds(item: QuizItem): { front: string | null; answer: string | null } {
-  return { front: item.frontAudioId, answer: item.answerAudioId };
 }
 
 /** The item's answer text in a given language, or "" when it has none. */
@@ -348,52 +339,35 @@ export function buildQuestion(
   let answerSub: string | null;
   let answerLang: AnswerLang;
 
-  if (item.kind === "phrase") {
-    if (reverse) {
-      if (!item.correctAnswer || !item.front) return null;
-      prompt = "How do you say this?";
-      shown = item.correctAnswer; // English gloss
-      shownSub = null;
-      answer = item.front; // source phrase
-      answerSub = null;
-      answerLang = "source";
-    } else {
-      prompt = "What does this mean?";
-      shown = item.front;
-      shownSub = null;
-      answer = item.correctAnswer;
-      answerSub = null;
-      answerLang = "en";
-    }
-  } else if (item.role === "say") {
-    // The next line of the exchange. Forward shows the cue and asks what
-    // follows; reversed shows the English of that line and asks you to produce
-    // it. Both answer in the target language — production either way, which is
-    // what earns the role its place in the front half of a round.
-    if (reverse && !item.correctAnswerTranslation) return null;
-    prompt = reverse ? "How do you say this?" : item.prompt;
-    shown = reverse ? item.correctAnswerTranslation! : item.front;
-    shownSub = reverse ? null : item.frontTranslation;
+  if (item.kind === "situation") {
+    // Situations run one way only. The scene is in English and the answer is
+    // the line you'd say — reversing it would mean showing the target line and
+    // asking which situation it belongs to, which tests nothing useful.
+    prompt = item.prompt;
+    shown = item.front;
+    shownSub = null;
     answer = item.correctAnswer;
     answerSub = item.correctAnswerTranslation;
+    answerLang = "source";
+  } else if (reverse) {
+    if (!item.correctAnswer || !item.front) return null;
+    prompt = "How do you say this?";
+    shown = item.correctAnswer; // English gloss
+    shownSub = null;
+    answer = item.front; // source phrase
+    answerSub = null;
     answerLang = "source";
   } else {
-    // Their comeback: always in the source language; reversing swaps the cue to
-    // English so you're going from your language into theirs.
-    if (reverse && !item.frontTranslation) return null;
-    prompt = item.prompt;
-    shown = reverse ? item.frontTranslation! : item.front;
-    shownSub = reverse ? null : item.frontTranslation;
+    prompt = "What does this mean?";
+    shown = item.front;
+    shownSub = null;
     answer = item.correctAnswer;
-    answerSub = item.correctAnswerTranslation;
-    answerLang = "source";
+    answerSub = null;
+    answerLang = "en";
   }
 
   if (!answer) return null;
 
-  const ids = audioIds(item);
-  // Both kinds show the source-language side only in the forward direction.
-  const sourceIsShown = !reverse;
   const question: Question = {
     itemId: item.id,
     categoryId: item.categoryId,
@@ -405,9 +379,11 @@ export function buildQuestion(
     answer,
     answerSub,
     answerLang,
-    // A side gets audio only when it is in the source language.
-    shownAudio: sourceIsShown ? ids.front : null,
-    answerAudio: answerLang === "source" ? ids.answer : null,
+    // The scene of a situation is English, so only the answer is ever spoken.
+    // A phrase shows its source side only in the forward direction.
+    shownAudio: item.kind === "phrase" && !reverse ? item.frontAudioId : null,
+    answerAudio: answerLang === "source" ? item.answerAudioId : null,
+    reply: item.reply,
     options: [],
     tiles: [],
     pairs: [],
@@ -517,8 +493,6 @@ function bankable(answer: string): boolean {
  * its translation; phrases pair the phrase with its meaning.
  */
 function pairFor(item: QuizItem): MatchPair | null {
-  // Keyed on `kind`, not `role`: kind is what says which field holds which
-  // language. A `say` item can be either kind.
   const source = item.kind === "phrase" ? item.front : item.correctAnswer;
   const en = item.kind === "phrase" ? item.correctAnswer : item.correctAnswerTranslation;
   if (!source?.trim() || !en?.trim()) return null;
@@ -575,46 +549,19 @@ export function buildMatchQuestion(
     answerLang: "source",
     shownAudio: null,
     answerAudio: null,
+    reply: null,
     options: [],
     tiles: [],
     pairs,
   };
 }
 
-/** Draws up to `n` questions from `pool`, alternating direction. */
-function drawQuestions(
-  pool: QuizItem[],
-  n: number,
-  items: QuizItem[],
-  fallbackPool: QuizItem[],
-  startReversed: boolean
-): { item: QuizItem; question: Question; reverse: boolean }[] {
-  const out: { item: QuizItem; question: Question; reverse: boolean }[] = [];
-
-  for (const item of shuffle(pool)) {
-    if (out.length >= n) break;
-    // Alternate so a block never ends up all one direction: you are asked both
-    // to read the target language and to produce it.
-    const wanted = out.length % 2 === 0 ? startReversed : !startReversed;
-    const first = buildQuestion(item, wanted, "choice", items, fallbackPool);
-    if (first) {
-      out.push({ item, question: first, reverse: wanted });
-      continue;
-    }
-    const flipped = buildQuestion(item, !wanted, "choice", items, fallbackPool);
-    if (flipped) out.push({ item, question: flipped, reverse: !wanted });
-  }
-
-  return out;
-}
-
 type Draft = { item: QuizItem; question: Question; reverse: boolean };
 
 /**
- * Ensures a block asks in both directions — pick the English meaning at least
- * once, and produce the target language at least once — by replacing one entry
- * when every question came out the same way round. Does nothing when the pool
- * genuinely can't supply the missing direction.
+ * Ensures the translation block asks in both directions — pick the English
+ * meaning at least once, produce the target language at least once — by
+ * replacing one entry when both came out the same way round.
  */
 function forceBothDirections(
   block: Draft[],
@@ -628,14 +575,11 @@ function forceBothDirections(
 
   const missing: AnswerLang = langs.has("en") ? "source" : "en";
   const used = new Set(block.map((d) => d.item.id));
-  // An English answer is only available from a phrase-kind item, whose forward
-  // direction is "what does this mean".
   const reverse = missing === "source";
 
   for (const source of [pool, fallbackPool]) {
     for (const candidate of shuffle(source)) {
-      if (used.has(candidate.id)) continue;
-      if (missing === "en" && candidate.kind !== "phrase") continue;
+      if (used.has(candidate.id) || candidate.kind !== "phrase") continue;
       const q = buildQuestion(candidate, reverse, "choice", items, fallbackPool);
       if (!q || q.answerLang !== missing) continue;
       block[block.length - 1] = { item: candidate, question: q, reverse };
@@ -644,18 +588,42 @@ function forceBothDirections(
   }
 }
 
+/** Draws up to `n` questions from `pool`, alternating direction. */
+function drawQuestions(
+  pool: QuizItem[],
+  n: number,
+  items: QuizItem[],
+  fallbackPool: QuizItem[],
+  startReversed: boolean
+): Draft[] {
+  const out: Draft[] = [];
+
+  for (const item of shuffle(pool)) {
+    if (out.length >= n) break;
+    const wanted = out.length % 2 === 0 ? startReversed : !startReversed;
+    const first = buildQuestion(item, wanted, "choice", items, fallbackPool);
+    if (first) {
+      out.push({ item, question: first, reverse: wanted });
+      continue;
+    }
+    const flipped = buildQuestion(item, !wanted, "choice", items, fallbackPool);
+    if (flipped) out.push({ item, question: flipped, reverse: !wanted });
+  }
+
+  return out;
+}
+
 /**
- * One round, composed by role rather than sampled from one bag.
+ * One round: five situations, one matching screen, two translation questions.
  *
- * Four translation questions come from the material you produce — your own
- * lines and the phrasebook — in both directions. One matching screen pairs
- * phrases with meanings. At most three questions ask what the other person
- * comes back with, which is the cap that keeps the round about speaking rather
- * than guessing.
+ * A situation names a moment in English and asks for the line it calls for —
+ * that is the whole point of the deck, so it is the bulk of the round and
+ * always the opening question. Nothing asks what the other person would say;
+ * their reply is carried on the question and shown once you've answered.
  *
- * The blocks are then dealt in a random order, except that a comeback question
- * can never land first: whatever else varies, a round opens with you producing
- * something.
+ * Everything after the opener is shuffled, so no two rounds run in the same
+ * order. Both blocks backfill from the wider deck when a stage is short of one
+ * kind, rather than letting a round come up under length.
  */
 export function buildRound(
   items: QuizItem[],
@@ -663,64 +631,70 @@ export function buildRound(
   length: number = ROUND_LENGTH
 ): Question[] {
   const scale = length / ROUND_LENGTH;
+  const wantSituations = Math.max(1, Math.round(SITUATIONS_PER_ROUND * scale));
   const wantTranslation = Math.max(1, Math.round(TRANSLATION_PER_ROUND * scale));
-  const wantReplies = Math.max(0, Math.round(REPLY_MAX_PER_ROUND * scale));
 
-  const production = items.filter((i) => i.role !== "reply");
-  const replies = items.filter((i) => i.role === "reply");
+  const inStage = <T extends QuizItem>(kind: ItemKind) => {
+    const mine = items.filter((i) => i.kind === kind);
+    const extra = fallbackPool.filter(
+      (i) => i.kind === kind && !items.some((x) => x.id === i.id)
+    );
+    return [mine, extra] as [T[], T[]];
+  };
 
-  // A stage of nothing but comebacks would otherwise render an empty round.
-  const translationPool = production.length > 0 ? production : items;
+  const [stageSituations, moreSituations] = inStage("situation");
+  const [stagePhrases, morePhrases] = inStage("phrase");
+
+  // Situations first from the stage, topped up from the deck only if short.
+  const situations = drawQuestions(stageSituations, wantSituations, items, fallbackPool, false);
+  if (situations.length < wantSituations) {
+    situations.push(
+      ...drawQuestions(
+        moreSituations,
+        wantSituations - situations.length,
+        items,
+        fallbackPool,
+        false
+      )
+    );
+  }
 
   const translation = drawQuestions(
-    translationPool,
+    stagePhrases.length >= wantTranslation ? stagePhrases : [...stagePhrases, ...morePhrases],
     wantTranslation,
     items,
     fallbackPool,
     Math.random() < 0.5
   );
+  forceBothDirections(translation, [...stagePhrases, ...morePhrases], items, fallbackPool);
 
-  // Alternating direction inside drawQuestions isn't enough on its own: a
-  // dialogue line answers in the target language whichever way it's turned, so
-  // a block drawn entirely from dialogue asks you to pick a target phrase four
-  // times and never an English meaning. Only a phrase-kind item can be answered
-  // in English, so if the block came out one-directional, swap one in.
-  forceBothDirections(translation, translationPool, items, fallbackPool);
-  const comebacks = drawQuestions(replies, wantReplies, items, fallbackPool, false);
-
-  // Typing and assembly are recall, so they replace choice questions from the
-  // production block only — being asked to type a line you have never seen,
-  // because it happened to be someone else's comeback, is not a fair ask.
-  const drafts = [...translation];
-  let typed = 0;
-  let banked = 0;
-  const forms = drafts.map((d) => {
-    if (typed < TYPED_PER_ROUND && typeable(d.question.answer)) {
-      typed += 1;
-      return "type" as QuestionForm;
+  // At most one translation slot becomes typing or assembly. Situations stay
+  // multiple choice: the answer is a whole spoken line, and typing one from a
+  // standing start is a different, much harder exercise than choosing it.
+  let recall = 0;
+  const translated: Question[] = translation.map((d) => {
+    if (recall < RECALL_PER_ROUND) {
+      const form: QuestionForm | null = typeable(d.question.answer)
+        ? "type"
+        : bankable(d.question.answer)
+          ? "bank"
+          : null;
+      if (form) {
+        recall += 1;
+        return buildQuestion(d.item, d.reverse, form, items, fallbackPool) ?? d.question;
+      }
     }
-    if (banked < BANK_PER_ROUND && bankable(d.question.answer)) {
-      banked += 1;
-      return "bank" as QuestionForm;
-    }
-    return "choice" as QuestionForm;
-  });
-
-  const produced: Question[] = drafts.map((d, i) => {
-    if (forms[i] === "choice") return d.question;
-    return buildQuestion(d.item, d.reverse, forms[i], items, fallbackPool) ?? d.question;
+    return d.question;
   });
 
   const match = MATCH_PER_ROUND > 0 ? buildMatchQuestion(items, fallbackPool) : null;
 
-  // Opening slot is drawn from the production block on purpose; everything else
-  // is shuffled together, so no two rounds run in the same order.
-  const opener = produced.length > 0 ? [shuffle(produced)[0]] : [];
-  const openerId = opener[0];
+  const situationQs = situations.map((d) => d.question);
+  const opener = situationQs.length > 0 ? [situationQs[0]] : [];
   const rest = shuffle([
-    ...produced.filter((q) => q !== openerId),
+    ...situationQs.slice(1),
+    ...translated,
     ...(match ? [match] : []),
-    ...comebacks.map((c) => c.question),
   ]);
 
   return [...opener, ...rest].slice(0, length);
