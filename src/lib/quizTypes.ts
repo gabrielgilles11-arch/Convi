@@ -365,6 +365,10 @@ export function buildQuestion(
     answerLang = "source";
   } else if (reverse) {
     if (!item.correctAnswer || !item.front) return null;
+    // Same reasoning as pairFor: translating a template teaches the scaffolding
+    // rather than the language. No phrase in the deck carries a slot today, so
+    // this costs nothing now and stops the case arising as content grows.
+    if (hasPlaceholder(item.front) || hasPlaceholder(item.correctAnswer)) return null;
     prompt = "How do you say this?";
     shown = item.correctAnswer; // English gloss
     shownSub = null;
@@ -372,6 +376,7 @@ export function buildQuestion(
     answerSub = null;
     answerLang = "source";
   } else {
+    if (hasPlaceholder(item.front) || hasPlaceholder(item.correctAnswer)) return null;
     prompt = "What does this mean?";
     shown = item.front;
     shownSub = null;
@@ -524,6 +529,15 @@ function pairFor(item: QuizItem): MatchPair | null {
   const source = item.kind === "phrase" ? item.front : item.correctAnswer;
   const en = item.kind === "phrase" ? item.correctAnswer : item.correctAnswerTranslation;
   if (!source?.trim() || !en?.trim()) return null;
+
+  // A line with a fill-in slot is a template, not a phrase, and a board pairs
+  // phrases with their meanings. Worse, the slot names are themselves
+  // localised — Swedish authors [ORD] where the English says [WORD] — so a
+  // board could pair "Hur säger man [ORD] på svenska?" with "How do you say
+  // [WORD] in Swedish?" and appear to be teaching that ORD means WORD. The
+  // placeholder is scaffolding; it is never the thing being learned.
+  if (hasPlaceholder(source) || hasPlaceholder(en)) return null;
+
   return { itemId: item.id, source: source.trim(), en: en.trim() };
 }
 

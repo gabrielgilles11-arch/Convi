@@ -358,7 +358,7 @@ export default function TestMode({
             <p className="quiz-prompt">{q.prompt}</p>
             <p className="quiz-front">
               {withBlanks(q.shown)}
-              {q.shownSub && <span className="en">{q.shownSub}</span>}
+              {q.shownSub && <span className="en">{withBlanks(q.shownSub)}</span>}
               <AudioButton locale={locale} audioId={q.shownAudio} label="Hear the prompt" />
             </p>
           </>
@@ -505,7 +505,7 @@ export default function TestMode({
               <p className="drawer-answer">
                 {withBlanks(q.answer)}
                 <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
-                {q.answerSub && <span className="en">{q.answerSub}</span>}
+                {q.answerSub && <span className="en">{withBlanks(q.answerSub)}</span>}
               </p>
             )}
 
@@ -517,7 +517,7 @@ export default function TestMode({
                 <p className="drawer-reply-label">They'd say back</p>
                 <p className="drawer-reply-line">
                   {withBlanks(q.reply.source)}
-                  {q.reply.en && <span className="en">{q.reply.en}</span>}
+                  {q.reply.en && <span className="en">{withBlanks(q.reply.en)}</span>}
                 </p>
               </div>
             )}
