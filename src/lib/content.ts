@@ -154,11 +154,12 @@ export function localeOfCategory(id: string): Locale | undefined {
 // One purchase unlocks every language, so this is a single flat set; ids are
 // globally unique, so no locale scoping is needed.
 const PREMIUM_CATEGORY_IDS = new Set([
-  // Spanish
+  // Spanish. Cuss words and nightlife are deliberately free here: they are what
+  // the marketing leads on, and a visitor arriving on that promise should land
+  // on it rather than on a locked page. The Swedish and German cuss words below
+  // stay paid, so this is a Spanish-only shop window.
   "for-the-girls",
-  "cuss-words",
   "flirting",
-  "nightlife",
   "emergencies",
   "resacon",
   // Swedish
