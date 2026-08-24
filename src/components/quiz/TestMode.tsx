@@ -21,7 +21,11 @@ import {
 interface Props {
   /** Items in the current stage. */
   items: QuizItem[];
-  /** The whole deck, used only to backfill distractors and decoys. */
+  /**
+   * Everything reached so far: this stage plus the ones before it. Used to
+   * backfill a round, its distractors and its decoys — never the whole deck,
+   * so nothing from a later stage can surface early.
+   */
   allItems: QuizItem[];
   /** Which edition's audio to look for. */
   locale: string;
