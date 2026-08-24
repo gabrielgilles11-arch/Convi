@@ -89,6 +89,23 @@ export default function QuizApp({ locale }: Props) {
   const stageIndex = stages.findIndex((s) => s.id === stageId);
   const nextStage = stageIndex >= 0 && stageIndex + 1 < stages.length ? stages[stageIndex + 1] : null;
 
+  /**
+   * Everything the learner has reached: this stage plus every stage before it
+   * on the path. A round borrows from here when its own stage is too small,
+   * so an import is always revision rather than a phrase from a category
+   * further along that they have not met yet.
+   */
+  const seenPool = useMemo(() => {
+    if (!payload) return [];
+    // The mistake drill and the final draw on the whole deck by definition:
+    // one is made of things already answered, the other is the capstone.
+    if (stageId === MISTAKES_STAGE_ID || stageId === SLANG_FINAL_ID) return payload.items;
+    const idx = stages.findIndex((s) => s.id === stageId);
+    if (idx < 0) return payload.items;
+    const reached = new Set(stages.slice(0, idx + 1).flatMap((s) => s.itemIds));
+    return payload.items.filter((i) => reached.has(i.id));
+  }, [payload, stages, stageId]);
+
   const items = useMemo(() => {
     if (!payload) return [];
     if (stageId === MISTAKES_STAGE_ID) {
@@ -210,7 +227,7 @@ export default function QuizApp({ locale }: Props) {
           </p>
           <TestMode
             items={items}
-            allItems={payload.items}
+            allItems={seenPool}
             locale={locale ?? "es-ES"}
             setId={stageId}
             scoreKey={scoreKey}

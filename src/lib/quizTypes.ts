@@ -353,10 +353,20 @@ export function buildQuestion(
   let answerSub: string | null;
   let answerLang: AnswerLang;
 
-  if (item.kind === "situation") {
-    // Situations run one way only. The scene is in English and the answer is
-    // the line you'd say — reversing it would mean showing the target line and
-    // asking which situation it belongs to, which tests nothing useful.
+  if (item.kind === "situation" && reverse) {
+    // The same line asked from the other side: here is what it means, produce
+    // it. Not a situation question — no scene, no reply — but it is the same
+    // material seen from a second angle, which is how a three-item stage fills
+    // a round without importing anything.
+    if (!item.correctAnswerTranslation || hasPlaceholder(item.correctAnswer)) return null;
+    prompt = "How do you say this?";
+    shown = item.correctAnswerTranslation;
+    shownSub = null;
+    answer = item.correctAnswer;
+    answerSub = null;
+    answerLang = "source";
+  } else if (item.kind === "situation") {
+    // Forward: the scene is in English and the answer is the line you'd say.
     prompt = item.prompt;
     shown = item.front;
     shownSub = null;
@@ -402,7 +412,10 @@ export function buildQuestion(
     // A phrase shows its source side only in the forward direction.
     shownAudio: item.kind === "phrase" && !reverse ? item.frontAudioId : null,
     answerAudio: answerLang === "source" ? item.answerAudioId : null,
-    reply: item.reply,
+    // The reply belongs to the scene. A reversed situation has no scene, so
+    // showing "they'd say back" under it would be answering a question that
+    // was never asked.
+    reply: item.kind === "situation" && reverse ? null : item.reply,
     options: [],
     tiles: [],
     pairs: [],
@@ -445,11 +458,24 @@ export function buildOptions(
   // right instinct wrong, so siblings go last: the two wider pools are tried
   // first, and same-subsection lines fill in only when nothing else can.
   const sibling = (i: QuizItem) => !!self && i.subsectionId === self.subsectionId && i.id !== self.id;
+  const sameCat = (i: QuizItem) => !!self && i.categoryId === self.categoryId;
   const near = (list: QuizItem[]) => list.filter(sibling);
   const far = (list: QuizItem[]) => list.filter((i) => !sibling(i));
 
+  // Same category before anything else: a wrong answer from the topic you are
+  // on is a real distractor, where one borrowed from Bayern slang inside a
+  // restaurant question just tells you which option is the odd one out. Same
+  // subsection stays last for the opposite reason — those lines are often all
+  // defensible answers to the same situation.
   const sources = self
-    ? [far(pool), far(fallbackPool), near(pool), near(fallbackPool)]
+    ? [
+        far(pool).filter(sameCat),
+        far(fallbackPool).filter(sameCat),
+        far(pool).filter((i) => !sameCat(i)),
+        far(fallbackPool).filter((i) => !sameCat(i)),
+        near(pool),
+        near(fallbackPool),
+      ]
     : [pool, fallbackPool];
 
   for (const source of sources) {
@@ -554,32 +580,36 @@ export function buildMatchQuestion(
   fallbackPool: QuizItem[] = [],
   count: number = MATCH_PAIRS,
   /**
-   * What this round has already claimed: item ids, and the normalised lines
-   * themselves. Ids alone are not enough — the same line can exist as two
-   * items (German has "Servus" twice), and excluding one leaves the other free
-   * to give the answer away.
+   * Items the round already asked about, in the order it asked them. The board
+   * is built from these first: pairing what you just worked through turns it
+   * into reinforcement, and it is the only way a three-item stage gets a board
+   * of its own material rather than four imported rows.
    */
-  exclude: Set<string> = new Set()
+  prefer: QuizItem[] = []
 ): Question | null {
   const pairs: MatchPair[] = [];
   const sources = new Set<string>();
   const meanings = new Set<string>();
 
-  for (const source of [pool, fallbackPool]) {
-    for (const item of shuffle(source)) {
+  const claimed = new Set(prefer.map((i) => i.id));
+  // Round material first, then the rest of this stage, then whatever the caller
+  // allows as a wider pool. Nothing is excluded any more: a board that repeats
+  // a line the round already covered is reinforcement, not a leak, because you
+  // have already been shown the answer.
+  const sources_ = [
+    prefer,
+    shuffle(pool.filter((i) => !claimed.has(i.id))),
+    shuffle(fallbackPool.filter((i) => !claimed.has(i.id) && !pool.some((p) => p.id === i.id))),
+  ];
+
+  for (const source of sources_) {
+    for (const item of source) {
       if (pairs.length >= count) break;
-      // The board shows each phrase next to its meaning. Pairing a line that a
-      // later question asks for hands over that answer, and since the order is
-      // shuffled the board lands first about half the time.
-      if (exclude.has(item.id)) continue;
       const pair = pairFor(item);
       if (!pair) continue;
       const sk = normalizeAnswer(pair.source);
       const ek = normalizeAnswer(pair.en);
       if (!sk || !ek || sources.has(sk) || meanings.has(ek)) continue;
-      // Either half of the pair giving away a question is a leak: the board
-      // shows both sides at once, so it doesn't matter which one is asked for.
-      if (exclude.has(sk) || exclude.has(ek)) continue;
       sources.add(sk);
       meanings.add(ek);
       pairs.push(pair);
@@ -683,45 +713,72 @@ function drawQuestions(
  */
 export function buildRound(
   items: QuizItem[],
-  fallbackPool: QuizItem[] = items,
+  /**
+   * Everything the learner has already reached: this stage plus every stage
+   * before it on the path. Never the whole deck. When a stage is too small to
+   * fill a round on its own the shortfall is borrowed from here, so an import
+   * is always revision of something already seen rather than a stranger from a
+   * category further along.
+   */
+  seenPool: QuizItem[] = items,
   length: number = ROUND_LENGTH
 ): Question[] {
   const scale = length / ROUND_LENGTH;
   const wantSituations = Math.max(0, Math.round(SITUATIONS_PER_ROUND * scale));
   const wantTranslation = Math.max(1, Math.round(TRANSLATION_PER_ROUND * scale));
+  const slots = wantSituations + wantTranslation;
 
-  const stageSituations = items.filter((i) => i.kind === "situation");
-  const stagePhrases = items.filter((i) => i.kind === "phrase");
-  const morePhrases = fallbackPool.filter(
-    (i) => i.kind === "phrase" && !items.some((x) => x.id === i.id)
-  );
+  const mine = new Set(items.map((i) => i.id));
+  const earlier = seenPool.filter((i) => !mine.has(i.id));
 
-  // Compose from what this stage actually holds. Situations are never borrowed
-  // from elsewhere: a stage is one category, and a Slang round filled with
-  // five taxi situations is no longer a Slang round. Two thirds of the stages
-  // in this deck are phrasebook-only, so this is the common case, not an edge
-  // one — whatever a stage can't fill with situations it fills with its own
-  // translation questions instead, and a phrasebook stage is simply all
-  // translation and matching.
-  const situations = drawQuestions(stageSituations, wantSituations, items, fallbackPool, false);
-  const shortfall = wantSituations - situations.length;
-  const translationSlots = wantTranslation + shortfall;
+  const used = new Set<string>();
+  const drafts: Draft[] = [];
 
-  const translation = drawQuestions(
-    stagePhrases.length >= translationSlots ? stagePhrases : [...stagePhrases, ...morePhrases],
-    translationSlots,
-    items,
-    fallbackPool,
-    Math.random() < 0.5
-  );
-  forceBothDirections(translation, [...stagePhrases, ...morePhrases], items, fallbackPool);
+  /**
+   * Fills up to `n` slots from `pool`, skipping items already spoken for.
+   * `reverse` picks which way round the question is asked, which is what makes
+   * a second pass over the same items produce different questions.
+   */
+  const take = (pool: QuizItem[], n: number, reverse: boolean, allowUsed = false) => {
+    if (n <= 0) return;
+    for (const item of shuffle(pool)) {
+      if (drafts.length >= slots) return;
+      if (n <= 0) return;
+      if (!allowUsed && used.has(item.id)) continue;
+      if (allowUsed && drafts.some((d) => d.item.id === item.id && d.reverse === reverse)) continue;
+      const q = buildQuestion(item, reverse, "choice", items, seenPool);
+      if (!q) continue;
+      used.add(item.id);
+      drafts.push({ item, question: q, reverse });
+      n -= 1;
+    }
+  };
 
-  // At most one translation slot becomes typing or assembly. Situations stay
+  const situations = (list: QuizItem[]) => list.filter((i) => i.kind === "situation");
+  const phrases = (list: QuizItem[]) => list.filter((i) => i.kind === "phrase");
+
+  // The order below is the whole policy. Own material, then the same material
+  // from its other side, and only then a step backwards along the path.
+  take(situations(items), wantSituations, false);              // 1. own situations
+  take(phrases(items), slots - drafts.length, false);          // 2. own phrases
+  take(phrases(items), slots - drafts.length, true, true);     // 3. own phrases, flipped
+  take(situations(items), slots - drafts.length, true, true);  // 4. own situations, flipped
+  take(situations(earlier), slots - drafts.length, false);     // 5. earlier stages
+  take(phrases(earlier), slots - drafts.length, false);
+  take(phrases(earlier), slots - drafts.length, true, true);
+
+  if (drafts.length === 0) return [];
+
+  // Both directions of translation should appear when the material allows it.
+  forceBothDirections(drafts, [...phrases(items), ...phrases(earlier)], items, seenPool);
+
+  // At most one slot becomes typing or assembly. Situations shown forward stay
   // multiple choice: the answer is a whole spoken line, and typing one from a
   // standing start is a different, much harder exercise than choosing it.
   let recall = 0;
-  const translated: Question[] = translation.map((d) => {
-    if (recall < RECALL_PER_ROUND) {
+  const asked: Question[] = drafts.map((d) => {
+    const isForwardSituation = d.item.kind === "situation" && !d.reverse;
+    if (!isForwardSituation && recall < RECALL_PER_ROUND) {
       const form: QuestionForm | null = typeable(d.question.answer)
         ? "type"
         : bankable(d.question.answer)
@@ -729,30 +786,24 @@ export function buildRound(
           : null;
       if (form) {
         recall += 1;
-        return buildQuestion(d.item, d.reverse, form, items, fallbackPool) ?? d.question;
+        return buildQuestion(d.item, d.reverse, form, items, seenPool) ?? d.question;
       }
     }
     return d.question;
   });
 
-  // Built last, from what the questions didn't claim, so the board can't show
-  // a line the round is about to ask for.
-  const spokenFor = new Set<string>();
-  for (const d of [...situations, ...translation]) {
-    spokenFor.add(d.item.id);
-    spokenFor.add(normalizeAnswer(d.question.answer));
-    spokenFor.add(normalizeAnswer(d.question.shown));
-  }
+  // The board is built from what the round just covered, so it reinforces
+  // rather than importing four unrelated rows.
   const match =
-    MATCH_PER_ROUND > 0 ? buildMatchQuestion(items, fallbackPool, MATCH_PAIRS, spokenFor) : null;
+    MATCH_PER_ROUND > 0
+      ? buildMatchQuestion(items, seenPool, MATCH_PAIRS, drafts.map((d) => d.item))
+      : null;
 
-  const situationQs = situations.map((d) => d.question);
-  // A round opens on a situation wherever it has one; a phrasebook stage has
-  // none, so it opens on translation instead.
-  const opener = situationQs.length > 0 ? [situationQs[0]] : translated.slice(0, 1);
+  // A round opens on a situation wherever it has one.
+  const openerIdx = asked.findIndex((q, i) => drafts[i].item.kind === "situation" && !drafts[i].reverse);
+  const opener = openerIdx >= 0 ? [asked[openerIdx]] : asked.slice(0, 1);
   const rest = shuffle([
-    ...situationQs.slice(1),
-    ...(situationQs.length > 0 ? translated : translated.slice(1)),
+    ...asked.filter((q) => q !== opener[0]),
     ...(match ? [match] : []),
   ]);
 
