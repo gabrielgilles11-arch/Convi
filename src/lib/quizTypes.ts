@@ -281,8 +281,72 @@ export function normalizeAnswer(value: string): string {
     .toLowerCase();
 }
 
+/**
+ * Splits a line into the part you are actually being asked for and the aside
+ * the author attached to it.
+ *
+ * Content is written with register and usage notes baked into the line —
+ * "All good (casual).", "A pale lager, please — common in the south.",
+ * "Dude! / bro! — tone matters." Those asides are worth reading, but they are
+ * commentary, not the answer: making someone type "(informal)" to be marked
+ * right tests transcription, not the language. So the aside comes off the
+ * answer and is shown in the verdict drawer once the question is settled,
+ * which is also where it does the most good — you see the difference at the
+ * moment you find out whether you had it.
+ *
+ * Only a *trailing* aside is split off. "(kein) Bock" and "Where are you (all)
+ * from?" carry their parentheses mid-line, where they are part of the phrase,
+ * and a mid-line dash is prose. Exactly one aside is taken, and never both
+ * kinds: "I'm never drinking again (ever) — everyone lies." keeps its "(ever)".
+ */
+const TRAILING_PAREN = /\s*\(([^()]{1,80})\)\s*[.!?\u2026]*\s*$/;
+const TRAILING_DASH = /\s+[\u2014\u2013]\s+([^\u2014\u2013]{1,80})\s*$/;
+
+export function splitNote(text: string): { text: string; note: string | null } {
+  const trimmed = text.trim();
+
+  for (const pattern of [TRAILING_PAREN, TRAILING_DASH]) {
+    const match = trimmed.match(pattern);
+    if (!match) continue;
+    const core = trimmed.slice(0, match.index).trim();
+    // A line that is nothing but its aside — "(informal)" on its own — has no
+    // answer left once the aside is removed, so it keeps it.
+    if (core.length < 2) continue;
+    const note = match[1].trim().replace(/\.$/, "");
+    return {
+      text: pattern === TRAILING_PAREN ? `${core}${endPunctuation(core, trimmed)}` : core,
+      note,
+    };
+  }
+
+  return { text: trimmed, note: null };
+}
+
+/**
+ * The sentence punctuation a parenthetical was sitting in front of — "Until six
+ * (a.m.)." ends in a full stop that belongs to the sentence, not to the aside.
+ */
+function endPunctuation(core: string, text: string): string {
+  // "Like… (filler)." and "…a drink? (mutual interest)." already close their
+  // own sentence; putting the trailing stop back would double it.
+  if (/[.!?\u2026]$/.test(core)) return "";
+  const match = text.match(/\)\s*([.!?\u2026]+)\s*$/);
+  return match ? match[1] : "";
+}
+
+/** Just the answerable half of a line, with any trailing aside removed. */
+export function coreOf(text: string): string {
+  return splitNote(text).text;
+}
+
+/**
+ * True when two answers are the same line. The comparison is made on the core
+ * of each side, so someone who types the authored aside is right and so is
+ * someone who leaves it off.
+ */
 export function answersMatch(given: string, expected: string): boolean {
-  return normalizeAnswer(given) === normalizeAnswer(expected);
+  if (normalizeAnswer(given) === normalizeAnswer(expected)) return true;
+  return normalizeAnswer(coreOf(given)) === normalizeAnswer(coreOf(expected));
 }
 
 // ---------------------------------------------------------------------------
@@ -304,6 +368,12 @@ export interface Question {
   shownSub: string | null;
   answer: string;
   answerSub: string | null;
+  /**
+   * The aside the author attached to the answer — register, region, tone.
+   * Never part of what you have to produce; shown in the drawer once the
+   * question settles, which is where the difference it marks is worth seeing.
+   */
+  answerNote: string | null;
   answerLang: AnswerLang;
   /** Audio ids for the source-language sides only; English is never spoken. */
   shownAudio: string | null;
@@ -324,10 +394,17 @@ export interface MatchPair {
 
 /** The item's answer text in a given language, or "" when it has none. */
 function answerTextFor(item: QuizItem, lang: AnswerLang): string {
-  if (lang === "source") {
-    return item.kind === "phrase" ? item.front : item.correctAnswer;
-  }
-  return item.kind === "phrase" ? item.correctAnswer : item.correctAnswerTranslation ?? "";
+  const text =
+    lang === "source"
+      ? item.kind === "phrase"
+        ? item.front
+        : item.correctAnswer
+      : item.kind === "phrase"
+        ? item.correctAnswer
+        : item.correctAnswerTranslation ?? "";
+  // Distractors are shown next to the answer, and the answer has had its aside
+  // taken off. Leaving one on a distractor would make it the odd option out.
+  return text ? coreOf(text) : "";
 }
 
 /**
@@ -397,6 +474,17 @@ export function buildQuestion(
 
   if (!answer) return null;
 
+  // The aside comes off every side of the question. It is off the answer so it
+  // never has to be typed or assembled, off the cue so the two directions of
+  // the same item read the same way, and back on in `answerNote` so the drawer
+  // can show what it was marking.
+  const split = splitNote(answer);
+  answer = split.text;
+  const subSplit = answerSub ? splitNote(answerSub) : null;
+  answerSub = subSplit ? subSplit.text : null;
+  const answerNote = split.note ?? subSplit?.note ?? null;
+  shown = coreOf(shown);
+
   const question: Question = {
     itemId: item.id,
     categoryId: item.categoryId,
@@ -407,6 +495,7 @@ export function buildQuestion(
     shownSub,
     answer,
     answerSub,
+    answerNote,
     answerLang,
     // The scene of a situation is English, so only the answer is ever spoken.
     // A phrase shows its source side only in the forward direction.
@@ -564,7 +653,9 @@ function pairFor(item: QuizItem): MatchPair | null {
   // placeholder is scaffolding; it is never the thing being learned.
   if (hasPlaceholder(source) || hasPlaceholder(en)) return null;
 
-  return { itemId: item.id, source: source.trim(), en: en.trim() };
+  // Same reason as the answer itself: a board row is a phrase against its
+  // meaning, and "Very casual" is neither.
+  return { itemId: item.id, source: coreOf(source), en: coreOf(en) };
 }
 
 /**
@@ -632,6 +723,7 @@ export function buildMatchQuestion(
     shownSub: null,
     answer: "",
     answerSub: null,
+    answerNote: null,
     answerLang: "source",
     shownAudio: null,
     answerAudio: null,

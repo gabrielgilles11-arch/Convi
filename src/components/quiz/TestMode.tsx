@@ -430,7 +430,10 @@ export default function TestMode({
               Check
             </button>
           )}
-          <p className="type-hint">Accents and punctuation are not marked wrong.</p>
+          <p className="type-hint">
+            Accents, ß and punctuation are not marked wrong — and you never have to
+            type the note in brackets.
+          </p>
         </form>
       )}
 
@@ -510,6 +513,17 @@ export default function TestMode({
                 {withBlanks(q.answer)}
                 <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
                 {q.answerSub && <span className="en">{withBlanks(q.answerSub)}</span>}
+              </p>
+            )}
+
+            {/* The aside the author put on the line — register, region, tone.
+                It is deliberately not part of what you type; it surfaces here,
+                right or wrong, so the difference it marks lands at the moment
+                you find out how you did. */}
+            {q.form !== "match" && q.answerNote && (
+              <p className="drawer-note">
+                <span className="drawer-note-label">Note</span>
+                {q.answerNote}
               </p>
             )}
 

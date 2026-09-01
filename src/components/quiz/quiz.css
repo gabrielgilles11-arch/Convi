@@ -866,6 +866,31 @@
   color: var(--color-ink-soft);
 }
 
+/* The register note. Deliberately quieter than the reply block: it is a
+   footnote on the answer, not another line to learn. The inline label carries
+   the meaning, so it stays legible even where colour doesn't. */
+.drawer-note {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--color-ink-soft);
+}
+
+.drawer-note-label {
+  flex: none;
+  border-radius: 999px;
+  background: var(--color-border);
+  padding: 0.1rem 0.45rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
 /* Their line sits on white inside the drawer — it's the one bit of new target
    language here, and it shouldn't read as part of the verdict. */
 .drawer-reply {

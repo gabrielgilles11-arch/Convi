@@ -22,7 +22,7 @@
               "id": "de-beer-food-01",
               "speaker": "them",
               "situation": { "en": "You're at a German bar and they ask what you'd like to drink." },
-              "question": { "es": "Was möchten Sie trinken?", "en": "What would you like to drink?" },
+              "question": { "es": "Was möchten Sie trinken?", "en": "What would you like to drink? (formal Sie)" },
               "answers": [
                 { "es": "Ein Bier, bitte.", "en": "A beer, please." },
                 { "es": "Ein Helles, bitte.", "en": "A pale lager, please — common in the south." }
@@ -43,6 +43,23 @@
               ],
               "likelyReply": { "es": "Welche Marke?", "en": "Which brand?" },
               "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-05",
+              "speaker": "them",
+              "region": "bayern",
+              "situation": {
+                "en": "In a Munich beer garden, they ask what size beer you want."
+              },
+              "question": { "es": "Maß oder Halbe?", "en": "Litre or half-litre?" },
+              "answers": [
+                { "es": "Eine Maß, bitte.", "en": "A litre, please (Bayern only)." },
+                { "es": "Eine Halbe, bitte.", "en": "A half-litre, please." }
+              ],
+              "likelyReply": { "es": "Kommt sofort.", "en": "Coming right up." },
+              "notes": "Size is its own question, asked after you've said what you want and whether it's draft. It's a Bavarian one: a Maß is the litre stein, a Halbe the half-litre. Order a Maß in Hamburg and you'll get a look. Die Maß is feminine, so it's eine Maß, not einen.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -74,15 +91,6 @@
               "difficulty": "easy",
               "quizQuestions": []
             }
-          ]
-        },
-        {
-          "id": "de-beer-food-bayern",
-          "title": "Bayern add-on (if you're in Munich / Bavaria)",
-          "type": "tips",
-          "items": [
-            { "es": "Einen Maß, bitte.", "en": "A 1-litre beer — very Bavaria." },
-            { "es": "Servus!", "en": "Hello/bye, informal." }
           ]
         }
       ]
@@ -119,7 +127,7 @@
               "situation": { "en": "Someone asks how you're doing." },
               "question": { "es": "Wie geht's?", "en": "How's it going?" },
               "answers": [
-                { "es": "Gut, und dir?", "en": "Good, and you?" },
+                { "es": "Gut, und dir?", "en": "Good, and you? (informal du)" },
                 { "es": "Passt.", "en": "All good (casual)." }
               ],
               "likelyReply": { "es": "Nice. / Und sonst so?", "en": "Nice. / What else?" },
@@ -131,13 +139,13 @@
               "id": "de-starting-convo-03",
               "speaker": "you",
               "situation": { "en": "You need help and want to check whether they speak English." },
-              "question": { "es": "Sprichst du Englisch?", "en": "Do you speak English?" },
+              "question": { "es": "Sprichst du Englisch?", "en": "Do you speak English? (informal du)" },
               "answers": [
                 { "es": "Ja, klar.", "en": "Yes, of course." },
                 { "es": "Ein bisschen.", "en": "A little bit." }
               ],
               "likelyReply": { "es": "Was/worum geht's?", "en": "What's it about?" },
-              "notes": "",
+              "notes": "\"Sprechen Sie Englisch?\" is the formal version — use it with staff, officials and anyone much older. Same question, different register.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -257,7 +265,7 @@
           "id": "de-bayern-greetings",
           "title": "Greetings / easy wins",
           "phrases": [
-            { "id": "de-bayern-01", "es": "Servus!", "en": "Hi / bye.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            { "id": "de-bayern-01", "es": "Servus!", "en": "Hi / bye (informal).", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
             { "id": "de-bayern-02", "es": "Grüß Gott!", "en": "Hello.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
             { "id": "de-bayern-03", "es": "Pfiat di! / Pfiat eich!", "en": "Bye — singular / plural.", "difficulty": "hard", "region": "bayern", "quizQuestions": [] }
           ]
