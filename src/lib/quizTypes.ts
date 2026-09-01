@@ -349,6 +349,31 @@ export function answersMatch(given: string, expected: string): boolean {
   return normalizeAnswer(coreOf(given)) === normalizeAnswer(coreOf(expected));
 }
 
+/**
+ * True when two lines say close enough to the same thing that offering them as
+ * rival answers is a trick rather than a question.
+ *
+ * "A beer, please." against "A small/pint-size beer, please." is the case this
+ * exists for: both are what "¿Una caña porfa?" means, so whichever one the deck
+ * happens to hold gets marked wrong for no reason the learner can see. Exact
+ * duplicates were already caught; near-duplicates were not.
+ *
+ * Two tests, because the failure has two shapes. One line containing all of
+ * another's words is the first — the longer is the shorter plus detail. Heavy
+ * overlap without containment is the second. Contrasting answers are safe from
+ * both: "Draft, thanks." and "Bottle, thanks." share only "thanks", which is
+ * one word in three, and contrast is exactly what a distractor is for.
+ */
+export function tooAlike(a: string, b: string): boolean {
+  const ta = new Set(normalizeAnswer(a).split(" ").filter(Boolean));
+  const tb = new Set(normalizeAnswer(b).split(" ").filter(Boolean));
+  if (ta.size === 0 || tb.size === 0) return false;
+
+  const shared = [...ta].filter((t) => tb.has(t)).length;
+  if (shared === Math.min(ta.size, tb.size)) return true;
+  return shared / (ta.size + tb.size - shared) >= 0.6;
+}
+
 // ---------------------------------------------------------------------------
 // Questions
 // ---------------------------------------------------------------------------
@@ -511,7 +536,7 @@ export function buildQuestion(
   };
 
   if (form === "choice") {
-    question.options = buildOptions(answer, answerLang, pool, fallbackPool, item);
+    question.options = buildOptions(answer, answerLang, pool, fallbackPool, item, shown);
   } else if (form === "bank") {
     question.tiles = buildTiles(answer, answerLang, pool, fallbackPool);
   }
@@ -536,10 +561,18 @@ export function buildOptions(
   answerLang: AnswerLang,
   pool: QuizItem[],
   fallbackPool: QuizItem[] = [],
-  self?: QuizItem
+  self?: QuizItem,
+  /**
+   * The line the question is asking about. A distractor whose own cue is this
+   * cue is a second right answer wearing a different coat — "¿Una caña porfa?"
+   * and "Una cerveza, por favor." both mean "a beer, please", so offering one
+   * as the wrong answer to the other's meaning is unanswerable.
+   */
+  cue?: string
 ): string[] {
   const seen = new Set([normalizeAnswer(answer)]);
   const distractors: string[] = [];
+  const otherLang: AnswerLang = answerLang === "source" ? "en" : "source";
 
   // A subsection is a ring of lines about one moment, and in some of them —
   // "Déjame en paz", "No me toques", "¡Suéltame!" — several are a defensible
@@ -567,14 +600,26 @@ export function buildOptions(
       ]
     : [pool, fallbackPool];
 
-  for (const source of sources) {
-    for (const candidate of shuffle(source.map((i) => answerTextFor(i, answerLang)))) {
+  // Both guards first. If the deck genuinely cannot fill four boxes under them
+  // — a tiny category early on the path — they are given up one at a time
+  // rather than handing back a two-option "multiple" choice. Ambiguity is worth
+  // avoiding; a question with no wrong answers to pick from is worse.
+  for (const guard of ["both", "answer", "none"] as const) {
+    for (const source of sources) {
+      for (const item of shuffle(source)) {
+        if (distractors.length >= 3) break;
+        const candidate = answerTextFor(item, answerLang);
+        if (!candidate) continue;
+        const key = normalizeAnswer(candidate);
+        if (seen.has(key)) continue;
+        // Rejected on either side: a line that means what the answer means, or
+        // one that answers the same cue by another route.
+        if (guard !== "none" && tooAlike(candidate, answer)) continue;
+        if (guard === "both" && cue && tooAlike(answerTextFor(item, otherLang), cue)) continue;
+        seen.add(key);
+        distractors.push(candidate);
+      }
       if (distractors.length >= 3) break;
-      if (!candidate) continue;
-      const key = normalizeAnswer(candidate);
-      if (seen.has(key)) continue;
-      seen.add(key);
-      distractors.push(candidate);
     }
     if (distractors.length >= 3) break;
   }
@@ -701,6 +746,10 @@ export function buildMatchQuestion(
       const sk = normalizeAnswer(pair.source);
       const ek = normalizeAnswer(pair.en);
       if (!sk || !ek || sources.has(sk) || meanings.has(ek)) continue;
+      // Near-duplicates make a board unanswerable for the same reason exact
+      // ones do: two rows that mean the same thing can be paired either way
+      // round, and one of the two assignments is marked wrong.
+      if (pairs.some((p) => tooAlike(p.source, pair.source) || tooAlike(p.en, pair.en))) continue;
       sources.add(sk);
       meanings.add(ek);
       pairs.push(pair);
@@ -899,5 +948,69 @@ export function buildRound(
     ...(match ? [match] : []),
   ]);
 
-  return [...opener, ...rest].slice(0, length);
+  return spreadOut([...opener, ...rest]).slice(0, length);
+}
+
+/**
+ * Keeps two questions about the same line from landing next to each other.
+ *
+ * A round asks some items from both sides, so the shuffle can deal "What does
+ * this mean? ¿Una caña porfa?" and then, immediately, "How do you say this? A
+ * beer, please?" — the second screen answered by the first. Same-answer pairs
+ * do it too: two different lines that mean the same thing, back to back.
+ *
+ * The order is still random; this only walks it and moves a clashing question
+ * back rather than reshuffling until luck holds. When nothing in what's left
+ * can follow cleanly — a short round of closely related material — the next
+ * question goes in anyway, because dropping it would shorten the round.
+ */
+function spreadOut(questions: Question[]): Question[] {
+  const remaining = [...questions];
+  const out: Question[] = [];
+
+  const clashes = (a: Question, b: Question) => {
+    if (a.form === "match" || b.form === "match") return false;
+    if (a.itemId === b.itemId) return true;
+    // Either side of one question showing up on either side of the next is the
+    // giveaway, whichever direction each was asked in.
+    return (
+      tooAlike(a.answer, b.answer) ||
+      tooAlike(a.shown, b.shown) ||
+      tooAlike(a.answer, b.shown) ||
+      tooAlike(a.shown, b.answer)
+    );
+  };
+
+  while (remaining.length > 0) {
+    const previous = out[out.length - 1];
+    let index = 0;
+    if (previous) {
+      const clear = remaining.findIndex((q) => !clashes(previous, q));
+      if (clear >= 0) index = clear;
+    }
+    out.push(remaining.splice(index, 1)[0]);
+  }
+
+  // Taking the first question that fits can leave a twin stranded at the end,
+  // next to the one question it could not follow. A swap fixes what the single
+  // pass could not see coming, so long as it doesn't create a clash elsewhere.
+  const clean = (i: number) =>
+    (i === 0 || !clashes(out[i - 1], out[i])) &&
+    (i === out.length - 1 || !clashes(out[i], out[i + 1]));
+
+  for (let i = 1; i < out.length; i++) {
+    if (clean(i)) continue;
+    for (let j = 1; j < out.length; j++) {
+      if (j === i) continue;
+      [out[i], out[j]] = [out[j], out[i]];
+      // Both landing sites and the gaps the two questions left behind.
+      const fixed = [i, j, i - 1, j - 1, i + 1, j + 1]
+        .filter((k) => k >= 0 && k < out.length)
+        .every(clean);
+      if (fixed) break;
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+  }
+
+  return out;
 }
