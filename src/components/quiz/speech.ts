@@ -124,11 +124,29 @@ const VOICE_MARKS: [RegExp, number][] = [
   [/espeak|\bmbrola\b/i, -9], // Linux fallback: intelligible, not human
 ];
 
+/**
+ * Voices an edition would rather not use, however well they score otherwise.
+ *
+ * Chrome's "Google svenska" is the voice Google Maps reads directions in, and
+ * it lands on Swedish like a satnav rather than a person — which is a bad way
+ * to be taught how a language sounds. The generic ranking promotes it, because
+ * for most languages a Google voice is the best one on the machine; Swedish is
+ * the exception.
+ *
+ * A penalty rather than a ban. It has to lose to any other voice installed, but
+ * on a device where it is the *only* Swedish voice — most Android phones — it
+ * is still better than silence.
+ */
+const AVOIDED: Record<string, RegExp> = {
+  "sv-SE": /google/i,
+};
+
 function voiceScore(voice: SpeechSynthesisVoice, locale: string): number {
   let score = 0;
   for (const [pattern, weight] of VOICE_MARKS) {
     if (pattern.test(voice.name)) score += weight;
   }
+  if (AVOIDED[locale]?.test(voice.name)) score -= 20;
   // A Mexican voice reading Madrid slang is wrong in a way a learner will copy,
   // so the exact edition outranks everything except an outright bad engine.
   if (normaliseLang(voice.lang) === locale.toLowerCase()) score += 3;
