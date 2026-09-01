@@ -71,8 +71,25 @@ skipped and you hear the previous voice back. The run writes an `index.json`
 beside the clips listing what it made; the app reads that one file to know what
 exists, so a deck with no audio costs one request rather than a 404 per line.
 
-Swedish goes through Piper rather than Google (`PIPER_SV_MODEL`), which runs
-locally and needs the voice model downloaded first.
+Swedish goes to Azure rather than Google, with `AZURE_SPEECH_KEY` and
+`AZURE_SPEECH_REGION` (the region the Speech resource was created in, like
+`northeurope`). Google's Swedish voice is the one Maps reads directions in, and
+every Chrome and Android device already falls back to it, so recording it would
+buy nothing; Azure's `sv-SE-SofieNeural` is a true neural voice and the best
+Swedish available anywhere. It is also what Edge reads Swedish pages in, so it
+can be auditioned before a clip is generated. The free F0 tier covers 500,000
+characters a month against a Swedish deck of about 1,800.
+
+```sh
+AZURE_SPEECH_KEY=... AZURE_SPEECH_REGION=northeurope \
+  node scripts/generate-audio.mjs --list-voices --locale sv-SE
+
+AZURE_SPEECH_KEY=... AZURE_SPEECH_REGION=northeurope \
+  node scripts/generate-audio.mjs --locale sv-SE
+```
+
+Both providers check the voice name exists before spending a request per line,
+so a retired or mistyped name fails once, with the alternatives printed.
 
 Commit the output — the clips are served statically, so there is no API key and
 no per-play cost in production.

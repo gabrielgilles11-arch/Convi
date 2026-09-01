@@ -58,7 +58,17 @@ const PROVIDERS = {
     voice: process.env.GOOGLE_VOICE_DE ?? "de-DE-Studio-B",
     languageCode: "de-DE",
   },
-  "sv-SE": { provider: "piper", model: process.env.PIPER_SV_MODEL ?? "sv_SE-nst-medium.onnx" },
+  // Swedish goes to Azure. Google's Swedish voice is the one Maps reads
+  // directions in and every Chrome and Android device already falls back to it,
+  // so recording it would buy nothing; Azure's Sofie is a true neural voice and
+  // the best Swedish available anywhere, free tier included. It is also the
+  // voice Edge reads Swedish pages in, so it can be auditioned before a single
+  // clip is generated.
+  "sv-SE": {
+    provider: "azure",
+    voice: process.env.AZURE_VOICE_SV ?? "sv-SE-SofieNeural",
+    languageCode: "sv-SE",
+  },
 };
 
 /**
@@ -180,6 +190,85 @@ async function synthGoogle(text, cfg, outPath) {
   writeFileSync(outPath, Buffer.from(audioContent, "base64"));
 }
 
+/**
+ * The voices Azure will accept for a language, neural first.
+ *
+ * Same reasoning as the Google list: one request before spending a hundred, and
+ * a name that has been retired should say so once rather than fail on every
+ * line.
+ */
+async function listAzureVoices(languageCode) {
+  const key = process.env.AZURE_SPEECH_KEY;
+  const region = process.env.AZURE_SPEECH_REGION;
+  if (!key) throw new Error("AZURE_SPEECH_KEY is not set");
+  if (!region) throw new Error("AZURE_SPEECH_REGION is not set (e.g. northeurope)");
+
+  const res = await fetch(
+    `https://${region}.tts.speech.microsoft.com/cognitiveservices/voices/list`,
+    { headers: { "Ocp-Apim-Subscription-Key": key } }
+  );
+  if (res.status === 401 || res.status === 403) {
+    throw new Error(
+      `Azure rejected the key (${res.status}). Check AZURE_SPEECH_KEY, and that ` +
+        `AZURE_SPEECH_REGION (${region}) matches the region the resource lives in.`
+    );
+  }
+  if (!res.ok) throw new Error(`Azure voices ${res.status}: ${(await res.text()).slice(0, 200)}`);
+
+  return (await res.json())
+    .filter((v) => v.Locale?.toLowerCase() === languageCode.toLowerCase())
+    .map((v) => ({ name: v.ShortName, gender: v.Gender, tier: /Neural/i.test(v.ShortName) ? 0 : 1 }))
+    .sort((a, b) => a.tier - b.tier || a.name.localeCompare(b.name));
+}
+
+/** Escapes text for the SSML document Azure expects. */
+function xmlEscape(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+async function synthAzure(text, cfg, outPath) {
+  const key = process.env.AZURE_SPEECH_KEY;
+  const region = process.env.AZURE_SPEECH_REGION;
+  if (!key) throw new Error("AZURE_SPEECH_KEY is not set");
+  if (!region) throw new Error("AZURE_SPEECH_REGION is not set (e.g. northeurope)");
+
+  const ssml =
+    `<speak version="1.0" xml:lang="${cfg.languageCode}">` +
+    `<voice name="${cfg.voice}"><prosody rate="-5%">${xmlEscape(text)}</prosody></voice>` +
+    `</speak>`;
+
+  const res = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+    method: "POST",
+    headers: {
+      "Ocp-Apim-Subscription-Key": key,
+      "Content-Type": "application/ssml+xml",
+      // 24kHz mono MP3: indistinguishable from the 48kHz tiers for one spoken
+      // line, and a fraction of the bytes to ship to a phone.
+      "X-Microsoft-OutputFormat": "audio-24khz-48kbitrate-mono-mp3",
+      // Azure rejects requests without one.
+      "User-Agent": "convi-audio-generator",
+    },
+    body: ssml,
+  });
+
+  if (res.status === 401 || res.status === 403) {
+    throw new Error(
+      `Azure rejected the key (${res.status}). Check AZURE_SPEECH_KEY and that ` +
+        `AZURE_SPEECH_REGION (${region}) is the region the resource was created in.`
+    );
+  }
+  if (!res.ok) {
+    throw new Error(`Azure TTS ${res.status} for voice ${cfg.voice}: ${(await res.text()).slice(0, 200)}`);
+  }
+
+  writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
+}
+
 function synthPiper(text, cfg, outPath) {
   // Piper emits WAV on stdout. Kept as .wav rather than shelling out to an
   // encoder that may not be installed; these clips are 1-3 seconds.
@@ -194,10 +283,14 @@ async function run() {
   if (listOnly) {
     for (const locale of locales) {
       const cfg = PROVIDERS[locale];
-      if (cfg?.provider !== "google") continue;
-      console.log(`\n${locale} — voices Google offers, newest tier first:`);
-      for (const v of await listGoogleVoices(cfg.languageCode)) {
-        console.log(`  ${v.name.padEnd(28)} ${v.gender.toLowerCase()}`);
+      if (cfg?.provider !== "google" && cfg?.provider !== "azure") continue;
+      const voices =
+        cfg.provider === "google"
+          ? await listGoogleVoices(cfg.languageCode)
+          : await listAzureVoices(cfg.languageCode);
+      console.log(`\n${locale} — voices ${cfg.provider} offers, newest tier first:`);
+      for (const v of voices) {
+        console.log(`  ${v.name.padEnd(30)} ${String(v.gender).toLowerCase()}`);
       }
     }
     return;
@@ -234,6 +327,23 @@ async function run() {
       console.log(`  voice: ${cfg.voice}`);
     }
 
+    // Same preflight for Azure: one request, rather than the same failure a
+    // hundred times over.
+    if (cfg.provider === "azure" && !dryRun) {
+      const available = await listAzureVoices(cfg.languageCode);
+      if (!available.some((v) => v.name === cfg.voice)) {
+        console.error(`\n  ${cfg.voice} is not a voice Azure offers for ${cfg.languageCode}.`);
+        console.error("  Available, neural first:");
+        for (const v of available.slice(0, 12)) {
+          console.error(`    ${v.name.padEnd(30)} ${String(v.gender).toLowerCase()}`);
+        }
+        console.error("  Set AZURE_VOICE_SV to one of these.");
+        failed++;
+        continue;
+      }
+      console.log(`  voice: ${cfg.voice}`);
+    }
+
     for (const line of lines) {
       const ext = cfg.provider === "piper" ? "wav" : "mp3";
       const outPath = path.join(outDir, `${line.id}.${ext}`);
@@ -243,6 +353,7 @@ async function run() {
       try {
         const text = speakable(line.text, locale);
         if (cfg.provider === "google") await synthGoogle(text, cfg, outPath);
+        else if (cfg.provider === "azure") await synthAzure(text, cfg, outPath);
         else synthPiper(text, cfg, outPath);
         made++;
         process.stdout.write(".");
@@ -298,6 +409,10 @@ run().catch((err) => {
   console.error(`\n${err.message}`);
   if (/GOOGLE_TTS_API_KEY/.test(err.message)) {
     console.error("Get one from console.cloud.google.com, with the Text-to-Speech API enabled.");
+  }
+  if (/AZURE_SPEECH/.test(err.message)) {
+    console.error("Create a Speech resource on the free F0 tier at portal.azure.com;");
+    console.error("its Keys and Endpoint page has both the key and the region.");
   }
   process.exitCode = 1;
 });
