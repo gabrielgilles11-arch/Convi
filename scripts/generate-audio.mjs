@@ -88,17 +88,27 @@ function spokenLines(locale) {
 }
 
 /**
+ * Editions that record only the first of several ways to say a line.
+ * Mirrors SPEAKS_ONE_ALTERNATIVE in src/components/quiz/speech.ts — the clips
+ * and the fallback voice have to say the same thing.
+ */
+const SPEAKS_ONE_ALTERNATIVE = new Set(["sv-SE"]);
+
+/**
  * What actually gets sent to the synthesiser.
  *
- * Mirrors stripForSpeech in src/components/quiz/speech.ts, and for the same
- * reasons: " / " with spaces around it separates two ways of saying the same
- * thing, and a clip that says both has the voice repeat itself. Only the first
- * is recorded. A slash without spaces joins alternatives inside one phrase and
- * becomes a beat, as do the fill-in slots.
+ * " / " with spaces around it separates two ways of saying the same thing, and
+ * a clip that says both has the voice repeat itself. A slash without spaces
+ * joins alternatives inside one phrase and becomes a beat, as do fill-in slots.
  */
-function speakable(text) {
-  const [first] = text.split(/\s+\/\s+/);
-  return (first?.trim() ? first : text)
+function speakable(text, locale) {
+  let line = text;
+  if (SPEAKS_ONE_ALTERNATIVE.has(locale)) {
+    const [first] = text.split(/\s+\/\s+/);
+    if (first?.trim()) line = first;
+  }
+
+  return line
     .replace(/_{2,}/g, ", ")          // "Son __ euros." -> a beat, not "underscore"
     .replace(/\[[^\]]+\]/g, ", ")     // same for [BELOPP] / [STATION]
     .replace(/\s*\/\s*/g, ", ")       // "Links/rechts" -> a beat between them
@@ -231,7 +241,7 @@ async function run() {
       if (dryRun) { made++; continue; }
 
       try {
-        const text = speakable(line.text);
+        const text = speakable(line.text, locale);
         if (cfg.provider === "google") await synthGoogle(text, cfg, outPath);
         else synthPiper(text, cfg, outPath);
         made++;

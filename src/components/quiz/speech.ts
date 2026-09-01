@@ -271,7 +271,7 @@ export async function speak(
   if (!engine || !voice) return false;
 
   try {
-    const utterance = new SpeechSynthesisUtterance(stripForSpeech(text));
+    const utterance = new SpeechSynthesisUtterance(stripForSpeech(text, locale));
     utterance.voice = voice;
     utterance.lang = voice.lang;
     // Slightly under conversational pace. These are lines to copy, and the
@@ -285,27 +285,39 @@ export async function speak(
 }
 
 /**
- * Prepares a written line to be read aloud.
+ * Editions that speak only the first of several ways to say a line.
  *
- * Authored lines carry marks meant for the eye. " / " with spaces around it
- * separates two ways of saying the same thing — "Var är tuben? / Var är
- * Tunnelbanan?" — and reading both aloud has the voice say the same thing
- * twice, which is most of what makes a synthesiser sound like a machine rather
- * than a person. A spoken line is one thing you would actually say, so only the
- * first survives; the written line still shows every variant.
+ * " / " with spaces around it separates two ways of saying the same thing —
+ * "Var är tuben? / Var är Tunnelbanan?" — and reading both has the voice repeat
+ * itself in different words, which is most of what makes a synthesiser sound
+ * like a machine. It grates worst in Swedish, where the best voice most devices
+ * have is the flat navigation one, so Swedish says the first variant and stops.
+ *
+ * Spanish and German read the alternatives as authored: their voices carry the
+ * repetition well enough, and hearing the second way of putting it is worth
+ * something in its own right. This is a preference per edition rather than a
+ * rule, which is why it is a list and not an `if`.
+ */
+const SPEAKS_ONE_ALTERNATIVE = new Set(["sv-SE"]);
+
+const ALTERNATIVE_LINES = /\s+\/\s+/;
+
+/**
+ * Prepares a written line to be read aloud.
  *
  * A slash *without* spaces joins alternatives inside one phrase —
  * "Links/rechts", "Gröna/röda/blå linjen" — where all of them belong in the
- * sentence, so those become a short pause instead. And a fill-in slot stands in
- * for an address or an amount: read literally it comes out as "underscore
- * underscore", so it is dropped and the sentence around it is still worth
- * hearing.
+ * sentence, so those become a short pause in every edition. And a fill-in slot
+ * stands in for an address or an amount: read literally it comes out as
+ * "underscore underscore", so it is dropped and the sentence around it is still
+ * worth hearing.
  */
-const ALTERNATIVE_LINES = /\s+\/\s+/;
-
-function stripForSpeech(text: string): string {
-  const [first] = text.split(ALTERNATIVE_LINES);
-  const line = first?.trim() ? first : text;
+function stripForSpeech(text: string, locale: string): string {
+  let line = text;
+  if (SPEAKS_ONE_ALTERNATIVE.has(locale)) {
+    const [first] = text.split(ALTERNATIVE_LINES);
+    if (first?.trim()) line = first;
+  }
 
   return line
     .replace(/\[[^\]]*\]/g, " … ")
