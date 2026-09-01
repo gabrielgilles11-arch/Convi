@@ -219,7 +219,16 @@ const marquee = editions.flatMap((e) => [
     background: radial-gradient(120% 100% at 85% 0%, #ffe6d5 0%, #fff 55%);
     margin-top: -1.5rem;
     padding: 3.5rem 0 3rem;
-    overflow: hidden;
+    /* Clip sideways only. A plain `overflow: hidden` here also cut the language
+       dropdown off at the bottom of the hero — on a wide screen the panel hangs
+       about 36px past it, so "German" was sliced in half by the edge of the
+       marquee. `clip` is what allows the other axis to stay visible at all:
+       pairing `visible` with `hidden` silently computes to `auto` and turns the
+       hero into a scroll container instead. Browsers without `overflow: clip`
+       drop the declaration and lose the sideways clip, which costs nothing —
+       nothing in the hero overflows horizontally at any width. */
+    overflow-x: clip;
+    overflow-y: visible;
   }
 
   .hero .container {

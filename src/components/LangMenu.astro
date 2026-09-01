@@ -214,9 +214,12 @@ const id = `lang-menu-${path.replace(/\W+/g, "-")}-${variant}`;
     color: var(--color-ink-soft);
   }
 
-  /* Right-align the panel when the menu sits near the viewport edge. */
   @media (max-width: 480px) {
-    .panel {
+    /* Only the menu nearest the right edge opens leftwards. Right-aligning
+       every panel pushed the first one off the *left* edge instead: 216px of
+       panel hung off the right edge of a button that starts 36px from the side
+       of the screen, so "Spanish / Swedish / German" were cut in half. */
+    .lang-menu--nav:last-child .panel {
       left: auto;
       right: 0;
     }
