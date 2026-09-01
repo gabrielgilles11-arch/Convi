@@ -708,6 +708,43 @@
       "description": "Q → A → what they'll probably say",
       "subsections": [
         {
+          "id": "sv-getting-around-airport",
+          "title": "Landing / airport",
+          "exchanges": [
+            {
+              "id": "sv-getting-around-05",
+              "speaker": "you",
+              "situation": {
+                "en": "You've landed and you're looking for where the taxis are."
+              },
+              "question": { "es": "Ursäkta, var finns taxi?", "en": "Excuse me, where are the taxis?" },
+              "answers": [
+                { "es": "Utanför, till höger.", "en": "Outside, to the right." }
+              ],
+              "likelyReply": { "es": "Följ skyltarna.", "en": "Follow the signs." },
+              "notes": "Arlanda Express runs from the same arrivals hall — swap taxi for tåget.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Before getting in, you want to know what a taxi into town costs."
+              },
+              "question": { "es": "Vad kostar det till centrum?", "en": "What does it cost to the centre?" },
+              "answers": [
+                { "es": "Runt 500 kronor.", "en": "Around 500 kronor." },
+                { "es": "Beror på trafiken.", "en": "Depends on the traffic." }
+              ],
+              "likelyReply": { "es": "Hoppa in.", "en": "Hop in." },
+              "notes": "Swedish taxis set their own prices — the comparison price is posted on the window, and asking first is normal.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
           "id": "sv-getting-around-taxi",
           "title": "Taxi",
           "exchanges": [

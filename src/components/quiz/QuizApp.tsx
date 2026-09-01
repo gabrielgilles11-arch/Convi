@@ -11,14 +11,43 @@ import {
   type QuizPayload,
   type Stage,
 } from "../../lib/quizTypes";
+import { buildTasterRound } from "../../lib/quizTypes";
 import { loadProgress, missedItemIds } from "../../lib/progress";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
+import Welcome from "./Welcome";
 import { soundEnabled, setSoundEnabled } from "./sound";
+import { setVoiceEnabled, stopSpeaking, voiceEnabled } from "./speech";
 import "./quiz.css";
 
-type Mode = "path" | "test" | "progress";
+type Mode = "intro" | "taster" | "path" | "test" | "progress";
+
+/**
+ * Set once the welcome and its six questions have been seen. Somebody who has
+ * just bought gets the introduction; everybody else goes straight to the path,
+ * which is what they opened the app for.
+ */
+const INTRO_KEY = "convi:intro:v1";
+
+function introSeen(): boolean {
+  try {
+    return window.localStorage.getItem(INTRO_KEY) === "done";
+  } catch {
+    // No storage: show the path. Repeating the intro every visit would be a
+    // worse failure than never showing it.
+    return true;
+  }
+}
+
+function markIntroSeen(seen: boolean): void {
+  try {
+    if (seen) window.localStorage.setItem(INTRO_KEY, "done");
+    else window.localStorage.removeItem(INTRO_KEY);
+  } catch {
+    // Nothing to do — it just shows again next time.
+  }
+}
 
 interface Props {
   locale?: string; // which language deck to load; the API validates it
@@ -36,7 +65,14 @@ export default function QuizApp({ locale }: Props) {
   // which the server has no view of, so seeding state from it directly would
   // make the first client render disagree with the server's HTML.
   const [sound, setSound] = useState(true);
-  useEffect(() => setSound(soundEnabled()), []);
+  const [voice, setVoice] = useState(true);
+  useEffect(() => {
+    setSound(soundEnabled());
+    setVoice(voiceEnabled());
+    // Same reason the settings are read here: localStorage is a client fact,
+    // so the intro decision cannot be made while rendering on the server.
+    if (!introSeen()) setMode("intro");
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -138,6 +174,23 @@ export default function QuizApp({ locale }: Props) {
     setMode("test");
   }
 
+  // The intro owns the screen. Path/Progress tabs and a mistakes link on top of
+  // "Welcome to Try Convi" would undercut the one moment the app gets to
+  // introduce itself.
+  if (mode === "intro") {
+    return (
+      <div className="quiz-app">
+        <Welcome
+          onStart={() => setMode("taster")}
+          onSkip={() => {
+            markIntroSeen(true);
+            setMode("path");
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="quiz-app">
       <div className="quiz-toolbar">
@@ -149,6 +202,53 @@ export default function QuizApp({ locale }: Props) {
             Progress
           </button>
         </div>
+
+        <button
+          type="button"
+          className="voice-toggle"
+          aria-pressed={voice}
+          title={voice ? "Voices on" : "Voices off"}
+          onClick={() => {
+            const next = !voice;
+            setVoice(next);
+            setVoiceEnabled(next);
+            if (!next) stopSpeaking();
+          }}
+        >
+          <span className="sr-only">
+            {voice ? "Turn spoken lines off" : "Turn spoken lines on"}
+          </span>
+          {/* A mouth speaking, not a loudspeaker: this toggles the language
+              being read aloud, where the speaker icon next to it toggles the
+              two answer tones. Two speakers side by side would be a coin
+              flip. */}
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M4 12h16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity={voice ? 0 : 1}
+              transform={voice ? "" : "rotate(45 12 12)"}
+            />
+            <path
+              d="M7 9.5c1.6-2 3.2-3 5-3s3.4 1 5 3"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.9"
+              strokeLinecap="round"
+              opacity={voice ? 1 : 0.35}
+            />
+            <path
+              d="M6 13c2 3 4 4.5 6 4.5s4-1.5 6-4.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.9"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
 
         <button
           type="button"
@@ -217,6 +317,32 @@ export default function QuizApp({ locale }: Props) {
         </>
       )}
 
+      {mode === "taster" && (
+        <>
+          <p className="stage-line">
+            <span>A taste of what's ahead — six questions, nothing scored</span>
+          </p>
+          <TestMode
+            items={payload.items}
+            allItems={payload.items}
+            locale={locale ?? "es-ES"}
+            setId="__taster__"
+            scoreKey={null}
+            nextStageId={null}
+            nextStageTitle={null}
+            makeRound={(all) => buildTasterRound(all)}
+            taster
+            onChooseStage={startStage}
+            onDrillMistakes={() => startStage(MISTAKES_STAGE_ID)}
+            onRoundComplete={() => setScoreVersion((v) => v + 1)}
+            onBackToPath={() => {
+              markIntroSeen(true);
+              setMode("path");
+            }}
+          />
+        </>
+      )}
+
       {mode === "test" && (
         <>
           <p className="stage-line">
@@ -241,7 +367,16 @@ export default function QuizApp({ locale }: Props) {
         </>
       )}
 
-      {mode === "progress" && <ProgressPanel stages={stages} bestScores={bestScores} />}
+      {mode === "progress" && (
+        <ProgressPanel
+          stages={stages}
+          bestScores={bestScores}
+          onReplayIntro={() => {
+            markIntroSeen(false);
+            setMode("intro");
+          }}
+        />
+      )}
     </div>
   );
 }

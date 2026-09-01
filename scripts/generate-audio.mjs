@@ -15,7 +15,7 @@
  *
  *   node scripts/generate-audio.mjs [--locale sv-SE] [--force] [--dry-run]
  */
-import { readFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import path from "node:path";
@@ -142,8 +142,38 @@ async function run() {
     }
   }
 
+  if (!dryRun) for (const locale of locales) writeManifest(locale);
+
   console.log(`\n\n${made} generated, ${skipped} already present, ${failed} failed`);
   if (failed) process.exitCode = 1;
+}
+
+/**
+ * An index of what was generated, written beside the clips.
+ *
+ * Without it the app has to guess: it would ask the server for every clip it
+ * might want and take a 404 as "no clip", which is two wasted requests per line
+ * and a console full of red on any deck that has no audio yet. One small file
+ * answers the question for a whole locale in a single request, and its absence
+ * is itself the answer — no audio here, don't ask again.
+ *
+ * Built from the directory rather than from what this run produced, so a
+ * partial run still describes everything actually on disk.
+ */
+function writeManifest(locale) {
+  const dir = path.join(OUT_ROOT, locale);
+  if (!existsSync(dir)) return;
+
+  const clips = {};
+  for (const file of readdirSync(dir)) {
+    const match = file.match(/^(.+)\.(mp3|wav)$/);
+    if (match) clips[match[1]] = match[2];
+  }
+
+  const count = Object.keys(clips).length;
+  if (count === 0) return;
+  writeFileSync(path.join(dir, "index.json"), `${JSON.stringify(clips, null, 0)}\n`);
+  console.log(`\n${locale}: manifest lists ${count} clips`);
 }
 
 run();

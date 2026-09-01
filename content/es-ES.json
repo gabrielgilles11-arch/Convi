@@ -488,6 +488,43 @@
       "description": "Q → A → what they'll probably say",
       "subsections": [
         {
+          "id": "airport",
+          "title": "Landing / airport (Spain)",
+          "exchanges": [
+            {
+              "id": "airport-01",
+              "speaker": "you",
+              "situation": {
+                "en": "You've landed and you're looking for where the taxis are."
+              },
+              "question": { "es": "Perdona, ¿dónde está la parada de taxis?", "en": "Excuse me, where's the taxi rank?" },
+              "answers": [
+                { "es": "Saliendo, a la derecha.", "en": "Out the doors, on the right." }
+              ],
+              "likelyReply": { "es": "Sigue los carteles.", "en": "Follow the signs." },
+              "notes": "Swap taxis for autobús or tren and the question still works.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "airport-02",
+              "speaker": "you",
+              "situation": {
+                "en": "Before getting in, you want to know what a taxi into town costs."
+              },
+              "question": { "es": "¿Cuánto cuesta ir al centro?", "en": "How much is it to the centre?" },
+              "answers": [
+                { "es": "Unos 30 euros.", "en": "About 30 euros." },
+                { "es": "Depende del tráfico.", "en": "Depends on the traffic." }
+              ],
+              "likelyReply": { "es": "Sube, que te llevo.", "en": "Hop in, I'll take you." },
+              "notes": "Ask before the bags go in the boot, not after.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
           "id": "taxi",
           "title": "Taxi / rideshare (Spain)",
           "exchanges": [

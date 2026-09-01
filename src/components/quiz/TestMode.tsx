@@ -9,6 +9,7 @@ import {
 import AudioButton from "./AudioButton";
 import MatchQuestion from "./MatchQuestion";
 import { playCorrect, playWrong } from "./sound";
+import { speak, stopSpeaking } from "./speech";
 import {
   recordAnswer,
   recordQuestionResult,
@@ -40,6 +41,18 @@ interface Props {
   onBackToPath: () => void;
   /** Lets the parent refresh its own mistake count once a round is scored. */
   onRoundComplete: () => void;
+  /**
+   * Builds the round. Defaults to the usual mix; the taster passes its own
+   * fixed six so it can open on arriving in the country.
+   */
+  makeRound?: (items: QuizItem[], allItems: QuizItem[]) => Question[];
+  /**
+   * The taster runs the same screens under different rules: nothing is scored,
+   * a miss doesn't come back around, and it ends by handing over to the path.
+   * Somebody who has owned the app for ninety seconds is being shown what it
+   * is, not tested on it.
+   */
+  taster?: boolean;
 }
 
 /**
@@ -102,6 +115,20 @@ function withBlanks(text: string) {
   });
 }
 
+/**
+ * The target-language side of a question — the half worth hearing.
+ *
+ * Which half that is depends on the direction it was asked in: producing the
+ * line puts it in the answer, reading it puts it in the prompt. A matching
+ * screen has several lines and no single one to say.
+ */
+function spokenLine(q: Question): { text: string; audioId: string | null } | null {
+  if (q.form === "match") return null;
+  return q.answerLang === "source"
+    ? { text: q.answer, audioId: q.answerAudio }
+    : { text: q.shown, audioId: q.shownAudio };
+}
+
 export default function TestMode({
   items,
   allItems,
@@ -114,8 +141,10 @@ export default function TestMode({
   onDrillMistakes,
   onRoundComplete,
   onBackToPath,
+  makeRound = buildRound,
+  taster = false,
 }: Props) {
-  const [round, setRound] = useState<Question[]>(() => buildRound(items, allItems));
+  const [round, setRound] = useState<Question[]>(() => makeRound(items, allItems));
   /**
    * Positions in `round` still to be answered correctly. A wrong answer sends
    * its question to the back rather than dropping it, so a round is not over
@@ -125,6 +154,13 @@ export default function TestMode({
   const [queue, setQueue] = useState<number[]>(() => round.map((_, i) => i));
   /** Positions already attempted once, which is what the score is taken from. */
   const [attempted, setAttempted] = useState<number[]>([]);
+  /**
+   * Positions that have come back around after being missed. Separate from
+   * `attempted`, which starts including the current question the instant it is
+   * answered — reading the flag off that lit "Again" on every question as soon
+   * as you'd answered it, which is the one moment it cannot be true.
+   */
+  const [repeats, setRepeats] = useState<number[]>([]);
   /** Bumped on every question change so a repeated screen remounts clean. */
   const [attempt, setAttempt] = useState(0);
   const [answered, setAnswered] = useState(false);
@@ -144,12 +180,22 @@ export default function TestMode({
   const question = round[position] ?? null;
   const cleared = round.length - queue.length;
   /** True when this question has come back around after being missed. */
-  const isRepeat = attempted.includes(position);
+  const isRepeat = repeats.includes(position);
 
   // The verdict drawer is pinned to the bottom of the viewport, so on a short
   // screen it can land on top of the options you just answered. Bring them back
   // into view rather than leaving the learner to guess there's more above it.
   const answerArea = useRef<HTMLDivElement>(null);
+  const voiceTimer = useRef(0);
+
+  // Leaving a question — or the round — stops it mid-sentence. A line still
+  // being read over the next question is worse than not hearing it at all.
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(voiceTimer.current);
+      stopSpeaking();
+    };
+  }, [position, attempt]);
   useEffect(() => {
     if (!answered) return;
     const el = answerArea.current;
@@ -171,10 +217,11 @@ export default function TestMode({
   }
 
   function startRound(pool: QuizItem[]) {
-    const next = buildRound(pool, allItems);
+    const next = makeRound(pool, allItems);
     setRound(next);
     setQueue(next.map((_, i) => i));
     setAttempted([]);
+    setRepeats([]);
     setAttempt(0);
     resetQuestion();
     setCorrectCount(0);
@@ -207,9 +254,21 @@ export default function TestMode({
   function settle(correct: boolean, results?: { itemId: string; correct: boolean }[]) {
     setAnswered(true);
     setWasRight(correct);
-    recordAnswer(correct);
+    if (!taster) recordAnswer(correct);
     if (correct) playCorrect();
     else playWrong();
+
+    // The line is said out loud the moment the question settles: answering is
+    // when you want to hear it, and it saves a tap on the one screen where the
+    // learner's hands are already busy. Held back a beat so it doesn't play
+    // over the feedback tone — two sounds at once is neither.
+    const line = spokenLine(question!);
+    if (line) {
+      window.clearTimeout(voiceTimer.current);
+      voiceTimer.current = window.setTimeout(() => {
+        void speak(locale, line.audioId, line.text);
+      }, 380);
+    }
 
     // Only the first go at a question counts. Without this the round would
     // always end at 100% — you cannot leave it until everything is right — and
@@ -218,10 +277,14 @@ export default function TestMode({
     // shouldn't erase the fact that you missed it.
     if (attempted.includes(position)) return;
     setAttempted((a) => [...a, position]);
-    if (results) {
-      for (const r of results) recordQuestionResult(r.itemId, r.correct);
-    } else {
-      recordQuestionResult(question!.itemId, correct);
+    // The taster leaves no trace: no score, and nothing dropped into the
+    // mistake queue before the learner has met the material.
+    if (!taster) {
+      if (results) {
+        for (const r of results) recordQuestionResult(r.itemId, r.correct);
+      } else {
+        recordQuestionResult(question!.itemId, correct);
+      }
     }
     if (correct) setCorrectCount((c) => c + 1);
   }
@@ -255,8 +318,12 @@ export default function TestMode({
     // the score but is not a reason to rebuild the board. Repeating it would
     // trap anyone who slipped once into redoing all four rows until they
     // managed a clean sweep.
-    const settled = wasRight || question?.form === "match";
+    // The taster never sends a question back around. Six questions is a look
+    // at the deck, and being made to redo the one you got wrong turns the first
+    // ninety seconds of ownership into a test.
+    const settled = taster || wasRight || question?.form === "match";
     const remaining = settled ? queue.slice(1) : [...queue.slice(1), position];
+    if (!settled) setRepeats((r) => (r.includes(position) ? r : [...r, position]));
     if (remaining.length > 0) {
       setQueue(remaining);
       setAttempt((a) => a + 1);
@@ -264,13 +331,34 @@ export default function TestMode({
       return;
     }
 
-    const pct = Math.round((correctCount / round.length) * 100);
-    const progress = recordRoundComplete(scoreKey, pct);
-    setDayStreak(currentDayStreak(progress));
-    setRoundsToday(roundsCompletedToday(progress));
-    setMistakeCount(progress.missedItemIds.length);
-    onRoundComplete();
+    if (!taster) {
+      const pct = Math.round((correctCount / round.length) * 100);
+      const progress = recordRoundComplete(scoreKey, pct);
+      setDayStreak(currentDayStreak(progress));
+      setRoundsToday(roundsCompletedToday(progress));
+      setMistakeCount(progress.missedItemIds.length);
+      onRoundComplete();
+    }
     setDone(true);
+  }
+
+  if (done && taster) {
+    return (
+      <div className="round-done">
+        <p className="round-done-score">
+          {correctCount} / {round.length}
+        </p>
+        <p className="round-done-sub taster-done">
+          That's the shape of it. Nothing here was scored — the path is where it
+          counts, one stage at a time, and it starts wherever you like.
+        </p>
+        <div className="controls">
+          <button type="button" className="review-primary" onClick={onBackToPath}>
+            Start practising
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (done) {
@@ -324,6 +412,9 @@ export default function TestMode({
   }
 
   const q = question!;
+  const spoken = spokenLine(q);
+  // The generator names a reply clip after its exchange, which is the item id.
+  const replyAudioId = q.reply ? `${q.itemId}-r` : null;
   // Tiles are tracked as `word\u0000index` so a repeated word stays distinct.
   const tokenOf = (tile: string, i: number) => `${tile}\u0000${i}`;
   const wordOf = (token: string) => token.slice(0, token.lastIndexOf("\u0000"));
@@ -363,7 +454,14 @@ export default function TestMode({
             <p className="quiz-front">
               {withBlanks(q.shown)}
               {q.shownSub && <span className="en">{withBlanks(q.shownSub)}</span>}
-              <AudioButton locale={locale} audioId={q.shownAudio} label="Hear the prompt" />
+              {q.answerLang === "en" && (
+                <AudioButton
+                  locale={locale}
+                  audioId={q.shownAudio}
+                  text={q.shown}
+                  label="Hear the phrase"
+                />
+              )}
             </p>
           </>
         )}
@@ -507,13 +605,40 @@ export default function TestMode({
               </span>
             </p>
 
-            {/* The right answer, when you didn't get there. */}
-            {q.form !== "match" && !wasRight && (
-              <p className="drawer-answer">
-                {withBlanks(q.answer)}
-                <AudioButton locale={locale} audioId={q.answerAudio} label="Hear the answer" />
-                {q.answerSub && <span className="en">{withBlanks(q.answerSub)}</span>}
+            {/* What you actually picked, when it wasn't the line. Small and
+                above the exchange: it's worth seeing where you went, but the
+                conversation below has to read as the conversation. */}
+            {q.form !== "match" && !wasRight && choice && (
+              <p className="drawer-picked">
+                <span className="drawer-picked-label">you picked</span>
+                {withBlanks(choice)}
               </p>
+            )}
+
+            {/* The exchange, both halves of it. Your line under "You said" —
+                right or wrong, this is the one that belongs to the moment —
+                and their comeback under it, so the scene plays out either way.
+                Tap either line to hear it again. */}
+            {q.form !== "match" && (q.saidByYou || !wasRight) && (
+              <div className={`drawer-line${q.saidByYou ? " is-yours" : ""}`}>
+                <p className="drawer-line-label">{q.saidByYou ? "You said" : "The answer"}</p>
+                <div className="drawer-line-row">
+                  <button
+                    type="button"
+                    className="drawer-line-text"
+                    onClick={() => void speak(locale, spoken?.audioId ?? null, spoken?.text ?? q.answer)}
+                  >
+                    {withBlanks(q.answer)}
+                  </button>
+                  <AudioButton
+                    locale={locale}
+                    audioId={spoken?.audioId ?? null}
+                    text={spoken?.text ?? q.answer}
+                    label="Hear it again"
+                  />
+                </div>
+                {q.answerSub && <p className="drawer-line-en">{withBlanks(q.answerSub)}</p>}
+              </div>
             )}
 
             {/* The aside the author put on the line — register, region, tone.
@@ -531,12 +656,24 @@ export default function TestMode({
                 shown here, right or wrong, so you always see the exchange
                 through to its end. */}
             {q.reply && (
-              <div className="drawer-reply">
-                <p className="drawer-reply-label">They'd say back</p>
-                <p className="drawer-reply-line">
-                  {withBlanks(q.reply.source)}
-                  {q.reply.en && <span className="en">{withBlanks(q.reply.en)}</span>}
-                </p>
+              <div className="drawer-line drawer-reply">
+                <p className="drawer-line-label">They'll say back</p>
+                <div className="drawer-line-row">
+                  <button
+                    type="button"
+                    className="drawer-line-text"
+                    onClick={() => void speak(locale, replyAudioId, q.reply!.source)}
+                  >
+                    {withBlanks(q.reply.source)}
+                  </button>
+                  <AudioButton
+                    locale={locale}
+                    audioId={replyAudioId}
+                    text={q.reply.source}
+                    label="Hear their reply"
+                  />
+                </div>
+                {q.reply.en && <p className="drawer-line-en">{withBlanks(q.reply.en)}</p>}
               </div>
             )}
 

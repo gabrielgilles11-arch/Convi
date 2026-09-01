@@ -339,17 +339,46 @@
   cursor: pointer;
 }
 
-.sound-toggle[aria-pressed="false"] {
+.sound-toggle[aria-pressed="false"],
+.voice-toggle[aria-pressed="false"] {
   color: var(--color-ink-soft);
 }
 
-.sound-toggle svg {
+.sound-toggle svg,
+.voice-toggle svg {
   width: 1.15rem;
   height: 1.15rem;
 }
 
-.sound-toggle:hover {
+.sound-toggle:hover,
+.voice-toggle:hover {
   border-color: var(--color-primary);
+}
+
+/* Voices and tones are different things — one is the language, the other is
+   feedback — so they get one button each, side by side. The voice toggle takes
+   the auto-margin that used to push the sound toggle to the right, so the pair
+   sits together at the end of the toolbar. */
+.voice-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-left: auto;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-primary-dark);
+  cursor: pointer;
+}
+
+.voice-toggle[aria-pressed="true"] {
+  border-color: var(--color-primary-tint-border);
+  background: var(--color-primary-tint);
+}
+
+.voice-toggle + .sound-toggle {
+  margin-left: 0.4rem;
 }
 
 /* Visible to screen readers only — the button itself is an icon. */
@@ -851,19 +880,29 @@
   color: var(--color-error);
 }
 
-.drawer-answer {
+/* The option you actually chose, when it wasn't the line. Quiet and set above
+   the exchange: worth seeing, but the two cards below have to read as a
+   conversation, and a wrong line in the middle of one breaks it. */
+.drawer-picked {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
   margin: 0;
-  font-weight: 700;
-  line-height: 1.4;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--color-ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--color-error) 55%, transparent);
 }
 
-.drawer-answer .en,
-.drawer-reply-line .en {
-  display: block;
-  margin-top: 0.15rem;
-  font-weight: 500;
-  font-size: 0.9rem;
+.drawer-picked-label {
+  flex: none;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
   color: var(--color-ink-soft);
+  text-decoration: none;
 }
 
 /* The register note. Deliberately quieter than the reply block: it is a
@@ -891,16 +930,22 @@
   color: var(--color-ink);
 }
 
-/* Their line sits on white inside the drawer — it's the one bit of new target
-   language here, and it shouldn't read as part of the verdict. */
-.drawer-reply {
+/* The exchange: your line, then theirs. Both sit on white inside the drawer —
+   they are the target language here, and neither should read as part of the
+   verdict. Two cards of the same shape is what makes it a conversation. */
+.drawer-line {
   border-radius: 16px;
   border: 1px solid var(--color-border);
   background: var(--color-card);
   padding: 0.7rem 0.9rem;
 }
 
-.drawer-reply-label {
+/* Your own line, marked by the edition tint down its edge. */
+.drawer-line.is-yours {
+  border-left: 4px solid var(--color-primary);
+}
+
+.drawer-line-label {
   margin: 0 0 0.25rem;
   font-size: 0.68rem;
   font-weight: 800;
@@ -909,11 +954,43 @@
   color: var(--color-ink-soft);
 }
 
-.drawer-reply-line {
+.drawer-line-row {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+/* The line is a button — tapping anywhere on it says it again, which is a far
+   bigger target than the speaker alone on a phone. It has to look like text,
+   so everything a button brings with it is taken back off. The speaker sits
+   beside it rather than inside it: a button inside a button is not markup. */
+.drawer-line-text {
+  flex: 1;
+  min-width: 0;
   margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
   font-family: var(--font-display);
   font-size: 1.05rem;
   line-height: 1.35;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.drawer-line-text:hover {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.2em;
+}
+
+.drawer-line-en {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-ink-soft);
 }
 
 .answer-drawer .next-question {
@@ -1154,6 +1231,26 @@
   background: var(--color-primary-tint);
 }
 
+/* Held while the line is being said, so a tap that produced no sound is
+   visibly different from one that did. */
+.audio-button.is-speaking {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  animation: speaking 1.1s ease-in-out infinite;
+}
+
+@keyframes speaking {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-button.is-speaking {
+    animation: none;
+  }
+}
+
 .audio-button svg {
   width: 1rem;
   height: 1rem;
@@ -1377,4 +1474,160 @@
     animation: none;
     transition: none;
   }
+}
+
+/* ---- Welcome: the first ninety seconds ---- */
+
+/* A pop-up over the whole page, not a panel inside it. The page heading and
+   the path copy underneath answer a question the welcome is still asking — this
+   is the app introducing itself, and for ten seconds it gets the screen. The
+   whole overlay is the button: there is one thing to do here, and it should be
+   impossible to miss. */
+.welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem 1.25rem;
+  background:
+    radial-gradient(120% 70% at 50% 12%, var(--color-primary-tint), transparent 70%),
+    var(--color-bg);
+  text-align: center;
+  cursor: pointer;
+  overflow-y: auto;
+}
+
+.welcome:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.welcome-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 32rem;
+}
+
+/* Each line is invisible until its turn, then its letters arrive in sequence.
+   Held at zero opacity rather than display:none so the card never resizes as
+   the lines land — text jumping around under a tap target is how you get a
+   mis-tap. */
+.welcome-line {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: var(--color-ink-soft);
+  opacity: 0;
+}
+
+.welcome-line.lead {
+  font-size: clamp(1.9rem, 7vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.welcome-line.in {
+  opacity: 1;
+}
+
+/* Words hold their letters together; only the gaps between words may break. */
+.welcome-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.welcome-char {
+  display: inline-block;
+  opacity: 0;
+}
+
+.welcome-line.in .welcome-char {
+  animation: char-in 0.42s ease-out forwards;
+}
+
+@keyframes char-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.welcome-cue {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+
+.welcome-cue.in {
+  opacity: 1;
+  animation: cue-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes cue-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.welcome-skip {
+  border: 0;
+  background: none;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+/* Somebody who asked for less motion gets the words, all at once, with no
+   animation at all. Nothing here is load-bearing. */
+@media (prefers-reduced-motion: reduce) {
+  .welcome-line,
+  .welcome-char,
+  .welcome-cue {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+}
+
+.taster-done {
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.replay-intro {
+  margin-top: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-card);
+  padding: 0.55rem 1.1rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  cursor: pointer;
+}
+
+.replay-intro:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
 }

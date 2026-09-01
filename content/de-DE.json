@@ -377,6 +377,43 @@
       "description": "Q → A → what they'll probably say",
       "subsections": [
         {
+          "id": "de-getting-around-airport",
+          "title": "Landing / airport",
+          "exchanges": [
+            {
+              "id": "de-getting-around-05",
+              "speaker": "you",
+              "situation": {
+                "en": "You've landed and you're looking for where the taxis are."
+              },
+              "question": { "es": "Wo finde ich ein Taxi?", "en": "Where do I find a taxi?" },
+              "answers": [
+                { "es": "Draußen vor dem Ausgang.", "en": "Outside, in front of the exit." }
+              ],
+              "likelyReply": { "es": "Einfach den Schildern folgen.", "en": "Just follow the signs." },
+              "notes": "Works for the bus and the train too — swap Taxi for Bus or Zug.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Before getting in, you want to know what a taxi into town costs."
+              },
+              "question": { "es": "Was kostet es ins Zentrum?", "en": "What does it cost to the centre?" },
+              "answers": [
+                { "es": "Ungefähr 40 Euro.", "en": "Around 40 euros." },
+                { "es": "Kommt auf den Verkehr an.", "en": "Depends on the traffic." }
+              ],
+              "likelyReply": { "es": "Steigen Sie ein.", "en": "Hop in." },
+              "notes": "Ask before the bags go in the boot, not after.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
           "id": "de-getting-around-taxi",
           "title": "Taxi",
           "exchanges": [

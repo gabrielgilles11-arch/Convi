@@ -1,0 +1,80 @@
+---
+/**
+ * Speaker button for one line on a scenario page.
+ *
+ * Markup only. The page's script wires every one of these up at once and
+ * decides whether they can be shown at all — a device with no voice for this
+ * language and no generated clips gets none of them — so each button starts
+ * hidden and is revealed once something can actually say it. That also means a
+ * visitor with JavaScript off never sees a control that cannot work.
+ */
+interface Props {
+  /** Id of the generated clip, matching scripts/generate-audio.mjs. */
+  audioId?: string | null;
+  /** The line itself, for the device voice when there is no clip. */
+  text?: string | null;
+  label?: string;
+}
+
+const { audioId = null, text = null, label = "Hear it" } = Astro.props;
+---
+
+{
+  text && text.trim() && (
+    <button
+      type="button"
+      class="speak"
+      data-audio={audioId ?? ""}
+      data-text={text}
+      aria-label={label}
+      title={label}
+      hidden
+    >
+      <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+        <path d="M4 8h3l4-3.5v11L7 12H4z" fill="currentColor" />
+        <path
+          d="M13.5 7.5a3.5 3.5 0 0 1 0 5M15.8 5.2a6.5 6.5 0 0 1 0 9.6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+  )
+}
+
+<style>
+  .speak {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-left: 0.35rem;
+    padding: 0;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    color: var(--color-primary-dark);
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .speak:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+  }
+
+  .speak svg {
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  /* Held while the line is being read, so a tap that produced no sound is
+     visibly different from one that did. */
+  .speak[data-speaking="true"] {
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+  }
+</style>

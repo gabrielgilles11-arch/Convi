@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ScenarioGate from "../../../components/ScenarioGate";
+import Speaker from "../../../components/Speaker.astro";
 import {
   getCategoryById,
   isDialogueSubsection,
@@ -43,7 +44,29 @@ const gateCopy =
 
 <Layout title={`${category.title} — Try Convi`} description={category.description} locale={locale}>
   <a class="back" href={localePath(locale, "/scenarios")}>&larr; All scenarios</a>
-  <h1>{category.title}</h1>
+  <div class="title-row" data-locale={locale}>
+    <h1>{category.title}</h1>
+    {/* Hidden until the script knows this device can say anything at all. */}
+    <button type="button" id="voice-toggle" class="voice-toggle" aria-pressed="true" hidden>
+      <span class="toggle-label">Voices</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          d="M7 9.5c1.6-2 3.2-3 5-3s3.4 1 5 3"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.9"
+          stroke-linecap="round"
+        />
+        <path
+          d="M6 13c2 3 4 4.5 6 4.5s4-1.5 6-4.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.9"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+  </div>
   <p class="description">{category.description}</p>
 
   {isPremium && !entitled && <ScenarioGate client:load {...gateCopy} />}
@@ -69,6 +92,7 @@ const gateCopy =
             <article class="exchange">
               <p class="question">
                 <span class="label">Q</span> {exchange.question.es}
+                <Speaker audioId={`${exchange.id}-q`} text={exchange.question.es} label="Hear the question" />
                 <span class="translation"> — {exchange.question.en}</span>
                 {exchange.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
                 {exchange.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
@@ -80,9 +104,10 @@ const gateCopy =
 
               {exchange.answers.length > 0 && (
                 <ul class="answers">
-                  {exchange.answers.map((answer) => (
+                  {exchange.answers.map((answer, i) => (
                     <li>
                       <span class="label">A</span> {answer.es}
+                      <Speaker audioId={`${exchange.id}-a${i}`} text={answer.es} label="Hear this answer" />
                       <span class="translation"> — {answer.en}</span>
                     </li>
                   ))}
@@ -92,6 +117,7 @@ const gateCopy =
               {exchange.likelyReply && (
                 <p class="reply">
                   <span class="label">They'll say</span> {exchange.likelyReply.es}
+                  <Speaker audioId={`${exchange.id}-r`} text={exchange.likelyReply.es} label="Hear their reply" />
                   <span class="translation"> — {exchange.likelyReply.en}</span>
                 </p>
               )}
@@ -100,9 +126,11 @@ const gateCopy =
             </article>
           ))}
 
-          {(sub as DialogueSubsection).items?.map((tip) => (
+          {(sub as DialogueSubsection).items?.map((tip, i) => (
             <p class="tip">
-              {tip.es} <span class="translation">— {tip.en}</span>
+              {tip.es}
+              <Speaker audioId={`${sub.id}-tip${i}`} text={tip.es} />
+              <span class="translation">— {tip.en}</span>
             </p>
           ))}
         </section>
@@ -114,6 +142,7 @@ const gateCopy =
               <li>
                 <span class="es">
                   {phrase.es}
+                  <Speaker audioId={phrase.id} text={phrase.es} />
                   {phrase.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
                   {phrase.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
                   {phrase.region === "stockholm" && <span class="tag tag--stockholm">Stockholm</span>}
@@ -131,6 +160,77 @@ const gateCopy =
   </div>
   )}
 </Layout>
+
+<script>
+  // Reading the scenario out loud. One delegated handler for the whole page:
+  // a long phrasebook can carry a hundred speakers, and a hundred listeners is
+  // a hundred things to tear down.
+  import {
+    canSpeak,
+    hasClip,
+    onVoicesReady,
+    setVoiceEnabled,
+    speak,
+    stopSpeaking,
+    subscribeVoice,
+    voiceEnabled,
+  } from "../../../components/quiz/speech";
+
+  // The locale is a server value, so it travels in the markup rather than in
+  // this module — a bundled script has no way to be handed one.
+  const locale = document.querySelector<HTMLElement>(".title-row")?.dataset.locale ?? "es-ES";
+  const toggle = document.getElementById("voice-toggle") as HTMLButtonElement | null;
+  const buttons = () => document.querySelectorAll<HTMLButtonElement>(".speak");
+
+  /** True once anything on this device can say a line in this language. */
+  let sayable = canSpeak(locale);
+
+  function sync() {
+    const on = voiceEnabled() && sayable;
+    for (const button of buttons()) button.hidden = !on;
+    if (toggle) {
+      toggle.hidden = !sayable;
+      toggle.setAttribute("aria-pressed", String(voiceEnabled()));
+      toggle.title = voiceEnabled() ? "Voices on" : "Voices off";
+    }
+  }
+
+  // A generated clip counts even where the browser has no voice of its own, so
+  // one representative line is probed before giving up on the whole page.
+  const first = document.querySelector<HTMLButtonElement>(".speak");
+  if (!sayable && first?.dataset.audio) {
+    void hasClip(locale, first.dataset.audio).then((found) => {
+      if (!found) return;
+      sayable = true;
+      sync();
+    });
+  }
+
+  onVoicesReady(() => {
+    sayable = canSpeak(locale);
+    sync();
+  });
+  subscribeVoice(sync);
+
+  toggle?.addEventListener("click", () => {
+    const next = toggle.getAttribute("aria-pressed") !== "true";
+    setVoiceEnabled(next);
+    if (!next) stopSpeaking();
+    sync();
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement | null)?.closest<HTMLButtonElement>(".speak");
+    if (!button) return;
+    const text = button.dataset.text ?? "";
+    button.dataset.speaking = "true";
+    void speak(locale, button.dataset.audio || null, text).finally(() => {
+      delete button.dataset.speaking;
+    });
+  });
+
+  sync();
+</script>
 
 <script define:vars={{ categoryId: category.id, showContent }}>
   // Mark this category "completed" once its content has actually been shown
@@ -169,6 +269,52 @@ const gateCopy =
   .back:hover {
     background: var(--color-primary);
     color: #fff;
+  }
+
+  /* Title and the voices switch on one line: the switch belongs to the page,
+     not to any single phrase on it. */
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .voice-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: none;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    padding: 0.4rem 0.75rem;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-primary-dark);
+    cursor: pointer;
+  }
+
+  .voice-toggle[aria-pressed="true"] {
+    border-color: var(--color-primary-tint-border);
+    background: var(--color-primary-tint);
+  }
+
+  .voice-toggle[aria-pressed="false"] {
+    color: var(--color-ink-soft);
+  }
+
+  .voice-toggle svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  /* The mouth closes when voices are off — the same shape saying nothing. */
+  .voice-toggle[aria-pressed="false"] svg path:first-child {
+    opacity: 0.25;
   }
 
   h1 {

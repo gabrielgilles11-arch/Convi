@@ -400,6 +400,13 @@ export interface Question {
    */
   answerNote: string | null;
   answerLang: AnswerLang;
+  /**
+   * True when the answer is a line the learner would actually say in the
+   * moment — a situation asked forward. That is what lets the drawer report it
+   * back as "you said" and follow it with their reply; a translation question
+   * has no scene for either to belong to.
+   */
+  saidByYou: boolean;
   /** Audio ids for the source-language sides only; English is never spoken. */
   shownAudio: string | null;
   answerAudio: string | null;
@@ -522,6 +529,7 @@ export function buildQuestion(
     answerSub,
     answerNote,
     answerLang,
+    saidByYou: item.kind === "situation" && !reverse,
     // The scene of a situation is English, so only the answer is ever spoken.
     // A phrase shows its source side only in the forward direction.
     shownAudio: item.kind === "phrase" && !reverse ? item.frontAudioId : null,
@@ -774,6 +782,7 @@ export function buildMatchQuestion(
     answerSub: null,
     answerNote: null,
     answerLang: "source",
+    saidByYou: false,
     shownAudio: null,
     answerAudio: null,
     reply: null,
@@ -952,6 +961,73 @@ export function buildRound(
 }
 
 /**
+ * The first six questions a new buyer ever sees.
+ *
+ * Not a stage and not scored: a taster, in the order a trip actually happens.
+ * It opens on arrival — finding a taxi at the airport, telling the driver where
+ * to — because that is the first thing that happens to you and the first proof
+ * the deck is about real moments rather than vocabulary. The rest is the mix
+ * the product is: two at a bar, one flirting, one underground.
+ *
+ * Slots are matched by stage key and subsection ending, so one plan serves all
+ * three editions (`airport`, `de-getting-around-airport`, `sv-…-airport`).
+ * A slot that finds nothing is dropped rather than filled with something else:
+ * a shorter taster is better than one that opens on the wrong moment.
+ */
+const TASTER_PLAN: { stage: string; endings?: string[] }[] = [
+  { stage: "getting-around", endings: ["airport"] },
+  { stage: "getting-around", endings: ["taxi"] },
+  { stage: "beer-food" },
+  { stage: "beer-food" },
+  // The compliments ring, by whichever name this edition gives it. Flirting
+  // also holds the turning-someone-down lines, and "you're nice, but no" is not
+  // the line to introduce anybody to the deck with.
+  { stage: "flirting", endings: ["compliments", "safe"] },
+  { stage: "getting-around", endings: ["metro"] },
+];
+
+/** How many of the plan's questions lead, in plan order, before the shuffle. */
+const TASTER_OPENERS = 2;
+
+export function buildTasterRound(items: QuizItem[]): Question[] {
+  const taken = new Set<string>();
+  const picked: Question[] = [];
+
+  for (const slot of TASTER_PLAN) {
+    const inStage = items.filter(
+      (i) => !taken.has(i.id) && stageKeyOf(i.categoryId) === slot.stage
+    );
+    // The ring is a preference, not a requirement: an edition that names its
+    // subsections differently still gets a question from the right stage.
+    const inRing = slot.endings
+      ? inStage.filter((i) => slot.endings!.some((end) => i.subsectionId.endsWith(end)))
+      : inStage;
+    const candidates = shuffle(inRing.length > 0 ? inRing : inStage);
+    // A situation is the thing being sold — a moment, and the line it needs —
+    // so one is used wherever the slot has one.
+    const ordered = [
+      ...candidates.filter((i) => i.kind === "situation"),
+      ...candidates.filter((i) => i.kind !== "situation"),
+    ];
+
+    for (const item of ordered) {
+      const question = buildQuestion(item, false, "choice", items, items);
+      if (!question) continue;
+      taken.add(item.id);
+      picked.push(question);
+      break;
+    }
+  }
+
+  const openers = picked.slice(0, TASTER_OPENERS);
+  const rest = shuffle(picked.slice(TASTER_OPENERS));
+
+  // Mixed means mixed: the two bar questions must not run together, or the
+  // taster reads as two categories rather than the range of one deck.
+  return spreadOut([...openers, ...rest], { separateCategories: true, pinned: openers.length });
+}
+
+/**
  * Keeps two questions about the same line from landing next to each other.
  *
  * A round asks some items from both sides, so the shuffle can deal "What does
@@ -964,13 +1040,25 @@ export function buildRound(
  * can follow cleanly — a short round of closely related material — the next
  * question goes in anyway, because dropping it would shorten the round.
  */
-function spreadOut(questions: Question[]): Question[] {
-  const remaining = [...questions];
-  const out: Question[] = [];
+interface SpreadOptions {
+  /**
+   * Also keep two questions from the same category apart. Only the taster asks
+   * for this: a round is one stage, so there it would reject everything.
+   */
+  separateCategories?: boolean;
+  /** Leading questions that must stay where they are, in the order given. */
+  pinned?: number;
+}
+
+function spreadOut(questions: Question[], options: SpreadOptions = {}): Question[] {
+  const { separateCategories = false, pinned = 1 } = options;
+  const out = questions.slice(0, Math.max(1, pinned));
+  const remaining = questions.slice(out.length);
 
   const clashes = (a: Question, b: Question) => {
     if (a.form === "match" || b.form === "match") return false;
     if (a.itemId === b.itemId) return true;
+    if (separateCategories && a.categoryId === b.categoryId) return true;
     // Either side of one question showing up on either side of the next is the
     // giveaway, whichever direction each was asked in.
     return (
@@ -998,9 +1086,12 @@ function spreadOut(questions: Question[]): Question[] {
     (i === 0 || !clashes(out[i - 1], out[i])) &&
     (i === out.length - 1 || !clashes(out[i], out[i + 1]));
 
-  for (let i = 1; i < out.length; i++) {
+  // Pinned questions are never swapped, even to fix a clash between two of
+  // them: where they sit is the point of pinning them.
+  const firstMovable = Math.max(1, pinned);
+  for (let i = firstMovable; i < out.length; i++) {
     if (clean(i)) continue;
-    for (let j = 1; j < out.length; j++) {
+    for (let j = firstMovable; j < out.length; j++) {
       if (j === i) continue;
       [out[i], out[j]] = [out[j], out[i]];
       // Both landing sites and the gaps the two questions left behind.

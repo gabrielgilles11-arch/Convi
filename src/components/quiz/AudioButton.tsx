@@ -1,75 +1,56 @@
 import { useEffect, useState } from "react";
+import { canSpeak, onVoicesReady, speak, subscribeVoice, voiceEnabled } from "./speech";
 
 /**
  * Speaker button for a line of the target language.
  *
- * Audio is generated at author time (scripts/generate-audio.mjs) and committed,
- * so a clip either exists or it doesn't. Rather than render a button that might
- * fail, this probes once and shows nothing when there's no file — which is also
- * how the feature stays invisible until the audio is actually generated.
+ * It plays a generated clip where one exists and falls back to the device's own
+ * voice, so it appears as soon as either can say the line — see ./speech. When
+ * neither can, it renders nothing rather than a control that does nothing.
  */
-
-/**
- * Audio is switched off for now. The generator hasn't been run, and without
- * this flag the speakers would appear on their own the moment any clip landed
- * in public/audio — flip it to true when the audio is generated and checked.
- */
-const AUDIO_ENABLED = false;
-
-// Probe results are shared across every button and survive question changes.
-const known = new Map<string, string | null>();
-
-async function resolve(base: string): Promise<string | null> {
-  if (known.has(base)) return known.get(base)!;
-  for (const ext of ["mp3", "wav"]) {
-    const url = `${base}.${ext}`;
-    try {
-      const res = await fetch(url, { method: "HEAD" });
-      if (res.ok) {
-        known.set(base, url);
-        return url;
-      }
-    } catch {
-      // network hiccup — treat as absent, it'll be re-probed next mount
-    }
-  }
-  known.set(base, null);
-  return null;
-}
 
 interface Props {
   locale: string;
+  /** Id of the generated clip, when the line has one. */
   audioId: string | null;
+  /** The line itself, for the fallback voice. */
+  text: string;
   label?: string;
 }
 
-export default function AudioButton({ locale, audioId, label = "Hear it" }: Props) {
-  const [url, setUrl] = useState<string | null>(null);
+export default function AudioButton({ locale, audioId, text, label = "Hear it" }: Props) {
+  // Both facts live outside React — one in localStorage, one in the browser's
+  // voice list — so they are read after mount, never during render. Starting
+  // false also keeps the server's HTML and the first client render identical.
+  const [available, setAvailable] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
-    if (!AUDIO_ENABLED || !audioId) {
-      setUrl(null);
-      return;
-    }
-    resolve(`/audio/${locale}/${audioId}`).then((found) => {
-      if (!cancelled) setUrl(found);
-    });
+    // A device voice is enough on its own, so the button doesn't wait on the
+    // clip probe to appear.
+    const check = () => setAvailable(voiceEnabled() && (!!audioId || canSpeak(locale)));
+    check();
+    const stopWatchingVoices = onVoicesReady(check); // list can arrive late
+    const stopWatchingSetting = subscribeVoice(check);
     return () => {
-      cancelled = true;
+      stopWatchingVoices();
+      stopWatchingSetting();
     };
   }, [locale, audioId]);
 
-  if (!AUDIO_ENABLED || !url) return null;
+  if (!available || !text.trim()) return null;
 
   return (
     <button
       type="button"
-      className="audio-button"
+      className={`audio-button${speaking ? " is-speaking" : ""}`}
       aria-label={label}
       title={label}
-      onClick={() => {
-        void new Audio(url).play().catch(() => {});
+      onClick={(event) => {
+        // The line itself is often clickable too; one tap should say it once.
+        event.stopPropagation();
+        setSpeaking(true);
+        void speak(locale, audioId, text).finally(() => setSpeaking(false));
       }}
     >
       <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">

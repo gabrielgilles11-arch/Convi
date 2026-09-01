@@ -3,6 +3,8 @@ import { STAGE_CLEAR_SCORE, type Stage } from "../../lib/quizTypes";
 interface Props {
   stages: Stage[];
   bestScores: Record<string, number>;
+  /** Replays the welcome and its six questions. */
+  onReplayIntro?: () => void;
 }
 
 /**
@@ -13,7 +15,7 @@ interface Props {
  * nothing sets that any more and the number would have sat at zero forever.
  * Best score per stage is the honest measure now.
  */
-export default function ProgressPanel({ stages, bestScores }: Props) {
+export default function ProgressPanel({ stages, bestScores, onReplayIntro }: Props) {
   const cleared = stages.filter((s) => (bestScores[s.id] ?? 0) >= STAGE_CLEAR_SCORE).length;
 
   return (
@@ -43,6 +45,15 @@ export default function ProgressPanel({ stages, bestScores }: Props) {
           );
         })}
       </ul>
+
+      {/* The intro shows once, on the first unlock. It is still the clearest
+          answer to "what is this app", so it stays reachable rather than being
+          gone the moment it's been seen. */}
+      {onReplayIntro && (
+        <button type="button" className="replay-intro" onClick={onReplayIntro}>
+          Replay the intro
+        </button>
+      )}
     </div>
   );
 }
