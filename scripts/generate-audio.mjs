@@ -28,10 +28,32 @@ const only = args.includes("--locale") ? args[args.indexOf("--locale") + 1] : nu
 const force = args.includes("--force");
 const dryRun = args.includes("--dry-run");
 
-/** Voice choices. Google names are stable; Piper needs a downloaded .onnx. */
+/**
+ * Voice choices. Google names are stable; Piper needs a downloaded .onnx.
+ *
+ * Google keeps several generations of voice live at once and they do not sound
+ * alike: Studio and Chirp3-HD are the current recorded-neural tiers, Neural2 is
+ * the generation before, and Standard is concatenative and shows it. Which one
+ * suits a deck of short spoken lines is a matter of taste, so every voice can
+ * be overridden from the environment — generate a few lines with one, listen,
+ * keep the one you like:
+ *
+ *   GOOGLE_VOICE_ES=es-ES-Studio-F node scripts/generate-audio.mjs --locale es-ES --force
+ *
+ * `--force` matters when comparing: without it, lines already on disk are
+ * skipped and you would hear the old voice back.
+ */
 const PROVIDERS = {
-  "es-ES": { provider: "google", voice: "es-ES-Neural2-B", languageCode: "es-ES" },
-  "de-DE": { provider: "google", voice: "de-DE-Neural2-D", languageCode: "de-DE" },
+  "es-ES": {
+    provider: "google",
+    voice: process.env.GOOGLE_VOICE_ES ?? "es-ES-Studio-F",
+    languageCode: "es-ES",
+  },
+  "de-DE": {
+    provider: "google",
+    voice: process.env.GOOGLE_VOICE_DE ?? "de-DE-Studio-B",
+    languageCode: "de-DE",
+  },
   "sv-SE": { provider: "piper", model: process.env.PIPER_SV_MODEL ?? "sv_SE-nst-medium.onnx" },
 };
 
@@ -88,7 +110,12 @@ async function synthGoogle(text, cfg, outPath) {
     }
   );
 
-  if (!res.ok) throw new Error(`Google TTS ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  if (!res.ok) {
+    const detail = (await res.text()).slice(0, 200);
+    // A voice name that doesn't exist comes back as a 400 with the name in it,
+    // which is easy to miss among 250 lines of output.
+    throw new Error(`Google TTS ${res.status} for voice ${cfg.voice}: ${detail}`);
+  }
   const { audioContent } = await res.json();
   if (!audioContent) throw new Error("Google TTS returned no audio");
   writeFileSync(outPath, Buffer.from(audioContent, "base64"));

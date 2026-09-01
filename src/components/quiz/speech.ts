@@ -100,28 +100,81 @@ function synth(): SpeechSynthesis | null {
 }
 
 /**
- * The best installed voice for a language.
+ * How good a voice is likely to sound, from its name.
+ *
+ * Every browser ships several voices per language and they are not remotely
+ * equal: Edge's "Natural" and Chrome's "Google español" voices are recorded
+ * neural models, Apple's Enhanced and Premium downloads are close behind, and
+ * at the bottom sit Apple's bundled Compact voices, Microsoft's legacy SAPI
+ * "Desktop" voices and eSpeak on Linux, which is a formant synthesiser from the
+ * nineties. Picking blindly gets you one of the last three about as often as
+ * not, which is what "the Spanish voice is really bad" sounds like.
+ *
+ * Names are all we have to go on — the API exposes no quality field — but the
+ * engines label themselves consistently enough for this to be reliable. An
+ * unrecognised name scores zero and sits between the good and the bad, so a
+ * voice this list has never heard of is neither promoted nor punished.
+ */
+const VOICE_MARKS: [RegExp, number][] = [
+  [/\bnatural\b|\bneural\b/i, 6], // Edge / Windows 11 neural voices
+  [/^google\b|\bgoogle\b/i, 5], // Chrome and Android's cloud voices
+  [/\bpremium\b|\benhanced\b|\bsiri\b/i, 4], // Apple's downloadable voices
+  [/\bcompact\b/i, -6], // Apple's bundled low-bitrate voices
+  [/\bdesktop\b/i, -4], // Microsoft SAPI5, pre-neural
+  [/espeak|\bmbrola\b/i, -9], // Linux fallback: intelligible, not human
+];
+
+function voiceScore(voice: SpeechSynthesisVoice, locale: string): number {
+  let score = 0;
+  for (const [pattern, weight] of VOICE_MARKS) {
+    if (pattern.test(voice.name)) score += weight;
+  }
+  // A Mexican voice reading Madrid slang is wrong in a way a learner will copy,
+  // so the exact edition outranks everything except an outright bad engine.
+  if (normaliseLang(voice.lang) === locale.toLowerCase()) score += 3;
+  return score;
+}
+
+function normaliseLang(lang: string): string {
+  return lang.toLowerCase().replace("_", "-");
+}
+
+/**
+ * The best available voice for a language.
  *
  * Voices load asynchronously in some browsers, so the list is read fresh every
- * time rather than cached at import. An exact locale match wins; failing that
- * any voice for the same language, since "de-AT" reading German is far better
- * than an American voice attempting it. A local voice is preferred over a
- * network one so the line plays instantly and offline.
+ * time rather than cached at import. Any voice for the language is a candidate
+ * — "de-AT" reading German beats an American voice attempting it — and they are
+ * then ranked by `voiceScore`.
+ *
+ * This used to prefer `localService` voices, on the reasoning that a local one
+ * plays instantly and offline. That was backwards: on every desktop platform
+ * the local voices are the *old* ones, and the good voice — "Google español de
+ * España", Edge's "Elvira Natural" — is the one served over the network. The
+ * preference was reliably choosing the worst voice on the machine.
  */
 function voiceFor(locale: string): SpeechSynthesisVoice | null {
   const engine = synth();
   if (!engine) return null;
 
-  const voices = engine.getVoices();
-  if (voices.length === 0) return null;
-
   const language = locale.split("-")[0].toLowerCase();
-  const matches = voices.filter((v) => v.lang.toLowerCase().replace("_", "-").startsWith(language));
+  const matches = engine
+    .getVoices()
+    .filter((v) => normaliseLang(v.lang).startsWith(language));
   if (matches.length === 0) return null;
 
-  const exact = matches.filter((v) => v.lang.toLowerCase().replace("_", "-") === locale.toLowerCase());
-  const pool = exact.length > 0 ? exact : matches;
-  return pool.find((v) => v.localService) ?? pool[0];
+  let best = matches[0];
+  let bestScore = voiceScore(best, locale);
+  for (const voice of matches.slice(1)) {
+    const score = voiceScore(voice, locale);
+    // Strictly greater, so the browser's own default order breaks ties — it is
+    // usually the platform's preferred voice for the language.
+    if (score > bestScore) {
+      best = voice;
+      bestScore = score;
+    }
+  }
+  return best;
 }
 
 /**
