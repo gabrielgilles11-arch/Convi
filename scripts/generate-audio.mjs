@@ -87,11 +87,21 @@ function spokenLines(locale) {
   return lines;
 }
 
-/** What actually gets sent to the synthesiser. */
+/**
+ * What actually gets sent to the synthesiser.
+ *
+ * Mirrors stripForSpeech in src/components/quiz/speech.ts, and for the same
+ * reasons: " / " with spaces around it separates two ways of saying the same
+ * thing, and a clip that says both has the voice repeat itself. Only the first
+ * is recorded. A slash without spaces joins alternatives inside one phrase and
+ * becomes a beat, as do the fill-in slots.
+ */
 function speakable(text) {
-  return text
+  const [first] = text.split(/\s+\/\s+/);
+  return (first?.trim() ? first : text)
     .replace(/_{2,}/g, ", ")          // "Son __ euros." -> a beat, not "underscore"
     .replace(/\[[^\]]+\]/g, ", ")     // same for [BELOPP] / [STATION]
+    .replace(/\s*\/\s*/g, ", ")       // "Links/rechts" -> a beat between them
     .replace(/\s*,\s*,\s*/g, ", ")
     .replace(/\s+/g, " ")
     .trim();

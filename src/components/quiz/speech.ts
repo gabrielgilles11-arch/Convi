@@ -287,14 +287,27 @@ export async function speak(
 /**
  * Prepares a written line to be read aloud.
  *
- * Authored lines carry marks meant for the eye: a slash between two ways of
- * saying the same thing, a fill-in slot standing in for an address. Read
- * literally they come out as "slash" and "underscore underscore", so the slash
- * becomes a pause and the slot is dropped — the sentence around it is still the
- * thing worth hearing.
+ * Authored lines carry marks meant for the eye. " / " with spaces around it
+ * separates two ways of saying the same thing — "Var är tuben? / Var är
+ * Tunnelbanan?" — and reading both aloud has the voice say the same thing
+ * twice, which is most of what makes a synthesiser sound like a machine rather
+ * than a person. A spoken line is one thing you would actually say, so only the
+ * first survives; the written line still shows every variant.
+ *
+ * A slash *without* spaces joins alternatives inside one phrase —
+ * "Links/rechts", "Gröna/röda/blå linjen" — where all of them belong in the
+ * sentence, so those become a short pause instead. And a fill-in slot stands in
+ * for an address or an amount: read literally it comes out as "underscore
+ * underscore", so it is dropped and the sentence around it is still worth
+ * hearing.
  */
+const ALTERNATIVE_LINES = /\s+\/\s+/;
+
 function stripForSpeech(text: string): string {
-  return text
+  const [first] = text.split(ALTERNATIVE_LINES);
+  const line = first?.trim() ? first : text;
+
+  return line
     .replace(/\[[^\]]*\]/g, " … ")
     .replace(/_{2,}/g, " … ")
     .replace(/\s*\/\s*/g, ", ")
