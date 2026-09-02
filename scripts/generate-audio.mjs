@@ -15,7 +15,7 @@
  *
  *   node scripts/generate-audio.mjs [--locale sv-SE] [--force] [--dry-run]
  */
-import { readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync } from "node:fs";
+import { readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync, rmSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import path from "node:path";
@@ -28,9 +28,41 @@ const only = args.includes("--locale") ? args[args.indexOf("--locale") + 1] : nu
 const force = args.includes("--force");
 const dryRun = args.includes("--dry-run");
 const listOnly = args.includes("--list-voices");
+// Which synthesiser to use, when it shouldn't be the locale's default. Piper
+// is the one that needs no account, so it is the one a stopgap runs on.
+const engine = args.includes("--engine") ? args[args.indexOf("--engine") + 1] : null;
 // Auditioning a voice shouldn't cost the whole deck. `--sample 6` does the
 // first six lines only, which is enough to hear what a voice is like.
 const sample = args.includes("--sample") ? Number(args[args.indexOf("--sample") + 1]) : 0;
+
+/**
+ * Piper voices per locale, used when `--engine piper` overrides the default.
+ *
+ * Piper is the free path and the only one that needs no account at all: the
+ * models are open-licensed, run offline, and `python3 -m piper.download_voices`
+ * fetches one. Quality sits between a good device voice and Azure's neural
+ * tier — worth having while a key isn't, and worth replacing when one is.
+ */
+const PIPER_VOICES = {
+  "sv-SE": process.env.PIPER_SV_MODEL ?? "sv_SE-nst-medium",
+  "es-ES": process.env.PIPER_ES_MODEL ?? "es_ES-sharvard-medium",
+  "de-DE": process.env.PIPER_DE_MODEL ?? "de_DE-thorsten-medium",
+};
+
+/** Where download_voices puts them, and where -m looks. Never committed. */
+const VOICE_DIR = process.env.PIPER_VOICE_DIR ?? path.join(ROOT, ".piper-voices");
+
+function providerFor(locale) {
+  const base = PROVIDERS[locale];
+  if (!base || engine !== "piper") return base;
+
+  const name = PIPER_VOICES[locale];
+  if (!name) return base;
+  // A bare name resolves to the file download_voices writes; a path is taken as
+  // given, so an already-downloaded model can be pointed at directly.
+  const model = name.endsWith(".onnx") ? name : path.join(VOICE_DIR, `${name}.onnx`);
+  return { provider: "piper", model, voiceName: name };
+}
 
 /**
  * Voice choices. Google names are stable; Piper needs a downloaded .onnx.
@@ -269,12 +301,61 @@ async function synthAzure(text, cfg, outPath) {
   writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
 }
 
-function synthPiper(text, cfg, outPath) {
-  // Piper emits WAV on stdout. Kept as .wav rather than shelling out to an
-  // encoder that may not be installed; these clips are 1-3 seconds.
-  const wavPath = outPath.replace(/\.mp3$/, ".wav");
-  execFileSync("piper", ["--model", cfg.model, "--output_file", wavPath], { input: text });
+/**
+ * Makes sure the Piper voice is on disk, downloading it if not.
+ *
+ * Part of the job rather than a step to remember: the model is tens of
+ * megabytes, it is never committed, and a fresh checkout or a CI runner has
+ * never seen it.
+ */
+function ensurePiperVoice(cfg) {
+  if (!cfg.voiceName || existsSync(cfg.model)) return;
+  console.log(`  fetching voice ${cfg.voiceName}…`);
+  mkdirSync(VOICE_DIR, { recursive: true });
+  execFileSync(
+    "python3",
+    ["-m", "piper.download_voices", cfg.voiceName, "--download-dir", VOICE_DIR],
+    { stdio: "inherit" }
+  );
 }
+
+/** Whether ffmpeg is on the path, checked once. */
+let ffmpeg = null;
+function hasFfmpeg() {
+  if (ffmpeg === null) {
+    try {
+      execFileSync("ffmpeg", ["-version"], { stdio: "ignore" });
+      ffmpeg = true;
+    } catch {
+      ffmpeg = false;
+    }
+  }
+  return ffmpeg;
+}
+
+function synthPiper(text, cfg, outPath) {
+  // `-m` and `-f` rather than the long forms: the long ones have been spelled
+  // both --output_file and --output-file across piper versions, the short ones
+  // never changed.
+  const wavPath = outPath.replace(/\.mp3$/, ".wav");
+  execFileSync("piper", ["-m", cfg.model, "-f", wavPath], {
+    input: text,
+    stdio: ["pipe", "ignore", "pipe"],
+  });
+
+  // Piper writes WAV, which is five times the bytes of the MP3 the cloud
+  // providers return — worth converting where there is an encoder, since these
+  // are downloaded by phones. Where there isn't, the WAV is what ships; the
+  // manifest records the extension either way.
+  if (hasFfmpeg()) {
+    const mp3Path = wavPath.replace(/\.wav$/, ".mp3");
+    execFileSync("ffmpeg", ["-y", "-i", wavPath, "-codec:a", "libmp3lame", "-b:a", "48k", mp3Path], {
+      stdio: "ignore",
+    });
+    rmSync(wavPath);
+  }
+}
+
 
 async function run() {
   const locales = only ? [only] : Object.keys(PROVIDERS);
@@ -282,7 +363,7 @@ async function run() {
 
   if (listOnly) {
     for (const locale of locales) {
-      const cfg = PROVIDERS[locale];
+      const cfg = providerFor(locale);
       if (cfg?.provider !== "google" && cfg?.provider !== "azure") continue;
       const voices =
         cfg.provider === "google"
@@ -297,7 +378,7 @@ async function run() {
   }
 
   for (const locale of locales) {
-    const cfg = PROVIDERS[locale];
+    const cfg = providerFor(locale);
     if (!cfg) {
       console.error(`  unknown locale ${locale}`);
       continue;
@@ -344,8 +425,13 @@ async function run() {
       console.log(`  voice: ${cfg.voice}`);
     }
 
+    if (cfg.provider === "piper" && !dryRun) {
+      ensurePiperVoice(cfg);
+      console.log(`  voice: ${cfg.voiceName ?? cfg.model}${hasFfmpeg() ? " (mp3)" : " (wav — no ffmpeg)"}`);
+    }
+
     for (const line of lines) {
-      const ext = cfg.provider === "piper" ? "wav" : "mp3";
+      const ext = cfg.provider === "piper" && !hasFfmpeg() ? "wav" : "mp3";
       const outPath = path.join(outDir, `${line.id}.${ext}`);
       if (!force && existsSync(outPath)) { skipped++; continue; }
       if (dryRun) { made++; continue; }
