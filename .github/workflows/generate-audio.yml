@@ -46,8 +46,15 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Piper
-        run: pip install --quiet piper-tts
+      - name: Install Piper and an encoder
+        # ffmpeg is what turns Piper's WAV into MP3 — a fifth of the bytes for a
+        # line nobody can tell apart. The runner image no longer ships it, and
+        # the generator silently keeps the WAV when it is missing, which is how
+        # the first run produced 67KB clips.
+        run: |
+          pip install --quiet piper-tts
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
 
       - name: Record
         env:
