@@ -224,7 +224,9 @@ const gateCopy =
     if (!button) return;
     const text = button.dataset.text ?? "";
     button.dataset.speaking = "true";
-    void speak(locale, button.dataset.audio || null, text).finally(() => {
+    // "scenarios" is what puts the recorded clips on this page and leaves
+    // practice on the device voice — see Surface in speech.ts.
+    void speak(locale, button.dataset.audio || null, text, "scenarios").finally(() => {
       delete button.dataset.speaking;
     });
   });

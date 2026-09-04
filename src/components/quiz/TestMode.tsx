@@ -266,7 +266,7 @@ export default function TestMode({
     if (line) {
       window.clearTimeout(voiceTimer.current);
       voiceTimer.current = window.setTimeout(() => {
-        void speak(locale, line.audioId, line.text);
+        void speak(locale, line.audioId, line.text, "practice");
       }, 380);
     }
 
@@ -626,7 +626,7 @@ export default function TestMode({
                   <button
                     type="button"
                     className="drawer-line-text"
-                    onClick={() => void speak(locale, spoken?.audioId ?? null, spoken?.text ?? q.answer)}
+                    onClick={() => void speak(locale, spoken?.audioId ?? null, spoken?.text ?? q.answer, "practice")}
                   >
                     {withBlanks(q.answer)}
                   </button>
@@ -662,7 +662,7 @@ export default function TestMode({
                   <button
                     type="button"
                     className="drawer-line-text"
-                    onClick={() => void speak(locale, replyAudioId, q.reply!.source)}
+                    onClick={() => void speak(locale, replyAudioId, q.reply!.source, "practice")}
                   >
                     {withBlanks(q.reply.source)}
                   </button>

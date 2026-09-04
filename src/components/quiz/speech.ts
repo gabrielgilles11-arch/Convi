@@ -238,6 +238,21 @@ export function onVoicesReady(listener: () => void): () => void {
   };
 }
 
+/**
+ * Where a line is being spoken from.
+ *
+ * Only exists to keep an A/B honest: the recorded Swedish voice is on trial,
+ * so the scenario pages play the clips and practice stays on the device voice.
+ * The same line can then be heard both ways on the same phone, which is the
+ * only way to judge whether the recording is actually an improvement.
+ *
+ * Temporary. When the voice is settled this goes, and every surface plays
+ * whatever clips exist.
+ */
+export type Surface = "scenarios" | "practice";
+
+const CLIPS_ENABLED_ON: readonly Surface[] = ["scenarios"];
+
 let playing: HTMLAudioElement | null = null;
 
 /** Stops whatever is currently being said. */
@@ -259,7 +274,8 @@ export function stopSpeaking(): void {
 export async function speak(
   locale: string,
   audioId: string | null,
-  text: string
+  text: string,
+  surface: Surface = "scenarios"
 ): Promise<boolean> {
   if (!voiceEnabled() || !text.trim()) return false;
 
@@ -267,7 +283,7 @@ export async function speak(
   // than either of them, and a learner tapping twice means "say it again".
   stopSpeaking();
 
-  const url = await clipUrl(locale, audioId);
+  const url = CLIPS_ENABLED_ON.includes(surface) ? await clipUrl(locale, audioId) : null;
   if (url) {
     try {
       const audio = new Audio(url);

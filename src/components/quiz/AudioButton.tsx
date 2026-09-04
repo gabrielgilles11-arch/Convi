@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { canSpeak, onVoicesReady, speak, subscribeVoice, voiceEnabled } from "./speech";
+import {
+  canSpeak,
+  onVoicesReady,
+  speak,
+  subscribeVoice,
+  voiceEnabled,
+  type Surface,
+} from "./speech";
 
 /**
  * Speaker button for a line of the target language.
@@ -16,9 +23,17 @@ interface Props {
   /** The line itself, for the fallback voice. */
   text: string;
   label?: string;
+  /** Which surface this button belongs to — see Surface in ./speech. */
+  surface?: Surface;
 }
 
-export default function AudioButton({ locale, audioId, text, label = "Hear it" }: Props) {
+export default function AudioButton({
+  locale,
+  audioId,
+  text,
+  label = "Hear it",
+  surface = "practice",
+}: Props) {
   // Both facts live outside React — one in localStorage, one in the browser's
   // voice list — so they are read after mount, never during render. Starting
   // false also keeps the server's HTML and the first client render identical.
@@ -50,7 +65,7 @@ export default function AudioButton({ locale, audioId, text, label = "Hear it" }
         // The line itself is often clickable too; one tap should say it once.
         event.stopPropagation();
         setSpeaking(true);
-        void speak(locale, audioId, text).finally(() => setSpeaking(false));
+        void speak(locale, audioId, text, surface).finally(() => setSpeaking(false));
       }}
     >
       <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
