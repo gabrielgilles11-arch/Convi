@@ -477,7 +477,9 @@ function writeManifest(locale) {
   if (!existsSync(dir)) return;
 
   const clips = {};
-  for (const file of readdirSync(dir)) {
+  // Sorted so that where a line somehow has both — a WAV from a run before
+  // ffmpeg was installed, an MP3 from after — the MP3 is the one recorded.
+  for (const file of readdirSync(dir).sort()) {
     const match = file.match(/^(.+)\.(mp3|wav)$/);
     if (match) clips[match[1]] = match[2];
   }
