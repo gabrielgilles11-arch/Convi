@@ -2,22 +2,16 @@
 import Layout from "../layouts/Layout.astro";
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
-import {
-  LOCALES,
-  getCategories,
-  isPremiumCategory,
-} from "../lib/content";
+import { LOCALES, getCategories } from "../lib/content";
 
 // Counts come from the content files so this copy can never drift out of date
 // as categories are added to any edition.
 const editions = LOCALES.map((l) => {
   const categories = getCategories(l.locale);
-  const paid = categories.filter((c) => isPremiumCategory(c.id)).length;
-  return { ...l, total: categories.length, free: categories.length - paid, paid };
+  return { ...l, total: categories.length };
 });
 
-const freeCount = editions.reduce((n, e) => n + e.free, 0);
-const paidCount = editions.reduce((n, e) => n + e.paid, 0);
+const categoryCount = editions.reduce((n, e) => n + e.total, 0);
 
 // One marquee band per edition, each led by its flag, so the strip itself shows
 // which three languages the site covers. Flags come from LOCALES.
@@ -110,17 +104,17 @@ const marquee = editions.flatMap((e) => [
         A language platform built to make you conversational and speak like a
         local: the stuff you overhear on the street, not the stuff in
         Chapter 3. Three independent editions, in Spanish, Swedish and German.
-        Browse the core scenarios free, then unlock practice mode and the full
-        library to make it stick before you land.
+        Read every scenario, then drill them in practice mode until they stick
+        — all of it free, no account needed.
       </p>
       <div class="tier-grid reveal">
         <div class="tier-card">
-          <span class="tier-badge">Free</span>
-          <h3>Browse the core scenarios</h3>
+          <span class="tier-badge">Read</span>
+          <h3>Every scenario, start to finish</h3>
           <p>
-            {freeCount} everyday conversation categories across all three
-            languages, including Beer &amp; Food, Slang and Getting Around. Free
-            to read, anytime.
+            {categoryCount} everyday conversation categories across all three
+            languages — getting around, slang, ordering a beer, flirting,
+            emergencies, the lot. Nothing held back.
           </p>
           <ul>
             <li>Real phrases people actually say</li>
@@ -131,21 +125,20 @@ const marquee = editions.flatMap((e) => [
           <LangMenu path="/scenarios" label="Browse scenarios" variant="secondary" />
         </div>
         <div class="tier-card tier-card--highlight">
-          <span class="tier-badge tier-badge--accent">One-time purchase</span>
-          <h3>Practice mode + full library</h3>
+          <span class="tier-badge tier-badge--accent">Practise</span>
+          <h3>Make it stick before you land</h3>
           <p>
-            Guided practice across every scenario in every language, plus the
-            members-only packs: for the girls, flirting, emergencies and the
-            hungover survival guide.
+            A guided path through every scenario in every language, so the line
+            you need arrives when you need it instead of two hours later.
           </p>
           <ul>
             <li>A guided path through every scenario</li>
             <li>Rounds of eight: situations, matching pairs, typing</li>
-            <li>Unlocks {paidCount} members-only scenario packs</li>
-            <li>One purchase covers Spanish, Swedish <em>and</em> German</li>
-            <li>Pay once, yours forever</li>
+            <li>Hear every line spoken out loud</li>
+            <li>Spanish, Swedish <em>and</em> German</li>
+            <li>Free — no account, no card</li>
           </ul>
-          <LangMenu path="/practice" label="Unlock Practice" variant="primary" />
+          <LangMenu path="/practice" label="Start practising" variant="primary" />
         </div>
       </div>
     </div>

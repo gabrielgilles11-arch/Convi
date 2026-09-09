@@ -8,7 +8,7 @@
   "categories": [
     {
       "id": "sv-beer-food",
-      "order": 1,
+      "order": 3,
       "title": "Ordering a beer/food like a local (Sweden)",
       "icon": "🍺",
       "type": "dialogue",
@@ -147,7 +147,7 @@
     },
     {
       "id": "sv-starting-convo",
-      "order": 2,
+      "order": 4,
       "title": "Starting a convo/basic survival (Stockholm)",
       "icon": "👋",
       "type": "dialogue",
@@ -304,7 +304,7 @@
     },
     {
       "id": "sv-slang",
-      "order": 3,
+      "order": 2,
       "title": "Slang (Stockholm)",
       "icon": "🗣️",
       "type": "phrasebook",
@@ -525,7 +525,7 @@
     },
     {
       "id": "sv-cuss-words",
-      "order": 4,
+      "order": 5,
       "title": "Cuss words & “don’t get punched” warnings (Sweden)",
       "icon": "🤬",
       "type": "phrasebook",
@@ -586,7 +586,7 @@
     },
     {
       "id": "sv-flirting",
-      "order": 5,
+      "order": 6,
       "title": "Calling someone attractive (Sweden)",
       "icon": "😏",
       "type": "phrasebook",
@@ -701,7 +701,7 @@
     },
     {
       "id": "sv-getting-around",
-      "order": 6,
+      "order": 1,
       "title": "Getting around (taxi + metro) — Stockholm",
       "icon": "🚕",
       "type": "dialogue",

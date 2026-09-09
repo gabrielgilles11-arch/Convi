@@ -8,7 +8,7 @@
   "categories": [
     {
       "id": "beer-food",
-      "order": 1,
+      "order": 3,
       "title": "Ordering a beer/food like a local",
       "icon": "🍺",
       "type": "dialogue",
@@ -190,7 +190,7 @@
     },
     {
       "id": "starting-convo",
-      "order": 2,
+      "order": 4,
       "title": "Starting a convo/basic survival",
       "icon": "💬",
       "type": "dialogue",
@@ -350,7 +350,7 @@
     },
     {
       "id": "slang",
-      "order": 3,
+      "order": 2,
       "title": "Slang",
       "icon": "🗣️",
       "type": "phrasebook",
@@ -481,7 +481,7 @@
     },
     {
       "id": "getting-around",
-      "order": 4,
+      "order": 1,
       "title": "Getting around (taxi + metro)",
       "icon": "🚕",
       "type": "dialogue",

@@ -1,3 +1,4 @@
+import { PAYWALL_ENABLED } from "./paywall";
 import esES from "../../content/es-ES.json";
 import svSE from "../../content/sv-SE.json";
 import deDE from "../../content/de-DE.json";
@@ -171,7 +172,11 @@ const PREMIUM_CATEGORY_IDS = new Set([
 ]);
 
 export function isPremiumCategory(id: string): boolean {
-  return PREMIUM_CATEGORY_IDS.has(id);
+  // The set below stays as the record of what *would* be paid; the flag is
+  // what decides whether anything is. Every scenario surface reads this one
+  // function, so turning the paywall off unhides the packs, drops the "Paid"
+  // badges and stops the sort grouping them at the bottom, all at once.
+  return PAYWALL_ENABLED && PREMIUM_CATEGORY_IDS.has(id);
 }
 
 export function isDialogueSubsection(

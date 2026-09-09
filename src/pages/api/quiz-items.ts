@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { ENT_COOKIE, verifyEntitlement } from "../../lib/entitlement";
+import { PAYWALL_ENABLED } from "../../lib/paywall";
 import { buildQuizItems, getCategoryList } from "../../lib/quizItems";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../../lib/content";
 
@@ -14,7 +15,7 @@ const KNOWN_LOCALES = new Set(LOCALES.map((l) => l.locale));
 export const GET: APIRoute = async ({ cookies, url }) => {
   const ent = verifyEntitlement(cookies.get(ENT_COOKIE)?.value);
 
-  if (!ent) {
+  if (PAYWALL_ENABLED && !ent) {
     return new Response(JSON.stringify({ error: "not_entitled" }), {
       status: 403,
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },

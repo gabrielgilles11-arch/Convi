@@ -11,6 +11,8 @@ export interface Progress {
   dayStreak: number;
   /** Rounds finished on `lastRoundDay`, for the daily goal. */
   roundsToday: number;
+  /** Rounds finished ever, which is what "has this person used it" means. */
+  roundsCompleted: number;
   /** Items answered wrong and not yet answered right since — the mistake queue. */
   missedItemIds: string[];
 }
@@ -31,6 +33,7 @@ function defaultProgress(): Progress {
     lastRoundDay: null,
     dayStreak: 0,
     roundsToday: 0,
+    roundsCompleted: 0,
     missedItemIds: [],
   };
 }
@@ -121,6 +124,11 @@ export function recordRoundComplete(categoryId: string | null, scorePercent: num
   const progress = loadProgress();
   const today = dayKey();
 
+  // Counted before the day bookkeeping, because this one never resets: it is
+  // the lifetime total, and the only question it answers is whether somebody
+  // has actually used the thing yet.
+  progress.roundsCompleted = (progress.roundsCompleted ?? 0) + 1;
+
   if (progress.lastRoundDay === today) {
     progress.roundsToday += 1;
   } else {
@@ -138,6 +146,15 @@ export function recordRoundComplete(categoryId: string | null, scorePercent: num
 
   saveProgress(progress);
   return progress;
+}
+
+/**
+ * Rounds finished ever. Missing on progress saved before the counter existed,
+ * which reads as zero — those people simply get the prompt a few rounds later
+ * than they otherwise would have.
+ */
+export function roundsCompleted(progress: Progress = loadProgress()): number {
+  return progress.roundsCompleted ?? 0;
 }
 
 /** Day streak, corrected for days elapsed since the last round. */

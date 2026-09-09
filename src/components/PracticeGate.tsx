@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import QuizApp from "./quiz/QuizApp";
+import { PAYWALL_ENABLED } from "../lib/paywall";
 import "./practiceGate.css";
 
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
@@ -16,6 +17,15 @@ export default function PracticeGate({ locale }: Props) {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Nothing to check when nothing is gated — and asking anyway would put a
+    // request in front of every practice session for an answer that cannot
+    // change. The gate below is left whole for when the flag goes back on.
+    if (!PAYWALL_ENABLED) {
+      setUnlocked(true);
+      setChecked(true);
+      return;
+    }
+
     fetch("/api/entitlement")
       .then((res) => res.json())
       .then((data) => setUnlocked(!!data.entitled))

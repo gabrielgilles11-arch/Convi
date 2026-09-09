@@ -65,13 +65,17 @@ export interface QuizPayload {
  * shows up at the bottom of the path rather than disappearing.
  */
 export const PRACTICE_PATH = [
+  // Arriving, then the slang that makes the rest of it make sense, then the
+  // bar. Slang sits second because it is the most interesting thing here and
+  // the reason somebody picked this over a textbook — burying it at stage
+  // seven meant most people would never reach it.
   "getting-around",
-  "hotel",
+  "slang",
   "beer-food",
+  "hotel",
   "starting-convo",
   "restaurant",
   "shopping",
-  "slang",
   "bayern-slang",
   "nightlife",
   "flirting",

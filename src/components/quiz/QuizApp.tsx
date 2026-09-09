@@ -12,11 +12,12 @@ import {
   type Stage,
 } from "../../lib/quizTypes";
 import { buildTasterRound } from "../../lib/quizTypes";
-import { loadProgress, missedItemIds } from "../../lib/progress";
+import { loadProgress, missedItemIds, roundsCompleted } from "../../lib/progress";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
 import Welcome from "./Welcome";
+import EmailPrompt from "./EmailPrompt";
 import { soundEnabled, setSoundEnabled } from "./sound";
 import { setVoiceEnabled, stopSpeaking, voiceEnabled } from "./speech";
 import "./quiz.css";
@@ -37,6 +38,33 @@ function introSeen(): boolean {
     // No storage: show the path. Repeating the intro every visit would be a
     // worse failure than never showing it.
     return true;
+  }
+}
+
+/**
+ * Set once the email prompt has been answered either way — registered, or
+ * dismissed. One ask is a fair ask; the same modal on every fifth round is how
+ * people learn to close things without reading them.
+ */
+const EMAIL_KEY = "convi:email-prompt:v1";
+
+/** Rounds finished before the prompt appears. */
+const PROMPT_AFTER_ROUNDS = 5;
+
+function emailPromptAnswered(): boolean {
+  try {
+    return !!window.localStorage.getItem(EMAIL_KEY);
+  } catch {
+    // No storage: never ask, rather than ask on every round.
+    return true;
+  }
+}
+
+function markEmailPrompt(answer: "registered" | "dismissed"): void {
+  try {
+    window.localStorage.setItem(EMAIL_KEY, answer);
+  } catch {
+    // Nothing to do — it just may come back next session.
   }
 }
 
@@ -66,6 +94,7 @@ export default function QuizApp({ locale }: Props) {
   // make the first client render disagree with the server's HTML.
   const [sound, setSound] = useState(true);
   const [voice, setVoice] = useState(true);
+  const [askEmail, setAskEmail] = useState(false);
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
@@ -361,10 +390,27 @@ export default function QuizApp({ locale }: Props) {
             nextStageTitle={nextStage?.title ?? null}
             onChooseStage={startStage}
             onDrillMistakes={() => startStage(MISTAKES_STAGE_ID)}
-            onRoundComplete={() => setScoreVersion((v) => v + 1)}
+            onRoundComplete={() => {
+              setScoreVersion((v) => v + 1);
+              // Asked after the round is scored and the summary is up, which is
+              // the one moment in a session where nothing is half-finished.
+              if (roundsCompleted() >= PROMPT_AFTER_ROUNDS && !emailPromptAnswered()) {
+                setAskEmail(true);
+              }
+            }}
             onBackToPath={() => setMode("path")}
           />
         </>
+      )}
+
+      {askEmail && (
+        <EmailPrompt
+          onClose={() => {
+            markEmailPrompt("dismissed");
+            setAskEmail(false);
+          }}
+          onRegistered={() => markEmailPrompt("registered")}
+        />
       )}
 
       {mode === "progress" && (

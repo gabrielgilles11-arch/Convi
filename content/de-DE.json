@@ -8,7 +8,7 @@
   "categories": [
     {
       "id": "de-beer-food",
-      "order": 1,
+      "order": 3,
       "title": "Ordering a beer/food like a local (Germany)",
       "icon": "🍺",
       "type": "dialogue",
@@ -97,7 +97,7 @@
     },
     {
       "id": "de-starting-convo",
-      "order": 2,
+      "order": 4,
       "title": "Starting a convo/basic survival (Germany)",
       "icon": "👋",
       "type": "dialogue",
@@ -199,7 +199,7 @@
     },
     {
       "id": "de-slang",
-      "order": 3,
+      "order": 2,
       "title": "Slang (Germany-wide)",
       "icon": "🗣️",
       "type": "phrasebook",
@@ -251,7 +251,7 @@
     },
     {
       "id": "de-bayern-slang",
-      "order": 4,
+      "order": 5,
       "title": "Bayern slang / Bavarian flavour",
       "icon": "🥨",
       "type": "phrasebook",
@@ -290,7 +290,7 @@
     },
     {
       "id": "de-cuss-words",
-      "order": 5,
+      "order": 6,
       "title": "Cuss words & \"don't get punched\" warnings (Germany)",
       "icon": "🤬",
       "type": "phrasebook",
@@ -321,7 +321,7 @@
     },
     {
       "id": "de-flirting",
-      "order": 6,
+      "order": 7,
       "title": "Calling someone attractive (Germany)",
       "icon": "😏",
       "type": "phrasebook",
@@ -370,7 +370,7 @@
     },
     {
       "id": "de-getting-around",
-      "order": 7,
+      "order": 1,
       "title": "Getting around (taxi + metro) (Germany)",
       "icon": "🚕",
       "type": "dialogue",
