@@ -185,6 +185,116 @@ export function isDialogueSubsection(
   return "exchanges" in sub || "items" in sub;
 }
 
+/**
+ * What someone types into Google to reach a category.
+ *
+ * Page titles used to be "${category.title} — Try Convi", which contains
+ * neither the language nor the country nor any phrase a human would search
+ * for: "Ordering a beer/food like a local" is how we describe the page to
+ * ourselves, not how anyone looks for it. These are the searches instead —
+ * one verb phrase per stage, completed by the edition's own language and
+ * region so each of the three reads naturally.
+ *
+ * Keyed by stage rather than category id so one entry serves all editions,
+ * the same way the practice path is keyed. An unlisted stage falls back to the
+ * category's own title, which is no worse than what it had before.
+ */
+const SEARCH_INTENT: Record<string, string> = {
+  "getting-around": "get around",
+  slang: "use slang",
+  "beer-food": "order a beer",
+  "starting-convo": "start a conversation",
+  restaurant: "order at a restaurant",
+  hotel: "check into a hotel",
+  shopping: "shop and haggle",
+  nightlife: "get into a club",
+  flirting: "call someone attractive",
+  "cuss-words": "swear",
+  resacon: "ask for medicine",
+  emergencies: "get help in an emergency",
+  "for-the-girls": "shut down a creep",
+  "bayern-slang": "speak Bavarian",
+};
+
+/** `sv-beer-food` -> `beer-food`. Mirrors stageKeyOf in quizTypes. */
+function stageOf(categoryId: string): string {
+  return categoryId.replace(/^(sv|de)-/, "");
+}
+
+/** The page title: a search, not a description of a page. */
+export function searchTitle(category: Category, locale: Locale): string {
+  const { language, region } = getLocaleInfo(locale);
+  const intent = SEARCH_INTENT[stageOf(category.id)];
+  if (!intent) return `${category.title} — ${language} phrases`;
+  return `How to ${intent} in ${region} — real ${language} phrases`;
+}
+
+/**
+ * The meta description, and the first thing an answer engine reads.
+ *
+ * Leads with actual phrases rather than a promise about them: a searcher
+ * scanning results wants to see the Spanish, and a model deciding whether this
+ * page answers the question wants the same thing. "Q → A → what they'll
+ * probably say" — the old description, shared by every page on the site — told
+ * neither of them anything.
+ */
+export function searchBlurb(category: Category, locale: Locale): string {
+  const { language, region } = getLocaleInfo(locale);
+  const intent = SEARCH_INTENT[stageOf(category.id)] ?? category.title.toLowerCase();
+  const sample = samplePhrases(category, 3).join(" · ");
+  const count = countCategoryItems(category);
+  const lead = sample ? `${sample} — the ` : "The ";
+  return `${lead}${language} you actually need to ${intent} in ${region}. ${count} real lines with what they'll say back. Free, no sign-up.`;
+}
+
+/** The first few target-language lines in a category, for the blurb. */
+export function samplePhrases(category: Category, limit: number): string[] {
+  const out: string[] = [];
+  for (const sub of category.subsections) {
+    if (isDialogueSubsection(sub)) {
+      for (const ex of sub.exchanges ?? []) {
+        const line = ex.speaker === "them" ? ex.answers[0]?.es : ex.question.es;
+        if (line && !hasSlot(line)) out.push(line.replace(/\s*\/\s*.*$/, ""));
+        if (out.length >= limit) return out;
+      }
+      for (const tip of sub.items ?? []) {
+        if (tip.es && !hasSlot(tip.es)) out.push(tip.es);
+        if (out.length >= limit) return out;
+      }
+    } else {
+      for (const phrase of (sub as PhrasebookSubsection).phrases) {
+        if (phrase.es && !hasSlot(phrase.es)) out.push(phrase.es);
+        if (out.length >= limit) return out;
+      }
+    }
+  }
+  return out;
+}
+
+/** Lines with a fill-in slot read as broken out of context, so they are skipped. */
+function hasSlot(line: string): boolean {
+  return /__|\[[^\]]+\]/.test(line);
+}
+
+/**
+ * The single most useful line in a category — the one that answers the search
+ * before the reader scrolls. Answer-first is the shape answer engines quote.
+ */
+export function quickAnswer(category: Category): { es: string; en: string | null } | null {
+  for (const sub of category.subsections) {
+    if (isDialogueSubsection(sub)) {
+      for (const ex of sub.exchanges ?? []) {
+        const line = ex.speaker === "them" ? ex.answers[0] : { es: ex.question.es, en: ex.question.en };
+        if (line?.es && !hasSlot(line.es)) return line;
+      }
+    } else {
+      const first = (sub as PhrasebookSubsection).phrases[0];
+      if (first?.es && !hasSlot(first.es)) return first;
+    }
+  }
+  return null;
+}
+
 export function countCategoryItems(category: Category): number {
   return category.subsections.reduce((sum, sub) => {
     if (isDialogueSubsection(sub)) {

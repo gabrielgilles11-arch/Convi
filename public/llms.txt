@@ -1,0 +1,59 @@
+# Try Convi
+
+> Real conversational Spanish, Swedish and German — the phrases people actually
+> say in Spain, Sweden and Germany, with what they will say back. Every page is
+> free to read, with no account and no paywall.
+
+Each scenario page opens with a short answer — the single most useful line for
+that situation — followed by the full exchanges: what they ask, what you say,
+and their likely reply. Phrases are written for the country named, not for a
+generic textbook register.
+
+## Spanish (Spain)
+
+- [All Spanish scenarios](https://tryconvi.com/scenarios): every Spanish category in one list.
+- [How to get around in Spain](https://tryconvi.com/scenarios/getting-around): Spanish phrases for getting around (taxi + metro).
+- [How to use slang in Spain](https://tryconvi.com/scenarios/slang): Spanish phrases for slang.
+- [How to order a beer in Spain](https://tryconvi.com/scenarios/beer-food): Spanish phrases for ordering a beer/food like a local.
+- [How to start a conversation in Spain](https://tryconvi.com/scenarios/starting-convo): Spanish phrases for starting a convo/basic survival.
+- [How to order at a restaurant in Spain](https://tryconvi.com/scenarios/restaurant): Spanish phrases for at a restaurant.
+- [How to check into a hotel in Spain](https://tryconvi.com/scenarios/hotel): Spanish phrases for checking in (hotel/hostel/airbnb).
+- [How to shop and haggle in Spain](https://tryconvi.com/scenarios/shopping): Spanish phrases for shopping, markets & haggling.
+- [How to shut down a creep in Spain](https://tryconvi.com/scenarios/for-the-girls): Spanish phrases for for the girls.
+- [How to swear in Spain](https://tryconvi.com/scenarios/cuss-words): Spanish phrases for cuss words & "don't get punched" warnings.
+- [How to call someone attractive in Spain](https://tryconvi.com/scenarios/flirting): Spanish phrases for calling someone attractive.
+- [How to ask for medicine in Spain](https://tryconvi.com/scenarios/resacon): Spanish phrases for sickness & feeling hungover.
+- [How to get help in an emergency in Spain](https://tryconvi.com/scenarios/emergencies): Spanish phrases for robbed & emergencies.
+- [How to get into a club in Spain](https://tryconvi.com/scenarios/nightlife): Spanish phrases for nightlife — into the club & making friends.
+- [Practise Spanish](https://tryconvi.com/practice): free drills over the same material.
+
+## Swedish (Stockholm)
+
+- [All Swedish scenarios](https://tryconvi.com/sv/scenarios): every Swedish category in one list.
+- [How to get around in Stockholm](https://tryconvi.com/sv/scenarios/sv-getting-around): Swedish phrases for getting around (taxi + metro) — stockholm.
+- [How to use slang in Stockholm](https://tryconvi.com/sv/scenarios/sv-slang): Swedish phrases for slang (stockholm).
+- [How to order a beer in Stockholm](https://tryconvi.com/sv/scenarios/sv-beer-food): Swedish phrases for ordering a beer/food like a local (sweden).
+- [How to start a conversation in Stockholm](https://tryconvi.com/sv/scenarios/sv-starting-convo): Swedish phrases for starting a convo/basic survival (stockholm).
+- [How to swear in Stockholm](https://tryconvi.com/sv/scenarios/sv-cuss-words): Swedish phrases for cuss words & “don’t get punched” warnings (sweden).
+- [How to call someone attractive in Stockholm](https://tryconvi.com/sv/scenarios/sv-flirting): Swedish phrases for calling someone attractive (sweden).
+- [How to order at a restaurant in Stockholm](https://tryconvi.com/sv/scenarios/sv-restaurant): Swedish phrases for at a restaurant (sweden).
+- [Practise Swedish](https://tryconvi.com/sv/practice): free drills over the same material.
+
+## German (Germany)
+
+- [All German scenarios](https://tryconvi.com/de/scenarios): every German category in one list.
+- [How to get around in Germany](https://tryconvi.com/de/scenarios/de-getting-around): German phrases for getting around (taxi + metro) (germany).
+- [How to use slang in Germany](https://tryconvi.com/de/scenarios/de-slang): German phrases for slang (germany-wide).
+- [How to order a beer in Germany](https://tryconvi.com/de/scenarios/de-beer-food): German phrases for ordering a beer/food like a local (germany).
+- [How to start a conversation in Germany](https://tryconvi.com/de/scenarios/de-starting-convo): German phrases for starting a convo/basic survival (germany).
+- [How to speak Bavarian in Germany](https://tryconvi.com/de/scenarios/de-bayern-slang): German phrases for bayern slang / bavarian flavour.
+- [How to swear in Germany](https://tryconvi.com/de/scenarios/de-cuss-words): German phrases for cuss words & "don't get punched" warnings (germany).
+- [How to call someone attractive in Germany](https://tryconvi.com/de/scenarios/de-flirting): German phrases for calling someone attractive (germany).
+- [How to order at a restaurant in Germany](https://tryconvi.com/de/scenarios/de-restaurant): German phrases for at a restaurant (germany).
+- [Practise German](https://tryconvi.com/de/practice): free drills over the same material.
+
+## Notes
+
+- Content is human-written per country, not machine-translated between editions.
+- Spanish is Spain Spanish (vosotros, caña, vale), not Latin American.
+- Swedish is Stockholm-weighted; German covers Germany-wide plus a Bavarian set.

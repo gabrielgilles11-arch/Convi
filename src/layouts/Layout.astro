@@ -8,9 +8,20 @@ interface Props {
   description?: string;
   /** Drives the per-edition accent colour via [data-locale] below. */
   locale?: string;
+  /**
+   * Page-specific schema.org objects, joined to the site-wide ones in a single
+   * @graph. Answer engines read this to work out what a page is actually about
+   * without inferring it from the prose.
+   */
+  schema?: Record<string, unknown>[];
 }
 
-const { title = "Try Convi", description = "Learn how to speak like a local — real conversations, not textbook language.", locale } = Astro.props;
+const {
+  title = "Try Convi",
+  description = "Learn how to speak like a local — real conversations, not textbook language.",
+  locale,
+  schema = [],
+} = Astro.props;
 
 // Header links stay inside the edition you're reading, so switching pages
 // doesn't silently drop you back into Spanish.
@@ -28,18 +39,29 @@ const navCurrent = locale as Locale | undefined;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL("/og-image.png", Astro.site);
 
+// One @graph rather than several script tags: the site-level facts, then
+// whatever the page adds about itself.
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Try Convi",
-  url: Astro.site?.href,
-  description: "Learn how to speak like a local — real conversations, not textbook language.",
-  publisher: {
-    "@type": "Organization",
-    name: "Try Convi",
-    url: Astro.site?.href,
-    logo: ogImage.href,
-  },
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${Astro.site?.href}#website`,
+      name: "Try Convi",
+      url: Astro.site?.href,
+      description:
+        "Learn how to speak like a local — real conversations, not textbook language.",
+      inLanguage: "en",
+      publisher: {
+        "@type": "Organization",
+        "@id": `${Astro.site?.href}#org`,
+        name: "Try Convi",
+        url: Astro.site?.href,
+        logo: ogImage.href,
+      },
+    },
+    ...schema,
+  ],
 };
 ---
 
