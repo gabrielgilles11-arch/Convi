@@ -33,14 +33,14 @@
                 },
                 {
                   "es": "En stor stark, tack.",
-                  "en": "A \"standard\" lager, please."
+                  "en": "A large strong beer, please — 50cl, over 5%."
                 }
               ],
               "likelyReply": {
                 "es": "På fat eller flaska?",
                 "en": "Draft or bottle?"
               },
-              "notes": "The bartender opens with this. \"En stor stark\" is the default 50cl lager.",
+              "notes": "The bartender opens with this. \"En stor stark\" is what most people order — a 50cl beer over 5%, so it is bigger and stronger than a default pint, not a plain one.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -102,7 +102,7 @@
               "situation": { "en": "You've paid and they ask whether you want a receipt." },
               "question": {
                 "es": "Vill du ha kvittot?",
-                "en": "Receipt?"
+                "en": "Do you want the receipt?"
               },
               "answers": [
                 {
@@ -433,7 +433,7 @@
             {
               "id": "sv-slang-15",
               "es": "bulle",
-              "en": "Taxi.",
+              "en": "Taxi — old Söder slang. You'll hear it; saying it dates you.",
               "difficulty": "medium",
               "region": "stockholm",
               "quizQuestions": []
@@ -513,7 +513,7 @@
             },
             {
               "id": "sv-slang-24",
-              "es": "Vi splittar en bulle.",
+              "es": "Vi splittar en taxi.",
               "en": "We'll split a taxi.",
               "difficulty": "hard",
               "region": "stockholm",
