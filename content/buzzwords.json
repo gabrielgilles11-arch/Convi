@@ -72,5 +72,151 @@
         "heardIn": "Gracias, jefe/jefa."
       }
     ]
+  },
+  "getting-around": {
+    "title": "Spanish taxi & metro words",
+    "heading": "Spanish taxi and metro words you'll actually hear",
+    "blurb": "The words on the signs and in the driver's mouth, what each one means, and the line it turns up in.",
+    "terms": [
+      {
+        "term": "la parada de taxis",
+        "gloss": "The taxi rank.",
+        "note": "'Parada' is any stop — a taxi rank, a bus stop, a metro stop. Context does the rest.",
+        "heardIn": "Perdona, ¿dónde está la parada de taxis?"
+      },
+      {
+        "term": "el taxímetro",
+        "gloss": "The meter.",
+        "note": "Spanish taxis are metered and legally have to run it. Asking for it switched on is normal and not an accusation.",
+        "heardIn": "¿Puedes poner el taxímetro, por favor?"
+      },
+      {
+        "term": "el recibo",
+        "gloss": "The receipt.",
+        "note": "Worth asking for if you've left something behind — the ride is traceable from it.",
+        "heardIn": "¿Me das un recibo?"
+      },
+      {
+        "term": "hacer transbordo",
+        "gloss": "To change lines.",
+        "note": "The single most useful metro word in Spain. It's a verb phrase, not a noun you'd see alone on a sign.",
+        "heardIn": "¿Dónde hago transbordo?"
+      },
+      {
+        "term": "correspondencia",
+        "gloss": "Transfer — the word on the signs.",
+        "note": "This is what you follow overhead once you're inside the station. You ask for 'transbordo' and you follow 'Correspondencia'.",
+        "heardIn": "Sigue las flechas de \"Correspondencia\"."
+      },
+      {
+        "term": "el andén",
+        "gloss": "The platform.",
+        "note": "Going the wrong way is fixed by changing andén, not by leaving the station.",
+        "heardIn": "Te bajas en la siguiente y cambias de andén."
+      },
+      {
+        "term": "dirección",
+        "gloss": "Toward — how Spanish metro lines are labelled.",
+        "note": "Lines aren't 'northbound'; they're named after the last station. You need the direction, not just the line number.",
+        "heardIn": "La línea __, dirección __."
+      },
+      {
+        "term": "bájate",
+        "gloss": "Get off — informal command.",
+        "note": "From 'bajarse'. You'll hear it as instruction rather than suggestion, which is normal and not rude.",
+        "heardIn": "Bájate en __."
+      },
+      {
+        "term": "cuántas paradas",
+        "gloss": "How many stops.",
+        "note": "Distance on the metro gets measured in stops, not minutes.",
+        "heardIn": "¿Cuántas paradas son?"
+      },
+      {
+        "term": "todo recto",
+        "gloss": "Straight ahead.",
+        "note": "The default half of every set of directions you'll be given on the street.",
+        "heardIn": "Sí, todo recto y a la izquierda."
+      },
+      {
+        "term": "al fondo",
+        "gloss": "At the far end / down the back.",
+        "note": "Used for the end of a street, a corridor, or a bar. It means further than you think.",
+        "heardIn": "Allí, al fondo."
+      }
+    ]
+  },
+  "restaurant": {
+    "title": "Spanish restaurant words",
+    "heading": "Spanish restaurant words you'll actually hear",
+    "blurb": "What the waiter is asking you, what's on the plate, and how the bill gets split.",
+    "terms": [
+      {
+        "term": "con reserva / sin reserva",
+        "gloss": "With / without a booking.",
+        "note": "The first thing said to you at the door, often as a single word with a raised eyebrow.",
+        "heardIn": "¿Con reserva?"
+      },
+      {
+        "term": "¿Cuántos sois?",
+        "gloss": "How many of you are there?",
+        "note": "Answered with 'somos' — 'somos dos'. Not 'vamos'.",
+        "heardIn": "¿Cuántos sois?"
+      },
+      {
+        "term": "para empezar",
+        "gloss": "To start.",
+        "note": "Spanish meals get ordered in waves rather than as courses, so this opens the order rather than naming a starter.",
+        "heardIn": "Para empezar, __."
+      },
+      {
+        "term": "para compartir",
+        "gloss": "To share.",
+        "note": "The default assumption in Spain. The waiter asking this isn't being nosy — it changes how the food is plated.",
+        "heardIn": "¿Para compartir?"
+      },
+      {
+        "term": "lo más típico",
+        "gloss": "The most typical thing — the local speciality.",
+        "note": "The single best question in the deck. It gets you what the place is actually good at.",
+        "heardIn": "¿Qué es lo más típico de aquí?"
+      },
+      {
+        "term": "las croquetas",
+        "gloss": "Croquettes — breadcrumbed béchamel, usually ham.",
+        "note": "One of the three things named when you ask what's typical, alongside tortilla and pulpo.",
+        "heardIn": "La tortilla / las croquetas / el pulpo…"
+      },
+      {
+        "term": "sin",
+        "gloss": "Without.",
+        "note": "The whole allergy and preference conversation hangs off this one word: 'sin gluten', 'sin cebolla', 'sin lactosa'.",
+        "heardIn": "¿Me lo pones sin __?"
+      },
+      {
+        "term": "está completo",
+        "gloss": "It's full.",
+        "note": "What you'll hear when there's no table. Not a negotiation.",
+        "heardIn": "Está completo."
+      },
+      {
+        "term": "cobrar",
+        "gloss": "To charge — the verb for taking payment.",
+        "note": "Spanish uses 'cobrar' where English says 'take payment'. '¿Me cobras?' is how you flag for the bill.",
+        "heardIn": "¿Me puedes cobrar por separado?"
+      },
+      {
+        "term": "por separado",
+        "gloss": "Separately — split the bill.",
+        "note": "Normal and unremarkable in Spain, though a big table may be asked to settle up together.",
+        "heardIn": "¿Me puedes cobrar por separado?"
+      },
+      {
+        "term": "me he confundido",
+        "gloss": "I've made a mistake / got mixed up.",
+        "note": "What the waiter says when the plate was for another table. Recognising it saves the awkward pause.",
+        "heardIn": "Uy, perdona, me he confundido de mesa."
+      }
+    ]
   }
 }
