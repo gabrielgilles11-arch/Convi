@@ -8,7 +8,14 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://tryconvi.com',
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      // /stats is an internal readout behind a token. It answers 404 without
+      // one, but there is no reason to advertise it either.
+      filter: (page) => !page.includes('/stats'),
+    }),
+  ],
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),

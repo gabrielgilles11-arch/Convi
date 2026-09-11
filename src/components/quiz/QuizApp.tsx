@@ -13,6 +13,7 @@ import {
 } from "../../lib/quizTypes";
 import { buildTasterRound } from "../../lib/quizTypes";
 import { loadProgress, missedItemIds, roundsCompleted } from "../../lib/progress";
+import { recordRound, recordVisit } from "../../lib/usage";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
@@ -98,6 +99,8 @@ export default function QuizApp({ locale }: Props) {
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
+    // Counted once a day, not once a mount — see ../../lib/usage.
+    recordVisit();
     // Same reason the settings are read here: localStorage is a client fact,
     // so the intro decision cannot be made while rendering on the server.
     if (!introSeen()) setMode("intro");
@@ -363,7 +366,10 @@ export default function QuizApp({ locale }: Props) {
             taster
             onChooseStage={startStage}
             onDrillMistakes={() => startStage(MISTAKES_STAGE_ID)}
-            onRoundComplete={() => setScoreVersion((v) => v + 1)}
+            onRoundComplete={() => {
+              setScoreVersion((v) => v + 1);
+              recordRound(locale ?? "es-ES");
+            }}
             onBackToPath={() => {
               markIntroSeen(true);
               setMode("path");
@@ -392,6 +398,7 @@ export default function QuizApp({ locale }: Props) {
             onDrillMistakes={() => startStage(MISTAKES_STAGE_ID)}
             onRoundComplete={() => {
               setScoreVersion((v) => v + 1);
+              recordRound(locale ?? "es-ES");
               // Asked after the round is scored and the summary is up, which is
               // the one moment in a session where nothing is half-finished.
               if (roundsCompleted() >= PROMPT_AFTER_ROUNDS && !emailPromptAnswered()) {

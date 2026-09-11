@@ -1,0 +1,181 @@
+---
+/**
+ * The numbers, for whoever has the token.
+ *
+ * Deliberately standalone — no site layout, no shared stylesheet, nothing
+ * imported from the pages a visitor sees. It is an internal readout that
+ * happens to live at a URL, and it should be impossible for it to change how
+ * anything else looks.
+ *
+ * Without ?token it is a 404, the same as the API it reads through.
+ */
+import { readStats, MILESTONES, type AgeBucket } from "../lib/stats";
+
+export const prerender = false;
+
+const expected = import.meta.env.STATS_TOKEN;
+const token = Astro.url.searchParams.get("token") ?? "";
+
+if (!expected || token !== expected) {
+  return new Response("Not found", { status: 404 });
+}
+
+const stats = await readStats(30);
+const recent = [...stats.days].reverse();
+const active = recent.filter((d) => d.visits > 0 || d.rounds > 0);
+
+/** Rounds per visit-day: the one number that says whether people use it. */
+const depth = stats.totals.visits ? stats.totals.rounds / stats.totals.visits : 0;
+
+/** Of the devices that finished a round at all, how many got to five. */
+const started = stats.totals.reached[1] ?? 0;
+const stuck = started ? Math.round(((stats.totals.reached[5] ?? 0) / started) * 100) : 0;
+
+const AGE_LABELS: Record<AgeBucket, string> = {
+  new: "First day",
+  d1: "Day 1 back",
+  "d2-6": "Days 2–6",
+  "d7+": "Day 7+",
+};
+const AGES = Object.keys(AGE_LABELS) as AgeBucket[];
+const peak = Math.max(1, ...active.map((d) => d.rounds));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Usage — Try Convi</title>
+  </head>
+  <body>
+    <main>
+      <h1>Usage</h1>
+
+      {
+        !stats.configured && (
+          <p class="warn">
+            No store configured — set <code>KV_REST_API_URL</code> and{" "}
+            <code>KV_REST_API_TOKEN</code> and these stay at zero.
+          </p>
+        )
+      }
+
+      <section class="tiles">
+        <div class="tile">
+          <span class="n">{stats.totals.rounds.toLocaleString()}</span>
+          <span class="k">Rounds finished, ever</span>
+        </div>
+        <div class="tile">
+          <span class="n">{stats.totals.visits.toLocaleString()}</span>
+          <span class="k">Practice days opened</span>
+        </div>
+        <div class="tile">
+          <span class="n">{depth.toFixed(1)}</span>
+          <span class="k">Rounds per day opened</span>
+        </div>
+        <div class="tile">
+          <span class="n">{stuck}%</span>
+          <span class="k">Of starters reached 5 rounds</span>
+        </div>
+      </section>
+
+      <h2>Depth</h2>
+      <p class="note">
+        Devices that have ever reached each lifetime-round count. The drop
+        between the first two is your activation problem; the tail is your
+        retention.
+      </p>
+      <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Rounds</th><th class="r">Devices</th><th class="r">Of starters</th></tr>
+        </thead>
+        <tbody>
+          {
+            MILESTONES.map((m) => (
+              <tr>
+                <td>{m}+</td>
+                <td class="r">{(stats.totals.reached[m] ?? 0).toLocaleString()}</td>
+                <td class="r">
+                  {started ? Math.round(((stats.totals.reached[m] ?? 0) / started) * 100) : 0}%
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      </div>
+
+      <h2>Days with activity (last 30)</h2>
+      {
+        active.length === 0 ? (
+          <p class="note">Nothing recorded yet.</p>
+        ) : (
+          <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th class="r">Opened</th>
+                <th class="r">Rounds</th>
+                <th>Spread</th>
+                {AGES.map((age) => <th class="r">{AGE_LABELS[age]}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {
+                active.map((day) => (
+                  <tr>
+                    <td>{day.day}</td>
+                    <td class="r">{day.visits}</td>
+                    <td class="r">{day.rounds}</td>
+                    <td class="bar">
+                      <span style={`width:${Math.round((day.rounds / peak) * 100)}%`} />
+                    </td>
+                    {AGES.map((age) => <td class="r dim">{day.byAge[age] || ""}</td>)}
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+          </div>
+        )
+      }
+      <p class="note">
+        "Day 1 back" and beyond are the retention columns: an event from a
+        device that first showed up that long ago. Nothing here identifies a
+        person — see src/lib/stats.ts.
+      </p>
+    </main>
+
+    <style is:global>
+      :root { color-scheme: light dark; }
+      body {
+        margin: 0;
+        padding: 2rem 1rem 4rem;
+        font: 15px/1.5 ui-sans-serif, system-ui, sans-serif;
+        background: Canvas;
+        color: CanvasText;
+      }
+      main { max-width: 60rem; margin: 0 auto; }
+      h1 { font-size: 1.5rem; margin: 0 0 1.5rem; }
+      h2 { font-size: 1rem; margin: 2.5rem 0 0.5rem; text-transform: uppercase; letter-spacing: .06em; opacity: .7; }
+      .note { margin: 0 0 1rem; font-size: .85rem; opacity: .7; max-width: 44rem; }
+      .warn { padding: .75rem 1rem; border: 1px solid #d9a441; border-radius: .5rem; background: #d9a44118; }
+      .tiles { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+      .tile { padding: 1rem; border: 1px solid color-mix(in srgb, CanvasText 18%, transparent); border-radius: .6rem; }
+      .tile .n { display: block; font-size: 1.9rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+      .tile .k { display: block; margin-top: .2rem; font-size: .8rem; opacity: .7; }
+      table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+      th, td { padding: .35rem .5rem; text-align: left; border-bottom: 1px solid color-mix(in srgb, CanvasText 12%, transparent); }
+      th { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; opacity: .6; font-weight: 600; }
+      .scroll { overflow-x: auto; }
+      .scroll table { min-width: 34rem; }
+      .r { text-align: right; }
+      .dim { opacity: .6; }
+      td.bar { width: 30%; }
+      td.bar span { display: block; height: .55rem; border-radius: 999px; background: #e8622c; min-width: 0; }
+    </style>
+  </body>
+</html>
