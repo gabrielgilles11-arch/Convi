@@ -1,0 +1,76 @@
+{
+  "_comment": "Term-level pages, one per scenario category. The category page targets the situation ('how to order a beer in Spain'); these target the word ('what does caña mean'), which is a different search and a shorter one. Each term must carry its own weight — a gloss, why it matters, and the real line from the deck it appears in — because a page of bare definitions is a doorway page and gets treated as one.",
+  "beer-food": {
+    "title": "Spanish bar words",
+    "heading": "Spanish bar words you'll actually hear",
+    "blurb": "The words that come at you across a Spanish bar, what each one means, and the line it turns up in.",
+    "terms": [
+      {
+        "term": "caña",
+        "gloss": "A small draft beer, roughly 200–250ml.",
+        "note": "The default order in Spain. Asking for 'una cerveza' works but marks you out; asking for 'una caña' doesn't.",
+        "heardIn": "Una caña, porfa."
+      },
+      {
+        "term": "porfa",
+        "gloss": "Please — short for 'por favor'.",
+        "note": "Casual and extremely common. Fine with bar staff and strangers your own age; use the full 'por favor' with older people.",
+        "heardIn": "Una caña, porfa."
+      },
+      {
+        "term": "vale",
+        "gloss": "Okay / got it / right.",
+        "note": "The most-used word in Spain. It confirms, it agrees, it ends a conversation. You'll hear it doubled — 'vale, vale' — when someone wants you to stop talking.",
+        "heardIn": "Vale. ¿Algo de comer?"
+      },
+      {
+        "term": "tapa",
+        "gloss": "A small plate of food.",
+        "note": "In much of Spain it arrives free with a drink; in Madrid and the south that's more likely than in Barcelona. You can also order one outright.",
+        "heardIn": "Sí: una tapa de tortilla, porfa."
+      },
+      {
+        "term": "de barril",
+        "gloss": "On draft — literally 'from the barrel'.",
+        "note": "The opposite is 'de botella', bottled. This is the first thing they'll ask after you order a beer.",
+        "heardIn": "De barril, gracias."
+      },
+      {
+        "term": "rubia / tostada",
+        "gloss": "Blonde (lager) / toasted (amber).",
+        "note": "How beer gets described rather than by brand. 'Rubia' is the standard pale lager you'd expect.",
+        "heardIn": "¿Rubia o tostada?"
+      },
+      {
+        "term": "cortado",
+        "gloss": "An espresso cut with a splash of warm milk.",
+        "note": "Between a 'solo' (straight espresso) and a 'café con leche' (half milk). Ordering a latte by name will get you a confused look.",
+        "heardIn": "Un cortado."
+      },
+      {
+        "term": "la cuenta",
+        "gloss": "The bill.",
+        "note": "Nobody brings it unprompted — in Spain that would be rushing you out. You ask.",
+        "heardIn": "La cuenta, porfa."
+      },
+      {
+        "term": "para llevar",
+        "gloss": "To take away.",
+        "note": "The opposite of 'para aquí', for here. Asked at counters and cafés constantly.",
+        "heardIn": "¿Para aquí o para llevar?"
+      },
+      {
+        "term": "marchando",
+        "gloss": "Coming right up.",
+        "note": "Bar staff shorthand once your order is in. You don't say it — you just need to recognise it.",
+        "heardIn": "Marchando."
+      },
+      {
+        "term": "jefe / jefa",
+        "gloss": "Boss — a friendly way to address staff.",
+        "note": "Warm rather than rude, but it's familiar. Safe in a neighbourhood bar, less so in a smart restaurant.",
+        "heardIn": "Gracias, jefe/jefa."
+      }
+    ]
+  }
+}

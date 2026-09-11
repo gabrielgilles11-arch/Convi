@@ -1,0 +1,285 @@
+---
+import Layout from "../../../../layouts/Layout.astro";
+import Speaker from "../../../../components/Speaker.astro";
+import {
+  getCategoryById,
+  getCategories,
+  getLocaleInfo,
+  localeFromSlug,
+  localePath,
+  LOCALES,
+} from "../../../../lib/content";
+import buzzwords from "../../../../../content/buzzwords.json";
+
+/**
+ * A term-level page for one scenario category.
+ *
+ * The category page answers "how do I order a beer in Spain"; this answers
+ * "what does caña mean", which is a different search and a much shorter one.
+ * Both are real, and one page cannot rank for both.
+ *
+ * Only categories with authored terms get a page — there is no generated
+ * fallback, because a page of definitions scraped out of sentences is exactly
+ * the thin doorway page search engines are built to ignore.
+ */
+export function getStaticPaths() {
+  return LOCALES.flatMap((l) =>
+    Object.keys(buzzwords)
+      .filter((id) => !id.startsWith("_") && getCategoryById(id, l.locale))
+      .map((id) => ({ params: { lang: l.slug || undefined, id } }))
+  );
+}
+
+interface Term {
+  term: string;
+  gloss: string;
+  note: string;
+  heardIn: string;
+}
+interface WordSet {
+  title: string;
+  heading: string;
+  blurb: string;
+  terms: Term[];
+}
+
+const locale = localeFromSlug(Astro.params.lang);
+if (!locale) return new Response("Not found", { status: 404 });
+
+const categoryId = Astro.params.id ?? "";
+const category = getCategoryById(categoryId, locale);
+const set = (buzzwords as unknown as Record<string, WordSet>)[categoryId];
+if (!category || !set) return new Response("Not found", { status: 404 });
+
+const info = getLocaleInfo(locale);
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const scenarioPath = localePath(locale, `/scenarios/${categoryId}`);
+const allScenariosPath = localePath(locale, "/scenarios");
+
+// Every other category in this edition, so the page ends somewhere rather than
+// in a dead end — and so the pages it links to gain something from existing.
+const others = getCategories(locale).filter((c) => c.id !== categoryId);
+
+const title = `${set.title} — what they actually mean`;
+const description = `${set.terms.slice(0, 4).map((t) => t.term).join(" · ")} — ${set.terms.length} ${info.language} words you'll hear in ${info.region}, what each one means and the line it turns up in. Free.`;
+
+const schema = [
+  {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Try Convi", item: Astro.site?.href },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: `${info.language} scenarios`,
+        item: new URL(allScenariosPath, Astro.site).href,
+      },
+      { "@type": "ListItem", position: 3, name: category.title, item: new URL(scenarioPath, Astro.site).href },
+      { "@type": "ListItem", position: 4, name: set.title, item: pageUrl },
+    ],
+  },
+  {
+    "@type": "DefinedTermSet",
+    "@id": `${pageUrl}#glossary`,
+    name: set.title,
+    description: set.blurb,
+    url: pageUrl,
+    inLanguage: info.locale,
+    hasDefinedTerm: set.terms.map((t) => ({
+      "@type": "DefinedTerm",
+      name: t.term,
+      description: t.gloss,
+      inDefinedTermSet: `${pageUrl}#glossary`,
+    })),
+  },
+];
+---
+
+<Layout title={title} description={description} locale={locale} schema={schema}>
+  <a class="back" href={scenarioPath}>&larr; {category.title}</a>
+  <h1>{set.heading}</h1>
+  <p class="description">{set.blurb}</p>
+
+  <dl class="terms">
+    {
+      set.terms.map((t) => (
+        <div class="term-card">
+          <dt>
+            <span class="term-word">{t.term}</span>
+            <Speaker text={t.term} label={`Hear ${t.term}`} />
+          </dt>
+          <dd>
+            <p class="term-gloss">{t.gloss}</p>
+            <p class="term-note">{t.note}</p>
+            <p class="term-heard">
+              <span class="term-heard-label">Heard in</span>
+              <span class="term-heard-line">{t.heardIn}</span>
+              <Speaker text={t.heardIn} label="Hear the line" />
+            </p>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  {/* Where the page sends you: the scenario these words came from, then the
+      rest of the edition. Links point outward from here, so nothing on the
+      existing pages had to change to make these reachable. */}
+  <section class="onward">
+    <h2>See them in conversation</h2>
+    <a class="onward-primary" href={scenarioPath}>{category.title} &rarr;</a>
+
+    <h2>The rest of {info.language}</h2>
+    <ul class="onward-list">
+      {others.map((c) => (
+        <li>
+          <a href={localePath(locale, `/scenarios/${c.id}`)}>{c.title}</a>
+        </li>
+      ))}
+    </ul>
+    <a class="onward-all" href={allScenariosPath}>All {info.language} scenarios</a>
+  </section>
+</Layout>
+
+<style>
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-primary-tint-border);
+    background: var(--color-primary-tint);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-primary-dark);
+  }
+
+  h1 {
+    margin: 0 0 0.25rem;
+    font-size: 1.7rem;
+  }
+
+  .description {
+    margin: 0 0 1.75rem;
+    color: var(--color-ink-soft);
+  }
+
+  .terms {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .term-card {
+    border-radius: 16px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    padding: 1rem 1.1rem;
+  }
+
+  .term-card dt {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4rem;
+  }
+
+  .term-word {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .term-card dd {
+    margin: 0;
+  }
+
+  .term-gloss {
+    margin: 0 0 0.4rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .term-note {
+    margin: 0 0 0.7rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+
+  /* The line the word lives in — the thing that makes this a phrasebook entry
+     rather than a dictionary definition. */
+  .term-heard {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    border-top: 1px dashed var(--color-border);
+    padding-top: 0.6rem;
+  }
+
+  .term-heard-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  .term-heard-line {
+    font-family: var(--font-display);
+    font-size: 1rem;
+  }
+
+  .onward h2 {
+    margin: 0 0 0.6rem;
+    font-size: 1.05rem;
+  }
+
+  .onward-primary {
+    display: inline-block;
+    margin-bottom: 2rem;
+    border-radius: 999px;
+    background: var(--color-primary);
+    box-shadow: 0 4px 0 var(--color-primary-dark);
+    padding: 0.7rem 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .onward-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .onward-list a {
+    display: inline-block;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    padding: 0.45rem 0.85rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .onward-list a:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+  }
+
+  .onward-all {
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+</style>

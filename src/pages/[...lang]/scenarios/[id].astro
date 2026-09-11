@@ -2,6 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import ScenarioGate from "../../../components/ScenarioGate";
 import Speaker from "../../../components/Speaker.astro";
+import buzzwords from "../../../../content/buzzwords.json";
 import {
   getCategoryById,
   getLocaleInfo,
@@ -48,6 +49,10 @@ const info = getLocaleInfo(locale);
 const pageTitle = searchTitle(category, locale);
 const pageBlurb = searchBlurb(category, locale);
 const answer = quickAnswer(category);
+// One link per category, not a permalink on every line: enough for the words
+// page to be reachable and to carry weight, without touching how the exchanges
+// below are laid out.
+const wordSet = (buzzwords as unknown as Record<string, { title: string } | undefined>)[category.id];
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 
 // BreadcrumbList still earns a search appearance; LearningResource is the
@@ -114,6 +119,15 @@ const schema = [
   {/* Answer-first: the one line that answers the search, before anything else
       on the page. A reader who only wanted that can stop here, and an answer
       engine quoting the page has something to quote. */}
+  {
+    wordSet && (
+      <a class="words-link" href={localePath(locale, `/scenarios/${category.id}/words`)}>
+        <span class="words-link-label">{wordSet.title}</span>
+        <span class="words-link-sub">What each one means, one by one &rarr;</span>
+      </a>
+    )
+  }
+
   {
     answer && (
       <p class="quick-answer">
@@ -374,6 +388,33 @@ const schema = [
   /* The mouth closes when voices are off — the same shape saying nothing. */
   .voice-toggle[aria-pressed="false"] svg path:first-child {
     opacity: 0.25;
+  }
+
+  .words-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin: 0 0 1rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+  }
+
+  .words-link:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+  }
+
+  .words-link-label {
+    font-weight: 800;
+    color: var(--color-primary-dark);
+  }
+
+  .words-link-sub {
+    font-size: 0.85rem;
+    color: var(--color-ink-soft);
   }
 
   /* The short answer sits above the fold and reads as the page's thesis. */
