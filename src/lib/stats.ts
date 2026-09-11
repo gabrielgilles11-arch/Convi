@@ -1,52 +1,65 @@
 /**
  * Anonymous usage counters.
  *
- * The site's only analytics is Vercel's, which answers "how many people
+ * The site's only analytics was Vercel's, which answers "how many people
  * arrived" and nothing else. Everything that would tell you whether the thing
- * is working — did anyone finish a round, did anyone come back the next day —
- * lives in each visitor's localStorage and never leaves the device. This is the
- * smallest fix for that: a handful of integers.
+ * is working — did anyone come back, did anyone finish a round — was either
+ * missing or sitting in a visitor's localStorage where nobody could read it.
+ * This is the smallest fix for that: a few dozen integers.
  *
- * Nothing here identifies anybody. There is no visitor id, no cookie, no IP
- * stored, and no event carries anything that could be traced to a person. The
- * client knows its own history and reports only a bucket — "somebody on their
- * first day finished a Swedish round" — which is then added to a running total
- * and cannot be taken apart again. That keeps the published privacy policy
- * true as written.
+ * Nothing here identifies anybody. No IP address is stored, no cookie is set,
+ * and no visitor is given a name that survives a month of not visiting. A
+ * returning visitor is recognised by a salted one-way hash that expires on its
+ * own (see ./visitor) and is never turned back into an address, because
+ * nothing needs to know which visitor it is. Countries are counted because a
+ * country is not a person. The published privacy policy says exactly this.
  *
  * The store is optional. With no Redis configured every record is a no-op and
- * the dashboard reads zero, exactly as the rate limiter fails open.
+ * the dashboard reads zero, the same way the rate limiter fails open.
  */
 import { kv } from "./kv";
 import type { Locale } from "./content";
-import { AGE_BUCKETS, MILESTONES, type AgeBucket, type Milestone } from "./usageEvents";
+import { MILESTONES, type Milestone } from "./usageEvents";
+import { countryOf, visitorHash } from "./visitor";
 
-export { MILESTONES, ageBucket, type AgeBucket } from "./usageEvents";
+export { MILESTONES } from "./usageEvents";
 
 const PREFIX = "convi:stats";
 
 /** Daily keys are kept a little over a year, then expire themselves. */
 const DAY_TTL_SECONDS = 400 * 24 * 60 * 60;
 
+/**
+ * How long a browser can stay away and still count as returning when it comes
+ * back. It is also how long the hash lives: after this, the last trace of a
+ * visit deletes itself.
+ */
+const VISITOR_TTL_SECONDS = 30 * 24 * 60 * 60;
+
 const LOCALES: Locale[] = ["es-ES", "sv-SE", "de-DE"];
 
-export interface UsageEvent {
-  kind: "visit" | "round";
-  /** Which deck, for a round. */
-  locale?: Locale;
-  /** How long this device has been around — see AgeBucket. */
-  age: AgeBucket;
-  /** A lifetime-round threshold crossed by this event, if any. */
-  milestone?: number;
-}
-
-/** UTC day, because these are server-side totals rather than anyone's streak. */
+/** UTC day, because these are site-wide totals rather than anyone's streak. */
 export function utcDay(date = new Date()): string {
   return date.toISOString().slice(0, 10);
 }
 
 /**
- * Parses whatever arrived on the wire into an event, or null.
+ * What the browser is allowed to say.
+ *
+ * A page view carries nothing at all — everything that matters about it (which
+ * address, which country) is read from the request on this side, where it
+ * cannot be forged by a beacon and does not have to be trusted. A finished
+ * round carries which deck it was and, once ever per device, which lifetime
+ * total it just crossed.
+ */
+export interface UsageEvent {
+  kind: "view" | "round";
+  locale?: Locale;
+  milestone?: Milestone;
+}
+
+/**
+ * Parses whatever arrived on the wire, or null.
  *
  * Counters are writable by anyone who can reach the endpoint, so nothing is
  * trusted: every field is checked against a fixed set, and anything unexpected
@@ -57,12 +70,9 @@ export function parseEvent(body: unknown): UsageEvent | null {
   const raw = body as Record<string, unknown>;
 
   const kind = raw.kind;
-  if (kind !== "visit" && kind !== "round") return null;
+  if (kind !== "view" && kind !== "round") return null;
 
-  const age = raw.age;
-  if (age !== "new" && age !== "d1" && age !== "d2-6" && age !== "d7+") return null;
-
-  const event: UsageEvent = { kind, age };
+  const event: UsageEvent = { kind };
 
   if (raw.locale !== undefined) {
     if (!LOCALES.includes(raw.locale as Locale)) return null;
@@ -71,7 +81,7 @@ export function parseEvent(body: unknown): UsageEvent | null {
 
   if (raw.milestone !== undefined) {
     if (!MILESTONES.includes(raw.milestone as Milestone)) return null;
-    event.milestone = raw.milestone as number;
+    event.milestone = raw.milestone as Milestone;
   }
 
   return event;
@@ -80,60 +90,124 @@ export function parseEvent(body: unknown): UsageEvent | null {
 /**
  * Adds one event to the totals.
  *
- * Written as a pipeline so a round is one round trip rather than six. It never
- * throws: a counter that failed to increment is not a reason to fail the thing
- * the learner was actually doing.
+ * Never throws: a counter that failed to increment is not a reason to fail the
+ * page the visitor was actually reading.
  */
-export async function record(event: UsageEvent, now = new Date()): Promise<void> {
+export async function record(
+  event: UsageEvent,
+  request: Request,
+  ip: string,
+  now = new Date()
+): Promise<void> {
   if (!kv) return;
-
   const day = utcDay(now);
-  const daily: string[] = [`${PREFIX}:day:${day}:${event.kind}s`, `${PREFIX}:day:${day}:age:${event.age}`];
-  const totals: string[] = [`${PREFIX}:total:${event.kind}s`];
-
-  if (event.kind === "round" && event.locale) {
-    daily.push(`${PREFIX}:day:${day}:rounds:${event.locale}`);
-    totals.push(`${PREFIX}:total:rounds:${event.locale}`);
-  }
-
-  if (event.milestone !== undefined) {
-    totals.push(`${PREFIX}:total:reached:${event.milestone}`);
-  }
 
   try {
-    const pipe = kv.pipeline();
-    for (const key of daily) {
-      pipe.incr(key);
-      // Refreshed on every write rather than set once, which would need a
-      // separate read to know whether the key is new.
-      pipe.expire(key, DAY_TTL_SECONDS);
+    if (event.kind === "round") {
+      const pipe = kv.pipeline();
+      bump(pipe, `${PREFIX}:day:${day}:rounds`);
+      bump(pipe, `${PREFIX}:total:rounds`);
+      if (event.locale) {
+        bump(pipe, `${PREFIX}:day:${day}:rounds:${event.locale}`);
+        bump(pipe, `${PREFIX}:total:rounds:${event.locale}`);
+      }
+      if (event.milestone !== undefined) {
+        bump(pipe, `${PREFIX}:total:reached:${event.milestone}`);
+      }
+      await pipe.exec();
+      return;
     }
-    for (const key of totals) pipe.incr(key);
-    await pipe.exec();
+
+    await recordView(request, ip, day);
   } catch {
     // The store is down or the quota is spent. Counting is not worth an error
     // page.
   }
 }
 
+/** Increment, and push the key's expiry back out. */
+function bump(pipe: ReturnType<NonNullable<typeof kv>["pipeline"]>, key: string): void {
+  pipe.incr(key);
+  // Refreshed on every write rather than set once, which would need a separate
+  // read to know whether the key is new.
+  pipe.expire(key, DAY_TTL_SECONDS);
+}
+
+/**
+ * A page view, anywhere on the site.
+ *
+ * Views are counted for everyone. A visitor is counted once a day, and only
+ * then is it worth asking whether this browser has been here before — which is
+ * the one question this whole mechanism exists to answer.
+ */
+async function recordView(request: Request, ip: string, day: string): Promise<void> {
+  if (!kv) return;
+
+  const opening = kv.pipeline();
+  bump(opening, `${PREFIX}:day:${day}:views`);
+  bump(opening, `${PREFIX}:total:views`);
+  await opening.exec();
+
+  const hash = await visitorHash(ip, request.headers.get("user-agent") ?? "");
+  // No salt means no way to recognise anybody without writing down something
+  // that identifies them, so nothing else is recorded. Page views still count.
+  if (!hash) return;
+
+  // First view of the day from this browser? SET NX answers and claims it in
+  // one step, so two tabs opening at once cannot both count as a visitor.
+  const firstToday = await kv.set(`${PREFIX}:seen:${day}:${hash}`, 1, {
+    nx: true,
+    ex: 2 * 24 * 60 * 60,
+  });
+  if (!firstToday) return;
+
+  const known = await kv.get<string>(`${PREFIX}:v:${hash}`);
+  const pipe = kv.pipeline();
+
+  bump(pipe, `${PREFIX}:day:${day}:visitors`);
+  bump(pipe, `${PREFIX}:day:${day}:country:${countryOf(request)}`);
+
+  if (known) {
+    bump(pipe, `${PREFIX}:day:${day}:returning`);
+    bump(pipe, `${PREFIX}:total:returning`);
+  } else {
+    bump(pipe, `${PREFIX}:day:${day}:new`);
+    bump(pipe, `${PREFIX}:total:new`);
+  }
+
+  // Written every visit, so the thirty days runs from the last one rather than
+  // the first — and so the record disappears entirely once somebody stops
+  // coming.
+  pipe.set(`${PREFIX}:v:${hash}`, day, { ex: VISITOR_TTL_SECONDS });
+  await pipe.exec();
+}
+
 export interface DayRow {
   day: string;
-  visits: number;
+  views: number;
+  visitors: number;
+  fresh: number;
+  returning: number;
   rounds: number;
   byLocale: Record<Locale, number>;
-  byAge: Record<AgeBucket, number>;
 }
 
 export interface Stats {
   configured: boolean;
+  /** False when no salt is available, which means no visitor counts at all. */
+  recognising: boolean;
   totals: {
-    visits: number;
+    views: number;
+    fresh: number;
+    returning: number;
     rounds: number;
     byLocale: Record<Locale, number>;
-    /** Devices that have ever reached each lifetime-round threshold. */
+    /** Devices that have ever reached each lifetime-round count. */
     reached: Record<number, number>;
   };
   days: DayRow[];
+  /** Visitor-days by country over the window, biggest first. */
+  countries: { code: string; visitors: number }[];
 }
 
 function zeroLocales(): Record<Locale, number> {
@@ -146,17 +220,27 @@ function num(value: unknown): number {
 }
 
 /**
- * Reads the last `days` days plus the lifetime totals.
+ * Reads the window back, plus the lifetime totals.
  *
  * The days are generated rather than indexed — a date is a date, and keeping a
- * separate set of "days that have data" would be another key to keep in step
- * with these ones for no gain.
+ * separate set of "days that have data" would be another key to hold in step
+ * with these for no gain. Countries are the one thing that has to be scanned,
+ * because the list of them is not known in advance.
  */
 export async function readStats(days = 30, now = new Date()): Promise<Stats> {
   const empty: Stats = {
     configured: kv !== null,
-    totals: { visits: 0, rounds: 0, byLocale: zeroLocales(), reached: {} },
+    recognising: false,
+    totals: {
+      views: 0,
+      fresh: 0,
+      returning: 0,
+      rounds: 0,
+      byLocale: zeroLocales(),
+      reached: {},
+    },
     days: [],
+    countries: [],
   };
   if (!kv) return empty;
 
@@ -165,23 +249,32 @@ export async function readStats(days = 30, now = new Date()): Promise<Stats> {
     dayKeys.push(utcDay(new Date(now.getTime() - back * 86400000)));
   }
 
-  // Every key this reader wants, in one flat list, so the whole dashboard is a
-  // single MGET rather than a request per number.
   const keys: string[] = [
-    `${PREFIX}:total:visits`,
+    `${PREFIX}:total:views`,
+    `${PREFIX}:total:new`,
+    `${PREFIX}:total:returning`,
     `${PREFIX}:total:rounds`,
     ...LOCALES.map((l) => `${PREFIX}:total:rounds:${l}`),
     ...MILESTONES.map((m) => `${PREFIX}:total:reached:${m}`),
   ];
   for (const day of dayKeys) {
-    keys.push(`${PREFIX}:day:${day}:visits`, `${PREFIX}:day:${day}:rounds`);
+    keys.push(
+      `${PREFIX}:day:${day}:views`,
+      `${PREFIX}:day:${day}:visitors`,
+      `${PREFIX}:day:${day}:new`,
+      `${PREFIX}:day:${day}:returning`,
+      `${PREFIX}:day:${day}:rounds`
+    );
     for (const locale of LOCALES) keys.push(`${PREFIX}:day:${day}:rounds:${locale}`);
-    for (const age of AGE_BUCKETS) keys.push(`${PREFIX}:day:${day}:age:${age}`);
   }
 
   let values: unknown[];
+  let countries: { code: string; visitors: number }[];
   try {
-    values = await kv.mget<unknown[]>(...keys);
+    [values, countries] = await Promise.all([
+      kv.mget<unknown[]>(...keys),
+      readCountries(dayKeys),
+    ]);
   } catch {
     return empty;
   }
@@ -190,7 +283,9 @@ export async function readStats(days = 30, now = new Date()): Promise<Stats> {
   const take = () => num(values[at++]);
 
   const totals = {
-    visits: take(),
+    views: take(),
+    fresh: take(),
+    returning: take(),
     rounds: take(),
     byLocale: zeroLocales(),
     reached: {} as Record<number, number>,
@@ -201,15 +296,56 @@ export async function readStats(days = 30, now = new Date()): Promise<Stats> {
   const rows: DayRow[] = dayKeys.map((day) => {
     const row: DayRow = {
       day,
-      visits: take(),
+      views: take(),
+      visitors: take(),
+      fresh: take(),
+      returning: take(),
       rounds: take(),
       byLocale: zeroLocales(),
-      byAge: { new: 0, d1: 0, "d2-6": 0, "d7+": 0 },
     };
     for (const locale of LOCALES) row.byLocale[locale] = take();
-    for (const age of AGE_BUCKETS) row.byAge[age] = take();
     return row;
   });
 
-  return { configured: true, totals, days: rows };
+  return {
+    configured: true,
+    recognising: totals.fresh + totals.returning > 0,
+    totals,
+    days: rows,
+    countries,
+  };
+}
+
+/**
+ * Country totals across the window.
+ *
+ * SCAN rather than a known key list, because which countries turn up is the
+ * answer rather than the question. It is bounded by how many countries have
+ * ever visited, which is at most a couple of hundred keys a day.
+ */
+async function readCountries(dayKeys: string[]): Promise<{ code: string; visitors: number }[]> {
+  if (!kv) return [];
+  const found = new Map<string, number>();
+
+  for (const day of dayKeys) {
+    let cursor = "0";
+    do {
+      const [next, batch] = await kv.scan(cursor, {
+        match: `${PREFIX}:day:${day}:country:*`,
+        count: 500,
+      });
+      cursor = String(next);
+      if (batch.length) {
+        const counts = await kv.mget<unknown[]>(...batch.map(String));
+        batch.forEach((key, i) => {
+          const code = String(key).split(":").pop() ?? "??";
+          found.set(code, (found.get(code) ?? 0) + num(counts[i]));
+        });
+      }
+    } while (cursor !== "0");
+  }
+
+  return [...found]
+    .map(([code, visitors]) => ({ code, visitors }))
+    .sort((a, b) => b.visitors - a.visitors);
 }

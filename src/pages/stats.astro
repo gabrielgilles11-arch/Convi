@@ -9,7 +9,7 @@
  *
  * Without ?token it is a 404, the same as the API it reads through.
  */
-import { readStats, MILESTONES, type AgeBucket } from "../lib/stats";
+import { readStats, MILESTONES } from "../lib/stats";
 
 export const prerender = false;
 
@@ -22,23 +22,24 @@ if (!expected || token !== expected) {
 
 const stats = await readStats(30);
 const recent = [...stats.days].reverse();
-const active = recent.filter((d) => d.visits > 0 || d.rounds > 0);
+const active = recent.filter((d) => d.views > 0 || d.rounds > 0);
 
-/** Rounds per visit-day: the one number that says whether people use it. */
-const depth = stats.totals.visits ? stats.totals.rounds / stats.totals.visits : 0;
+const { totals } = stats;
+const visitors = totals.fresh + totals.returning;
+
+/** The number this whole thing was built to produce. */
+const returnRate = visitors ? Math.round((totals.returning / visitors) * 100) : 0;
+
+/** Rounds per visitor: whether people use it, or only look at it. */
+const depth = visitors ? totals.rounds / visitors : 0;
 
 /** Of the devices that finished a round at all, how many got to five. */
-const started = stats.totals.reached[1] ?? 0;
-const stuck = started ? Math.round(((stats.totals.reached[5] ?? 0) / started) * 100) : 0;
+const started = totals.reached[1] ?? 0;
+const stuck = started ? Math.round(((totals.reached[5] ?? 0) / started) * 100) : 0;
 
-const AGE_LABELS: Record<AgeBucket, string> = {
-  new: "First day",
-  d1: "Day 1 back",
-  "d2-6": "Days 2–6",
-  "d7+": "Day 7+",
-};
-const AGES = Object.keys(AGE_LABELS) as AgeBucket[];
-const peak = Math.max(1, ...active.map((d) => d.rounds));
+const peak = Math.max(1, ...active.map((d) => d.views));
+const topCountries = stats.countries.slice(0, 12);
+const countryTotal = stats.countries.reduce((sum, c) => sum + c.visitors, 0);
 ---
 
 <html lang="en">
@@ -63,22 +64,64 @@ const peak = Math.max(1, ...active.map((d) => d.rounds));
 
       <section class="tiles">
         <div class="tile">
-          <span class="n">{stats.totals.rounds.toLocaleString()}</span>
+          <span class="n">{totals.views.toLocaleString()}</span>
+          <span class="k">Page views, ever</span>
+        </div>
+        <div class="tile">
+          <span class="n">{visitors.toLocaleString()}</span>
+          <span class="k">Visitors counted</span>
+        </div>
+        <div class="tile strong">
+          <span class="n">{returnRate}%</span>
+          <span class="k">Came back another day</span>
+        </div>
+        <div class="tile">
+          <span class="n">{totals.rounds.toLocaleString()}</span>
           <span class="k">Rounds finished, ever</span>
         </div>
         <div class="tile">
-          <span class="n">{stats.totals.visits.toLocaleString()}</span>
-          <span class="k">Practice days opened</span>
-        </div>
-        <div class="tile">
           <span class="n">{depth.toFixed(1)}</span>
-          <span class="k">Rounds per day opened</span>
+          <span class="k">Rounds per visitor</span>
         </div>
         <div class="tile">
           <span class="n">{stuck}%</span>
           <span class="k">Of starters reached 5 rounds</span>
         </div>
       </section>
+
+      <h2>Where they are</h2>
+      {
+        topCountries.length === 0 ? (
+          <p class="note">No countries recorded yet.</p>
+        ) : (
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr><th>Country</th><th class="r">Visitor-days</th><th>Share</th></tr>
+              </thead>
+              <tbody>
+                {
+                  topCountries.map((c) => (
+                    <tr>
+                      <td>{c.code === "??" ? "Unknown" : c.code}</td>
+                      <td class="r">{c.visitors.toLocaleString()}</td>
+                      <td class="bar">
+                        <span
+                          style={`width:${countryTotal ? Math.round((c.visitors / countryTotal) * 100) : 0}%`}
+                        />
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+      <p class="note">
+        Country only — it is read at the network edge, so no address is ever
+        looked up or kept here. "Visitor-days" counts each visitor once per day.
+      </p>
 
       <h2>Depth</h2>
       <p class="note">
@@ -87,24 +130,24 @@ const peak = Math.max(1, ...active.map((d) => d.rounds));
         retention.
       </p>
       <div class="scroll">
-      <table>
-        <thead>
-          <tr><th>Rounds</th><th class="r">Devices</th><th class="r">Of starters</th></tr>
-        </thead>
-        <tbody>
-          {
-            MILESTONES.map((m) => (
-              <tr>
-                <td>{m}+</td>
-                <td class="r">{(stats.totals.reached[m] ?? 0).toLocaleString()}</td>
-                <td class="r">
-                  {started ? Math.round(((stats.totals.reached[m] ?? 0) / started) * 100) : 0}%
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+        <table>
+          <thead>
+            <tr><th>Rounds</th><th class="r">Devices</th><th class="r">Of starters</th></tr>
+          </thead>
+          <tbody>
+            {
+              MILESTONES.map((m) => (
+                <tr>
+                  <td>{m}+</td>
+                  <td class="r">{(totals.reached[m] ?? 0).toLocaleString()}</td>
+                  <td class="r">
+                    {started ? Math.round(((totals.reached[m] ?? 0) / started) * 100) : 0}%
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
       </div>
 
       <h2>Days with activity (last 30)</h2>
@@ -113,40 +156,55 @@ const peak = Math.max(1, ...active.map((d) => d.rounds));
           <p class="note">Nothing recorded yet.</p>
         ) : (
           <div class="scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th class="r">Opened</th>
-                <th class="r">Rounds</th>
-                <th>Spread</th>
-                {AGES.map((age) => <th class="r">{AGE_LABELS[age]}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              {
-                active.map((day) => (
-                  <tr>
-                    <td>{day.day}</td>
-                    <td class="r">{day.visits}</td>
-                    <td class="r">{day.rounds}</td>
-                    <td class="bar">
-                      <span style={`width:${Math.round((day.rounds / peak) * 100)}%`} />
-                    </td>
-                    {AGES.map((age) => <td class="r dim">{day.byAge[age] || ""}</td>)}
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
+            <table>
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th class="r">Views</th>
+                  <th>Spread</th>
+                  <th class="r">Visitors</th>
+                  <th class="r">New</th>
+                  <th class="r">Back</th>
+                  <th class="r">Rounds</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  active.map((day) => (
+                    <tr>
+                      <td>{day.day}</td>
+                      <td class="r">{day.views}</td>
+                      <td class="bar">
+                        <span style={`width:${Math.round((day.views / peak) * 100)}%`} />
+                      </td>
+                      <td class="r">{day.visitors || ""}</td>
+                      <td class="r dim">{day.fresh || ""}</td>
+                      <td class="r strong-cell">{day.returning || ""}</td>
+                      <td class="r">{day.rounds || ""}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
           </div>
         )
       }
+
       <p class="note">
-        "Day 1 back" and beyond are the retention columns: an event from a
-        device that first showed up that long ago. Nothing here identifies a
-        person — see src/lib/stats.ts.
+        "Back" is a browser that had been here on an earlier day, recognised by
+        a salted one-way hash that expires after 30 quiet days — no address is
+        stored and nothing here identifies a person. Phone networks share one
+        address between many people, so treat it as a good estimate rather than
+        a headcount. See src/lib/visitor.ts.
       </p>
+      {
+        stats.configured && !stats.recognising && (
+          <p class="warn">
+            No visitors recognised yet. If this stays empty while views climb,
+            the store could not provide a salt — see <code>STATS_SALT</code>.
+          </p>
+        )
+      }
     </main>
 
     <style is:global>
@@ -158,13 +216,14 @@ const peak = Math.max(1, ...active.map((d) => d.rounds));
         background: Canvas;
         color: CanvasText;
       }
-      main { max-width: 60rem; margin: 0 auto; }
+      main { max-width: 62rem; margin: 0 auto; }
       h1 { font-size: 1.5rem; margin: 0 0 1.5rem; }
       h2 { font-size: 1rem; margin: 2.5rem 0 0.5rem; text-transform: uppercase; letter-spacing: .06em; opacity: .7; }
-      .note { margin: 0 0 1rem; font-size: .85rem; opacity: .7; max-width: 44rem; }
-      .warn { padding: .75rem 1rem; border: 1px solid #d9a441; border-radius: .5rem; background: #d9a44118; }
+      .note { margin: .75rem 0 1rem; font-size: .85rem; opacity: .7; max-width: 46rem; }
+      .warn { padding: .75rem 1rem; border: 1px solid #d9a441; border-radius: .5rem; background: #d9a44118; font-size: .9rem; }
       .tiles { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
       .tile { padding: 1rem; border: 1px solid color-mix(in srgb, CanvasText 18%, transparent); border-radius: .6rem; }
+      .tile.strong { border-color: #e8622c; }
       .tile .n { display: block; font-size: 1.9rem; font-weight: 650; font-variant-numeric: tabular-nums; }
       .tile .k { display: block; margin-top: .2rem; font-size: .8rem; opacity: .7; }
       table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
@@ -174,7 +233,8 @@ const peak = Math.max(1, ...active.map((d) => d.rounds));
       .scroll table { min-width: 34rem; }
       .r { text-align: right; }
       .dim { opacity: .6; }
-      td.bar { width: 30%; }
+      .strong-cell { color: #e8622c; font-weight: 600; }
+      td.bar { width: 22%; min-width: 5rem; }
       td.bar span { display: block; height: .55rem; border-radius: 999px; background: #e8622c; min-width: 0; }
     </style>
   </body>

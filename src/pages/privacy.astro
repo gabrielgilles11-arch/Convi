@@ -30,27 +30,39 @@ import Layout from "../layouts/Layout.astro";
         referring sites, countries, and site performance.
       </li>
       <li>
-        <strong>Practice counters.</strong> We keep a running count of how many
-        practice rounds are finished on the site, and how many days practice is
-        opened. When you finish a round your browser adds one to those totals.
-        It sends nothing that identifies you — no account, no cookie, no
-        identifier of any kind, not even a random one — only which language deck
-        the round was from and a rough band for how long ago that browser first
-        used the site ("first day", "a week or more"). Once added, these are
-        plain numbers that cannot be taken apart again, and two rounds from you
-        are indistinguishable from rounds by two different people.
+        <strong>Site counters.</strong> We keep a handful of running totals:
+        how many pages were viewed, how many separate visitors there were on a
+        day, how many of those had been here before, which country they were
+        in, and how many practice rounds were finished. Nothing in them
+        identifies you. There is no account, no cookie and no tracking
+        identifier of any kind.
+      </li>
+      <li>
+        <strong>How returning visitors are counted.</strong> To know whether
+        anyone comes back, your browser has to be recognisable as one we have
+        seen before. Your IP address is combined with a secret value and turned
+        into a one-way hash the moment your request arrives; only that hash is
+        stored, and your address is never written down. The hash cannot be
+        turned back into your address, we never try, and it deletes itself
+        after 30 days without a visit. Your country comes from the network
+        itself and is the only thing about your location that is recorded —
+        never a city, never an address. This is an estimate by design: several
+        people on one phone network share an address and may be counted as one
+        visitor.
       </li>
       <li>
         <strong>Local storage.</strong> Your practice progress — which stages
         you've cleared, your streak, which lines you got wrong — is kept in your
         own browser, along with your sound and voice settings. None of it is
         ever sent to us; the only thing that leaves your device is the anonymous
-        "one more round was finished" tick described above.
+        "one more round was finished" tick described above, which says which
+        language deck it was and nothing else.
       </li>
       <li>
-        <strong>Technical data.</strong> We temporarily process IP addresses to
-        rate-limit our forms and protect against abuse. These are not stored
-        long-term or used to profile you.
+        <strong>Technical data.</strong> We briefly process IP addresses to
+        rate-limit our forms, to protect against abuse, and to produce the
+        anonymous counts described above. They are never stored and never used
+        to profile you.
       </li>
     </ul>
 
@@ -58,7 +70,7 @@ import Layout from "../layouts/Layout.astro";
     <ul>
       <li>To send you product updates and respond to your messages.</li>
       <li>To understand overall traffic and improve the site.</li>
-      <li>To see how much the practice section is actually used.</li>
+      <li>To see how much the site and the practice section are actually used.</li>
       <li>To protect the service from abuse.</li>
     </ul>
 

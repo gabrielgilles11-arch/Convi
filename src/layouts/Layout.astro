@@ -141,6 +141,15 @@ const structuredData = {
         </nav>
       </div>
     </footer>
+
+    {/* One anonymous tick per page, from every page on the site. It carries
+        nothing: which country and whether this browser has been here before
+        are worked out from the request itself, and the address is hashed
+        before anything is written. See src/lib/stats.ts. */}
+    <script>
+      import { recordView } from "../lib/usage";
+      recordView();
+    </script>
   </body>
 </html>
 

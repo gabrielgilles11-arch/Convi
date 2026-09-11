@@ -14,6 +14,11 @@ function json(body: unknown, status = 200): Response {
 /**
  * Records one anonymous usage event — see ../../lib/stats.
  *
+ * The address is read here rather than sent: it is needed to recognise a
+ * returning visitor and to place them in a country, and neither is a thing a
+ * beacon should be trusted to claim about itself. It is hashed before anything
+ * is written and never stored — see ../../lib/visitor.
+ *
  * Always answers 204, whatever happened. The caller is a fire-and-forget beacon
  * sent while a learner is reading their score; there is nothing it could
  * usefully do with a failure, and a body would only be something for the
@@ -21,10 +26,12 @@ function json(body: unknown, status = 200): Response {
  */
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   const nothing = new Response(null, { status: 204 });
+  const ip = clientIp(request, clientAddress);
 
-  // Shared with the other endpoints, so a flood of beacons from one address
-  // cannot crowd out that address's signup or purchase check.
-  if (!(await allowRequest(`stats:${clientIp(request, clientAddress)}`))) return nothing;
+  // Its own bucket, so a flood of beacons from one address cannot crowd out
+  // that address's signup, and so ordinary fast browsing is not mistaken for
+  // one: every page sends a view, and people open pages in bursts.
+  if (!(await allowRequest(`stats:${ip}`, 60))) return nothing;
 
   let body: unknown;
   try {
@@ -36,7 +43,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const event = parseEvent(body);
   // record() swallows its own store failures; this is for anything else that
   // could go wrong on a path whose whole job is to be invisible.
-  if (event) await record(event).catch(() => {});
+  if (event) await record(event, request, ip).catch(() => {});
   return nothing;
 };
 
