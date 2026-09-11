@@ -22,12 +22,12 @@
               "id": "beer-food-01",
               "speaker": "them",
               "situation": { "en": "You're at a bar and the bartender asks what you're drinking." },
-              "question": { "es": "¿Qué vas a tomar?/¿Qué quieres beber?", "en": "What are you having?" },
+              "question": { "es": "¿Qué vas a tomar?", "en": "What are you having?" },
               "answers": [
-                { "es": "Una caña/una jarra/un doble, porfa.", "en": "A small/pint-size beer, please." },
+                { "es": "Una caña, porfa.", "en": "A small draft beer, please — how locals order." },
                 { "es": "Una cerveza, por favor.", "en": "A beer, please." }
               ],
-              "likelyReply": { "es": "Vale. ¿Algo de comer? / ¿Y para picar?", "en": "Okay. Something to eat? / Anything to snack on?" },
+              "likelyReply": { "es": "Vale. ¿Algo de comer?", "en": "Okay. Something to eat?" },
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
@@ -136,7 +136,6 @@
           "title": "Tiny upgrades that sound natural (Spain)",
           "type": "tips",
           "items": [
-            { "es": "¿Una caña porfa?", "en": "A beer, please? (the small draft — how locals order)" },
             { "es": "Cuando puedas.", "en": "When you can (no rush)." },
             { "es": "Gracias, jefe/jefa.", "en": "Thanks, boss. (very casual — use with care)" }
           ]
@@ -217,7 +216,7 @@
               "situation": { "en": "Someone you've just met asks where you're from." },
               "question": { "es": "¿De dónde eres?", "en": "Where are you from?" },
               "answers": [
-                { "es": "Yo soy de los Estados Unidos.", "en": "I am from the US." }
+                { "es": "Soy de Estados Unidos.", "en": "I'm from the US." }
               ],
               "likelyReply": { "es": "¿Y tú?", "en": "And you?" },
               "notes": "\"Y tú?\" is your natural follow-up here, not their reply.",
@@ -254,14 +253,15 @@
             },
             {
               "id": "starting-convo-05",
-              "speaker": "them",
+              "speaker": "you",
               "situation": { "en": "Someone says something and you don't catch it." },
-              "question": { "es": "Cuando no entiendes lo que dijeron", "en": "When someone says something you don't understand" },
+              "question": { "es": "Perdona, no te he entendido.", "en": "Sorry, I didn't catch that." },
               "answers": [
-                { "es": "Perdona. No entiendo.", "en": "Sorry, I don't understand." }
+                { "es": "Te lo repito.", "en": "I'll say it again." },
+                { "es": "¿Te lo digo más despacio?", "en": "Shall I say it slower?" }
               ],
-              "likelyReply": null,
-              "notes": "",
+              "likelyReply": { "es": "¿Ahora mejor?", "en": "Better now?" },
+              "notes": "\"No te he entendido\" blames the moment rather than your Spanish — softer than \"no entiendo\".",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -535,7 +535,7 @@
               "question": { "es": "¿A dónde vamos?", "en": "Where to?" },
               "answers": [
                 { "es": "A la calle __, número __, por favor.", "en": "To __ street, number __, please." },
-                { "es": "A __, por favor.", "en": "To __, please." }
+                { "es": "Al aeropuerto, por favor.", "en": "To the airport, please." }
               ],
               "likelyReply": { "es": "Vale. / ¿Por dónde?", "en": "Okay. / Which way?" },
               "notes": "",
@@ -723,7 +723,7 @@
               "id": "lost-04",
               "speaker": "you",
               "situation": { "en": "It's late, there are three of you, and you need a taxi to the centre." },
-              "question": { "es": "¿Nos llevas al centro? Vamos tres.", "en": "Can you take us to the center? There's three of us." },
+              "question": { "es": "¿Nos llevas al centro? Somos tres.", "en": "Can you take us to the center? There's three of us." },
               "answers": [],
               "likelyReply": { "es": "Subid, pero de tres como mucho.", "en": "Get in, but three max." },
               "notes": "Splitting the fare: \"pagamos a medias\" = let's split it.",
@@ -865,7 +865,7 @@
               "id": "restaurant-08",
               "speaker": "you",
               "situation": { "en": "You want a dish made without one of its ingredients." },
-              "question": { "es": "¿Me lo pones sin __?", "en": "Without __?" },
+              "question": { "es": "¿Me lo pones sin __?", "en": "Can you make it without __?" },
               "answers": [
                 { "es": "Sí, sin problema.", "en": "Yes, no problem." },
                 { "es": "No se puede.", "en": "Can't be done." }
@@ -952,7 +952,7 @@
               "id": "restaurant-12",
               "speaker": "you",
               "situation": { "en": "You're paying with others and want to split the bill." },
-              "question": { "es": "¿Me puedes cobrar por separado?", "en": "Split it?" },
+              "question": { "es": "¿Me puedes cobrar por separado?", "en": "Can you charge us separately?" },
               "answers": [
                 { "es": "Sí, sin problema.", "en": "Yes, no problem." },
                 { "es": "Mejor juntos.", "en": "Better together." }
@@ -1158,7 +1158,7 @@
               "id": "shopping-07",
               "speaker": "you",
               "situation": { "en": "The price is higher than you'd like." },
-              "question": { "es": "Uf, es un poco caro. ¿Es lo último?", "en": "Oof, a bit pricey. Is that your best price?" },
+              "question": { "es": "Uf, es un poco caro. ¿Es tu último precio?", "en": "Oof, a bit pricey. Is that your best price?" },
               "answers": [],
               "likelyReply": { "es": "Te lo dejo en __ y ya está.", "en": "I'll do __ and that's it." },
               "notes": "",
@@ -1423,7 +1423,7 @@
             {
               "id": "emergencies-10",
               "speaker": "you",
-              "situation": { "en": "Someone puts a hand on you without asking." },
+              "situation": { "en": "A man is reaching to touch you and you want to stop him before he does." },
               "question": { "es": "No me toques.", "en": "Don't touch me." },
               "answers": [],
               "likelyReply": null,
@@ -1433,7 +1433,7 @@
             {
               "id": "emergencies-11",
               "speaker": "you",
-              "situation": { "en": "A stranger has put their hands on you and you want them off." },
+              "situation": { "en": "A stranger already has his hands on your waist." },
               "question": { "es": "¡Quítame las manos de encima!", "en": "Get your hands off me!" },
               "answers": [],
               "likelyReply": null,
@@ -1443,7 +1443,7 @@
             {
               "id": "emergencies-12",
               "speaker": "you",
-              "situation": { "en": "Someone has hold of your arm and won't release it." },
+              "situation": { "en": "Someone has gripped your wrist and won't let go." },
               "question": { "es": "¡Suéltame!", "en": "Let go of me!" },
               "answers": [],
               "likelyReply": null,
