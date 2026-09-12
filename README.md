@@ -124,4 +124,11 @@ the first answer was wrong and the second was found by testing it.
 
 ## Licence
 
-[MIT](LICENSE)
+Two licences, because there are two kinds of work here.
+
+- **Source code** — [MIT](LICENSE). Everything outside `content/` and
+  `public/audio/`. Take it and build on it.
+- **Language content** — [all rights reserved](LICENSE-CONTENT). The phrases,
+  translations, scenarios and recordings are the product rather than the
+  scaffolding, and they are not open source. Permission for teaching or
+  research is genuinely available — ask.
