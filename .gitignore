@@ -1,32 +1,106 @@
-# build output
+# Build output
 dist/
 .vercel/
-# generated types
 .astro/
+.output/
+.netlify/
 
-# dependencies
+# Dependencies
 node_modules/
+.pnp
+.pnp.js
 
-# logs
+# Environment variables — never commit any of these.
+# Document the names in .env.example instead, with no values.
+.env
+.env.*
+!.env.example
+
+# Credentials, keys and certificates of every shape
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+*.keystore
+*.jks
+id_rsa*
+id_ed25519*
+*service-account*.json
+*serviceaccount*.json
+*credentials*.json
+gha-creds-*.json
+.npmrc
+.netrc
+.htpasswd
+secrets.json
+secrets.yml
+secrets.yaml
+
+# Cloud and tooling state that can carry account identifiers or tokens
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraformrc
+.aws/
+.gcloud/
+.firebase/
+.supabase/
+.wrangler/
+.sst/
+
+# Logs and crash reports
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+report.*.json
 
+# Test and coverage output
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+playwright-report/
+blob-report/
+.playwright/
 
-# environment variables
-.env
-.env.production
+# Caches
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+.turbo/
+.vite/
 
-# macOS-specific files
-.DS_Store
-
-# jetbrains setting folder
+# Editor and OS files. These carry absolute paths from the machine that wrote
+# them — a launch config once shipped the author's home directory to anyone who
+# cloned this.
 .idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
 
-# local Claude Code permissions (machine-specific)
-.claude/settings.local.json
-
-# local Claude working files & generated assets (never pushed)
+# Claude Code: machine-specific paths and local permissions
+.claude/
 HANDOFF.md
+
+# Local working files and unreleased assets
 try-convi-wordmark*.png
+*.local
+scratch/
+tmp/
