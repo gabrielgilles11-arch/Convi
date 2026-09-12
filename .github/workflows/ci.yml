@@ -1,9 +1,12 @@
-# Typecheck and build every push and pull request.
+# Typecheck, test and build every push and pull request.
 #
 # The project is on TypeScript's strict preset and has no `any` in it, so a
 # type error is a real error rather than noise — which makes this cheap to keep
 # green and worth failing on. `astro check` covers the .astro files too, which
 # `tsc` alone does not.
+#
+# The tests run against the shipped decks, so a content edit that reintroduces
+# two interchangeable answers fails here rather than reaching a learner.
 name: CI
 
 on:
@@ -36,6 +39,9 @@ jobs:
 
       - name: Typecheck
         run: npx astro check
+
+      - name: Test
+        run: npm test
 
       - name: Build
         run: npm run build
