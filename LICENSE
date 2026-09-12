@@ -1,3 +1,23 @@
+# Licence
+
+This repository is licensed in two parts, because it holds two different
+kinds of work.
+
+## The source code — MIT
+
+Everything except `content/` and `public/audio/` is under the MIT licence
+below: `src/`, `scripts/`, the workflows, the configuration and the
+documentation. Take it, learn from it, build on it.
+
+## The language content — not MIT
+
+`content/` and `public/audio/` are **not** covered by the MIT licence. They
+are the phrases, translations, scenarios and recordings that make up the
+product, and they are all rights reserved. See
+[LICENSE-CONTENT](LICENSE-CONTENT).
+
+---
+
 MIT License
 
 Copyright (c) 2026 Gabriel Gilles

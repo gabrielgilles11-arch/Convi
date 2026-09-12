@@ -1,0 +1,37 @@
+# Content licence — all rights reserved
+
+Copyright (c) 2026 Gabriel Gilles. All rights reserved.
+
+## What this covers
+
+- `content/` — the scenarios, phrases, translations, replies and usage notes
+  for every language edition, and the buzzword sets
+- `public/audio/` — the recordings of those lines
+
+## What you may do
+
+Read it. Quote a line or two when writing or talking about this project, with
+attribution.
+
+## What you may not do
+
+Copy, redistribute, publish, translate, adapt or sell this content, in whole
+or in substantial part, or use it to build or train a competing product or
+dataset — including as training data for a machine learning model — without
+written permission.
+
+This is deliberate and separate from the MIT licence on the source code. The
+code is a means; the content is the product. Every line was written and
+checked by hand against how the language is actually spoken in the place it
+is spoken, which is the part that took the work.
+
+## Asking
+
+Permission is genuinely available for teaching, research and non-commercial
+use. Email **hello@tryconvi.com** and say what you would like to do.
+
+## A note on the site
+
+The live site serves this content publicly so that people can learn from it,
+and search engines may index it. Being readable is not a grant of licence —
+the terms above still apply.
