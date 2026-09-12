@@ -1,0 +1,41 @@
+# Typecheck and build every push and pull request.
+#
+# The project is on TypeScript's strict preset and has no `any` in it, so a
+# type error is a real error rather than noise — which makes this cheap to keep
+# green and worth failing on. `astro check` covers the .astro files too, which
+# `tsc` alone does not.
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+# A new push makes the run in progress pointless, so it is cancelled rather
+# than left to finish against stale code.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      # ci rather than install: it installs exactly the lockfile and fails if
+      # package.json has drifted from it, which is what a build machine wants.
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npx astro check
+
+      - name: Build
+        run: npm run build
