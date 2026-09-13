@@ -1,0 +1,70 @@
+# Sends the mineral-supply-chain / transatlantic-friction digest every
+# morning and commits the updated de-duplication state back.
+#
+# Cron is UTC and can't itself track the CET/CEST switch, so this fires
+# twice — once for each — and the script itself only sends when the
+# Europe/Berlin clock actually reads 8am (see scripts/supply-chain-digest).
+# The other firing is a silent no-op, which is why there is no `if` here
+# filtering by month: the check lives where the timezone logic already is.
+name: Supply chain digest
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # 8am CEST (UTC+2)
+    - cron: "0 7 * * *" # 8am CET (UTC+1)
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Send now regardless of the hour check"
+        type: boolean
+        default: true
+      dry_run:
+        description: "Print the digest instead of sending it"
+        type: boolean
+        default: false
+
+concurrency:
+  group: supply-chain-digest
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Run digest
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          RESEND_TO: ${{ secrets.RESEND_TO }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS+=(--force); fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS+=(--dry-run); fi
+          node scripts/supply-chain-digest/index.mjs "${ARGS[@]}"
+
+      - name: Commit updated dedup state
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/supply-chain-digest/state/seen.json
+          if git diff --cached --quiet; then
+            echo "no change"
+            exit 0
+          fi
+          git commit -m "Record digest state from $(date -u +%F)"
+          git push origin HEAD:${{ github.ref_name }}
