@@ -305,7 +305,7 @@ const schema = [
   sync();
 </script>
 
-<script define:vars={{ categoryId: category.id, showContent }}>
+<script is:inline define:vars={{ categoryId: category.id, showContent }}>
   // Mark this category "completed" once its content has actually been shown
   // (free categories, or premium ones the visitor is entitled to).
   const KEY = "convi:progress:v1";

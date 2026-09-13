@@ -828,31 +828,6 @@ function forceBothDirections(
   }
 }
 
-/** Draws up to `n` questions from `pool`, alternating direction. */
-function drawQuestions(
-  pool: QuizItem[],
-  n: number,
-  items: QuizItem[],
-  fallbackPool: QuizItem[],
-  startReversed: boolean
-): Draft[] {
-  const out: Draft[] = [];
-
-  for (const item of shuffle(pool)) {
-    if (out.length >= n) break;
-    const wanted = out.length % 2 === 0 ? startReversed : !startReversed;
-    const first = buildQuestion(item, wanted, "choice", items, fallbackPool);
-    if (first) {
-      out.push({ item, question: first, reverse: wanted });
-      continue;
-    }
-    const flipped = buildQuestion(item, !wanted, "choice", items, fallbackPool);
-    if (flipped) out.push({ item, question: flipped, reverse: !wanted });
-  }
-
-  return out;
-}
-
 /**
  * One round: five situations, one matching screen, two translation questions.
  *
@@ -954,7 +929,7 @@ export function buildRound(
       : null;
 
   // A round opens on a situation wherever it has one.
-  const openerIdx = asked.findIndex((q, i) => drafts[i].item.kind === "situation" && !drafts[i].reverse);
+  const openerIdx = asked.findIndex((_, i) => drafts[i].item.kind === "situation" && !drafts[i].reverse);
   const opener = openerIdx >= 0 ? [asked[openerIdx]] : asked.slice(0, 1);
   const rest = shuffle([
     ...asked.filter((q) => q !== opener[0]),

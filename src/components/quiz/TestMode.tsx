@@ -295,7 +295,7 @@ export default function TestMode({
     settle(answersMatch(option, question!.answer));
   }
 
-  function submitTyped(event: React.FormEvent) {
+  function submitTyped(event: React.SubmitEvent) {
     event.preventDefault();
     if (answered || !typed.trim()) return;
     settle(answersMatch(typed, question!.answer));
