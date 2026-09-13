@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import "./practiceGate.css";
 
 const GUMROAD_PRODUCT_URL = "https://gabrio136.gumroad.com/l/kfmoj";
@@ -16,7 +16,7 @@ export default function ScenarioGate({
   const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleVerify(event: FormEvent) {
+  async function handleVerify(event: SubmitEvent) {
     event.preventDefault();
     setError("");
     setVerifying(true);

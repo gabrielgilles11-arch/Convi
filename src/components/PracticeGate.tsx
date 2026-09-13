@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import QuizApp from "./quiz/QuizApp";
 import { PAYWALL_ENABLED } from "../lib/paywall";
 import "./practiceGate.css";
@@ -33,7 +33,7 @@ export default function PracticeGate({ locale }: Props) {
       .finally(() => setChecked(true));
   }, []);
 
-  async function handleVerify(event: FormEvent) {
+  async function handleVerify(event: SubmitEvent) {
     event.preventDefault();
     setError("");
     setVerifying(true);

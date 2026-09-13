@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { Redis } from "@upstash/redis";
+import { kv } from "../../lib/kv";
 import { allowRequest, clientIp } from "../../lib/ratelimit";
 
 export const prerender = false;
@@ -45,11 +45,12 @@ export const POST: APIRoute = async ({ request, url, clientAddress }) => {
     return new Response("Ignored", { status: 200 });
   }
 
-  const redis = new Redis({
-    url: import.meta.env.KV_REST_API_URL,
-    token: import.meta.env.KV_REST_API_TOKEN,
-  });
+  // No store means there is nowhere to record the purchase. Saying OK would
+  // tell Gumroad the ping was handled and stop it retrying, so this is the one
+  // case worth failing loudly about.
+  if (!kv) return new Response("Store not configured", { status: 503 });
 
+  const redis = kv;
   const key = `purchaser:${email.trim().toLowerCase()}`;
   if (refunded) {
     await redis.del(key);

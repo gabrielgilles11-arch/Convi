@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 
 /**
  * The one ask, after five rounds.
@@ -26,7 +26,7 @@ export default function EmailPrompt({ onClose, onRegistered }: Props) {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
 
-  async function submit(event: FormEvent) {
+  async function submit(event: SubmitEvent) {
     event.preventDefault();
     if (sending) return;
     setError("");

@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { Redis } from "@upstash/redis";
+import { kv } from "../../lib/kv";
 import { allowRequest, clientIp } from "../../lib/ratelimit";
 import {
   COOKIE_OPTS,
@@ -41,16 +41,13 @@ export const POST: APIRoute = async ({ request, clientAddress, cookies }) => {
     return json({ error: "Invalid email" }, 400);
   }
 
-  const url = import.meta.env.KV_REST_API_URL;
-  const token = import.meta.env.KV_REST_API_TOKEN;
-
   // Not fully configured (e.g. local dev without store/secret): treat as not
   // unlocked instead of throwing.
-  if (!url || !token || !isConfigured()) {
+  if (!kv || !isConfigured()) {
     return json({ unlocked: false });
   }
 
-  const redis = new Redis({ url, token });
+  const redis = kv;
   const normalized = email.trim().toLowerCase();
 
   const purchased = await redis.get(`purchaser:${normalized}`);

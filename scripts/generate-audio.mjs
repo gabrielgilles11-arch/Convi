@@ -17,7 +17,6 @@
  */
 import { readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync, rmSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import path from "node:path";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
