@@ -185,6 +185,7 @@ const PREMIUM_CATEGORY_IDS = new Set([
   "flirting",
   "emergencies",
   "resacon",
+  "drunk-scale",
   // Swedish
   "sv-cuss-words",
   "sv-flirting",

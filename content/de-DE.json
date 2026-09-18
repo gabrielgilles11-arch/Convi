@@ -312,7 +312,14 @@
           "phrases": [
             { "id": "de-slang-09", "es": "Alter!", "en": "Dude! / bro! — tone matters.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-slang-10", "es": "Digga/Digger", "en": "Bro / dude. Very casual.", "difficulty": "hard", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-11", "es": "Bruder / Bro", "en": "Bro.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            {
+              "id": "de-slang-11",
+              "es": "Bruder / Bro",
+              "en": "Brother — used like mate, mostly among young men.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
             { "id": "de-slang-23", "es": "Leute!", "en": "Guys! — the safe one for a whole group.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-24", "es": "Mann!", "en": "Man! — frustration or emphasis, never a word for a person.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-25", "es": "Kollege", "en": "Mate — jokey and slightly ironic between friends.", "difficulty": "medium", "young": true, "quizQuestions": [] },
@@ -360,7 +367,14 @@
               "region": "bayerisch",
               "quizQuestions": []
             },
-            { "id": "de-bayern-02", "es": "Grüß Gott!", "en": "Hello.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            {
+              "id": "de-bayern-02",
+              "es": "Grüß Gott!",
+              "en": "Good day — the standard southern greeting, safe with anyone.",
+              "difficulty": "easy",
+              "region": "bayern",
+              "quizQuestions": []
+            },
             {
               "id": "de-bayern-03",
               "es": "Pfiat di! / Pfiat eich!",
@@ -462,7 +476,13 @@
             { "id": "de-cuss-03", "es": "Mist.", "en": "A milder \"crap\".", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-cuss-06", "es": "Mensch!", "en": "Man! / oh come on! — completely safe in any company.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-cuss-07", "es": "Verflixt!", "en": "Darn! — the polite one.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-cuss-08", "es": "Verdammt nochmal!", "en": "Damn it all — stronger than Verdammt, still not aimed at anyone.", "difficulty": "medium", "quizQuestions": [] },
+            {
+              "id": "de-cuss-08",
+              "es": "Verdammt nochmal!",
+              "en": "Bloody hell — stronger than Verdammt, and still aimed at nobody.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
             { "id": "de-cuss-09", "es": "Herrje!", "en": "Good heavens!", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-cuss-10", "es": "Donnerwetter!", "en": "Well I never! — admiration or annoyance, tone decides which.", "difficulty": "medium", "quizQuestions": [] }
           ]
@@ -518,7 +538,13 @@
             { "id": "de-flirt-15", "es": "Ich mag dich.", "en": "I like you.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-16", "es": "Wollen wir woanders hingehen?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-flirt-17", "es": "Bleibst du noch?", "en": "Are you staying a bit longer?", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-18", "es": "Ich würde dich gern wiedersehen.", "en": "I'd like to see you again.", "difficulty": "easy", "quizQuestions": [] },
+            {
+              "id": "de-flirt-18",
+              "es": "Ich würde dich gern wiedersehen.",
+              "en": "I'd love to see you again.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
             { "id": "de-flirt-19", "es": "Gibst du mir deine Nummer?", "en": "Can I have your number?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-20", "es": "Das war ein schöner Abend mit dir.", "en": "That was a lovely evening with you.", "difficulty": "easy", "quizQuestions": [] }
           ]
@@ -1346,7 +1372,7 @@
               "id": "de-shopping-06",
               "speaker": "you",
               "situation": { "en": "What you bought yesterday doesn't fit and you want to swap it." },
-              "question": { "es": "Kann ich das umtauschen?", "en": "Can I exchange this?" },
+              "question": { "es": "Kann ich das hier umtauschen?", "en": "Can I exchange this?" },
               "answers": [
                 { "es": "Mit Kassenbon, ja.", "en": "With the receipt, yes." }
               ],
@@ -1518,7 +1544,14 @@
           "phrases": [
             { "id": "de-berlin-01", "es": "icke / ick", "en": "I — Berlin's own version of ich.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
             { "id": "de-berlin-02", "es": "wat", "en": "What — wat and det replace was and das.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
-            { "id": "de-berlin-03", "es": "det", "en": "That.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            {
+              "id": "de-berlin-03",
+              "es": "det",
+              "en": "That — Berlin's das.",
+              "difficulty": "easy",
+              "region": "berlin",
+              "quizQuestions": []
+            },
             { "id": "de-berlin-04", "es": "knorke", "en": "Brilliant — old Berlin, still said with a wink.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
             { "id": "de-berlin-05", "es": "dufte", "en": "Great — same vintage as knorke, same wink.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
             { "id": "de-berlin-06", "es": "Jibbet nich.", "en": "Not happening — \"gibt es nicht\" in a Berlin mouth.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
@@ -1617,7 +1650,7 @@
               "answers": [
                 { "es": "Alles klar, schönen Abend.", "en": "Fair enough, have a good night." }
               ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Der Nächste, bitte.", "en": "Next, please." },
               "notes": "Berlin doors give no reason and you do not ask for one. Taking it well is the entire etiquette — arguing guarantees it again.",
               "difficulty": "medium",
               "region": "berlin",
