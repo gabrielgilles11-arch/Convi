@@ -186,6 +186,7 @@ export default function TestMode({
   // screen it can land on top of the options you just answered. Bring them back
   // into view rather than leaving the learner to guess there's more above it.
   const answerArea = useRef<HTMLDivElement>(null);
+  const questionCard = useRef<HTMLDivElement>(null);
   const voiceTimer = useRef(0);
 
   // Leaving a question — or the round — stops it mid-sentence. A line still
@@ -197,15 +198,37 @@ export default function TestMode({
     };
   }, [position, attempt]);
   useEffect(() => {
-    if (!answered) return;
-    const el = answerArea.current;
-    if (!el) return;
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    // "end" plus the scroll margins in CSS parks the answers in the gap between
-    // the sticky header and the drawer. Centring instead over-scrolled: it
-    // counted the drawer-clearance padding as content and pushed the options
-    // up behind the header.
-    el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "end" });
+    const behavior: ScrollBehavior = reduced ? "auto" : "smooth";
+
+    if (answered) {
+      // "end" plus the scroll margins in CSS parks the answers in the gap between
+      // the sticky header and the drawer. Centring instead over-scrolled: it
+      // counted the drawer-clearance padding as content and pushed the options
+      // up behind the header.
+      answerArea.current?.scrollIntoView({ behavior, block: "end" });
+      return;
+    }
+
+    // A new question, with the page still parked where the last verdict left
+    // it. On a phone that is far enough down that the question has gone off the
+    // top, so answering anything began with scrolling back up — every question,
+    // all round. Only pull it back when it has actually left the screen: if the
+    // question is already showing, moving the page would be its own annoyance.
+    //
+    // Instant rather than smooth, and deliberately so: the verdict scroll above
+    // is still animating when Continue is tapped, and a second smooth scroll
+    // loses to it — the page carried on down to where the drawer had been. An
+    // instant jump cancels it outright, and reads as a new screen rather than
+    // as the page sliding about under a question that has already changed.
+    const card = questionCard.current;
+    if (!card) return;
+    // Anything above the card's own scroll margin is behind the sticky header,
+    // so "still on screen" is measured against that rather than against zero.
+    // Reading it off the element keeps the number in the stylesheet.
+    const clearance = parseFloat(getComputedStyle(card).scrollMarginTop) || 0;
+    if (card.getBoundingClientRect().top >= clearance) return;
+    card.scrollIntoView({ behavior: "auto", block: "start" });
   }, [answered, position, attempt]);
 
   function resetQuestion() {
@@ -442,7 +465,7 @@ export default function TestMode({
       {/* The question lives on its own white card so the thing you're being
           asked always sits apart from the answers, instead of running into the
           page. */}
-      <div className="question-card">
+      <div className="question-card" ref={questionCard}>
         <p className="category-tag">{q.categoryTitle}</p>
         {/* A matching screen is its own instruction — there's no single line to
             show above it, so the card carries only the prompt. */}
