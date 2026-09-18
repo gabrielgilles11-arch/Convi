@@ -213,8 +213,8 @@
               "situation": { "en": "A colleague or friend suggests coffee in the middle of the afternoon." },
               "question": { "es": "Ska vi ta en fika?", "en": "Shall we go for a fika?" },
               "answers": [
-                { "es": "Gärna!", "en": "I'd love to!" },
-                { "es": "Ja, om en halvtimme?", "en": "Yes — in half an hour?" }
+                { "es": "Ja, det gör vi.", "en": "Yes, let's." },
+                { "es": "Om en halvtimme?", "en": "In half an hour?" }
               ],
               "likelyReply": { "es": "Jag fixar kaffet.", "en": "I'll get the coffee." },
               "notes": "Fika is coffee, something sweet and sitting down — all three. Declining is fine; proposing a time instead is better.",
@@ -470,7 +470,7 @@
               "answers": [
                 { "es": "Ja, vi hörs!", "en": "Yes, talk soon!" }
               ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Ha det bra!", "en": "Take care!" },
               "notes": "Usually means nothing will happen. Say it back, mean it as much as they did, and take no offence.",
               "difficulty": "easy",
               "quizQuestions": []
@@ -502,7 +502,7 @@
               "answers": [
                 { "es": "Tack själv, det var kul!", "en": "Thank you too — it was fun!" }
               ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Vi måste ses igen snart.", "en": "We should do it again soon." },
               "notes": "Said the next time you meet anyone who hosted you, however long ago. There is no English for it, and not saying it is noticed.",
               "difficulty": "medium",
               "quizQuestions": []
@@ -515,7 +515,7 @@
               "answers": [
                 { "es": "Såklart.", "en": "Of course." }
               ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Häng jackan där.", "en": "Hang your coat there." },
               "notes": "Shoes off indoors, all year, no exceptions and no discussion. Take them off before you're asked.",
               "difficulty": "easy",
               "quizQuestions": []
@@ -568,7 +568,7 @@
               "answers": [
                 { "es": "Gärna, vad tar jag med?", "en": "I'd love to — what shall I bring?" }
               ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Bara chips, vi fixar resten.", "en": "Just crisps — we'll do the rest." },
               "notes": "Friday cosiness: sofa, tacos, television. A real national institution, with its own name and its own crisps.",
               "difficulty": "medium",
               "quizQuestions": []
@@ -581,7 +581,7 @@
               "answers": [
                 { "es": "Okej, hör av dig.", "en": "Okay — let me know." }
               ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Jag återkommer.", "en": "I'll get back to you." },
               "notes": "Swedish for no, most of the time. Ask once more and you'll get a straight answer; ask twice and you won't.",
               "difficulty": "medium",
               "quizQuestions": []
@@ -657,7 +657,7 @@
             {
               "id": "sv-slang-06",
               "es": "haja",
-              "en": "To get / to understand — a bit slangy.",
+              "en": "To follow / to catch on — slangier than fatta.",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -1669,7 +1669,7 @@
               "situation": { "en": "The server comes over once you've had a look at the menu." },
               "question": { "es": "Är ni redo att beställa?", "en": "Are you ready to order?" },
               "answers": [
-                { "es": "Ja, tack.", "en": "Yes, please." },
+                { "es": "Ja, vi är redo.", "en": "Yes, we're ready." },
                 { "es": "Fem minuter till, tack.", "en": "Five more minutes, please." }
               ],
               "likelyReply": { "es": "Jag kommer strax.", "en": "I'll be right back." },
@@ -2303,7 +2303,7 @@
               "answers": [
                 { "es": "Okej, ha det bra.", "en": "Okay — have a good one." }
               ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Nästa!", "en": "Next!" },
               "notes": "Arguing with a Swedish doorman is the one reliable way to make the refusal permanent.",
               "difficulty": "medium",
               "quizQuestions": []
