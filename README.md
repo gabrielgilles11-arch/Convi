@@ -3,7 +3,7 @@
 [![CI](../../actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
 
 Conversational Spanish, Swedish and German for people who are about to be in
-the country — the lines you actually need at a bar, in a taxi, or looking for
+the country. The lines you actually need at a bar, in a taxi, or looking for
 the metro, rather than the ones a textbook opens with.
 
 **Live:** [tryconvi.com](https://tryconvi.com)
