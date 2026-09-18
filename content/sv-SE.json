@@ -2052,7 +2052,7 @@
               "situation": { "en": "You're at the till with more than you can carry." },
               "question": { "es": "Vill du ha en påse?", "en": "Would you like a bag?" },
               "answers": [
-                { "es": "Ja, tack.", "en": "Yes, please." },
+                { "es": "Ja, en påse tack.", "en": "Yes, a bag please." },
                 { "es": "Nej, det behövs inte.", "en": "No, there's no need." }
               ],
               "likelyReply": { "es": "Den kostar fem kronor.", "en": "It's five kronor." },

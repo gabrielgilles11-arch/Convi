@@ -122,6 +122,22 @@ describe("content integrity", () => {
       expect(clashes).toEqual([]);
     });
 
+    it("never expects the same line from two different questions", () => {
+      // Per-subsection is not enough: the deck a round draws from is the whole
+      // edition, so two situations in different categories that both expect
+      // "Ja, gerne." are still two questions with one answer between them.
+      // Which line that is depends on `speaker`, so it is read off the built
+      // deck rather than off the JSON.
+      const seen = new Map<string, string>();
+      const clashes: string[] = [];
+      for (const item of buildQuizItems(locale)) {
+        const key = `${item.kind}|${normalizeAnswer(item.correctAnswer)}`;
+        if (seen.has(key)) clashes.push(`"${item.correctAnswer}": ${seen.get(key)} + ${item.id}`);
+        else seen.set(key, item.id);
+      }
+      expect(clashes).toEqual([]);
+    });
+
     it("answers back whenever someone else started the exchange", () => {
       // A line of your own can end the conversation — a farewell, or telling
       // someone to take their hands off you. But when they spoke first, the
