@@ -77,9 +77,12 @@ export const PRACTICE_PATH = [
   "restaurant",
   "shopping",
   "bayern-slang",
+  "berlin-slang",
   "nightlife",
   "flirting",
   "cuss-words",
+  // The night in order: how drunk you are, then the morning that follows it.
+  "drunk-scale",
   "resacon",
   "for-the-girls",
   "emergencies",
