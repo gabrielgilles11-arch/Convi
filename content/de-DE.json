@@ -90,6 +90,48 @@
               "notes": "Splitting the bill is completely normal and expected.",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-06",
+              "speaker": "you",
+              "situation": { "en": "You want to know which beers they have on draft before you choose." },
+              "question": { "es": "Was habt ihr vom Fass?", "en": "What have you got on tap?" },
+              "answers": [
+                { "es": "Pils, Helles und ein Weizen.", "en": "Pils, pale lager and a wheat beer." },
+                { "es": "Nur Pils.", "en": "Just Pils." }
+              ],
+              "likelyReply": null,
+              "notes": "Asking this rather than pointing at a tap handle is most of the difference.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-07",
+              "speaker": "them",
+              "situation": { "en": "Your glass is empty and the server catches your eye." },
+              "question": { "es": "Noch ein Bier?", "en": "Another beer?" },
+              "answers": [
+                { "es": "Ja, gerne.", "en": "Yes, please." },
+                { "es": "Nein danke, ich hab genug.", "en": "No thanks, I've had enough." }
+              ],
+              "likelyReply": { "es": "Mach ich.", "en": "Will do." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-08",
+              "speaker": "them",
+              "situation": { "en": "It's late and the bartender offers you one last small drink." },
+              "question": { "es": "Noch einen Absacker?", "en": "One for the road?" },
+              "answers": [
+                { "es": "Ja, einen kleinen.", "en": "Yes, a small one." },
+                { "es": "Nein, ich muss morgen früh raus.", "en": "No, I've got an early start." }
+              ],
+              "likelyReply": { "es": "Na dann, Prost!", "en": "Cheers then!" },
+              "notes": "Ein Absacker is the last drink of the night — literally the one that makes you sink.",
+              "difficulty": "medium",
+              "quizQuestions": []
             }
           ]
         }
@@ -192,6 +234,33 @@
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-07",
+              "speaker": "them",
+              "situation": { "en": "A German friend greets you with a single syllable and then waits." },
+              "question": { "es": "Na?", "en": "So? / How's things?" },
+              "answers": [
+                { "es": "Na!", "en": "Hey! — mirroring it back is the correct answer." },
+                { "es": "Alles gut, und selbst?", "en": "All good, and you?" }
+              ],
+              "likelyReply": { "es": "Auch alles gut.", "en": "All good here too." },
+              "notes": "\"Na?\" is a complete greeting on its own. Answering \"Na!\" is not a dodge — it is the reply.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-08",
+              "speaker": "you",
+              "situation": { "en": "You've been chatting a while and realise you never said your name." },
+              "question": { "es": "Ich bin übrigens [NAME].", "en": "I'm [NAME], by the way." },
+              "answers": [
+                { "es": "Freut mich, ich bin [NAME].", "en": "Nice to meet you, I'm [NAME]." }
+              ],
+              "likelyReply": { "es": "Und woher kommst du?", "en": "And where are you from?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
             }
           ]
         }
@@ -218,7 +287,9 @@
             { "id": "de-slang-03", "es": "mega", "en": "Super.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-04", "es": "safe", "en": "For sure.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "de-slang-05", "es": "stabil", "en": "Solid / good.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-06", "es": "läuft gut", "en": "It's going / all good.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "de-slang-06", "es": "läuft gut", "en": "It's going / all good.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-15", "es": "Hammer!", "en": "Awesome — literally \"hammer\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-16", "es": "Wahnsinn!", "en": "Insane / unbelievable — good or bad, tone decides.", "difficulty": "easy", "quizQuestions": [] }
           ]
         },
         {
@@ -226,7 +297,13 @@
           "title": "Want / don't want",
           "phrases": [
             { "id": "de-slang-07", "es": "(kein) Bock", "en": "(Not) in the mood / up for it.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-slang-08", "es": "ich bin dabei", "en": "I'm in.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "de-slang-08", "es": "ich bin dabei", "en": "I'm in.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-17", "es": "Ich hab keinen Bock drauf.", "en": "I can't be bothered with that.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-18", "es": "Hast du Lust?", "en": "Do you fancy it?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-19", "es": "Auf jeden!", "en": "Definitely — clipped from \"auf jeden Fall\".", "difficulty": "easy", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-20", "es": "Lieber nicht.", "en": "I'd rather not.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-21", "es": "Passt mir gerade nicht.", "en": "Doesn't work for me right now.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-22", "es": "Ich bin raus.", "en": "I'm out — count me out of this one.", "difficulty": "medium", "young": true, "quizQuestions": [] }
           ]
         },
         {
@@ -235,7 +312,12 @@
           "phrases": [
             { "id": "de-slang-09", "es": "Alter!", "en": "Dude! / bro! — tone matters.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-slang-10", "es": "Digga/Digger", "en": "Bro / dude. Very casual.", "difficulty": "hard", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-11", "es": "Bruder / Bro", "en": "Bro.", "difficulty": "medium", "young": true, "quizQuestions": [] }
+            { "id": "de-slang-11", "es": "Bruder / Bro", "en": "Bro.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-23", "es": "Leute!", "en": "Guys! — the safe one for a whole group.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-24", "es": "Mann!", "en": "Man! — frustration or emphasis, never a word for a person.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-25", "es": "Kollege", "en": "Mate — jokey and slightly ironic between friends.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-26", "es": "Schatz", "en": "Love / hon — partners and close family only.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-27", "es": "Jungs / Mädels", "en": "Lads / girls — calling over a mixed group.", "difficulty": "easy", "quizQuestions": [] }
           ]
         },
         {
@@ -244,7 +326,12 @@
           "phrases": [
             { "id": "de-slang-12", "es": "keine Ahnung → kp", "en": "No idea. Shortened to \"kp\" in texts.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "de-slang-13", "es": "ich schwöre", "en": "I swear.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-14", "es": "Bist du lost?", "en": "Are you clueless? Can come across as rude.", "difficulty": "hard", "young": true, "quizQuestions": [] }
+            { "id": "de-slang-14", "es": "Bist du lost?", "en": "Are you clueless? Can come across as rude.", "difficulty": "hard", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-28", "es": "Genau.", "en": "Exactly — and, just as often, pure filler while they think.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-29", "es": "Ach so!", "en": "Ohh, I see — the realisation noise.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-30", "es": "Echt jetzt?", "en": "Seriously?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-31", "es": "Quatsch!", "en": "Nonsense! / rubbish!", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-32", "es": "Jein", "en": "Yes and no — ja plus nein, and a real dictionary word.", "difficulty": "medium", "quizQuestions": [] }
           ]
         }
       ]
@@ -265,25 +352,91 @@
           "id": "de-bayern-greetings",
           "title": "Greetings / easy wins",
           "phrases": [
-            { "id": "de-bayern-01", "es": "Servus!", "en": "Hi / bye (informal).", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            {
+              "id": "de-bayern-01",
+              "es": "Servus!",
+              "en": "Hi / bye (informal).",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
             { "id": "de-bayern-02", "es": "Grüß Gott!", "en": "Hello.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
-            { "id": "de-bayern-03", "es": "Pfiat di! / Pfiat eich!", "en": "Bye — singular / plural.", "difficulty": "hard", "region": "bayern", "quizQuestions": [] }
+            {
+              "id": "de-bayern-03",
+              "es": "Pfiat di! / Pfiat eich!",
+              "en": "Bye — singular / plural.",
+              "difficulty": "hard",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            { "id": "de-bayern-08", "es": "Griaß di!", "en": "Hello, to one person — warmer and more local than Servus.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-09", "es": "Griaß eich!", "en": "Hello, to a group.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-10", "es": "Habedehre!", "en": "Pleased to meet you — literally \"I have the honour\".", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-11", "es": "Wiederschaun!", "en": "Goodbye — the southern version of auf Wiedersehen.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-12", "es": "Servus beinand!", "en": "Hello everyone — greeting a whole table at once.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] }
           ]
         },
         {
           "id": "de-bayern-flavor",
           "title": "Bavaria flavour words",
           "phrases": [
-            { "id": "de-bayern-04", "es": "fei", "en": "Emphasis particle — roughly \"you know\" / \"mind you\" / \"really\".", "difficulty": "hard", "region": "bayern", "quizQuestions": [] },
-            { "id": "de-bayern-05", "es": "Mei…", "en": "Sighing interjection: \"oh man…\".", "difficulty": "medium", "region": "bayern", "quizQuestions": [] }
+            {
+              "id": "de-bayern-04",
+              "es": "fei",
+              "en": "Emphasis particle — roughly \"you know\" / \"mind you\" / \"really\".",
+              "difficulty": "hard",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-05",
+              "es": "Mei…",
+              "en": "Sighing interjection: \"oh man…\".",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            { "id": "de-bayern-13", "es": "Schmarrn!", "en": "Nonsense! — literally a shredded pancake.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-14", "es": "Ned hudeln!", "en": "Don't rush! — a whole philosophy in two words.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-15", "es": "Schaug ma moi.", "en": "We'll see — the Bavarian shrug.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-16", "es": "a bisserl", "en": "A little bit.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-17", "es": "deppert", "en": "Daft, silly — mild enough to say to a friend.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-18", "es": "a Grantler", "en": "A professional grump — said with real affection.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] }
           ]
         },
         {
           "id": "de-bayern-extra",
           "title": "A couple extra Bayern lines",
           "phrases": [
-            { "id": "de-bayern-06", "es": "Passt scho.", "en": "It's fine / all good.", "difficulty": "medium", "region": "bayern", "quizQuestions": [] },
-            { "id": "de-bayern-07", "es": "I mog di.", "en": "I like you — dialect-y.", "difficulty": "hard", "region": "bayern", "quizQuestions": [] }
+            {
+              "id": "de-bayern-06",
+              "es": "Passt scho.",
+              "en": "It's fine / all good.",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-07",
+              "es": "I mog di.",
+              "en": "I like you — dialect-y.",
+              "difficulty": "hard",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            { "id": "de-bayern-19", "es": "Mia san mia.", "en": "We are who we are — Bavaria's unofficial motto.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-20", "es": "a Brotzeit", "en": "The bread-and-cold-cuts meal — a fixed part of the day, not a snack.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            { "id": "de-bayern-21", "es": "a Semmel", "en": "A bread roll — a Brötchen everywhere north of here.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-22", "es": "a Hoibe", "en": "A half-litre of beer — the everyday order, not the tourist litre.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-23", "es": "a Radler", "en": "Beer with lemonade — orderable anywhere in Bayern without comment.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            {
+              "id": "de-bayern-24",
+              "es": "Oachkatzlschwoaf",
+              "en": "Squirrel's tail — the pronunciation test a local will eventually set you.",
+              "difficulty": "hard",
+              "region": "bayerisch",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -306,7 +459,12 @@
           "phrases": [
             { "id": "de-cuss-01", "es": "Scheiße.", "en": "Shit.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-cuss-02", "es": "Verdammt.", "en": "Damn.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-cuss-03", "es": "Mist.", "en": "A milder \"crap\".", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "de-cuss-03", "es": "Mist.", "en": "A milder \"crap\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-06", "es": "Mensch!", "en": "Man! / oh come on! — completely safe in any company.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-07", "es": "Verflixt!", "en": "Darn! — the polite one.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-08", "es": "Verdammt nochmal!", "en": "Damn it all — stronger than Verdammt, still not aimed at anyone.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-cuss-09", "es": "Herrje!", "en": "Good heavens!", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-10", "es": "Donnerwetter!", "en": "Well I never! — admiration or annoyance, tone decides which.", "difficulty": "medium", "quizQuestions": [] }
           ]
         },
         {
@@ -314,7 +472,13 @@
           "title": "Aggressive",
           "phrases": [
             { "id": "de-cuss-04", "es": "Halt die Klappe.", "en": "Shut it.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "de-cuss-05", "es": "Verpiss dich.", "en": "Piss off.", "difficulty": "hard", "quizQuestions": [] }
+            { "id": "de-cuss-05", "es": "Verpiss dich.", "en": "Piss off.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-cuss-11", "es": "Lass mich in Ruhe.", "en": "Leave me alone — firm, and not a swear word.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-12", "es": "Nerv nicht.", "en": "Stop bugging me.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-cuss-13", "es": "Das reicht jetzt.", "en": "That's enough now.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-14", "es": "Ach du Scheiße!", "en": "Oh sh*t! — a reaction to a situation, not aimed at a person.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-cuss-15", "es": "Vollpfosten", "en": "Total idiot — keep it for telling the story, not for the person.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-cuss-16", "es": "Leck mich.", "en": "Get lost — everyday among friends, never with a stranger.", "difficulty": "hard", "quizQuestions": [] }
           ]
         }
       ]
@@ -339,7 +503,10 @@
             { "id": "de-flirt-02", "es": "Du bist echt süß.", "en": "You're really cute.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-03", "es": "Ich mag deinen Style.", "en": "I like your style.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-04", "es": "Du hast ein schönes Lächeln.", "en": "You have a nice smile.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-05", "es": "Du hast schöne Augen.", "en": "You have beautiful eyes.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "de-flirt-05", "es": "Du hast schöne Augen.", "en": "You have beautiful eyes.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-12", "es": "Du hast ein schönes Lachen.", "en": "You've got a lovely laugh.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-13", "es": "Mit dir kann man gut reden.", "en": "You're easy to talk to.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-14", "es": "Du bist echt sympathisch.", "en": "I really like you — warm, and not a come-on.", "difficulty": "medium", "quizQuestions": [] }
           ]
         },
         {
@@ -347,7 +514,13 @@
           "title": "A bit bolder",
           "phrases": [
             { "id": "de-flirt-06", "es": "Ich find dich echt attraktiv.", "en": "I find you attractive.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-07", "es": "Hast du Lust auf ein Bier?", "en": "Want to grab a beer?", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "de-flirt-07", "es": "Hast du Lust auf ein Bier?", "en": "Want to grab a beer?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-15", "es": "Ich mag dich.", "en": "I like you.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-16", "es": "Wollen wir woanders hingehen?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-17", "es": "Bleibst du noch?", "en": "Are you staying a bit longer?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-18", "es": "Ich würde dich gern wiedersehen.", "en": "I'd like to see you again.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-19", "es": "Gibst du mir deine Nummer?", "en": "Can I have your number?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-20", "es": "Das war ein schöner Abend mit dir.", "en": "That was a lovely evening with you.", "difficulty": "easy", "quizQuestions": [] }
           ]
         },
         {
@@ -355,7 +528,13 @@
           "title": "Respect",
           "phrases": [
             { "id": "de-flirt-08", "es": "Kein Stress, wenn nicht.", "en": "No pressure if not.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-09", "es": "Alles gut, ich respektiere das.", "en": "All good, I respect that.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "de-flirt-09", "es": "Alles gut, ich respektiere das.", "en": "All good, I respect that.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-21", "es": "Kein Problem, wirklich.", "en": "Honestly, no problem.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-22", "es": "Ich lass dich in Ruhe.", "en": "I'll leave you to it.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-23", "es": "War schön, dich kennenzulernen.", "en": "It was good to meet you.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-24", "es": "Alles klar, viel Spaß noch.", "en": "All good — enjoy your night.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-25", "es": "Sorry, hab ich falsch verstanden.", "en": "Sorry, I misread that.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-26", "es": "Ich wollte nicht aufdringlich sein.", "en": "I didn't mean to be pushy.", "difficulty": "medium", "quizQuestions": [] }
           ]
         },
         {
@@ -363,7 +542,13 @@
           "title": "Quick consent check",
           "phrases": [
             { "id": "de-flirt-10", "es": "Darf ich dir was sagen?", "en": "Can I tell you something?", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-11", "es": "Ist es okay, wenn ich dich auf einen Drink einlade?", "en": "Is it okay if I ask you for a drink?", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "de-flirt-11", "es": "Ist es okay, wenn ich dich auf einen Drink einlade?", "en": "Is it okay if I ask you for a drink?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-27", "es": "Ist das okay für dich?", "en": "Is this okay with you?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-28", "es": "Soll ich gehen?", "en": "Do you want me to go?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-29", "es": "Sag einfach, wenn's zu viel ist.", "en": "Just say if it's too much.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-30", "es": "Darf ich mich setzen?", "en": "May I sit down?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-31", "es": "Möchtest du lieber allein sein?", "en": "Would you rather be on your own?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-32", "es": "Passt das so für dich?", "en": "Are you comfortable with this?", "difficulty": "medium", "quizQuestions": [] }
           ]
         }
       ]
@@ -410,6 +595,86 @@
               "notes": "Ask before the bags go in the boot, not after.",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-07",
+              "speaker": "you",
+              "situation": { "en": "You've landed and want the train into the city rather than a taxi." },
+              "question": { "es": "Wo ist der Zug in die Stadt?", "en": "Where's the train into the city?" },
+              "answers": [
+                { "es": "Untergeschoss, Gleis 1.", "en": "Lower level, platform 1." }
+              ],
+              "likelyReply": { "es": "Alle zehn Minuten.", "en": "Every ten minutes." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-08",
+              "speaker": "them",
+              "situation": { "en": "An officer at the border asks for your documents." },
+              "question": { "es": "Ihren Ausweis, bitte.", "en": "Your ID, please." },
+              "answers": [
+                { "es": "Hier ist er.", "en": "Here it is." },
+                { "es": "Moment, ich hol ihn raus.", "en": "One moment, I'll get it out." }
+              ],
+              "likelyReply": { "es": "Danke, weiter geht's.", "en": "Thanks, off you go." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-09",
+              "speaker": "you",
+              "situation": { "en": "You need to collect your suitcase and can't see which way to go." },
+              "question": { "es": "Wo ist die Gepäckausgabe?", "en": "Where's baggage claim?" },
+              "answers": [
+                { "es": "Einmal geradeaus, dann rechts.", "en": "Straight ahead, then right." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-10",
+              "speaker": "you",
+              "situation": { "en": "You want a transport ticket and can't find anywhere to buy one." },
+              "question": { "es": "Wo kann ich ein Ticket kaufen?", "en": "Where can I buy a ticket?" },
+              "answers": [
+                { "es": "Am Automaten da drüben.", "en": "At the machine over there." },
+                { "es": "In der App geht's schneller.", "en": "It's quicker in the app." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-11",
+              "speaker": "them",
+              "situation": { "en": "Customs stops you on the way out of the airport." },
+              "question": { "es": "Haben Sie etwas zu verzollen?", "en": "Anything to declare?" },
+              "answers": [
+                { "es": "Nein, nichts.", "en": "No, nothing." }
+              ],
+              "likelyReply": { "es": "Gut, danke.", "en": "Fine, thank you." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-12",
+              "speaker": "you",
+              "situation": { "en": "You have your bag and just need to get out of the terminal." },
+              "question": { "es": "Wo ist der Ausgang?", "en": "Where's the exit?" },
+              "answers": [
+                { "es": "Da vorne links.", "en": "Up ahead on the left." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
             }
           ]
         },
@@ -441,6 +706,86 @@
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-13",
+              "speaker": "you",
+              "situation": { "en": "You're at the taxi with a heavy suitcase and need the boot opened." },
+              "question": { "es": "Können Sie den Kofferraum aufmachen?", "en": "Can you open the boot?" },
+              "answers": [
+                { "es": "Klar, Moment.", "en": "Sure, one second." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-14",
+              "speaker": "them",
+              "situation": { "en": "You've arrived and the driver asks how you're settling up." },
+              "question": { "es": "Zahlen Sie bar oder mit Karte?", "en": "Are you paying cash or card?" },
+              "answers": [
+                { "es": "Mit Karte, bitte.", "en": "By card, please." },
+                { "es": "Bar.", "en": "Cash." }
+              ],
+              "likelyReply": { "es": "Geht beides.", "en": "Either is fine." },
+              "notes": "Plenty of German taxis are still cash-first. Ask before you get in if you have no notes.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-15",
+              "speaker": "you",
+              "situation": { "en": "You've spotted your street and want to get out before the corner." },
+              "question": { "es": "Können Sie mich hier rauslassen?", "en": "Can you drop me here?" },
+              "answers": [
+                { "es": "Ja, einen Moment.", "en": "Yes, one moment." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-16",
+              "speaker": "you",
+              "situation": { "en": "You're running late and want to know how long the ride will take." },
+              "question": { "es": "Wie lange dauert es ungefähr?", "en": "Roughly how long will it take?" },
+              "answers": [
+                { "es": "Etwa zwanzig Minuten.", "en": "About twenty minutes." }
+              ],
+              "likelyReply": { "es": "Kommt auf den Verkehr an.", "en": "Depends on the traffic." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-17",
+              "speaker": "you",
+              "situation": { "en": "You need the fare receipted so you can expense the trip." },
+              "question": { "es": "Kann ich eine Quittung haben?", "en": "Could I have a receipt?" },
+              "answers": [
+                { "es": "Klar, hier.", "en": "Sure, here you go." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-18",
+              "speaker": "them",
+              "situation": { "en": "The driver reads the address back to you before setting off." },
+              "question": { "es": "Ist die Adresse richtig so?", "en": "Is this address right?" },
+              "answers": [
+                { "es": "Ja, genau.", "en": "Yes, exactly." },
+                { "es": "Nein, eine Straße weiter.", "en": "No, one street further on." }
+              ],
+              "likelyReply": { "es": "Alles klar, dann los.", "en": "Got it, off we go." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
             }
           ]
         },
@@ -471,6 +816,87 @@
                 { "es": "Linie [LINIE] Richtung [ORT].", "en": "Line [LINE] toward [PLACE]." }
               ],
               "likelyReply": { "es": "Umsteigen bei [STATION].", "en": "Transfer at [STATION]." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-19",
+              "speaker": "you",
+              "situation": { "en": "You're on the platform and want to know if the line goes straight there." },
+              "question": { "es": "Muss ich umsteigen?", "en": "Do I have to change?" },
+              "answers": [
+                { "es": "Ja, am Hauptbahnhof.", "en": "Yes, at the main station." },
+                { "es": "Nein, direkt.", "en": "No, it's direct." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-20",
+              "speaker": "you",
+              "situation": { "en": "You're on board and want to know how far your stop is." },
+              "question": { "es": "Wie viele Stationen sind es?", "en": "How many stops is it?" },
+              "answers": [
+                { "es": "Vier Stationen.", "en": "Four stops." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-21",
+              "speaker": "you",
+              "situation": { "en": "It's well past midnight and you don't know if the line is still running." },
+              "question": { "es": "Fährt die noch?", "en": "Is it still running?" },
+              "answers": [
+                { "es": "Ja, bis ein Uhr.", "en": "Yes, until one." },
+                { "es": "Nein, nimm den Nachtbus.", "en": "No, take the night bus." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-22",
+              "speaker": "them",
+              "situation": { "en": "An inspector in plain clothes asks to see your ticket mid-journey." },
+              "question": { "es": "Fahrscheine, bitte.", "en": "Tickets, please." },
+              "answers": [
+                { "es": "Hier, bitte.", "en": "Here you are." }
+              ],
+              "likelyReply": { "es": "Danke schön.", "en": "Thank you." },
+              "notes": "German metros have no barriers — inspectors board at random and a missing ticket is a 60-euro fine.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-23",
+              "speaker": "you",
+              "situation": { "en": "Two platforms serve the same line and you don't know which one you want." },
+              "question": { "es": "Welche Richtung?", "en": "Which direction?" },
+              "answers": [
+                { "es": "Richtung Hauptbahnhof.", "en": "Towards the main station." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-getting-around-24",
+              "speaker": "you",
+              "situation": { "en": "You're on a platform and want someone to confirm you're on the right side." },
+              "question": { "es": "Ist das hier die richtige Seite?", "en": "Am I on the right side?" },
+              "answers": [
+                { "es": "Ja, passt.", "en": "Yes, that's right." },
+                { "es": "Nein, andere Seite.", "en": "No, the other side." }
+              ],
+              "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -528,6 +954,1721 @@
               "likelyReply": { "es": "Sonst noch was?", "en": "Anything else?" },
               "notes": "Tap water isn't automatic in Germany — you have to ask for it by name.",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-restaurant-04",
+              "speaker": "them",
+              "situation": { "en": "You've been at the table a few minutes and the server comes over." },
+              "question": { "es": "Möchten Sie schon bestellen?", "en": "Are you ready to order?" },
+              "answers": [
+                { "es": "Ja, gerne.", "en": "Yes, please." },
+                { "es": "Noch zwei Minuten, bitte.", "en": "Two more minutes, please." }
+              ],
+              "likelyReply": { "es": "Ich komme gleich wieder.", "en": "I'll come back in a moment." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-restaurant-05",
+              "speaker": "you",
+              "situation": { "en": "The menu means nothing to you and you'd rather be told what's good." },
+              "question": { "es": "Was können Sie empfehlen?", "en": "What would you recommend?" },
+              "answers": [
+                { "es": "Das Schnitzel geht am besten.", "en": "The schnitzel is the most popular." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-restaurant-06",
+              "speaker": "you",
+              "situation": { "en": "You've decided and want to order your main course." },
+              "question": { "es": "Ich hätte gern das Schnitzel.", "en": "I'd like the schnitzel." },
+              "answers": [
+                { "es": "Gerne. Dazu was zu trinken?", "en": "Of course. Anything to drink with that?" }
+              ],
+              "likelyReply": null,
+              "notes": "\"Ich hätte gern\" is the polite default for ordering anything, food or drink.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-restaurant-07",
+              "speaker": "you",
+              "situation": { "en": "A plate arrives that isn't what you asked for." },
+              "question": { "es": "Entschuldigung, das habe ich nicht bestellt.", "en": "Excuse me, I didn't order this." },
+              "answers": [
+                { "es": "Oh, Entschuldigung — ich tausche es um.", "en": "Oh, sorry — I'll swap it." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-restaurant-08",
+              "speaker": "them",
+              "situation": { "en": "The server clears your plate and asks how the food was." },
+              "question": { "es": "Hat es geschmeckt?", "en": "Did you enjoy it?" },
+              "answers": [
+                { "es": "Sehr gut, danke.", "en": "Very good, thank you." },
+                { "es": "Ja, super.", "en": "Yes, great." }
+              ],
+              "likelyReply": { "es": "Das freut mich.", "en": "Glad to hear it." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-hotel",
+      "order": 9,
+      "title": "Checking in (hotel/hostel/Airbnb) (Germany)",
+      "icon": "🛎️",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-hotel-checkin",
+          "title": "Checking in (Germany)",
+          "exchanges": [
+            {
+              "id": "de-hotel-01",
+              "speaker": "you",
+              "situation": { "en": "You arrive at the hotel desk and need to claim your booking." },
+              "question": { "es": "Ich habe eine Reservierung auf den Namen [NAME].", "en": "I have a reservation under [NAME]." },
+              "answers": [
+                { "es": "Einen Moment, ich schaue nach.", "en": "One moment, I'll look it up." }
+              ],
+              "likelyReply": { "es": "Kann ich bitte Ihren Pass sehen?", "en": "May I see your passport?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-02",
+              "speaker": "them",
+              "situation": { "en": "You walk in without booking ahead and they ask at the desk." },
+              "question": {
+                "es": "Haben Sie reserviert?",
+                "en": "Do you have a reservation?"
+              },
+              "answers": [
+                { "es": "Ja, für zwei Nächte.", "en": "Yes, for two nights." },
+                { "es": "Nein, haben Sie noch ein Zimmer frei?", "en": "No — do you have a room free?" }
+              ],
+              "likelyReply": { "es": "Ja, wir haben noch eins.", "en": "Yes, we've got one left." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-03",
+              "speaker": "you",
+              "situation": { "en": "You want to know whether breakfast costs extra." },
+              "question": { "es": "Ist das Frühstück inklusive?", "en": "Is breakfast included?" },
+              "answers": [
+                { "es": "Ja, von sieben bis zehn.", "en": "Yes, from seven to ten." },
+                { "es": "Nein, das kostet zehn Euro extra.", "en": "No, it's ten euros extra." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-04",
+              "speaker": "you",
+              "situation": { "en": "You're planning your last morning and need the checkout time." },
+              "question": { "es": "Wann muss ich auschecken?", "en": "When do I have to check out?" },
+              "answers": [
+                { "es": "Bis elf Uhr.", "en": "By eleven." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-05",
+              "speaker": "you",
+              "situation": { "en": "Your train is this evening but the room is gone at eleven." },
+              "question": { "es": "Kann ich mein Gepäck hierlassen?", "en": "Can I leave my luggage here?" },
+              "answers": [
+                { "es": "Klar, wir stellen es in den Gepäckraum.", "en": "Sure, we'll put it in the luggage room." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-06",
+              "speaker": "you",
+              "situation": { "en": "You're in the room and want to get online." },
+              "question": { "es": "Wie ist das WLAN-Passwort?", "en": "What's the wifi password?" },
+              "answers": [
+                { "es": "Steht auf der Karte.", "en": "It's on the key card." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-07",
+              "speaker": "them",
+              "situation": { "en": "They hand you the key and tell you where to go." },
+              "question": { "es": "Zimmer 302, dritter Stock.", "en": "Room 302, third floor." },
+              "answers": [
+                { "es": "Danke, wo ist der Aufzug?", "en": "Thanks, where's the lift?" }
+              ],
+              "likelyReply": { "es": "Um die Ecke rechts.", "en": "Round the corner on the right." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-08",
+              "speaker": "you",
+              "situation": { "en": "You've dropped your bags and want dinner without walking far." },
+              "question": { "es": "Gibt es hier in der Nähe was zu essen?", "en": "Is there anywhere to eat nearby?" },
+              "answers": [
+                { "es": "Zwei Straßen weiter gibt's einen Italiener.", "en": "Two streets down there's an Italian place." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-hotel-problems",
+          "title": "When something's wrong with the room",
+          "exchanges": [
+            {
+              "id": "de-hotel-09",
+              "speaker": "you",
+              "situation": { "en": "The room is freezing and the radiator is doing nothing." },
+              "question": { "es": "Die Heizung funktioniert nicht.", "en": "The heating isn't working." },
+              "answers": [
+                { "es": "Ich schicke gleich jemanden hoch.", "en": "I'll send someone up right away." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-10",
+              "speaker": "you",
+              "situation": { "en": "Your room faces a busy street and you can't sleep." },
+              "question": { "es": "Das Zimmer ist sehr laut.", "en": "The room is very noisy." },
+              "answers": [
+                { "es": "Ich kann Ihnen ein Zimmer zum Hof geben.", "en": "I can give you a room facing the courtyard." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-11",
+              "speaker": "you",
+              "situation": { "en": "There's no hot water in the shower." },
+              "question": { "es": "Die Dusche ist kalt.", "en": "The shower is cold." },
+              "answers": [
+                { "es": "Das tut mir leid — ich melde es sofort.", "en": "I'm sorry — I'll report it right away." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-12",
+              "speaker": "you",
+              "situation": { "en": "You have an early flight and don't trust your alarm." },
+              "question": { "es": "Können Sie mich um sieben wecken?", "en": "Could you wake me at seven?" },
+              "answers": [
+                { "es": "Machen wir.", "en": "We'll do that." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-13",
+              "speaker": "you",
+              "situation": { "en": "The door shut behind you and your key is on the bed." },
+              "question": { "es": "Ich habe meinen Schlüssel im Zimmer gelassen.", "en": "I've left my key in the room." },
+              "answers": [
+                { "es": "Kein Thema, ich komme mit hoch.", "en": "Not a problem, I'll come up with you." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-14",
+              "speaker": "you",
+              "situation": { "en": "There's one towel between two of you." },
+              "question": { "es": "Gibt es noch Handtücher?", "en": "Could we get more towels?" },
+              "answers": [
+                { "es": "Bringe ich Ihnen gleich.", "en": "I'll bring some right up." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-15",
+              "speaker": "you",
+              "situation": { "en": "You've decided to stay on and want to extend the booking." },
+              "question": { "es": "Können wir eine Nacht länger bleiben?", "en": "Can we stay one more night?" },
+              "answers": [
+                { "es": "Ich schaue, ob das Zimmer frei ist.", "en": "I'll see whether the room is free." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-hotel-16",
+              "speaker": "them",
+              "situation": { "en": "You're handing the key back and they ask about your stay." },
+              "question": { "es": "War alles in Ordnung?", "en": "Was everything all right?" },
+              "answers": [
+                { "es": "Ja, alles bestens.", "en": "Yes, all great." },
+                { "es": "Ehrlich gesagt, nicht ganz.", "en": "Honestly, not quite." }
+              ],
+              "likelyReply": { "es": "Danke für die Rückmeldung.", "en": "Thanks for letting us know." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-shopping",
+      "order": 10,
+      "title": "Shops, supermarkets & Pfand (Germany)",
+      "icon": "🛍️",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-shopping-shops",
+          "title": "Shops & paying (Germany)",
+          "exchanges": [
+            {
+              "id": "de-shopping-01",
+              "speaker": "them",
+              "situation": { "en": "You've been browsing a minute and an assistant comes over." },
+              "question": { "es": "Kann ich Ihnen helfen?", "en": "Can I help you?" },
+              "answers": [
+                { "es": "Ich schaue nur, danke.", "en": "I'm just looking, thanks." },
+                { "es": "Ja, ich suche [SACHE].", "en": "Yes, I'm looking for [ITEM]." }
+              ],
+              "likelyReply": { "es": "Sagen Sie Bescheid.", "en": "Just say if you need anything." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-02",
+              "speaker": "you",
+              "situation": { "en": "The only one on the rail is too small for you." },
+              "question": { "es": "Haben Sie das eine Nummer größer?", "en": "Do you have this one size bigger?" },
+              "answers": [
+                { "es": "Ich schaue im Lager.", "en": "I'll check the stockroom." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-03",
+              "speaker": "you",
+              "situation": { "en": "You want to try something on before buying it." },
+              "question": { "es": "Kann ich das anprobieren?", "en": "Can I try this on?" },
+              "answers": [
+                { "es": "Klar, die Kabinen sind hinten.", "en": "Sure, the fitting rooms are at the back." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-04",
+              "speaker": "you",
+              "situation": { "en": "There's no price tag on the thing you want." },
+              "question": { "es": "Was kostet das?", "en": "How much is this?" },
+              "answers": [
+                { "es": "Neunzehn neunzig.", "en": "Nineteen ninety." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-05",
+              "speaker": "you",
+              "situation": { "en": "You have no cash and want to check before queueing." },
+              "question": { "es": "Kann ich mit Karte zahlen?", "en": "Can I pay by card?" },
+              "answers": [
+                { "es": "Karte geht, ja.", "en": "Card's fine, yes." },
+                { "es": "Nur bar, tut mir leid.", "en": "Cash only, sorry." }
+              ],
+              "likelyReply": null,
+              "notes": "Worth asking first. Plenty of small German shops, bakeries and bars are still cash-only.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-06",
+              "speaker": "you",
+              "situation": { "en": "What you bought yesterday doesn't fit and you want to swap it." },
+              "question": { "es": "Kann ich das umtauschen?", "en": "Can I exchange this?" },
+              "answers": [
+                { "es": "Mit Kassenbon, ja.", "en": "With the receipt, yes." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-07",
+              "speaker": "them",
+              "situation": { "en": "You're at the till with an armful and no bag." },
+              "question": { "es": "Brauchen Sie eine Tüte?", "en": "Do you need a bag?" },
+              "answers": [
+                {
+                  "es": "Ja, bitte.",
+                  "en": "Yes, please."
+                },
+                { "es": "Nein, passt schon.", "en": "No, I'm fine." }
+              ],
+              "likelyReply": { "es": "Macht zwanzig Cent.", "en": "That's twenty cents." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-08",
+              "speaker": "you",
+              "situation": { "en": "It's late afternoon and you want to know if you can come back tomorrow." },
+              "question": { "es": "Bis wann haben Sie offen?", "en": "How late are you open?" },
+              "answers": [
+                { "es": "Bis acht, sonntags zu.", "en": "Until eight — closed Sundays." }
+              ],
+              "likelyReply": null,
+              "notes": "Sunday closing is near-total in Germany. Plan Saturday, or find a Späti or a station shop.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-shopping-supermarket",
+          "title": "Supermarket checkout & the bottle deposit",
+          "exchanges": [
+            {
+              "id": "de-shopping-09",
+              "speaker": "them",
+              "situation": { "en": "You hand over a fifty for a four-euro shop." },
+              "question": { "es": "Haben Sie's passend?", "en": "Have you got it exact?" },
+              "answers": [
+                { "es": "Moment, ich schaue.", "en": "One moment, let me look." },
+                { "es": "Nein, leider nicht.", "en": "No, sorry." }
+              ],
+              "likelyReply": { "es": "Geht auch so.", "en": "That's fine too." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-10",
+              "speaker": "you",
+              "situation": { "en": "You've carried a bag of empty bottles in and can't see the machine." },
+              "question": { "es": "Wo ist der Pfandautomat?", "en": "Where's the bottle return machine?" },
+              "answers": [
+                { "es": "Hinten links, neben dem Eingang.", "en": "Back left, next to the entrance." }
+              ],
+              "likelyReply": null,
+              "notes": "Pfand is 8–25 cents a bottle. The machine prints a voucher you hand in at the till.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-11",
+              "speaker": "them",
+              "situation": { "en": "The queue moves and the cashier calls you forward." },
+              "question": { "es": "Nächster, bitte!", "en": "Next, please!" },
+              "answers": [
+                { "es": "Ja, ich komme.", "en": "Yes, coming." }
+              ],
+              "likelyReply": { "es": "Alles zusammen?", "en": "All together?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-12",
+              "speaker": "you",
+              "situation": { "en": "You're deciding between two bottles and want to know which one you get money back on." },
+              "question": { "es": "Ist da Pfand drauf?", "en": "Is there a deposit on that?" },
+              "answers": [
+                { "es": "Ja, fünfundzwanzig Cent.", "en": "Yes, twenty-five cents." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-13",
+              "speaker": "you",
+              "situation": { "en": "You've walked every aisle and still can't find the milk." },
+              "question": { "es": "Wo finde ich Milch?", "en": "Where do I find milk?" },
+              "answers": [
+                { "es": "Gang drei.", "en": "Aisle three." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-14",
+              "speaker": "them",
+              "situation": { "en": "The cashier asks about a loyalty card before ringing you up." },
+              "question": { "es": "Haben Sie eine Payback-Karte?", "en": "Do you have a loyalty card?" },
+              "answers": [
+                { "es": "Nein, habe ich nicht.", "en": "No, I don't." }
+              ],
+              "likelyReply": { "es": "Kein Problem.", "en": "No problem." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-15",
+              "speaker": "you",
+              "situation": { "en": "You've picked up loose apples and there's no price on them." },
+              "question": { "es": "Muss ich das Obst selbst wiegen?", "en": "Do I have to weigh the fruit myself?" },
+              "answers": [
+                { "es": "Ja, an der Waage da drüben.", "en": "Yes, at the scale over there." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-shopping-16",
+              "speaker": "them",
+              "situation": { "en": "Your shopping is piling up at the end of the belt faster than you can pack." },
+              "question": { "es": "Wollen Sie schon mal einpacken?", "en": "Do you want to start packing?" },
+              "answers": [
+                { "es": "Ja, mache ich.", "en": "Yes, I'm on it." }
+              ],
+              "likelyReply": { "es": "Kein Stress.", "en": "No rush." },
+              "notes": "German checkouts move fast and you bag your own shopping while they scan. Nobody will help — it is not rudeness.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-berlin-slang",
+      "order": 11,
+      "title": "Berlin slang / Berliner Schnauze",
+      "icon": "🐻",
+      "type": "phrasebook",
+      "description": "The capital's own dialect — blunt, fast and warm underneath.",
+      "note": {
+        "es": "Die Berliner Schnauze klingt grob und ist es nicht.",
+        "en": "Berliners sound brusque and mean nothing by it. The bluntness is the friendliness — take it at face value and answer in kind."
+      },
+      "subsections": [
+        {
+          "id": "de-berlin-words",
+          "title": "Berlinerisch — the words that give it away",
+          "phrases": [
+            { "id": "de-berlin-01", "es": "icke / ick", "en": "I — Berlin's own version of ich.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-02", "es": "wat", "en": "What — wat and det replace was and das.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-03", "es": "det", "en": "That.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-04", "es": "knorke", "en": "Brilliant — old Berlin, still said with a wink.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-05", "es": "dufte", "en": "Great — same vintage as knorke, same wink.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-06", "es": "Jibbet nich.", "en": "Not happening — \"gibt es nicht\" in a Berlin mouth.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-07", "es": "Wa?", "en": "Eh? / right? — the tag stuck on the end of everything.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-08", "es": "Kiek ma!", "en": "Look at that! — \"guck mal\" up here.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-berlin-life",
+          "title": "Späti, Kiez and what things are called here",
+          "phrases": [
+            { "id": "de-berlin-09", "es": "der Späti", "en": "The late-night corner shop — a Berlin institution and your 2am friend.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            {
+              "id": "de-berlin-10",
+              "es": "der Kiez",
+              "en": "Your neighbourhood — Berliners identify with theirs more than with the city.",
+              "difficulty": "easy",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            { "id": "de-berlin-11", "es": "eine Schrippe", "en": "A bread roll — a Brötchen elsewhere, a Semmel in Bayern.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            {
+              "id": "de-berlin-12",
+              "es": "ein Pfannkuchen",
+              "en": "A jam doughnut. A pancake here is an Eierkuchen — order carefully.",
+              "difficulty": "medium",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            { "id": "de-berlin-13", "es": "eine Bulette", "en": "A meat patty — a Frikadelle in most of the country.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-14", "es": "eine Stulle", "en": "A sandwich — a buttered slice with something on top.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-15", "es": "ein Wegbier", "en": "A beer for the walk — legal in public and completely unremarkable.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-16", "es": "eine Eckkneipe", "en": "The corner pub — cheap, old, open late, and nothing like a bar.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-nightlife",
+      "order": 12,
+      "title": "Nightlife — the door, the club, the people (Germany)",
+      "icon": "🎧",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-nightlife-door",
+          "title": "At the door (Berlin rules)",
+          "exchanges": [
+            {
+              "id": "de-nightlife-01",
+              "speaker": "them",
+              "situation": { "en": "You reach the front of the queue and the bouncer counts your group." },
+              "question": { "es": "Seid ihr zu zweit?", "en": "Are there two of you?" },
+              "answers": [
+                { "es": "Ja, zu zweit.", "en": "Yes, two of us." },
+                { "es": "Nein, zu dritt.", "en": "No, three of us." }
+              ],
+              "likelyReply": { "es": "Kommt rein.", "en": "Come on in." },
+              "notes": "",
+              "difficulty": "easy",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-02",
+              "speaker": "them",
+              "situation": { "en": "The bouncer looks at you and wants to know your age." },
+              "question": { "es": "Wie alt seid ihr?", "en": "How old are you?" },
+              "answers": [
+                { "es": "Sechsundzwanzig.", "en": "Twenty-six." }
+              ],
+              "likelyReply": { "es": "Ausweis, bitte.", "en": "ID, please." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-03",
+              "speaker": "you",
+              "situation": { "en": "You're at the front and want to know what you'll be paying." },
+              "question": { "es": "Was kostet der Eintritt?", "en": "How much is it to get in?" },
+              "answers": [
+                { "es": "Fünfzehn Euro.", "en": "Fifteen euros." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-04",
+              "speaker": "them",
+              "situation": { "en": "The bouncer looks past you and turns you away without a reason." },
+              "question": { "es": "Heute nicht.", "en": "Not tonight." },
+              "answers": [
+                { "es": "Alles klar, schönen Abend.", "en": "Fair enough, have a good night." }
+              ],
+              "likelyReply": null,
+              "notes": "Berlin doors give no reason and you do not ask for one. Taking it well is the entire etiquette — arguing guarantees it again.",
+              "difficulty": "medium",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-05",
+              "speaker": "you",
+              "situation": { "en": "It's early and you want to know whether to come back later." },
+              "question": { "es": "Ist heute was los?", "en": "Is it busy tonight?" },
+              "answers": [
+                { "es": "Ab eins wird's voll.", "en": "It fills up after one." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-06",
+              "speaker": "them",
+              "situation": { "en": "You're through the door and someone reaches for your phone." },
+              "question": { "es": "Handykameras werden abgeklebt.", "en": "Phone cameras get taped over." },
+              "answers": [
+                { "es": "Okay, kein Problem.", "en": "Okay, no problem." }
+              ],
+              "likelyReply": { "es": "Aufkleber bleibt drauf.", "en": "The sticker stays on." },
+              "notes": "Standard in Berlin clubs. No photos inside, the tape stays until you leave, and people relax because of it.",
+              "difficulty": "medium",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-07",
+              "speaker": "you",
+              "situation": { "en": "It's cold outside and you don't want to carry your coat all night." },
+              "question": { "es": "Kann ich meine Jacke abgeben?", "en": "Can I check my jacket?" },
+              "answers": [
+                { "es": "Garderobe ist rechts, drei Euro.", "en": "Cloakroom's on the right, three euros." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-08",
+              "speaker": "them",
+              "situation": { "en": "You're stepping outside for air and they offer you a stamp." },
+              "question": { "es": "Stempel für den Wiedereintritt?", "en": "Stamp for re-entry?" },
+              "answers": [
+                { "es": "Ja, unbedingt.", "en": "Yes, definitely." }
+              ],
+              "likelyReply": { "es": "Dann bis gleich.", "en": "See you in a bit, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-nightlife-friends",
+          "title": "Making friends & moving on",
+          "exchanges": [
+            {
+              "id": "de-nightlife-09",
+              "speaker": "you",
+              "situation": { "en": "You're talking to people at the bar and want to keep it going." },
+              "question": { "es": "Kommt ihr oft her?", "en": "Do you come here often?" },
+              "answers": [
+                { "es": "Jedes Wochenende.", "en": "Every weekend." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-10",
+              "speaker": "you",
+              "situation": { "en": "This place is dying and you'd rather go on with the people you've met." },
+              "question": { "es": "Wollen wir zusammen weiterziehen?", "en": "Shall we move on together?" },
+              "answers": [
+                { "es": "Klar, wohin?", "en": "Sure, where to?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-11",
+              "speaker": "them",
+              "situation": { "en": "Someone at the bar notices you're standing by yourself." },
+              "question": { "es": "Bist du allein hier?", "en": "Are you here on your own?" },
+              "answers": [
+                { "es": "Nein, mit Freunden.", "en": "No, with friends." },
+                { "es": "Gerade schon, ja.", "en": "Right now, yes." }
+              ],
+              "likelyReply": { "es": "Komm doch zu uns.", "en": "Come and join us, then." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-12",
+              "speaker": "you",
+              "situation": { "en": "The group you've joined is leaving and you want to tag along." },
+              "question": { "es": "Wo geht ihr danach hin?", "en": "Where are you going after this?" },
+              "answers": [
+                { "es": "In den Club um die Ecke.", "en": "To the club round the corner." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-13",
+              "speaker": "you",
+              "situation": { "en": "You've been talking for ten minutes and lost their name immediately." },
+              "question": { "es": "Wie heißt du nochmal?", "en": "What was your name again?" },
+              "answers": [
+                { "es": "[NAME] — und du?", "en": "[NAME] — and you?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-14",
+              "speaker": "them",
+              "situation": { "en": "Someone you've been talking to offers to get the next round." },
+              "question": { "es": "Willst du was trinken?", "en": "Do you want a drink?" },
+              "answers": [
+                { "es": "Gerne, ein Bier.", "en": "Yes please, a beer." },
+                { "es": "Danke, ich hab noch.", "en": "Thanks, I've still got one." }
+              ],
+              "likelyReply": { "es": "Ich hol's.", "en": "I'll get it." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-15",
+              "speaker": "you",
+              "situation": { "en": "It's late and you want to leave without it being a whole thing." },
+              "question": { "es": "Ich muss langsam los.", "en": "I should get going." },
+              "answers": [
+                { "es": "Schon? Bleib doch noch!", "en": "Already? Stay a bit longer!" }
+              ],
+              "likelyReply": { "es": "War schön — bis bald!", "en": "It was good — see you soon!" },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-nightlife-16",
+              "speaker": "you",
+              "situation": { "en": "The bar you're in is dead and you want a local's recommendation." },
+              "question": { "es": "Kennst du hier einen guten Laden?", "en": "Do you know anywhere good round here?" },
+              "answers": [
+                { "es": "Zwei Straßen weiter, der ist besser.", "en": "Two streets over — that one's better." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-nightlife-slang",
+          "title": "Going-out slang",
+          "phrases": [
+            { "id": "de-nightlife-17", "es": "vorglühen", "en": "To pre-drink — literally \"to pre-glow\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-18", "es": "die Sperrstunde", "en": "Closing time — largely theoretical in Berlin.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-19", "es": "der Türsteher", "en": "The bouncer — the person who decides how your night goes.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-nightlife-20", "es": "abtanzen", "en": "To dance it properly out of your system.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-21", "es": "einen draufmachen", "en": "To go big tonight.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-22", "es": "durchmachen", "en": "To go straight through until morning.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-23", "es": "auf ex", "en": "In one — downing a drink in a single go.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-nightlife-24", "es": "das Feierabendbier", "en": "The after-work beer — an institution rather than an event.", "difficulty": "easy", "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-drunk-scale",
+      "order": 13,
+      "title": "How drunk are you? (Germany)",
+      "icon": "🍻",
+      "type": "dialogue",
+      "description": "The whole ladder, and the moments where you have to pick a rung out loud.",
+      "note": {
+        "es": "Von beschwipst bis Schnapsleiche.",
+        "en": "German grades drunkenness finely and nobody is coy about it. Naming your rung honestly is normal, and it is how people decide whether to put you in a taxi."
+      },
+      "subsections": [
+        {
+          "id": "de-drunk-levels",
+          "title": "The scale, bottom to top",
+          "phrases": [
+            { "id": "de-drunk-01", "es": "beschwipst", "en": "Tipsy, in the nicest way — from schwippen, to sway.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-drunk-02", "es": "angeheitert", "en": "Merry — the polite one, safe at a work party.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-drunk-03", "es": "einen sitzen haben", "en": "To have had a few — literally \"to have one sitting\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-drunk-04", "es": "blau sein", "en": "To be drunk — literally \"to be blue\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-drunk-05", "es": "betrunken", "en": "Drunk — the standard, neutral word.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-drunk-06", "es": "besoffen", "en": "Plastered — informal, a bit crude, very common.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-drunk-07", "es": "hacke dicht", "en": "Hammered — Berlin's own, and said with some pride.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-drunk-08", "es": "sturzbetrunken", "en": "Falling-down drunk.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-drunk-09", "es": "eine Schnapsleiche", "en": "Someone who has gone under — literally a \"schnapps corpse\".", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-drunk-10", "es": "total durch sein", "en": "Completely gone.", "difficulty": "medium", "quizQuestions": [] }
+          ]
+        },
+        {
+          "id": "de-drunk-scenarios",
+          "title": "Saying where you're at",
+          "exchanges": [
+            {
+              "id": "de-drunk-11",
+              "speaker": "them",
+              "situation": { "en": "A few drinks in, a friend checks how you're doing." },
+              "question": { "es": "Alles gut bei dir?", "en": "You doing okay?" },
+              "answers": [
+                { "es": "Ja, bin bisschen beschwipst.", "en": "Yeah, I'm a bit tipsy." },
+                { "es": "Alles super, erst zwei Bier.", "en": "All good — only two beers in." }
+              ],
+              "likelyReply": { "es": "Dann Prost.", "en": "Cheers, then." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-12",
+              "speaker": "them",
+              "situation": { "en": "Someone is working out whether to order you another round." },
+              "question": { "es": "Wie viel hast du schon?", "en": "How much have you had?" },
+              "answers": [
+                { "es": "Drei — ich hab einen sitzen.", "en": "Three — I've had a few." }
+              ],
+              "likelyReply": { "es": "Geht noch, oder?", "en": "Still all right, though?" },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-13",
+              "speaker": "you",
+              "situation": { "en": "You stand up and realise the room is doing something it shouldn't." },
+              "question": { "es": "Ich glaube, ich bin blau.", "en": "I think I'm drunk." },
+              "answers": [
+                { "es": "Trink mal Wasser.", "en": "Have some water." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-14",
+              "speaker": "them",
+              "situation": { "en": "Someone arrives at the table with a tray of shots for everyone." },
+              "question": { "es": "Noch einen Kurzen?", "en": "Another shot?" },
+              "answers": [
+                { "es": "Nee, ich bin schon gut dabei.", "en": "Nah, I'm well on my way already." }
+              ],
+              "likelyReply": { "es": "Kein Ding.", "en": "No worries." },
+              "notes": "\"Gut dabei sein\" is the graceful refusal — it admits you're drunk without making it a problem.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-15",
+              "speaker": "you",
+              "situation": { "en": "You've hit your limit and want to stop before it stops you." },
+              "question": { "es": "Bei mir ist Schluss.", "en": "I'm done for the night." },
+              "answers": [
+                { "es": "Dann hör auf, ist doch okay.", "en": "Then stop — that's completely fine." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-16",
+              "speaker": "them",
+              "situation": { "en": "A stranger has noticed the state your friend is in." },
+              "question": { "es": "Ist dein Freund okay?", "en": "Is your friend okay?" },
+              "answers": [
+                { "es": "Der ist ziemlich besoffen, ich bring ihn heim.", "en": "He's pretty plastered — I'm taking him home." }
+              ],
+              "likelyReply": { "es": "Braucht ihr ein Taxi?", "en": "Do you two need a taxi?" },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-17",
+              "speaker": "you",
+              "situation": { "en": "It's the next day and you're owning up to how last night went." },
+              "question": { "es": "Gestern war ich total durch.", "en": "I was completely gone last night." },
+              "answers": [
+                { "es": "Hab ich gemerkt.", "en": "I did notice." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-18",
+              "speaker": "them",
+              "situation": { "en": "You're leaving and someone wants to know you'll make it home." },
+              "question": { "es": "Kommst du allein klar?", "en": "Can you manage on your own?" },
+              "answers": [
+                { "es": "Ja, ich nehm ein Taxi.", "en": "Yes, I'll get a taxi." },
+                { "es": "Ehrlich gesagt nicht.", "en": "Honestly, no." }
+              ],
+              "likelyReply": { "es": "Ich bring dich.", "en": "I'll take you." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-drunk-declining",
+          "title": "Slowing down & getting home",
+          "exchanges": [
+            {
+              "id": "de-drunk-19",
+              "speaker": "them",
+              "situation": { "en": "The round is going in and you'd rather sit this one out." },
+              "question": { "es": "Willst du noch einen?", "en": "Want another one?" },
+              "answers": [
+                { "es": "Ich mach mal Pause.", "en": "I'll sit one out." }
+              ],
+              "likelyReply": { "es": "Auch gut.", "en": "Fair enough." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-20",
+              "speaker": "you",
+              "situation": { "en": "It's your round and you want something soft without a discussion." },
+              "question": { "es": "Nur ein Wasser für mich, bitte.", "en": "Just a water for me, please." },
+              "answers": [
+                { "es": "Kommt.", "en": "Coming up." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-21",
+              "speaker": "you",
+              "situation": { "en": "You drove here and want that understood before anyone offers." },
+              "question": { "es": "Ich fahre, ich trinke nichts.", "en": "I'm driving — I'm not drinking." },
+              "answers": [
+                { "es": "Respekt.", "en": "Respect." }
+              ],
+              "likelyReply": null,
+              "notes": "Germany's limit is 0.5, and 0.0 for your first two years of licence. \"Ich fahre\" ends the conversation — nobody pushes.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-22",
+              "speaker": "them",
+              "situation": { "en": "Someone won't take your first no about one more drink." },
+              "question": { "es": "Komm schon, einen noch!", "en": "Come on, just one more!" },
+              "answers": [
+                { "es": "Nee, wirklich nicht.", "en": "No — honestly, no." }
+              ],
+              "likelyReply": { "es": "Schon gut.", "en": "All right, all right." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-23",
+              "speaker": "you",
+              "situation": { "en": "You've drunk more than you've eaten and you can feel it." },
+              "question": { "es": "Ich brauch was zu essen.", "en": "I need something to eat." },
+              "answers": [
+                { "es": "Döner um die Ecke?", "en": "Kebab round the corner?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-24",
+              "speaker": "you",
+              "situation": { "en": "You've decided the night is over for you." },
+              "question": { "es": "Für mich war's das.", "en": "That's me done." },
+              "answers": [
+                { "es": "Soll ich mitkommen?", "en": "Shall I come with you?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-25",
+              "speaker": "them",
+              "situation": { "en": "A friend is pacing you and pushes a glass of water over." },
+              "question": { "es": "Wasser dazwischen, ja?", "en": "Water in between, yeah?" },
+              "answers": [
+                { "es": "Ja, gute Idee.", "en": "Yes, good idea." }
+              ],
+              "likelyReply": { "es": "Hol ich dir.", "en": "I'll get you one." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-26",
+              "speaker": "you",
+              "situation": { "en": "You're outside the bar and in no state to work out a night bus." },
+              "question": { "es": "Kannst du mir ein Taxi rufen?", "en": "Could you call me a taxi?" },
+              "answers": [
+                { "es": "Mach ich, warte drinnen.", "en": "I will — wait inside." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-resacon",
+      "order": 14,
+      "title": "The morning after & the pharmacy (Germany)",
+      "icon": "🤕",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-resacon-pharmacy",
+          "title": "At the Apotheke",
+          "exchanges": [
+            {
+              "id": "de-resacon-01",
+              "speaker": "you",
+              "situation": { "en": "Your head is splitting and you need something for it." },
+              "question": { "es": "Haben Sie was gegen Kopfschmerzen?", "en": "Do you have anything for a headache?" },
+              "answers": [
+                { "es": "Ibuprofen oder Paracetamol?", "en": "Ibuprofen or paracetamol?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-02",
+              "speaker": "them",
+              "situation": { "en": "The pharmacist looks at you and asks what's wrong." },
+              "question": { "es": "Was fehlt Ihnen denn?", "en": "What seems to be the matter?" },
+              "answers": [
+                { "es": "Mir ist übel.", "en": "I feel sick." },
+                { "es": "Ich hab Magenschmerzen.", "en": "I've got stomach ache." }
+              ],
+              "likelyReply": { "es": "Das hilft dagegen.", "en": "This will help with that." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-03",
+              "speaker": "you",
+              "situation": { "en": "You feel wrecked and want to explain why." },
+              "question": { "es": "Ich hab die ganze Nacht nicht geschlafen.", "en": "I didn't sleep all night." },
+              "answers": [
+                { "es": "Viel trinken und ausruhen.", "en": "Drink plenty and rest." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-04",
+              "speaker": "you",
+              "situation": { "en": "You want to know whether you need to see a doctor first." },
+              "question": { "es": "Brauche ich dafür ein Rezept?", "en": "Do I need a prescription for that?" },
+              "answers": [
+                { "es": "Nein, gibt's frei.", "en": "No, it's over the counter." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-05",
+              "speaker": "you",
+              "situation": { "en": "You're dehydrated and want something better than tap water." },
+              "question": { "es": "Haben Sie Elektrolyte?", "en": "Do you have electrolytes?" },
+              "answers": [
+                { "es": "Ja, als Pulver.", "en": "Yes, as a powder." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-06",
+              "speaker": "them",
+              "situation": { "en": "Before handing anything over, the pharmacist checks what else you take." },
+              "question": { "es": "Nehmen Sie sonst Medikamente?", "en": "Are you on any other medication?" },
+              "answers": [
+                { "es": "Nein, gar nichts.", "en": "No, nothing at all." }
+              ],
+              "likelyReply": { "es": "Gut, dann ist das unbedenklich.", "en": "Good — then this is fine." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-07",
+              "speaker": "you",
+              "situation": { "en": "You've got the box and don't want to overdo it." },
+              "question": { "es": "Wie oft soll ich das nehmen?", "en": "How often should I take this?" },
+              "answers": [
+                { "es": "Höchstens dreimal am Tag.", "en": "Three times a day at most." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-08",
+              "speaker": "you",
+              "situation": { "en": "It's Sunday and every pharmacy you've passed is shut." },
+              "question": { "es": "Wo ist die nächste Apotheke?", "en": "Where's the nearest pharmacy?" },
+              "answers": [
+                { "es": "Am Bahnhof, die hat Notdienst.", "en": "At the station — that one's on emergency duty." }
+              ],
+              "likelyReply": null,
+              "notes": "German pharmacies shut evenings and Sundays. One per area runs a Notdienst rota, and every closed door lists which.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-resacon-morning",
+          "title": "Hangover vocabulary",
+          "phrases": [
+            { "id": "de-resacon-09", "es": "der Kater", "en": "The hangover — literally \"the tomcat\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-resacon-10", "es": "verkatert", "en": "Hungover.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-resacon-11", "es": "das Katerfrühstück", "en": "The hangover breakfast — salty, and a genuine institution.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-resacon-12", "es": "das Konterbier", "en": "Hair of the dog — literally the \"counter-beer\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-resacon-13", "es": "der Filmriss", "en": "A blackout — literally the film tearing mid-reel.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-resacon-14", "es": "der Restalkohol", "en": "What's still in you this morning — the word that stops you driving.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-resacon-15", "es": "einen Brand haben", "en": "To be desperately thirsty the day after — literally to have a fire.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-resacon-16", "es": "Nie wieder Alkohol.", "en": "Never again. Said sincerely, roughly monthly.", "difficulty": "easy", "quizQuestions": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-emergencies",
+      "order": 15,
+      "title": "Robbed, lost & emergencies (Germany)",
+      "icon": "🚨",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-emergencies-theft",
+          "title": "Theft, police & getting help",
+          "exchanges": [
+            {
+              "id": "de-emergencies-01",
+              "speaker": "you",
+              "situation": { "en": "You reach for your wallet on the U-Bahn and it isn't there." },
+              "question": { "es": "Mein Portemonnaie wurde gestohlen!", "en": "My wallet's been stolen!" },
+              "answers": [
+                { "es": "Wo war das genau?", "en": "Where exactly was that?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-02",
+              "speaker": "you",
+              "situation": { "en": "You need to report it and don't know where to go." },
+              "question": { "es": "Wo ist die nächste Polizeiwache?", "en": "Where's the nearest police station?" },
+              "answers": [
+                { "es": "Gleich hinter dem Bahnhof.", "en": "Just behind the station." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-03",
+              "speaker": "you",
+              "situation": { "en": "Your insurer needs a crime number before they'll pay out." },
+              "question": { "es": "Ich möchte eine Anzeige erstatten.", "en": "I'd like to file a report." },
+              "answers": [
+                { "es": "Kommen Sie mit, ich nehme das auf.", "en": "Come with me, I'll take it down." }
+              ],
+              "likelyReply": null,
+              "notes": "The Anzeige is what your travel insurance will ask for. Do it before you leave the city.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-04",
+              "speaker": "them",
+              "situation": { "en": "The officer taking your report asks what you saw." },
+              "question": { "es": "Haben Sie den Täter gesehen?", "en": "Did you see who did it?" },
+              "answers": [
+                { "es": "Nur von hinten.", "en": "Only from behind." }
+              ],
+              "likelyReply": { "es": "Wir schauen uns die Kameras an.", "en": "We'll check the cameras." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-05",
+              "speaker": "you",
+              "situation": { "en": "Your passport is gone and your flight is tomorrow." },
+              "question": { "es": "Ich habe meinen Pass verloren.", "en": "I've lost my passport." },
+              "answers": [
+                { "es": "Melden Sie sich beim Konsulat.", "en": "Contact your consulate." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-06",
+              "speaker": "you",
+              "situation": { "en": "You've come out of a club alone and your group is nowhere." },
+              "question": { "es": "Können Sie mir helfen? Ich finde meine Freunde nicht.", "en": "Can you help me? I can't find my friends." },
+              "answers": [
+                { "es": "Bleiben Sie hier, wir suchen sie.", "en": "Stay here, we'll look for them." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-07",
+              "speaker": "you",
+              "situation": { "en": "Someone in your group is hurt and needs seeing to." },
+              "question": { "es": "Ich brauche einen Arzt.", "en": "I need a doctor." },
+              "answers": [
+                { "es": "Ich rufe einen Krankenwagen.", "en": "I'll call an ambulance." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-08",
+              "speaker": "them",
+              "situation": { "en": "A stranger has stopped to help and is reaching for their phone." },
+              "question": { "es": "Soll ich die 112 rufen?", "en": "Shall I call 112?" },
+              "answers": [
+                { "es": "Ja, bitte sofort.", "en": "Yes, right away please." },
+                { "es": "Nein, es geht schon.", "en": "No, I'll be okay." }
+              ],
+              "likelyReply": { "es": "Bleiben Sie ruhig.", "en": "Stay calm." },
+              "notes": "112 is the Europe-wide emergency number: free, works from any phone, and works without a SIM.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-emergencies-phone",
+          "title": "Phone, money & getting yourself out",
+          "exchanges": [
+            {
+              "id": "de-emergencies-09",
+              "speaker": "you",
+              "situation": { "en": "Your phone died and you have no way to call anyone." },
+              "question": { "es": "Mein Handy ist leer.", "en": "My phone's dead." },
+              "answers": [
+                { "es": "Ich hab ein Ladekabel.", "en": "I've got a cable." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-10",
+              "speaker": "you",
+              "situation": { "en": "You're asking around the bar for a charger." },
+              "question": { "es": "Hast du ein Ladegerät?", "en": "Do you have a charger?" },
+              "answers": [
+                { "es": "Für iPhone oder USB-C?", "en": "For iPhone or USB-C?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-11",
+              "speaker": "you",
+              "situation": { "en": "You need to reach someone and your phone is useless." },
+              "question": { "es": "Darf ich kurz telefonieren?", "en": "Could I make a quick call?" },
+              "answers": [
+                { "es": "Klar, nimm meins.", "en": "Sure, use mine." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-12",
+              "speaker": "you",
+              "situation": { "en": "You have no data and need to look up where you are." },
+              "question": { "es": "Gibt es hier WLAN?", "en": "Is there wifi here?" },
+              "answers": [
+                { "es": "Ja, Passwort steht an der Wand.", "en": "Yes — password's on the wall." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-13",
+              "speaker": "you",
+              "situation": { "en": "Roaming is costing you a fortune and you want a local SIM." },
+              "question": { "es": "Kannst du mir eine SIM-Karte empfehlen?", "en": "Can you recommend a SIM card?" },
+              "answers": [
+                { "es": "Im Handyladen am Bahnhof.", "en": "At the phone shop in the station." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-14",
+              "speaker": "them",
+              "situation": { "en": "You're standing on a corner looking visibly lost and someone stops." },
+              "question": { "es": "Brauchst du Hilfe?", "en": "Do you need help?" },
+              "answers": [
+                { "es": "Ja, ich hab mich verlaufen.", "en": "Yes — I'm lost." }
+              ],
+              "likelyReply": { "es": "Wo willst du hin?", "en": "Where are you trying to get to?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-15",
+              "speaker": "you",
+              "situation": { "en": "The trains have stopped and you need any way home at all." },
+              "question": { "es": "Wie komme ich hier weg?", "en": "How do I get out of here?" },
+              "answers": [
+                { "es": "Nachtbus M10, da vorne.", "en": "Night bus M10, just up there." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-emergencies-16",
+              "speaker": "you",
+              "situation": { "en": "The bar is cash-only and your pockets are empty." },
+              "question": { "es": "Ich habe kein Bargeld mehr.", "en": "I've got no cash left." },
+              "answers": [
+                { "es": "Geldautomat ist im Späti.", "en": "There's a cash machine in the Späti." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "de-for-the-girls",
+      "order": 16,
+      "title": "For the girls (Germany)",
+      "icon": "💜",
+      "type": "dialogue",
+      "description": "What it sounds like, and how to end it.",
+      "note": {
+        "es": "Laut werden ist erlaubt.",
+        "en": "Every line here is meant to be said at normal volume or louder. Germans will not think you are overreacting — bar and club staff are trained for exactly this."
+      },
+      "subsections": [
+        {
+          "id": "de-girls-creeps",
+          "title": "What it sounds like & shutting it down",
+          "exchanges": [
+            {
+              "id": "de-girls-01",
+              "speaker": "them",
+              "situation": { "en": "A man you don't know steps into your path outside a bar." },
+              "question": { "es": "Na, Süße, ganz allein unterwegs?", "en": "Hey gorgeous, all on your own?" },
+              "answers": [
+                { "es": "Ich bin nicht allein.", "en": "I'm not on my own." },
+                { "es": "Kein Interesse.", "en": "Not interested." }
+              ],
+              "likelyReply": { "es": "War doch nur nett gemeint.", "en": "I was only being friendly." },
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-02",
+              "speaker": "them",
+              "situation": { "en": "Someone tells you to smile as you walk past." },
+              "question": { "es": "Komm, ein Lächeln!", "en": "Come on, give us a smile!" },
+              "answers": [
+                { "es": "Lass das bitte.", "en": "Don't, please." }
+              ],
+              "likelyReply": { "es": "Zicke.", "en": "Stuck-up cow." },
+              "notes": "The comeback is the tell: a man who calls you a Zicke for declining was never being friendly.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-03",
+              "speaker": "you",
+              "situation": { "en": "Someone has been talking at you for five minutes and won't take a hint." },
+              "question": { "es": "Ich will meine Ruhe.", "en": "I want to be left alone." },
+              "answers": [
+                { "es": "Ist ja gut.", "en": "All right, all right." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-04",
+              "speaker": "you",
+              "situation": { "en": "A stranger puts a hand on your waist in a crowded bar." },
+              "question": { "es": "Fass mich nicht an.", "en": "Don't touch me." },
+              "answers": [
+                { "es": "Ich hab doch nichts gemacht.", "en": "I didn't do anything." }
+              ],
+              "likelyReply": null,
+              "notes": "Say it loudly. The volume is the point — it turns heads, and that is what makes it stop.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-05",
+              "speaker": "them",
+              "situation": { "en": "A man insists on buying you a drink you didn't ask for." },
+              "question": { "es": "Ich geb dir einen aus.", "en": "Let me get you one." },
+              "answers": [
+                { "es": "Danke, ich hab schon was.", "en": "Thanks, I've already got a drink." }
+              ],
+              "likelyReply": { "es": "Schade.", "en": "Shame." },
+              "notes": "Never accept a drink you didn't watch being poured, however well it's meant.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-06",
+              "speaker": "you",
+              "situation": { "en": "Polite has stopped working and you're done being polite." },
+              "question": { "es": "Geh weg.", "en": "Go away." },
+              "answers": [
+                { "es": "Reg dich ab.", "en": "Calm down." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-07",
+              "speaker": "you",
+              "situation": { "en": "You get the bartender's attention about the man who won't leave." },
+              "question": { "es": "Der Typ da nervt mich.", "en": "That guy is bothering me." },
+              "answers": [
+                { "es": "Ich kümmere mich drum.", "en": "I'll deal with it." }
+              ],
+              "likelyReply": null,
+              "notes": "German bar staff will act on this. Say it to them rather than to your friends.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-08",
+              "speaker": "you",
+              "situation": { "en": "You want the fastest exit line, whether or not it's true." },
+              "question": { "es": "Ich bin mit meinem Freund hier.", "en": "I'm here with my boyfriend." },
+              "answers": [
+                { "es": "Schon klar.", "en": "Sure you are." }
+              ],
+              "likelyReply": null,
+              "notes": "It shouldn't work better than no. It often does. Use whatever ends it fastest.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-girls-help",
+          "title": "Getting away & telling someone",
+          "exchanges": [
+            {
+              "id": "de-girls-09",
+              "speaker": "you",
+              "situation": { "en": "You want someone with you between the door and the taxi." },
+              "question": { "es": "Kannst du mich zum Taxi bringen?", "en": "Can you walk me to a taxi?" },
+              "answers": [
+                { "es": "Klar, komm.", "en": "Of course — come on." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-10",
+              "speaker": "you",
+              "situation": { "en": "Nothing has happened yet but you want to leave anyway." },
+              "question": { "es": "Ich fühl mich hier nicht wohl.", "en": "I don't feel comfortable here." },
+              "answers": [
+                { "es": "Wir gehen zusammen raus.", "en": "We'll leave together." }
+              ],
+              "likelyReply": null,
+              "notes": "You never have to justify this one. \"Nicht wohl\" is reason enough for any German friend.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-11",
+              "speaker": "you",
+              "situation": { "en": "You don't want to be on your own for the next few minutes." },
+              "question": { "es": "Bleibst du bei mir?", "en": "Will you stay with me?" },
+              "answers": [
+                { "es": "Ich geh nicht weg.", "en": "I'm not going anywhere." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-12",
+              "speaker": "you",
+              "situation": { "en": "Two sips in, your drink has hit you far harder than it should have." },
+              "question": { "es": "Ich glaube, mir wurde was ins Glas getan.", "en": "I think something was put in my drink." },
+              "answers": [
+                { "es": "Setz dich, ich hol Hilfe.", "en": "Sit down — I'll get help." }
+              ],
+              "likelyReply": null,
+              "notes": "Tell the bar staff, not only your friends. German clubs take this seriously and have a procedure for it.",
+              "difficulty": "hard",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-13",
+              "speaker": "them",
+              "situation": { "en": "A bartender has clocked that something is wrong and offers to step in." },
+              "question": { "es": "Soll ich jemanden holen?", "en": "Shall I get someone?" },
+              "answers": [
+                { "es": "Ja, bitte — den Türsteher.", "en": "Yes please — the bouncer." }
+              ],
+              "likelyReply": { "es": "Warte hier.", "en": "Wait here." },
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-14",
+              "speaker": "you",
+              "situation": { "en": "You're leaving alone and want someone to know you got back." },
+              "question": { "es": "Ich schreib dir, wenn ich zu Hause bin.", "en": "I'll text you when I'm home." },
+              "answers": [
+                { "es": "Mach das, bitte.", "en": "Please do." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-15",
+              "speaker": "you",
+              "situation": { "en": "He's waiting outside and you'd rather not walk out yet." },
+              "question": { "es": "Kann ich hier warten, bis er weg ist?", "en": "Can I wait here until he's gone?" },
+              "answers": [
+                { "es": "Klar, so lange du willst.", "en": "Of course — as long as you like." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-girls-16",
+              "speaker": "you",
+              "situation": { "en": "Your group is drifting towards the door and you don't want to be last." },
+              "question": { "es": "Geh nicht ohne mich.", "en": "Don't leave without me." },
+              "answers": [
+                { "es": "Mach ich nicht.", "en": "I won't." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "women": true,
               "quizQuestions": []
             }
           ]

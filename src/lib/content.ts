@@ -12,7 +12,29 @@ export interface Bilingual {
 // (Spanish, Swedish or German) — see content/schema.md. It is not renamed per
 // locale so that every component can read one shape.
 
-export type Region = "madrid" | "barcelona" | "stockholm" | "bayern";
+export type Region =
+  | "madrid"
+  | "barcelona"
+  | "catalan"
+  | "stockholm"
+  | "bayern"
+  | "bayerisch"
+  | "berlin";
+
+// Two kinds of tag share this field. `madrid`, `barcelona`, `stockholm`,
+// `bayern` and `berlin` say where a line is said; `catalan` and `bayerisch`
+// say what language it is actually in, which is the more useful warning — a
+// visitor who reads "Bon dia" as Spanish will mispronounce it, and one who
+// tries "Griaß di" outside Bavaria will sound like a tourist doing an accent.
+export const REGION_LABELS: Record<Region, string> = {
+  madrid: "Madrid",
+  barcelona: "Barcelona",
+  catalan: "Català",
+  stockholm: "Stockholm",
+  bayern: "Bayern",
+  bayerisch: "Bairisch",
+  berlin: "Berlin",
+};
 
 export interface Exchange {
   id: string;
@@ -169,6 +191,10 @@ const PREMIUM_CATEGORY_IDS = new Set([
   // German
   "de-cuss-words",
   "de-flirting",
+  "de-for-the-girls",
+  "de-emergencies",
+  "de-resacon",
+  "de-drunk-scale",
 ]);
 
 export function isPremiumCategory(id: string): boolean {
@@ -210,10 +236,12 @@ const SEARCH_INTENT: Record<string, string> = {
   nightlife: "get into a club",
   flirting: "call someone attractive",
   "cuss-words": "swear",
+  "drunk-scale": "say how drunk you are",
   resacon: "ask for medicine",
   emergencies: "get help in an emergency",
   "for-the-girls": "shut down a creep",
   "bayern-slang": "speak Bavarian",
+  "berlin-slang": "speak Berlinerisch",
 };
 
 /** `sv-beer-food` -> `beer-food`. Mirrors stageKeyOf in quizTypes. */

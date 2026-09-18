@@ -11,6 +11,7 @@ import {
   localeFromSlug,
   localePath,
   quickAnswer,
+  REGION_LABELS,
   searchBlurb,
   searchTitle,
   type DialogueSubsection,
@@ -165,10 +166,9 @@ const schema = [
                 <span class="label">Q</span> {exchange.question.es}
                 <Speaker audioId={`${exchange.id}-q`} text={exchange.question.es} label="Hear the question" />
                 <span class="translation"> — {exchange.question.en}</span>
-                {exchange.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
-                {exchange.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
-                {exchange.region === "stockholm" && <span class="tag tag--stockholm">Stockholm</span>}
-                {exchange.region === "bayern" && <span class="tag tag--bayern">Bayern</span>}
+                {exchange.region && (
+                  <span class={`tag tag--${exchange.region}`}>{REGION_LABELS[exchange.region]}</span>
+                )}
                 {exchange.young && <span class="tag tag--young">young</span>}
                 {exchange.women && <span class="tag tag--women">women</span>}
               </p>
@@ -214,10 +214,9 @@ const schema = [
                 <span class="es">
                   {phrase.es}
                   <Speaker audioId={phrase.id} text={phrase.es} />
-                  {phrase.region === "madrid" && <span class="tag tag--madrid">Madrid</span>}
-                  {phrase.region === "barcelona" && <span class="tag tag--barcelona">Barcelona</span>}
-                  {phrase.region === "stockholm" && <span class="tag tag--stockholm">Stockholm</span>}
-                  {phrase.region === "bayern" && <span class="tag tag--bayern">Bayern</span>}
+                  {phrase.region && (
+                    <span class={`tag tag--${phrase.region}`}>{REGION_LABELS[phrase.region]}</span>
+                  )}
                   {phrase.young && <span class="tag tag--young">young</span>}
                 </span>
                 <span class="translation">{phrase.en}</span>
@@ -657,6 +656,11 @@ const schema = [
     color: #fff;
   }
 
+  .tag--catalan {
+    background: #96690c;
+    color: #fff;
+  }
+
   .tag--stockholm {
     background: #2f6fa8;
     color: #fff;
@@ -664,6 +668,16 @@ const schema = [
 
   .tag--bayern {
     background: #3a6ea5;
+    color: #fff;
+  }
+
+  .tag--bayerisch {
+    background: #26527d;
+    color: #fff;
+  }
+
+  .tag--berlin {
+    background: #b02a2a;
     color: #fff;
   }
 
