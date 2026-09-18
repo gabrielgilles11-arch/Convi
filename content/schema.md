@@ -82,7 +82,7 @@ pay by card."), never as a translation of a line.
 ```
   "notes": string,                 // slang/regional/usage notes; "" if none
   "difficulty": "easy" | "medium" | "hard",
-  "region": "madrid" | "barcelona" | "stockholm" | "bayern",  // optional; renders a regional badge. Omit for pan-regional.
+  "region": Region,                  // optional; renders a regional badge. Omit for pan-regional.
   "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
   "women": true,                     // optional; renders a "women" badge for women's-safety content (creeps, harassment). Omit otherwise.
   "quizQuestions": []              // populated in Step 3
@@ -121,11 +121,31 @@ Used for Slang, Cuss Words, Flirting — flat phrase lists, no Q/A/reply shape.
   "es": string,
   "en": string,           // translation or usage note
   "difficulty": "easy" | "medium" | "hard",
-  "region": "madrid" | "barcelona" | "stockholm" | "bayern",  // optional; renders a regional badge. Omit for pan-regional.
+  "region": Region,                  // optional; renders a regional badge. Omit for pan-regional.
   "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
   "quizQuestions": []     // populated in Step 3
 }
 ```
+
+## `Region`
+
+```
+"madrid" | "barcelona" | "catalan" | "stockholm" | "bayern" | "bayerisch" | "berlin"
+```
+
+Two kinds of tag share the field, and the distinction is the useful part.
+`madrid`, `barcelona`, `stockholm`, `bayern` and `berlin` say **where** a line
+is said. `catalan` and `bayerisch` say **what language it is actually in** —
+which is the more important warning, because a visitor who reads *Bon dia* as
+Spanish will mispronounce it, and one who tries *Griaß di* in Hamburg sounds
+like a tourist doing an accent.
+
+So `Servus` is `bayerisch` (dialect) while `a Brotzeit` is `bayern` (a Bavarian
+thing, named in standard German); `Bon dia` is `catalan` while `un bikini` is
+`barcelona`.
+
+Badge text comes from `REGION_LABELS` in `src/lib/content.ts`, which is the one
+place a new value has to be added — see step 5 below.
 
 ## `quizQuestions` (populated in Step 3)
 
@@ -156,8 +176,8 @@ Live locales: `es-ES` (Spanish/Spain), `sv-SE` (Swedish/Stockholm),
    read one shape.
 2. **Namespace every `id` with the locale prefix** (`sv-beer-food`,
    `de-flirt-01`). Editions are independent bodies of content, not translations
-   of each other — Swedish has 7 categories, German has 8 including Bayern
-   slang, Spanish has 13. Progress is keyed by item id in localStorage, so
+   of each other — Swedish has 14 categories, German 16 including Bayern and
+   Berlin slang, Spanish 14. Progress is keyed by item id in localStorage, so
    sharing ids across languages would make marking a Spanish card "Got it"
    silently mark an unrelated Swedish one. Ids must be unique across *all*
    locale files.
@@ -166,9 +186,14 @@ Live locales: `es-ES` (Spanish/Spain), `sv-SE` (Swedish/Stockholm),
    colour and `region`.
 4. Add its premium category ids to `PREMIUM_CATEGORY_IDS` in the same file.
    One purchase unlocks every language, so this is a single flat set.
-5. If it introduces a new `region` value, add it to the `Region` union and add
-   a `.tag--{region}` style plus the badge markup in
-   `src/pages/[...lang]/scenarios/[id].astro`.
+5. If it introduces a new `region` value, add it to the `Region` union and to
+   `REGION_LABELS` beside it, then add a `.tag--{region}` style in
+   `src/pages/[...lang]/scenarios/[id].astro`. The badge markup itself reads
+   the label map, so there is nothing to add twice.
+6. If it introduces a new category, add its stage key — the id without the
+   locale prefix — to `PRACTICE_PATH` in `src/lib/quizTypes.ts` and to
+   `SEARCH_INTENT` in `content.ts`. An unlisted stage still works: it sorts to
+   the end of the path and falls back to its own title for the page heading.
 
 No page changes are needed — `src/pages/[...lang]/` serves every edition from
 one set of templates. Spanish uses an empty slug so it keeps its original,
