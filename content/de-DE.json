@@ -58,7 +58,7 @@
                 { "es": "Eine Maß, bitte.", "en": "A litre, please (Bayern only)." },
                 { "es": "Eine Halbe, bitte.", "en": "A half-litre, please." }
               ],
-              "likelyReply": { "es": "Kommt sofort.", "en": "Coming right up." },
+              "likelyReply": { "es": "Gute Wahl.", "en": "Good choice." },
               "notes": "Size is its own question, asked after you've said what you want and whether it's draft. It's a Bavarian one: a Maß is the litre stein, a Halbe the half-litre. Order a Maß in Hamburg and you'll get a look. Die Maß is feminine, so it's eine Maß, not einen.",
               "difficulty": "easy",
               "quizQuestions": []
@@ -988,7 +988,7 @@
               "situation": { "en": "You've been at the table a few minutes and the server comes over." },
               "question": { "es": "Möchten Sie schon bestellen?", "en": "Are you ready to order?" },
               "answers": [
-                { "es": "Ja, gerne.", "en": "Yes, please." },
+                { "es": "Ja, wir sind so weit.", "en": "Yes, we're ready." },
                 { "es": "Noch zwei Minuten, bitte.", "en": "Two more minutes, please." }
               ],
               "likelyReply": { "es": "Ich komme gleich wieder.", "en": "I'll come back in a moment." },

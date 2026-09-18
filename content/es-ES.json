@@ -122,7 +122,10 @@
               "situation": { "en": "The waiter comes over and offers you the check." },
               "question": { "es": "¿La cuenta? / ¿Queréis la cuenta?", "en": "The check? / Do you want the check?" },
               "answers": [
-                { "es": "La cuenta, porfa.", "en": "The check, please." }
+                {
+                  "es": "Sí, porfa.",
+                  "en": "Yes, please."
+                }
               ],
               "likelyReply": { "es": "Ahora mismo.", "en": "Right away." },
               "notes": "",
@@ -1580,7 +1583,7 @@
               "situation": { "en": "You're paying with others and want to split the bill." },
               "question": { "es": "¿Me puedes cobrar por separado?", "en": "Can you charge us separately?" },
               "answers": [
-                { "es": "Sí, sin problema.", "en": "Yes, no problem." },
+                { "es": "Claro, os lo separo.", "en": "Of course, I'll split it for you." },
                 { "es": "Mejor juntos.", "en": "Better together." }
               ],
               "likelyReply": { "es": "Dime cuánto va cada uno.", "en": "Tell me how much each person pays." },
@@ -2267,7 +2270,7 @@
             {
               "id": "emergencies-23",
               "speaker": "you",
-              "situation": { "en": "Your phone is dead and you need to reach someone now." },
+              "situation": { "en": "You want to borrow a stranger's phone for one quick call." },
               "question": { "es": "¿Me dejas hacer una llamada?", "en": "Could I make a call?" },
               "answers": [
                 { "es": "Toma, llama.", "en": "Here — go ahead." }
@@ -2760,9 +2763,15 @@
               "id": "nightlife-15",
               "speaker": "them",
               "situation": { "en": "Someone at the bar notices you're standing by yourself." },
-              "question": { "es": "¿Estás sola?", "en": "Are you on your own?" },
+              "question": {
+                "es": "¿Estás solo/a?",
+                "en": "Are you on your own?"
+              },
               "answers": [
-                { "es": "No, con mis amigas.", "en": "No, with my friends." },
+                {
+                  "es": "No, con mis amigos.",
+                  "en": "No, with my friends."
+                },
                 { "es": "Ahora mismo sí.", "en": "Right now, yes." }
               ],
               "likelyReply": { "es": "Vente con nosotros.", "en": "Come with us, then." },
@@ -2853,7 +2862,7 @@
               "situation": { "en": "Someone is working out whether to get you another one." },
               "question": { "es": "¿Cuántas llevas?", "en": "How many have you had?" },
               "answers": [
-                { "es": "Tres, voy achispado.", "en": "Three — I'm tipsy." }
+                { "es": "Tres, voy achispado/a.", "en": "Three — I'm tipsy." }
               ],
               "likelyReply": { "es": "Vas bien entonces.", "en": "You're doing fine, then." },
               "notes": "",
@@ -2879,7 +2888,10 @@
               "situation": { "en": "Someone arrives at the table with a tray of shots." },
               "question": { "es": "¿Un chupito?", "en": "A shot?" },
               "answers": [
-                { "es": "No, que voy ya servido.", "en": "No — I'm well served already." }
+                {
+                  "es": "No, que voy ya servido/a.",
+                  "en": "No — I'm well served already."
+                }
               ],
               "likelyReply": { "es": "Tú mismo.", "en": "Suit yourself." },
               "notes": "\"Ir servido\" is the graceful refusal: it admits you're drunk without making it anyone's problem.",
