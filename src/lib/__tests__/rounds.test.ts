@@ -7,6 +7,7 @@ import {
   buildStages,
   coreOf,
   tooAlike,
+  translationCore,
   type AnswerLang,
   type Question,
   type QuizItem,
@@ -166,6 +167,41 @@ describe.each(locales)("%s deck", (locale) => {
     });
   });
 
+  it("never asks you to type a line its cue cannot identify", () => {
+    // Multiple choice is safe by construction: buildOptions refuses a
+    // distractor whose own cue is this cue, so the rival never appears beside
+    // the right answer. Typing has nothing to refuse — "How do you say: How
+    // long?" takes one of the two lines with that English on them and marks
+    // the other wrong, with nothing on screen to explain it. Those slots must
+    // stay multiple choice.
+    const byId = new Map(items.map((i) => [i.id, i]));
+    const stages = buildStages(items, getCategoryList(locale));
+
+    stages.forEach((stage, index) => {
+      const stageItems = stage.itemIds.map((id) => byId.get(id)!).filter(Boolean);
+      const reached = new Set(stages.slice(0, index + 1).flatMap((s) => s.itemIds));
+      const seen = items.filter((i) => reached.has(i.id));
+
+      for (let run = 0; run < 6; run++) {
+        for (const q of buildRound(stageItems, seen)) {
+          if (q.form !== "type" && q.form !== "bank") continue;
+          const cueLang = q.answerLang === "source" ? "en" : "source";
+          const rivals = seen.filter(
+            (other) =>
+              other.id !== q.itemId &&
+              faceOf(other, cueLang) &&
+              tooAlike(faceOf(other, cueLang), q.shown) &&
+              !tooAlike(faceOf(other, q.answerLang), q.answer)
+          );
+          expect(
+            rivals.map((r) => faceOf(r, q.answerLang)),
+            `${stage.id} run ${run}: "${q.shown}" is typed, but also means`
+          ).toEqual([]);
+        }
+      }
+    });
+  });
+
   it("fills four options even for the smallest stage on the path", () => {
     // Spanish "Starting a convo" has one phrase item; without the fallback
     // pool it rendered a "multiple" choice of one. The guards are given up one
@@ -185,6 +221,22 @@ describe.each(locales)("%s deck", (locale) => {
     }
   });
 });
+
+/**
+ * One side of an item as the question shows it: the line, or the English for
+ * it. Mirrors answerTextFor — a phrase's English is a gloss whose dash
+ * introduces commentary, a situation's is a translation whose dash is
+ * punctuation.
+ */
+function faceOf(item: QuizItem, lang: "source" | "en"): string {
+  if (lang === "source") {
+    const text = item.kind === "phrase" ? item.front : item.correctAnswer;
+    return text ? coreOf(text) : "";
+  }
+  const text = item.kind === "phrase" ? item.correctAnswer : item.correctAnswerTranslation ?? "";
+  if (!text) return "";
+  return item.kind === "phrase" ? coreOf(text) : translationCore(text);
+}
 
 /** The same thing the round builder means by two questions clashing. */
 function adjacentClash(a: Question, b: Question): boolean {

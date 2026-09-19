@@ -218,7 +218,7 @@ PLAN = {
                 "flirt-sc-07", "flirt-06", "them",
                 "They ask, half joking, why you've spent the whole night talking to them.",
                 "¿Y por qué me hablas tanto?", "So why are you talking to me so much?",
-                "Pues porque me gustas.", "Because I like you.",
+                "Pues porque me gustas.", "Because I fancy you.",
                 "Ya me parecía.", "I thought so.",
                 notes="Me gustas is the real thing, not a compliment — say it only if you mean it, because it will be taken at face value.",
                 difficulty="easy",

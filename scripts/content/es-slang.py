@@ -280,8 +280,8 @@ PLAN = {
             scene(
                 "slang-sc-27", "slang-43", "you",
                 "You're ordering in Catalan for the first time and want to get the 'please' right.",
-                "Un cafè, si us plau.", "A coffee, please.",
-                "Ara te'l porto.", "I'll bring it over.",
+                "Una aigua, si us plau.", "A water, please.",
+                "Amb gas o sense?", "Sparkling or still?",
                 notes="Si us plau is the Catalan please. Three words, said as one.",
                 region="catalan",
             ),

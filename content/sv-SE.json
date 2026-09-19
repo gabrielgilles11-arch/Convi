@@ -1419,7 +1419,7 @@
               "situation": { "en": "You drop your glove in a puddle in front of somebody's grandmother." },
               "question": { "es": "Oj, den blev blöt.", "en": "Oh — that got wet." },
               "answers": [
-                { "es": "Jäklar.", "en": "Darn." }
+                { "es": "Jäklar.", "en": "Blast." }
               ],
               "likelyReply": { "es": "Den torkar.", "en": "It'll dry." },
               "notes": "Jäklar is jävlar with the teeth filed off: the version you say when you have remembered who is in the room.",
@@ -3503,9 +3503,9 @@
               "situation": { "en": "The bar you're in has emptied out and the music has been turned down." },
               "question": { "es": "Det är dött här nu.", "en": "It's dead in here now." },
               "answers": [
-                { "es": "Ska vi dra vidare?", "en": "Shall we move on?" }
+                { "es": "Vi drar vidare till nästa ställe.", "en": "We're moving on to the next place." }
               ],
-              "likelyReply": { "es": "Ja, jag vet ett ställe.", "en": "Yes — I know somewhere." },
+              "likelyReply": { "es": "Ja, jag vet ett bra.", "en": "Good — I know a good one." },
               "notes": "Dra is to pull, and it does all the moving in Swedish: dra hem, dra vidare, dra iväg.",
               "difficulty": "medium",
               "quizQuestions": []
@@ -3573,7 +3573,7 @@
               "situation": { "en": "Somebody notices you've become much more talkative than you were an hour ago." },
               "question": { "es": "Du är på gott humör.", "en": "You're in a good mood." },
               "answers": [
-                { "es": "Jag är lite dragen.", "en": "I'm a bit merry." }
+                { "es": "Jag är nog lite dragen.", "en": "I think I've had a few." }
               ],
               "likelyReply": { "es": "Det märks.", "en": "It shows." },
               "notes": "",

@@ -333,10 +333,29 @@ export function normalizeAnswer(value: string): string {
 const TRAILING_PAREN = /\s*\(([^()]{1,80})\)\s*[.!?\u2026]*\s*$/;
 const TRAILING_DASH = /\s+[\u2014\u2013]\s+([^\u2014\u2013]{1,80})\s*$/;
 
-export function splitNote(text: string): { text: string; note: string | null } {
+/**
+ * `dash: false` reads only the bracketed form.
+ *
+ * A dash is a reliable aside marker in a *gloss* — a phrase entry is authored
+ * as its meaning plus commentary, and "I mean / like — constant, and fills the
+ * same slot as en plan" is exactly that. It is not reliable in a
+ * *translation*, where a dash is ordinary sentence punctuation: "No — a half,
+ * please." is one sentence, and taking the dash clause off leaves "No", which
+ * explains nothing and, asked as a cue, identifies no line at all. Across the
+ * three decks the dash rule was reading about ninety translations that way and
+ * only a handful of real notes.
+ *
+ * Brackets stay on in both, because "(casual)" and "(informal du)" are
+ * commentary wherever they appear.
+ */
+export function splitNote(
+  text: string,
+  options: { dash?: boolean } = {}
+): { text: string; note: string | null } {
   const trimmed = text.trim();
+  const patterns = options.dash === false ? [TRAILING_PAREN] : [TRAILING_PAREN, TRAILING_DASH];
 
-  for (const pattern of [TRAILING_PAREN, TRAILING_DASH]) {
+  for (const pattern of patterns) {
     const match = trimmed.match(pattern);
     if (!match) continue;
     const core = trimmed.slice(0, match.index).trim();
@@ -371,13 +390,75 @@ export function coreOf(text: string): string {
 }
 
 /**
+ * The same, for a line of English that translates something rather than
+ * explaining it. See `splitNote`.
+ */
+export function translationCore(text: string): string {
+  return splitNote(text, { dash: false }).text;
+}
+
+/**
  * True when two answers are the same line. The comparison is made on the core
  * of each side, so someone who types the authored aside is right and so is
  * someone who leaves it off.
+ *
+ * This is the strict one, and it is what decides whether a multiple-choice
+ * option is the right one. Grading what a person typed uses
+ * `typedAnswerMatches` below, which is looser in ways that would be wrong
+ * here: two options that differ only in spacing would both come back correct,
+ * and a question with two right answers is unanswerable.
  */
 export function answersMatch(given: string, expected: string): boolean {
   if (normalizeAnswer(given) === normalizeAnswer(expected)) return true;
   return normalizeAnswer(coreOf(given)) === normalizeAnswer(coreOf(expected));
+}
+
+/**
+ * A line, and each side of it where it offers a choice.
+ *
+ * "¡Perdona! / ¡Oye!" and "Pfiat di! / Pfiat eich!" are written with a slash
+ * to teach that both exist. Producing one of them is the whole skill, so
+ * either counts, and so does the full line for anybody who types it out.
+ *
+ * Splitting on the slash is deliberately unfussy. It also lets "a plasta"
+ * through for "un/a plasta", which is generous rather than wrong: the cost of
+ * accepting a shorter true answer is nothing, and the cost of rejecting
+ * "achispado" for "achispado/a" is a learner who typed the right word being
+ * told they did not. A side of one character is dropped, so the /a itself is
+ * never an answer on its own.
+ */
+function variantsOf(line: string): string[] {
+  const whole = coreOf(line);
+  if (!whole.includes("/")) return [whole];
+  const sides = whole
+    .split("/")
+    .map((side) => side.trim())
+    .filter((side) => side.length > 1);
+  return [whole, ...sides];
+}
+
+/**
+ * True when what somebody typed or assembled is the line the deck holds.
+ *
+ * Case, accents, punctuation and ß/ø/æ already come off in normalizeAnswer —
+ * nobody should lose a question to a missing diacritic or a full stop. Two
+ * more things come off here, both of which were marking correct answers wrong:
+ *
+ * **Spacing, entirely.** A punctuation mark inside a word splits it in two:
+ * "Wusste ich's doch" normalises to four tokens and "Wusste ichs doch" to
+ * three, so a line typed perfectly on a keyboard without a convenient
+ * apostrophe came back wrong. The same went for "secondhand" against
+ * "second-hand". Word boundaries are not what a typed question is testing, so
+ * this comparison ignores them.
+ *
+ * **A slash variant** — see `variantsOf`.
+ */
+export function typedAnswerMatches(given: string, expected: string): boolean {
+  if (answersMatch(given, expected)) return true;
+  const key = (text: string) => normalizeAnswer(text).replace(/\s+/g, "");
+  const typed = key(coreOf(given));
+  if (!typed) return false;
+  return variantsOf(expected).some((variant) => key(variant) === typed);
 }
 
 /**
@@ -457,17 +538,19 @@ export interface MatchPair {
 
 /** The item's answer text in a given language, or "" when it has none. */
 function answerTextFor(item: QuizItem, lang: AnswerLang): string {
-  const text =
-    lang === "source"
-      ? item.kind === "phrase"
-        ? item.front
-        : item.correctAnswer
-      : item.kind === "phrase"
-        ? item.correctAnswer
-        : item.correctAnswerTranslation ?? "";
   // Distractors are shown next to the answer, and the answer has had its aside
   // taken off. Leaving one on a distractor would make it the odd option out.
-  return text ? coreOf(text) : "";
+  // Which aside, though, is the same question buildQuestion answers: a dash is
+  // commentary in a phrase's gloss and punctuation in a situation's
+  // translation, so cutting at one there would shorten a distractor past the
+  // point where it says anything.
+  if (lang === "source") {
+    const text = item.kind === "phrase" ? item.front : item.correctAnswer;
+    return text ? coreOf(text) : "";
+  }
+  const text = item.kind === "phrase" ? item.correctAnswer : item.correctAnswerTranslation ?? "";
+  if (!text) return "";
+  return item.kind === "phrase" ? coreOf(text) : translationCore(text);
 }
 
 /**
@@ -541,12 +624,21 @@ export function buildQuestion(
   // never has to be typed or assembled, off the cue so the two directions of
   // the same item read the same way, and back on in `answerNote` so the drawer
   // can show what it was marking.
+  //
+  // How much comes off depends on what the text is, not on which slot it sits
+  // in. A phrase's English is a gloss, authored with its commentary attached,
+  // and both the bracket and the dash forms are asides there. A situation's
+  // English is the translation of a line somebody says — nobody ever types it,
+  // all of it is the meaning, and a dash in it is punctuation. Reading a dash
+  // as an aside there cut "Better not — I'm hammered." down to "Better not",
+  // which is no use as a subtitle and unanswerable as a cue.
+  const glossed = item.kind === "phrase";
   const split = splitNote(answer);
   answer = split.text;
-  const subSplit = answerSub ? splitNote(answerSub) : null;
+  const subSplit = answerSub ? splitNote(answerSub, { dash: glossed }) : null;
   answerSub = subSplit ? subSplit.text : null;
   const answerNote = split.note ?? subSplit?.note ?? null;
-  shown = coreOf(shown);
+  shown = glossed ? coreOf(shown) : translationCore(shown);
 
   const question: Question = {
     itemId: item.id,
@@ -947,7 +1039,7 @@ export function buildRound(
   let recall = 0;
   const asked: Question[] = drafts.map((d) => {
     const isForwardSituation = d.item.kind === "situation" && !d.reverse;
-    if (!isForwardSituation && recall < RECALL_PER_ROUND) {
+    if (!isForwardSituation && recall < RECALL_PER_ROUND && cueIdentifies(d.question, seenPool)) {
       const form: QuestionForm | null = typeable(d.question.answer)
         ? "type"
         : bankable(d.question.answer)
@@ -977,6 +1069,33 @@ export function buildRound(
   ]);
 
   return spreadOut([...opener, ...rest]).slice(0, length);
+}
+
+/**
+ * True when this question's cue points at one line in the deck and no other.
+ *
+ * Multiple choice does not need this: `buildOptions` already refuses any
+ * distractor whose own cue is this cue, so the rival answer never appears next
+ * to the right one. Typing has nothing to refuse. "How do you say: How long?"
+ * takes "¿Cuánto tarda?" and rejects "¿Cuánto hay que esperar?", which is the
+ * same question with the same English on it, and the learner is told they are
+ * wrong with no way to see why.
+ *
+ * So a slot becomes a typed or assembled one only where the cue could not have
+ * meant something else. Where it could, the question stays multiple choice —
+ * still worth asking, and answerable.
+ */
+function cueIdentifies(question: Question, pool: QuizItem[]): boolean {
+  const cueLang: AnswerLang = question.answerLang === "source" ? "en" : "source";
+  return !pool.some((item) => {
+    if (item.id === question.itemId) return false;
+    const theirCue = answerTextFor(item, cueLang);
+    if (!theirCue || !tooAlike(theirCue, question.shown)) return false;
+    // Two items that mean the same and say the same are one line written
+    // twice, which is a duplicate for the content suite to catch rather than
+    // an ambiguity for this to dodge.
+    return !tooAlike(answerTextFor(item, question.answerLang), question.answer);
+  });
 }
 
 /**
