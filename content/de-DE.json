@@ -282,14 +282,86 @@
           "id": "de-slang-reactions",
           "title": "Everyday reactions (common)",
           "phrases": [
-            { "id": "de-slang-01", "es": "krass", "en": "Intense / crazy / wow.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-02", "es": "geil", "en": "Awesome. Can sound crude in other contexts, but common as \"cool\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-01", "practice": false, "es": "krass", "en": "Intense / crazy / wow.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-02", "practice": false, "es": "geil", "en": "Awesome. Can sound crude in other contexts, but common as \"cool\".", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-slang-03", "es": "mega", "en": "Super.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-04", "es": "safe", "en": "For sure.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "de-slang-05", "es": "stabil", "en": "Solid / good.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-06", "es": "läuft gut", "en": "It's going / all good.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-15", "es": "Hammer!", "en": "Awesome — literally \"hammer\".", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-16", "es": "Wahnsinn!", "en": "Insane / unbelievable — good or bad, tone decides.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "de-slang-06", "practice": false, "es": "läuft gut", "en": "It's going / all good.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-15", "practice": false, "es": "Hammer!", "en": "Awesome — literally \"hammer\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-16", "practice": false, "es": "Wahnsinn!", "en": "Insane / unbelievable — good or bad, tone decides.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-slang-sc-01",
+              "teaches": "de-slang-01",
+              "speaker": "them",
+              "situation": { "en": "A friend tells you they cycled across the country in four days." },
+              "question": { "es": "Vier Tage, quer durchs Land.", "en": "Four days, right across the country." },
+              "answers": [
+                { "es": "Krass.", "en": "That's intense." }
+              ],
+              "likelyReply": { "es": "War auch echt hart.", "en": "It was genuinely hard." },
+              "notes": "Krass covers impressive, shocking and appalling. The tone picks which, and it is the single most used slang word in German.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-02",
+              "teaches": "de-slang-02",
+              "speaker": "them",
+              "situation": { "en": "Someone plays you the track they've been talking about all week." },
+              "question": { "es": "Und? Was sagst du?", "en": "So? What do you think?" },
+              "answers": [
+                { "es": "Das ist geil.", "en": "That's awesome." }
+              ],
+              "likelyReply": { "es": "Wusste ich's doch.", "en": "I knew it." },
+              "notes": "Geil literally means horny and nobody hears that any more in this use. Still worth knowing before you say it to a colleague.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-03",
+              "teaches": "de-slang-06",
+              "speaker": "them",
+              "situation": { "en": "Someone you haven't seen in a while asks how things are going." },
+              "question": { "es": "Und sonst so? Alles gut bei dir?", "en": "And otherwise? All fine with you?" },
+              "answers": [
+                { "es": "Läuft gut.", "en": "It's going well." }
+              ],
+              "likelyReply": { "es": "Freut mich.", "en": "Glad to hear it." },
+              "notes": "Läuft is the short version, and among younger people it is often the whole answer: läuft, said with a shrug.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-04",
+              "teaches": "de-slang-15",
+              "speaker": "them",
+              "situation": { "en": "A friend tells you they got tickets for the sold-out show." },
+              "question": { "es": "Ich hab zwei Karten bekommen!", "en": "I got two tickets!" },
+              "answers": [
+                { "es": "Hammer!", "en": "Awesome!" }
+              ],
+              "likelyReply": { "es": "Ich weiß, ich freu mich so.", "en": "I know — I'm so happy." },
+              "notes": "Literally a hammer. Said on its own, and der Hammer as a noun does the same job: das war der Hammer.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-05",
+              "teaches": "de-slang-16",
+              "speaker": "them",
+              "situation": { "en": "Someone tells you the queue for the club went round two corners." },
+              "question": { "es": "Die Schlange ging um zwei Ecken.", "en": "The queue went round two corners." },
+              "answers": [
+                { "es": "Wahnsinn.", "en": "Unbelievable." }
+              ],
+              "likelyReply": { "es": "Wir sind dann heimgegangen.", "en": "We went home in the end." },
+              "notes": "Wahnsinn is madness, and it works for both good and bad news. The tone is the whole difference.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -297,20 +369,93 @@
           "title": "Want / don't want",
           "phrases": [
             { "id": "de-slang-07", "es": "(kein) Bock", "en": "(Not) in the mood / up for it.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-slang-08", "es": "ich bin dabei", "en": "I'm in.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-17", "es": "Ich hab keinen Bock drauf.", "en": "I can't be bothered with that.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-slang-18", "es": "Hast du Lust?", "en": "Do you fancy it?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-08", "practice": false, "es": "ich bin dabei", "en": "I'm in.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-17", "practice": false, "es": "Ich hab keinen Bock drauf.", "en": "I can't be bothered with that.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-18", "practice": false, "es": "Hast du Lust?", "en": "Do you fancy it?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-19", "es": "Auf jeden!", "en": "Definitely — clipped from \"auf jeden Fall\".", "difficulty": "easy", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-20", "es": "Lieber nicht.", "en": "I'd rather not.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-20", "practice": false, "es": "Lieber nicht.", "en": "I'd rather not.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-21", "es": "Passt mir gerade nicht.", "en": "Doesn't work for me right now.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-slang-22", "es": "Ich bin raus.", "en": "I'm out — count me out of this one.", "difficulty": "medium", "young": true, "quizQuestions": [] }
+            { "id": "de-slang-22", "practice": false, "es": "Ich bin raus.", "en": "I'm out — count me out of this one.", "difficulty": "medium", "young": true, "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-slang-sc-06",
+              "teaches": "de-slang-08",
+              "speaker": "them",
+              "situation": { "en": "A plan is coming together and everyone is saying whether they're coming." },
+              "question": { "es": "Wir fahren Samstag an den See.", "en": "We're driving to the lake on Saturday." },
+              "answers": [
+                { "es": "Ich bin dabei.", "en": "I'm in." }
+              ],
+              "likelyReply": { "es": "Super, ich schreib dir.", "en": "Great — I'll text you." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-07",
+              "teaches": "de-slang-17",
+              "speaker": "them",
+              "situation": { "en": "Somebody suggests a museum on the one afternoon you wanted to do nothing." },
+              "question": { "es": "Sollen wir ins Museum?", "en": "Shall we go to the museum?" },
+              "answers": [
+                { "es": "Ich hab keinen Bock drauf.", "en": "I can't be bothered with that." }
+              ],
+              "likelyReply": { "es": "Okay, dann morgen.", "en": "Okay — tomorrow, then." },
+              "notes": "Bock is the word for wanting to do something at all. Keinen Bock is blunt but not rude among friends.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-08",
+              "teaches": "de-slang-18",
+              "speaker": "them",
+              "situation": { "en": "You've got a spare ticket and want to ask somebody along without making it a thing." },
+              "question": { "es": "Ich hab Freitag nichts vor.", "en": "I've got nothing on Friday." },
+              "answers": [
+                { "es": "Hast du Lust?", "en": "Do you fancy it?" }
+              ],
+              "likelyReply": { "es": "Klar, warum nicht.", "en": "Sure, why not." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-09",
+              "teaches": "de-slang-20",
+              "speaker": "them",
+              "situation": { "en": "Someone offers you a schnapps at eleven in the morning." },
+              "question": { "es": "Einen Schnaps? Geht doch.", "en": "A schnapps? Go on." },
+              "answers": [
+                { "es": "Lieber nicht.", "en": "I'd rather not." }
+              ],
+              "likelyReply": { "es": "Auch gut.", "en": "Fair enough." },
+              "notes": "The softest refusal in the section: it declines the thing without declining the person.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-10",
+              "teaches": "de-slang-22",
+              "speaker": "them",
+              "situation": { "en": "The group is planning a third night out in a row and counting heads." },
+              "question": { "es": "Wer kommt morgen wieder mit?", "en": "Who's coming again tomorrow?" },
+              "answers": [
+                { "es": "Ich bin raus.", "en": "Count me out." }
+              ],
+              "likelyReply": { "es": "Schwächling!", "en": "Lightweight!" },
+              "notes": "Ich bin raus is out of this particular plan, not out of the friendship. Borrowed from card games.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "de-slang-address",
           "title": "Addressing friends (tone matters)",
           "phrases": [
-            { "id": "de-slang-09", "es": "Alter!", "en": "Dude! / bro! — tone matters.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-09", "practice": false, "es": "Alter!", "en": "Dude! / bro! — tone matters.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-slang-10", "es": "Digga/Digger", "en": "Bro / dude. Very casual.", "difficulty": "hard", "young": true, "quizQuestions": [] },
             {
               "id": "de-slang-11",
@@ -320,11 +465,84 @@
               "young": true,
               "quizQuestions": []
             },
-            { "id": "de-slang-23", "es": "Leute!", "en": "Guys! — the safe one for a whole group.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-24", "es": "Mann!", "en": "Man! — frustration or emphasis, never a word for a person.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-25", "es": "Kollege", "en": "Mate — jokey and slightly ironic between friends.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-26", "es": "Schatz", "en": "Love / hon — partners and close family only.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-23", "practice": false, "es": "Leute!", "en": "Guys! — the safe one for a whole group.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-24", "practice": false, "es": "Mann!", "en": "Man! — frustration or emphasis, never a word for a person.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-25", "practice": false, "es": "Kollege", "en": "Mate — jokey and slightly ironic between friends.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-26", "practice": false, "es": "Schatz", "en": "Love / hon — partners and close family only.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-27", "es": "Jungs / Mädels", "en": "Lads / girls — calling over a mixed group.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-slang-sc-11",
+              "teaches": "de-slang-09",
+              "speaker": "them",
+              "situation": { "en": "A friend tells you they left their phone in the taxi that just drove off." },
+              "question": { "es": "Mein Handy ist im Taxi.", "en": "My phone's in the taxi." },
+              "answers": [
+                { "es": "Alter, im Ernst?", "en": "Dude, seriously?" }
+              ],
+              "likelyReply": { "es": "Ja, echt jetzt.", "en": "Yes — really." },
+              "notes": "Alter is literally 'old one' and means nothing of the kind. Tone is everything: warm it is mate, flat it is a warning.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-12",
+              "teaches": "de-slang-23",
+              "speaker": "you",
+              "situation": { "en": "You want the whole table's attention to say where you're going next." },
+              "question": { "es": "Leute, wir ziehen weiter!", "en": "Guys, we're moving on!" },
+              "answers": [
+                { "es": "Ich zahl noch schnell.", "en": "Let me just pay." }
+              ],
+              "likelyReply": null,
+              "notes": "Leute is the safe one for a mixed group of any age. Jungs and Mädels split it by gender; Leute never has to.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-13",
+              "teaches": "de-slang-24",
+              "speaker": "them",
+              "situation": { "en": "The train you needed has been cancelled for the second time today." },
+              "question": { "es": "Der Zug fällt wieder aus.", "en": "The train's cancelled again." },
+              "answers": [
+                { "es": "Mann, nicht schon wieder.", "en": "Man, not again." }
+              ],
+              "likelyReply": { "es": "Deutsche Bahn eben.", "en": "Deutsche Bahn for you." },
+              "notes": "Mann here is frustration, never a word for a person. Mensch does the same job a shade more gently.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-14",
+              "teaches": "de-slang-25",
+              "speaker": "them",
+              "situation": { "en": "A friend turns up with exactly the tool you needed and no explanation." },
+              "question": { "es": "Hier, hab ich mitgebracht.", "en": "Here — I brought it along." },
+              "answers": [
+                { "es": "Danke, Kollege.", "en": "Thanks, mate." }
+              ],
+              "likelyReply": { "es": "Immer gern.", "en": "Any time." },
+              "notes": "Not your actual colleague. Between friends it is jokey and slightly ironic, like calling somebody 'chief'.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-15",
+              "teaches": "de-slang-26",
+              "speaker": "them",
+              "situation": { "en": "Your partner has brought you coffee without being asked." },
+              "question": { "es": "Ich hab dir Kaffee gemacht.", "en": "I made you a coffee." },
+              "answers": [
+                { "es": "Danke, Schatz.", "en": "Thanks, love." }
+              ],
+              "likelyReply": { "es": "Gern geschehen.", "en": "You're welcome." },
+              "notes": "Schatz is treasure, and it is for partners and close family only. Said to a stranger it is either flirting or an insult.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -332,13 +550,86 @@
           "title": "Useful micro-phrases",
           "phrases": [
             { "id": "de-slang-12", "es": "keine Ahnung → kp", "en": "No idea. Shortened to \"kp\" in texts.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-13", "es": "ich schwöre", "en": "I swear.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-13", "practice": false, "es": "ich schwöre", "en": "I swear.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "de-slang-14", "es": "Bist du lost?", "en": "Are you clueless? Can come across as rude.", "difficulty": "hard", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-28", "es": "Genau.", "en": "Exactly — and, just as often, pure filler while they think.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-29", "es": "Ach so!", "en": "Ohh, I see — the realisation noise.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-30", "es": "Echt jetzt?", "en": "Seriously?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-31", "es": "Quatsch!", "en": "Nonsense! / rubbish!", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-28", "practice": false, "es": "Genau.", "en": "Exactly — and, just as often, pure filler while they think.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-29", "practice": false, "es": "Ach so!", "en": "Ohh, I see — the realisation noise.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-30", "practice": false, "es": "Echt jetzt?", "en": "Seriously?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-31", "practice": false, "es": "Quatsch!", "en": "Nonsense! / rubbish!", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-32", "es": "Jein", "en": "Yes and no — ja plus nein, and a real dictionary word.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-slang-sc-16",
+              "teaches": "de-slang-13",
+              "speaker": "them",
+              "situation": { "en": "Nobody at the table believes the story you've just told." },
+              "question": { "es": "Das glaub ich dir nicht.", "en": "I don't believe you." },
+              "answers": [
+                { "es": "Ich schwöre.", "en": "I swear." }
+              ],
+              "likelyReply": { "es": "Na gut, erzähl weiter.", "en": "All right — go on." },
+              "notes": "Very young and very common. Among people over thirty it will get you a look.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-17",
+              "teaches": "de-slang-28",
+              "speaker": "them",
+              "situation": { "en": "Someone works out for themselves the thing you were trying to explain." },
+              "question": { "es": "Also erst die U-Bahn, dann der Bus?", "en": "So the U-Bahn first, then the bus?" },
+              "answers": [
+                { "es": "Genau.", "en": "Exactly." }
+              ],
+              "likelyReply": { "es": "Alles klar.", "en": "Got it." },
+              "notes": "Also filler. A German will say genau three times while deciding what to say next, and it means nothing at all those times.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-18",
+              "teaches": "de-slang-29",
+              "speaker": "them",
+              "situation": { "en": "You've been confused for five minutes and somebody finally explains why." },
+              "question": { "es": "Der Laden hat sonntags zu.", "en": "The shop is closed on Sundays." },
+              "answers": [
+                { "es": "Ach so!", "en": "Ohh, I see!" }
+              ],
+              "likelyReply": { "es": "Ja, hier ist sonntags alles zu.", "en": "Yes — everything's shut here on Sundays." },
+              "notes": "The realisation noise, and one of the first things you'll catch yourself saying without deciding to.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-19",
+              "teaches": "de-slang-30",
+              "speaker": "them",
+              "situation": { "en": "A friend says they're moving to another country in three weeks." },
+              "question": { "es": "Ich zieh in drei Wochen weg.", "en": "I'm moving away in three weeks." },
+              "answers": [
+                { "es": "Echt jetzt?", "en": "Seriously?" }
+              ],
+              "likelyReply": { "es": "Ja, ist schon entschieden.", "en": "Yes — it's decided." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-slang-sc-20",
+              "teaches": "de-slang-31",
+              "speaker": "them",
+              "situation": { "en": "Someone claims the beer here is cheaper than the water." },
+              "question": { "es": "Bier ist billiger als Wasser hier.", "en": "Beer is cheaper than water here." },
+              "answers": [
+                { "es": "Quatsch!", "en": "Nonsense!" }
+              ],
+              "likelyReply": { "es": "Guck doch auf die Karte.", "en": "Look at the menu, then." },
+              "notes": "Quatsch is rubbish, said about the claim rather than the person, which is what keeps it friendly.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -369,6 +660,7 @@
             },
             {
               "id": "de-bayern-02",
+              "practice": false,
               "es": "Grüß Gott!",
               "en": "Good day — the standard southern greeting, safe with anyone.",
               "difficulty": "easy",
@@ -383,11 +675,88 @@
               "region": "bayerisch",
               "quizQuestions": []
             },
-            { "id": "de-bayern-08", "es": "Griaß di!", "en": "Hello, to one person — warmer and more local than Servus.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-09", "es": "Griaß eich!", "en": "Hello, to a group.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-10", "es": "Habedehre!", "en": "Pleased to meet you — literally \"I have the honour\".", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-11", "es": "Wiederschaun!", "en": "Goodbye — the southern version of auf Wiedersehen.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-08", "practice": false, "es": "Griaß di!", "en": "Hello, to one person — warmer and more local than Servus.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-09", "practice": false, "es": "Griaß eich!", "en": "Hello, to a group.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-10", "practice": false, "es": "Habedehre!", "en": "Pleased to meet you — literally \"I have the honour\".", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-11", "practice": false, "es": "Wiederschaun!", "en": "Goodbye — the southern version of auf Wiedersehen.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
             { "id": "de-bayern-12", "es": "Servus beinand!", "en": "Hello everyone — greeting a whole table at once.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-bayern-sc-01",
+              "teaches": "de-bayern-02",
+              "speaker": "them",
+              "situation": { "en": "You walk into a bakery in Munich and the woman behind the counter looks up." },
+              "question": { "es": "Grüß Gott, was darf's sein?", "en": "Good day — what can I get you?" },
+              "answers": [
+                { "es": "Grüß Gott!", "en": "Good day!" }
+              ],
+              "likelyReply": { "es": "Also, was hätten S' gern?", "en": "So, what would you like?" },
+              "notes": "Standard German, not dialect, and safe with absolutely anyone in the south. Hallo marks you as a northerner within one word.",
+              "difficulty": "easy",
+              "region": "bayern",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-02",
+              "teaches": "de-bayern-08",
+              "speaker": "them",
+              "situation": { "en": "A friend's grandfather greets you at the door of a village house." },
+              "question": { "es": "Ja, wer kommt denn da?", "en": "Well, look who's here." },
+              "answers": [
+                { "es": "Griaß di!", "en": "Hello!" }
+              ],
+              "likelyReply": { "es": "Setz di her.", "en": "Sit yourself down." },
+              "notes": "Warmer and more local than Servus, and for one person only. Say it to a table and you have said the wrong thing.",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-03",
+              "teaches": "de-bayern-09",
+              "speaker": "them",
+              "situation": { "en": "You arrive at a table of six in a beer garden and they all look up at once." },
+              "question": { "es": "Ah, da bist du ja!", "en": "Ah, there you are!" },
+              "answers": [
+                { "es": "Griaß eich!", "en": "Hello, all of you!" }
+              ],
+              "likelyReply": { "es": "Setz di doch her.", "en": "Sit yourself down with us." },
+              "notes": "The plural of Griaß di. Bavarian keeps the singular and the plural apart where English gave up, and getting it right is noticed.",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-04",
+              "teaches": "de-bayern-10",
+              "speaker": "them",
+              "situation": { "en": "You're introduced to somebody's father, who puts out his hand." },
+              "question": { "es": "Das ist mein Vater.", "en": "This is my father." },
+              "answers": [
+                { "es": "Habedehre!", "en": "Pleased to meet you!" }
+              ],
+              "likelyReply": { "es": "Freut mi.", "en": "Pleasure." },
+              "notes": "Literally 'I have the honour', squashed into one word. Old-fashioned, slightly formal, and it will make a Bavarian smile.",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-05",
+              "teaches": "de-bayern-11",
+              "speaker": "them",
+              "situation": { "en": "You're leaving a shop in a small Bavarian town with your bag." },
+              "question": { "es": "Auf Wiederschaun und schönen Tag!", "en": "Goodbye and have a lovely day!" },
+              "answers": [
+                { "es": "Wiederschaun!", "en": "Goodbye!" }
+              ],
+              "likelyReply": { "es": "Pfiat di!", "en": "Bye now!" },
+              "notes": "The southern auf Wiedersehen, and what you will actually hear in a shop. Tschüss is northern and sounds it.",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -410,12 +779,89 @@
               "region": "bayerisch",
               "quizQuestions": []
             },
-            { "id": "de-bayern-13", "es": "Schmarrn!", "en": "Nonsense! — literally a shredded pancake.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-14", "es": "Ned hudeln!", "en": "Don't rush! — a whole philosophy in two words.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-15", "es": "Schaug ma moi.", "en": "We'll see — the Bavarian shrug.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-16", "es": "a bisserl", "en": "A little bit.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-17", "es": "deppert", "en": "Daft, silly — mild enough to say to a friend.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-13", "practice": false, "es": "Schmarrn!", "en": "Nonsense! — literally a shredded pancake.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-14", "practice": false, "es": "Ned hudeln!", "en": "Don't rush! — a whole philosophy in two words.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-15", "practice": false, "es": "Schaug ma moi.", "en": "We'll see — the Bavarian shrug.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-16", "practice": false, "es": "a bisserl", "en": "A little bit.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-17", "practice": false, "es": "deppert", "en": "Daft, silly — mild enough to say to a friend.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
             { "id": "de-bayern-18", "es": "a Grantler", "en": "A professional grump — said with real affection.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-bayern-sc-06",
+              "teaches": "de-bayern-13",
+              "speaker": "them",
+              "situation": { "en": "Somebody insists the Oktoberfest beer is watered down." },
+              "question": { "es": "Des Bier is verdünnt, sag i dir.", "en": "That beer's watered down, I'm telling you." },
+              "answers": [
+                { "es": "Schmarrn!", "en": "Nonsense!" }
+              ],
+              "likelyReply": { "es": "Glaubst mir halt ned.", "en": "You just don't believe me." },
+              "notes": "A Schmarrn is a shredded pancake. As an exclamation it is rubbish, nonsense, and it is used far more often than the pudding is eaten.",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-07",
+              "teaches": "de-bayern-14",
+              "speaker": "them",
+              "situation": { "en": "Somebody is trying to hurry you through a meal you are enjoying." },
+              "question": { "es": "Kommst jetzt, wir müssen los!", "en": "Come on, we've got to go!" },
+              "answers": [
+                { "es": "Ned hudeln!", "en": "Don't rush!" }
+              ],
+              "likelyReply": { "es": "Ja ja, is ja gut.", "en": "All right, all right." },
+              "notes": "Two words holding an entire attitude to time. Said to anybody in a hurry, with complete sincerity.",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-08",
+              "teaches": "de-bayern-15",
+              "speaker": "them",
+              "situation": { "en": "You're asked to commit to a plan for a weekend three months away." },
+              "question": { "es": "Kommst im August mit?", "en": "Are you coming along in August?" },
+              "answers": [
+                { "es": "Schaug ma moi.", "en": "We'll see." }
+              ],
+              "likelyReply": { "es": "Passt scho.", "en": "Fair enough." },
+              "notes": "Literally 'let's have a look'. It is the Bavarian shrug, and it is neither a yes nor a no on purpose.",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-09",
+              "teaches": "de-bayern-16",
+              "speaker": "them",
+              "situation": { "en": "Somebody is pouring and asks how much you want." },
+              "question": { "es": "Wie viel magst?", "en": "How much would you like?" },
+              "answers": [
+                { "es": "Nur a bisserl.", "en": "Just a little." }
+              ],
+              "likelyReply": { "es": "Sag Bescheid, wenn's reicht.", "en": "Say when." },
+              "notes": "A bisserl is ein bisschen, southern. The -erl ending is all over Bavarian and makes everything smaller and fonder.",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-10",
+              "teaches": "de-bayern-17",
+              "speaker": "them",
+              "situation": { "en": "A friend has walked into the same glass door twice in one evening." },
+              "question": { "es": "Hast du das nicht gesehen?", "en": "Did you not see that?" },
+              "answers": [
+                { "es": "I bin heut deppert.", "en": "I'm being daft today." }
+              ],
+              "likelyReply": { "es": "Des sieht ma.", "en": "You can tell." },
+              "notes": "Deppert is daft, and mild enough to say to a friend's face. A Depp is the person; deppert is how they are being.",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -424,6 +870,7 @@
           "phrases": [
             {
               "id": "de-bayern-06",
+              "practice": false,
               "es": "Passt scho.",
               "en": "It's fine / all good.",
               "difficulty": "medium",
@@ -432,6 +879,7 @@
             },
             {
               "id": "de-bayern-07",
+              "practice": false,
               "es": "I mog di.",
               "en": "I like you — dialect-y.",
               "difficulty": "hard",
@@ -440,15 +888,92 @@
             },
             { "id": "de-bayern-19", "es": "Mia san mia.", "en": "We are who we are — Bavaria's unofficial motto.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
             { "id": "de-bayern-20", "es": "a Brotzeit", "en": "The bread-and-cold-cuts meal — a fixed part of the day, not a snack.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
-            { "id": "de-bayern-21", "es": "a Semmel", "en": "A bread roll — a Brötchen everywhere north of here.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-22", "es": "a Hoibe", "en": "A half-litre of beer — the everyday order, not the tourist litre.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-23", "es": "a Radler", "en": "Beer with lemonade — orderable anywhere in Bayern without comment.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
+            { "id": "de-bayern-21", "practice": false, "es": "a Semmel", "en": "A bread roll — a Brötchen everywhere north of here.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-22", "practice": false, "es": "a Hoibe", "en": "A half-litre of beer — the everyday order, not the tourist litre.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-23", "practice": false, "es": "a Radler", "en": "Beer with lemonade — orderable anywhere in Bayern without comment.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
             {
               "id": "de-bayern-24",
               "es": "Oachkatzlschwoaf",
               "en": "Squirrel's tail — the pronunciation test a local will eventually set you.",
               "difficulty": "hard",
               "region": "bayerisch",
+              "quizQuestions": []
+            }
+          ],
+          "scenes": [
+            {
+              "id": "de-bayern-sc-11",
+              "teaches": "de-bayern-06",
+              "speaker": "them",
+              "situation": { "en": "You've apologised twice for being forty cents short and they've stopped listening." },
+              "question": { "es": "Es fehlen vierzig Cent.", "en": "You're forty cents short." },
+              "answers": [
+                { "es": "Passt scho.", "en": "It's fine." }
+              ],
+              "likelyReply": { "es": "Dann halt beim nächsten Mal.", "en": "Next time, then." },
+              "notes": "The most Bavarian two words there are: it is fine, leave it, do not make it a thing. Also what you say instead of keeping the change.",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-12",
+              "teaches": "de-bayern-07",
+              "speaker": "them",
+              "situation": { "en": "It's late at the Wiesn and somebody has been waiting for you to say something." },
+              "question": { "es": "Und? Sagst nix?", "en": "Well? Nothing to say?" },
+              "answers": [
+                { "es": "I mog di.", "en": "I like you." }
+              ],
+              "likelyReply": { "es": "Des is schee.", "en": "That's lovely." },
+              "notes": "Dialect for ich mag dich, and it carries more weight down here than the standard version does. Not a thing to say lightly.",
+              "difficulty": "hard",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-13",
+              "teaches": "de-bayern-21",
+              "speaker": "them",
+              "situation": { "en": "You're at a Munich bakery counter and the word you learned in Berlin is the wrong one." },
+              "question": { "es": "Was darf's denn sein?", "en": "What can I get you?" },
+              "answers": [
+                { "es": "Zwoa Semmeln, bitte.", "en": "Two bread rolls, please." }
+              ],
+              "likelyReply": { "es": "Sonst noch was?", "en": "Anything else?" },
+              "notes": "A Semmel in Bayern, a Schrippe in Berlin, a Brötchen in most of the rest. Same roll, three words, and locals notice which you use.",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-14",
+              "teaches": "de-bayern-22",
+              "speaker": "them",
+              "situation": { "en": "You're in a beer garden and want the size the locals are drinking." },
+              "question": { "es": "A Maß?", "en": "A litre?" },
+              "answers": [
+                { "es": "Na, a Hoibe bitte.", "en": "No — a half, please." }
+              ],
+              "likelyReply": { "es": "Kommt sofort.", "en": "Coming right up." },
+              "notes": "A Hoibe is the half-litre, and it is what most people at the table are actually drinking. The litre Maß is for the Wiesn and for tourists.",
+              "difficulty": "easy",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-bayern-sc-15",
+              "teaches": "de-bayern-23",
+              "speaker": "them",
+              "situation": { "en": "It's a hot afternoon and you want something you can drink two of." },
+              "question": { "es": "Und für Sie?", "en": "And for you?" },
+              "answers": [
+                { "es": "A Radler, bitte.", "en": "A shandy, please." }
+              ],
+              "likelyReply": { "es": "Gern, kommt gleich.", "en": "Of course — right away." },
+              "notes": "Beer with lemonade, named after the cyclists it was invented for. Orderable anywhere in Bayern without a single raised eyebrow.",
+              "difficulty": "easy",
+              "region": "bayern",
               "quizQuestions": []
             }
           ]
@@ -471,10 +996,10 @@
           "id": "de-cuss-common",
           "title": "Common",
           "phrases": [
-            { "id": "de-cuss-01", "es": "Scheiße.", "en": "Shit.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-cuss-02", "es": "Verdammt.", "en": "Damn.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-cuss-03", "es": "Mist.", "en": "A milder \"crap\".", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-cuss-06", "es": "Mensch!", "en": "Man! / oh come on! — completely safe in any company.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-01", "practice": false, "es": "Scheiße.", "en": "Shit.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-02", "practice": false, "es": "Verdammt.", "en": "Damn.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-03", "practice": false, "es": "Mist.", "en": "A milder \"crap\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-06", "practice": false, "es": "Mensch!", "en": "Man! / oh come on! — completely safe in any company.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-cuss-07", "es": "Verflixt!", "en": "Darn! — the polite one.", "difficulty": "easy", "quizQuestions": [] },
             {
               "id": "de-cuss-08",
@@ -484,21 +1009,167 @@
               "quizQuestions": []
             },
             { "id": "de-cuss-09", "es": "Herrje!", "en": "Good heavens!", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-cuss-10", "es": "Donnerwetter!", "en": "Well I never! — admiration or annoyance, tone decides which.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "de-cuss-10", "practice": false, "es": "Donnerwetter!", "en": "Well I never! — admiration or annoyance, tone decides which.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-cuss-sc-01",
+              "teaches": "de-cuss-01",
+              "speaker": "them",
+              "situation": { "en": "The connection you were running for pulls out of the platform as you arrive." },
+              "question": { "es": "Das war unser Anschluss.", "en": "That was our connection." },
+              "answers": [
+                { "es": "Scheiße.", "en": "Shit." }
+              ],
+              "likelyReply": { "es": "Der nächste geht in zwanzig Minuten.", "en": "The next one's in twenty minutes." },
+              "notes": "The workhorse. Common enough to be barely rude, and still not for a job interview.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-02",
+              "teaches": "de-cuss-02",
+              "speaker": "them",
+              "situation": { "en": "You get to the front of the queue and your card is in the other jacket." },
+              "question": { "es": "Nur Karte, kein Bargeld.", "en": "Card only, no cash." },
+              "answers": [
+                { "es": "Verdammt.", "en": "Damn." }
+              ],
+              "likelyReply": { "es": "Kein Problem, ich zahl.", "en": "No problem — I'll pay." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-03",
+              "teaches": "de-cuss-03",
+              "speaker": "them",
+              "situation": { "en": "It starts raining ten minutes into a walk and nobody brought a jacket." },
+              "question": { "es": "Und jetzt regnet's auch noch.", "en": "And now it's raining too." },
+              "answers": [
+                { "es": "So ein Mist.", "en": "What a pain." }
+              ],
+              "likelyReply": { "es": "Da vorne ist ein Café.", "en": "There's a café up ahead." },
+              "notes": "Mist is manure and lands about where 'crap' does. The one to reach for in front of somebody's parents.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-04",
+              "teaches": "de-cuss-06",
+              "speaker": "them",
+              "situation": { "en": "Someone has spent ten minutes trying to explain the ticket machine to you." },
+              "question": { "es": "Und dann noch einmal von vorne.", "en": "And now once more from the top." },
+              "answers": [
+                { "es": "Mensch, jetzt hab ich's.", "en": "Oh man — now I've got it." }
+              ],
+              "likelyReply": { "es": "Na also.", "en": "There you go." },
+              "notes": "Completely safe in any company, including at work and in front of children. Frustration or affection, depending on the tone.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-05",
+              "teaches": "de-cuss-10",
+              "speaker": "them",
+              "situation": { "en": "A friend tells you they swam across the lake and back before breakfast." },
+              "question": { "es": "Einmal rüber und wieder zurück.", "en": "Across and back again." },
+              "answers": [
+                { "es": "Donnerwetter!", "en": "Well I never!" }
+              ],
+              "likelyReply": { "es": "War gar nicht so weit.", "en": "It wasn't that far, really." },
+              "notes": "Literally a thunderstorm. Admiration here; said flatly at somebody it is a telling-off, and both are old-fashioned in a likeable way.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "de-cuss-aggressive",
           "title": "Aggressive",
           "phrases": [
-            { "id": "de-cuss-04", "es": "Halt die Klappe.", "en": "Shut it.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "de-cuss-05", "es": "Verpiss dich.", "en": "Piss off.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "de-cuss-11", "es": "Lass mich in Ruhe.", "en": "Leave me alone — firm, and not a swear word.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-04", "practice": false, "es": "Halt die Klappe.", "en": "Shut it.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-cuss-05", "practice": false, "es": "Verpiss dich.", "en": "Piss off.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-cuss-11", "practice": false, "es": "Lass mich in Ruhe.", "en": "Leave me alone — firm, and not a swear word.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-cuss-12", "es": "Nerv nicht.", "en": "Stop bugging me.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-cuss-13", "es": "Das reicht jetzt.", "en": "That's enough now.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-cuss-14", "es": "Ach du Scheiße!", "en": "Oh sh*t! — a reaction to a situation, not aimed at a person.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-cuss-13", "practice": false, "es": "Das reicht jetzt.", "en": "That's enough now.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-cuss-14", "practice": false, "es": "Ach du Scheiße!", "en": "Oh sh*t! — a reaction to a situation, not aimed at a person.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-cuss-15", "es": "Vollpfosten", "en": "Total idiot — keep it for telling the story, not for the person.", "difficulty": "hard", "quizQuestions": [] },
             { "id": "de-cuss-16", "es": "Leck mich.", "en": "Get lost — everyday among friends, never with a stranger.", "difficulty": "hard", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-cuss-sc-06",
+              "teaches": "de-cuss-04",
+              "speaker": "them",
+              "situation": { "en": "Somebody has been talking over you for ten minutes and starts up again." },
+              "question": { "es": "Nein, jetzt hörst du mir mal zu.", "en": "No — now you listen to me." },
+              "answers": [
+                { "es": "Halt die Klappe.", "en": "Shut it." }
+              ],
+              "likelyReply": { "es": "Wie bitte?", "en": "Excuse me?" },
+              "notes": "Genuinely rude. Among close friends it can be a joke; with anybody else it is the start of a row.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-07",
+              "teaches": "de-cuss-05",
+              "speaker": "them",
+              "situation": { "en": "Someone has followed you down the street after being told twice to stop." },
+              "question": { "es": "Komm schon, sei nicht so.", "en": "Come on, don't be like that." },
+              "answers": [
+                { "es": "Verpiss dich.", "en": "Piss off." }
+              ],
+              "likelyReply": { "es": "Ist ja gut, ich geh.", "en": "All right, I'm going." },
+              "notes": "The strong one, and the one to keep for when you mean it. Lass mich in Ruhe does the same job without the swear.",
+              "difficulty": "hard",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-08",
+              "teaches": "de-cuss-11",
+              "speaker": "them",
+              "situation": { "en": "Somebody at the bar will not take a polite no for an answer." },
+              "question": { "es": "Jetzt komm, ein Getränk nur.", "en": "Come on — just one drink." },
+              "answers": [
+                { "es": "Lass mich in Ruhe.", "en": "Leave me alone." }
+              ],
+              "likelyReply": { "es": "Schon gut.", "en": "Fine." },
+              "notes": "Not a swear word, and firmer for it. Clear enough that anybody listening knows exactly what was said.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-09",
+              "teaches": "de-cuss-13",
+              "speaker": "them",
+              "situation": { "en": "A friend has made the same joke at your expense four times tonight." },
+              "question": { "es": "Und dann noch mal mit dem Akzent!", "en": "And again with the accent!" },
+              "answers": [
+                { "es": "Das reicht jetzt.", "en": "That's enough now." }
+              ],
+              "likelyReply": { "es": "Okay, okay, ich hör auf.", "en": "Okay, okay — I'll stop." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-cuss-sc-10",
+              "teaches": "de-cuss-14",
+              "speaker": "them",
+              "situation": { "en": "Your friend shows you the state of the kitchen after the party." },
+              "question": { "es": "Guck dir das mal an.", "en": "Just look at this." },
+              "answers": [
+                { "es": "Ach du Scheiße!", "en": "Oh my god!" }
+              ],
+              "likelyReply": { "es": "Wir fangen oben an.", "en": "We'll start at the top." },
+              "notes": "Aimed at a situation, never at a person, which is what makes it safe where the others are not.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -519,24 +1190,96 @@
           "id": "de-flirt-safe",
           "title": "Compliments (safe)",
           "phrases": [
-            { "id": "de-flirt-01", "es": "Du siehst gut aus.", "en": "You look good.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-02", "es": "Du bist echt süß.", "en": "You're really cute.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-03", "es": "Ich mag deinen Style.", "en": "I like your style.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-04", "es": "Du hast ein schönes Lächeln.", "en": "You have a nice smile.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-05", "es": "Du hast schöne Augen.", "en": "You have beautiful eyes.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-01", "practice": false, "es": "Du siehst gut aus.", "en": "You look good.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-02", "practice": false, "es": "Du bist echt süß.", "en": "You're really cute.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-03", "practice": false, "es": "Ich mag deinen Style.", "en": "I like your style.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-04", "practice": false, "es": "Du hast ein schönes Lächeln.", "en": "You have a nice smile.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-05", "practice": false, "es": "Du hast schöne Augen.", "en": "You have beautiful eyes.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-12", "es": "Du hast ein schönes Lachen.", "en": "You've got a lovely laugh.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-13", "es": "Mit dir kann man gut reden.", "en": "You're easy to talk to.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-14", "es": "Du bist echt sympathisch.", "en": "I really like you — warm, and not a come-on.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-flirt-sc-01",
+              "teaches": "de-flirt-01",
+              "speaker": "them",
+              "situation": { "en": "Someone you like arrives at the bar and takes their coat off." },
+              "question": { "es": "Sorry, ich bin spät.", "en": "Sorry — I'm late." },
+              "answers": [
+                { "es": "Du siehst gut aus.", "en": "You look good." }
+              ],
+              "likelyReply": { "es": "Danke, du aber auch.", "en": "Thanks — so do you." },
+              "notes": "The plain one, and it works. Gut aussehen is about how somebody looks tonight rather than a verdict on them.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-02",
+              "teaches": "de-flirt-02",
+              "speaker": "them",
+              "situation": { "en": "They get flustered ordering and apologise for it." },
+              "question": { "es": "Sorry, ich bin durcheinander.", "en": "Sorry — I'm all over the place." },
+              "answers": [
+                { "es": "Du bist echt süß.", "en": "You're really cute." }
+              ],
+              "likelyReply": { "es": "Jetzt werd ich rot.", "en": "Now you're making me blush." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-03",
+              "teaches": "de-flirt-03",
+              "speaker": "them",
+              "situation": { "en": "Someone mentions they put the whole outfit together second-hand." },
+              "question": { "es": "Alles vom Flohmarkt, ehrlich.", "en": "All from the flea market, honestly." },
+              "answers": [
+                { "es": "Ich mag deinen Style.", "en": "I like your style." }
+              ],
+              "likelyReply": { "es": "Das freut mich.", "en": "That's nice to hear." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-04",
+              "teaches": "de-flirt-04",
+              "speaker": "them",
+              "situation": { "en": "They laugh at something you said and you want to say what you noticed." },
+              "question": { "es": "Du bist ja witzig.", "en": "You're funny, you are." },
+              "answers": [
+                { "es": "Du hast ein schönes Lächeln.", "en": "You have a nice smile." }
+              ],
+              "likelyReply": { "es": "Hör auf.", "en": "Stop it." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-05",
+              "teaches": "de-flirt-05",
+              "speaker": "them",
+              "situation": { "en": "You've been talking across a table with a candle on it for an hour." },
+              "question": { "es": "Warum guckst du so?", "en": "Why are you looking at me like that?" },
+              "answers": [
+                { "es": "Du hast schöne Augen.", "en": "You have beautiful eyes." }
+              ],
+              "likelyReply": { "es": "Das sagst du nur so.", "en": "You're just saying that." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "de-flirt-bolder",
           "title": "A bit bolder",
           "phrases": [
-            { "id": "de-flirt-06", "es": "Ich find dich echt attraktiv.", "en": "I find you attractive.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-07", "es": "Hast du Lust auf ein Bier?", "en": "Want to grab a beer?", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-15", "es": "Ich mag dich.", "en": "I like you.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-16", "es": "Wollen wir woanders hingehen?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-06", "practice": false, "es": "Ich find dich echt attraktiv.", "en": "I find you attractive.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-07", "practice": false, "es": "Hast du Lust auf ein Bier?", "en": "Want to grab a beer?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-15", "practice": false, "es": "Ich mag dich.", "en": "I like you.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-16", "practice": false, "es": "Wollen wir woanders hingehen?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-flirt-17", "es": "Bleibst du noch?", "en": "Are you staying a bit longer?", "difficulty": "medium", "quizQuestions": [] },
             {
               "id": "de-flirt-18",
@@ -545,22 +1288,169 @@
               "difficulty": "easy",
               "quizQuestions": []
             },
-            { "id": "de-flirt-19", "es": "Gibst du mir deine Nummer?", "en": "Can I have your number?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-19", "practice": false, "es": "Gibst du mir deine Nummer?", "en": "Can I have your number?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-20", "es": "Das war ein schöner Abend mit dir.", "en": "That was a lovely evening with you.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-flirt-sc-06",
+              "teaches": "de-flirt-06",
+              "speaker": "them",
+              "situation": { "en": "They ask, half joking, why you keep looking over." },
+              "question": { "es": "Warum guckst du eigentlich immer her?", "en": "Why do you keep looking over here?" },
+              "answers": [
+                { "es": "Ich find dich echt attraktiv.", "en": "I find you really attractive." }
+              ],
+              "likelyReply": { "es": "Immerhin ehrlich.", "en": "Honest, at least." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-07",
+              "teaches": "de-flirt-07",
+              "speaker": "them",
+              "situation": { "en": "The group is splitting up and you'd like to see this one person again." },
+              "question": { "es": "Ich glaub, ich fahr dann heim.", "en": "I think I'll head home, then." },
+              "answers": [
+                { "es": "Hast du Lust auf ein Bier?", "en": "Want to grab a beer?" }
+              ],
+              "likelyReply": { "es": "Gern, aber ein andermal.", "en": "I'd like to — another time." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-08",
+              "teaches": "de-flirt-15",
+              "speaker": "them",
+              "situation": { "en": "They ask what this actually is, directly, because it is late and nobody is pretending." },
+              "question": { "es": "Was ist das hier eigentlich?", "en": "What is this, actually?" },
+              "answers": [
+                { "es": "Ich mag dich.", "en": "I like you." }
+              ],
+              "likelyReply": { "es": "Gut, dass du's sagst.", "en": "Good that you said it." },
+              "notes": "Mögen is to like and here it means it. Lieben is a long way further on and not a first-night word in German either.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-09",
+              "teaches": "de-flirt-16",
+              "speaker": "them",
+              "situation": { "en": "The music has got loud enough that you're both shouting." },
+              "question": { "es": "Ich versteh kein Wort!", "en": "I can't understand a word!" },
+              "answers": [
+                { "es": "Wollen wir woanders hingehen?", "en": "Shall we go somewhere else?" }
+              ],
+              "likelyReply": { "es": "Ja, ich kenn was Ruhiges.", "en": "Yes — I know somewhere quiet." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-10",
+              "teaches": "de-flirt-19",
+              "speaker": "them",
+              "situation": { "en": "Their friends are at the door and you have about five seconds." },
+              "question": { "es": "Ich muss mit denen mit.", "en": "I have to go with them." },
+              "answers": [
+                { "es": "Gibst du mir deine Nummer?", "en": "Can I have your number?" }
+              ],
+              "likelyReply": { "es": "Gib mir dein Handy.", "en": "Give me your phone." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "de-flirt-respect",
           "title": "Respect",
           "phrases": [
-            { "id": "de-flirt-08", "es": "Kein Stress, wenn nicht.", "en": "No pressure if not.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-09", "es": "Alles gut, ich respektiere das.", "en": "All good, I respect that.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-08", "practice": false, "es": "Kein Stress, wenn nicht.", "en": "No pressure if not.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-09", "practice": false, "es": "Alles gut, ich respektiere das.", "en": "All good, I respect that.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-flirt-21", "es": "Kein Problem, wirklich.", "en": "Honestly, no problem.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-22", "es": "Ich lass dich in Ruhe.", "en": "I'll leave you to it.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-22", "practice": false, "es": "Ich lass dich in Ruhe.", "en": "I'll leave you to it.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-23", "es": "War schön, dich kennenzulernen.", "en": "It was good to meet you.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-24", "es": "Alles klar, viel Spaß noch.", "en": "All good — enjoy your night.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-25", "es": "Sorry, hab ich falsch verstanden.", "en": "Sorry, I misread that.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-26", "es": "Ich wollte nicht aufdringlich sein.", "en": "I didn't mean to be pushy.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "de-flirt-25", "practice": false, "es": "Sorry, hab ich falsch verstanden.", "en": "Sorry, I misread that.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-26", "practice": false, "es": "Ich wollte nicht aufdringlich sein.", "en": "I didn't mean to be pushy.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-flirt-sc-11",
+              "teaches": "de-flirt-08",
+              "speaker": "them",
+              "situation": { "en": "You've suggested carrying on somewhere else and they've gone quiet." },
+              "question": { "es": "Ich weiß nicht so recht…", "en": "I'm not really sure…" },
+              "answers": [
+                { "es": "Kein Stress, wenn nicht.", "en": "No pressure if not." }
+              ],
+              "likelyReply": { "es": "Danke, das ist lieb.", "en": "Thanks — that's kind." },
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-12",
+              "teaches": "de-flirt-09",
+              "speaker": "them",
+              "situation": { "en": "They tell you they're seeing somebody already." },
+              "question": { "es": "Ich bin eigentlich vergeben.", "en": "I'm actually seeing someone." },
+              "answers": [
+                { "es": "Alles gut, ich respektiere das.", "en": "All good — I respect that." }
+              ],
+              "likelyReply": { "es": "Schön, dass wir geredet haben.", "en": "Good that we talked." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-13",
+              "teaches": "de-flirt-22",
+              "speaker": "them",
+              "situation": { "en": "They've given one-word answers twice and are looking at their phone." },
+              "question": { "es": "Sorry, ich bin heut nicht so da.", "en": "Sorry — I'm not really here tonight." },
+              "answers": [
+                { "es": "Ich lass dich in Ruhe.", "en": "I'll leave you to it." }
+              ],
+              "likelyReply": { "es": "Danke fürs Verständnis.", "en": "Thanks for understanding." },
+              "notes": "Leaving cleanly is the skill. Said once, without a sigh, and then actually done.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-14",
+              "teaches": "de-flirt-25",
+              "speaker": "them",
+              "situation": { "en": "You read the evening as going one way and it was going another." },
+              "question": { "es": "Ich wollte echt nur reden.", "en": "I honestly just wanted to talk." },
+              "answers": [
+                { "es": "Sorry, hab ich falsch verstanden.", "en": "Sorry — I misread that." }
+              ],
+              "likelyReply": { "es": "Kein Ding.", "en": "No big deal." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-15",
+              "teaches": "de-flirt-26",
+              "speaker": "them",
+              "situation": { "en": "You realise you've been standing closer than they are comfortable with." },
+              "question": { "es": "Ein bisschen Platz wär gut.", "en": "A bit of space would be good." },
+              "answers": [
+                { "es": "Ich wollte nicht aufdringlich sein.", "en": "I didn't mean to be pushy." }
+              ],
+              "likelyReply": { "es": "Passt schon, danke.", "en": "It's fine — thanks." },
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -568,13 +1458,87 @@
           "title": "Quick consent check",
           "phrases": [
             { "id": "de-flirt-10", "es": "Darf ich dir was sagen?", "en": "Can I tell you something?", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-11", "es": "Ist es okay, wenn ich dich auf einen Drink einlade?", "en": "Is it okay if I ask you for a drink?", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-27", "es": "Ist das okay für dich?", "en": "Is this okay with you?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-28", "es": "Soll ich gehen?", "en": "Do you want me to go?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-11", "practice": false, "es": "Ist es okay, wenn ich dich auf einen Drink einlade?", "en": "Is it okay if I ask you for a drink?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-27", "practice": false, "es": "Ist das okay für dich?", "en": "Is this okay with you?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-28", "practice": false, "es": "Soll ich gehen?", "en": "Do you want me to go?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-29", "es": "Sag einfach, wenn's zu viel ist.", "en": "Just say if it's too much.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-flirt-30", "es": "Darf ich mich setzen?", "en": "May I sit down?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-31", "es": "Möchtest du lieber allein sein?", "en": "Would you rather be on your own?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-flirt-30", "practice": false, "es": "Darf ich mich setzen?", "en": "May I sit down?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-31", "practice": false, "es": "Möchtest du lieber allein sein?", "en": "Would you rather be on your own?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-flirt-32", "es": "Passt das so für dich?", "en": "Are you comfortable with this?", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-flirt-sc-16",
+              "teaches": "de-flirt-11",
+              "speaker": "them",
+              "situation": { "en": "Their glass is empty and you're already halfway to standing up." },
+              "question": { "es": "Meins ist leer, glaub ich.", "en": "Mine's empty, I think." },
+              "answers": [
+                { "es": "Ist es okay, wenn ich dich auf einen Drink einlade?", "en": "Is it okay if I buy you a drink?" }
+              ],
+              "likelyReply": { "es": "Ja, gern.", "en": "Yes — please do." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-17",
+              "teaches": "de-flirt-27",
+              "speaker": "them",
+              "situation": { "en": "You've put an arm along the back of the bench they're sitting on." },
+              "question": { "es": "Hmm…", "en": "Hmm…" },
+              "answers": [
+                { "es": "Ist das okay für dich?", "en": "Is this okay with you?" }
+              ],
+              "likelyReply": { "es": "Ja, ist schön.", "en": "Yes — it's nice." },
+              "notes": "",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-18",
+              "teaches": "de-flirt-28",
+              "speaker": "them",
+              "situation": { "en": "Their friends have arrived and the mood at the table has changed." },
+              "question": { "es": "Da sind meine Freundinnen.", "en": "My friends are here." },
+              "answers": [
+                { "es": "Soll ich gehen?", "en": "Do you want me to go?" }
+              ],
+              "likelyReply": { "es": "Nein, bleib noch.", "en": "No — stay a bit." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-19",
+              "teaches": "de-flirt-30",
+              "speaker": "them",
+              "situation": { "en": "There's one free chair at the table and you've been talking across the room." },
+              "question": { "es": "Suchst du einen Platz?", "en": "Looking for a seat?" },
+              "answers": [
+                { "es": "Darf ich mich setzen?", "en": "May I sit down?" }
+              ],
+              "likelyReply": { "es": "Klar, setz dich.", "en": "Of course — sit down." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-flirt-sc-20",
+              "teaches": "de-flirt-31",
+              "speaker": "them",
+              "situation": { "en": "They've been looking out of the window rather than at the party for a while." },
+              "question": { "es": "Ich brauchte kurz Luft.", "en": "I just needed some air." },
+              "answers": [
+                { "es": "Möchtest du lieber allein sein?", "en": "Would you rather be on your own?" }
+              ],
+              "likelyReply": { "es": "Nur kurz, danke.", "en": "Just for a moment — thanks." },
+              "notes": "Offering the exit is the point. Asked once and accepted without an argument is the whole difference.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -1543,27 +2507,105 @@
           "title": "Berlinerisch — the words that give it away",
           "phrases": [
             { "id": "de-berlin-01", "es": "icke / ick", "en": "I — Berlin's own version of ich.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
-            { "id": "de-berlin-02", "es": "wat", "en": "What — wat and det replace was and das.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-02", "practice": false, "es": "wat", "en": "What — wat and det replace was and das.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
             {
               "id": "de-berlin-03",
+              "practice": false,
               "es": "det",
               "en": "That — Berlin's das.",
               "difficulty": "easy",
               "region": "berlin",
               "quizQuestions": []
             },
-            { "id": "de-berlin-04", "es": "knorke", "en": "Brilliant — old Berlin, still said with a wink.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-04", "practice": false, "es": "knorke", "en": "Brilliant — old Berlin, still said with a wink.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
             { "id": "de-berlin-05", "es": "dufte", "en": "Great — same vintage as knorke, same wink.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
-            { "id": "de-berlin-06", "es": "Jibbet nich.", "en": "Not happening — \"gibt es nicht\" in a Berlin mouth.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-06", "practice": false, "es": "Jibbet nich.", "en": "Not happening — \"gibt es nicht\" in a Berlin mouth.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
             { "id": "de-berlin-07", "es": "Wa?", "en": "Eh? / right? — the tag stuck on the end of everything.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
-            { "id": "de-berlin-08", "es": "Kiek ma!", "en": "Look at that! — \"guck mal\" up here.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] }
+            { "id": "de-berlin-08", "practice": false, "es": "Kiek ma!", "en": "Look at that! — \"guck mal\" up here.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-berlin-sc-01",
+              "teaches": "de-berlin-02",
+              "speaker": "them",
+              "situation": { "en": "Someone behind the Späti counter says something you don't catch." },
+              "question": { "es": "Wat solln det jetzt?", "en": "What's that supposed to be?" },
+              "answers": [
+                { "es": "Wat hast du jesagt?", "en": "What did you say?" }
+              ],
+              "likelyReply": { "es": "Ick sach, dit kostet zwei Euro.", "en": "I said, that's two euros." },
+              "notes": "Berlin turns was into wat and das into det, and it does it in nearly every sentence. Reading it is harder than hearing it.",
+              "difficulty": "easy",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-02",
+              "teaches": "de-berlin-03",
+              "speaker": "them",
+              "situation": { "en": "You're at an Imbiss counter pointing at something you don't know the name of." },
+              "question": { "es": "Wat darf's sein?", "en": "What'll it be?" },
+              "answers": [
+                { "es": "Det da, bitte.", "en": "That one there, please." }
+              ],
+              "likelyReply": { "es": "Kommt sofort.", "en": "Coming right up." },
+              "notes": "Det is Berlin's das. Pointing and saying det da will get you fed anywhere in the city.",
+              "difficulty": "easy",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-03",
+              "teaches": "de-berlin-04",
+              "speaker": "them",
+              "situation": { "en": "A friend shows you the roof terrace that comes with their flat." },
+              "question": { "es": "Und det jehört alles zur Wohnung.", "en": "And all this comes with the flat." },
+              "answers": [
+                { "es": "Knorke!", "en": "Brilliant!" }
+              ],
+              "likelyReply": { "es": "Wa? Hab ick Jlück jehabt.", "en": "Right? I got lucky." },
+              "notes": "Old Berlin, and still said — usually with a wink, because everybody knows how old it is.",
+              "difficulty": "medium",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-04",
+              "teaches": "de-berlin-06",
+              "speaker": "them",
+              "situation": { "en": "Someone asks whether there's a direct train out to the lake on a Sunday." },
+              "question": { "es": "Jibt's da 'ne Direktverbindung?", "en": "Is there a direct connection?" },
+              "answers": [
+                { "es": "Jibbet nich.", "en": "Not happening." }
+              ],
+              "likelyReply": { "es": "Dann eben umsteigen.", "en": "We'll change, then." },
+              "notes": "Gibt es nicht, in a Berlin mouth. The g goes to a j and the whole thing collapses into one word.",
+              "difficulty": "hard",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-05",
+              "teaches": "de-berlin-08",
+              "speaker": "you",
+              "situation": { "en": "You spot something on the far side of the canal worth pointing out." },
+              "question": { "es": "Kiek ma, da drüben!", "en": "Look at that, over there!" },
+              "answers": [
+                { "es": "Wo denn? Ach, ja!", "en": "Where? Oh — yes!" }
+              ],
+              "likelyReply": null,
+              "notes": "Guck mal, up here. Kieken is the Berlin verb for looking, and you will hear it before you ever need to say it.",
+              "difficulty": "hard",
+              "region": "berlin",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "de-berlin-life",
           "title": "Späti, Kiez and what things are called here",
           "phrases": [
-            { "id": "de-berlin-09", "es": "der Späti", "en": "The late-night corner shop — a Berlin institution and your 2am friend.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-09", "practice": false, "es": "der Späti", "en": "The late-night corner shop — a Berlin institution and your 2am friend.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
             {
               "id": "de-berlin-10",
               "es": "der Kiez",
@@ -1572,9 +2614,10 @@
               "region": "berlin",
               "quizQuestions": []
             },
-            { "id": "de-berlin-11", "es": "eine Schrippe", "en": "A bread roll — a Brötchen elsewhere, a Semmel in Bayern.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-11", "practice": false, "es": "eine Schrippe", "en": "A bread roll — a Brötchen elsewhere, a Semmel in Bayern.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
             {
               "id": "de-berlin-12",
+              "practice": false,
               "es": "ein Pfannkuchen",
               "en": "A jam doughnut. A pancake here is an Eierkuchen — order carefully.",
               "difficulty": "medium",
@@ -1582,9 +2625,86 @@
               "quizQuestions": []
             },
             { "id": "de-berlin-13", "es": "eine Bulette", "en": "A meat patty — a Frikadelle in most of the country.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
-            { "id": "de-berlin-14", "es": "eine Stulle", "en": "A sandwich — a buttered slice with something on top.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
-            { "id": "de-berlin-15", "es": "ein Wegbier", "en": "A beer for the walk — legal in public and completely unremarkable.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-14", "practice": false, "es": "eine Stulle", "en": "A sandwich — a buttered slice with something on top.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-15", "practice": false, "es": "ein Wegbier", "en": "A beer for the walk — legal in public and completely unremarkable.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
             { "id": "de-berlin-16", "es": "eine Eckkneipe", "en": "The corner pub — cheap, old, open late, and nothing like a bar.", "difficulty": "medium", "region": "berlin", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-berlin-sc-06",
+              "teaches": "de-berlin-09",
+              "speaker": "them",
+              "situation": { "en": "It's two in the morning and the party has run out of everything." },
+              "question": { "es": "Wir haben nix mehr da.", "en": "We've got nothing left." },
+              "answers": [
+                { "es": "Ich geh zum Späti.", "en": "I'll go to the Späti." }
+              ],
+              "likelyReply": { "es": "Bring Chips mit.", "en": "Bring crisps." },
+              "notes": "The late-night corner shop, open when nothing else is, and the reason a Berlin evening never quite has to end.",
+              "difficulty": "easy",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-07",
+              "teaches": "de-berlin-11",
+              "speaker": "them",
+              "situation": { "en": "You're at a Berlin bakery and the word you learned in Munich is the wrong one." },
+              "question": { "es": "Wat darf ick Ihnen jeben?", "en": "Right, what are you after?" },
+              "answers": [
+                { "es": "Zwei Schrippen, bitte.", "en": "Two bread rolls, please." }
+              ],
+              "likelyReply": { "es": "Sonst noch wat?", "en": "Anything else?" },
+              "notes": "A Schrippe in Berlin, a Semmel in Bayern, a Brötchen almost everywhere else. Same roll, and the word places you instantly.",
+              "difficulty": "medium",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-08",
+              "teaches": "de-berlin-12",
+              "speaker": "them",
+              "situation": { "en": "You want a jam doughnut and the word for it here is not the word you expect." },
+              "question": { "es": "Wat möchten Se denn?", "en": "What would you like?" },
+              "answers": [
+                { "es": "Einen Pfannkuchen, bitte.", "en": "A jam doughnut, please." }
+              ],
+              "likelyReply": { "es": "Mit Pflaumenmus?", "en": "With plum jam?" },
+              "notes": "A Pfannkuchen is a doughnut in Berlin and a pancake almost everywhere else. Ask for one in Munich and you get a pancake.",
+              "difficulty": "medium",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-09",
+              "teaches": "de-berlin-14",
+              "speaker": "them",
+              "situation": { "en": "Somebody asks what you want to take to the park." },
+              "question": { "es": "Was nehmen wir mit?", "en": "What are we taking?" },
+              "answers": [
+                { "es": "Ich mach uns Stullen.", "en": "I'll make us some sandwiches." }
+              ],
+              "likelyReply": { "es": "Perfekt, ich nehm die Decke.", "en": "Perfect — I'll take the blanket." },
+              "notes": "A Stulle is a buttered slice with something on it, and the word is northern. Down south it is a belegtes Brot.",
+              "difficulty": "medium",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-berlin-sc-10",
+              "teaches": "de-berlin-15",
+              "speaker": "them",
+              "situation": { "en": "You're walking to the next bar and someone offers to stop at the Späti on the way." },
+              "question": { "es": "Sollen wir kurz anhalten?", "en": "Shall we stop quickly?" },
+              "answers": [
+                { "es": "Ja, ich hol mir ein Wegbier.", "en": "Yes — I'll get a beer for the walk." }
+              ],
+              "likelyReply": { "es": "Mir auch eins.", "en": "Get me one too." },
+              "notes": "Drinking in public is legal here and entirely unremarkable. The bottle opener on the Späti counter is there for exactly this.",
+              "difficulty": "easy",
+              "region": "berlin",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -1827,14 +2947,87 @@
           "id": "de-nightlife-slang",
           "title": "Going-out slang",
           "phrases": [
-            { "id": "de-nightlife-17", "es": "vorglühen", "en": "To pre-drink — literally \"to pre-glow\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-17", "practice": false, "es": "vorglühen", "en": "To pre-drink — literally \"to pre-glow\".", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-nightlife-18", "es": "die Sperrstunde", "en": "Closing time — largely theoretical in Berlin.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-nightlife-19", "es": "der Türsteher", "en": "The bouncer — the person who decides how your night goes.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-nightlife-20", "es": "abtanzen", "en": "To dance it properly out of your system.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-nightlife-21", "es": "einen draufmachen", "en": "To go big tonight.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-nightlife-22", "es": "durchmachen", "en": "To go straight through until morning.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-nightlife-23", "es": "auf ex", "en": "In one — downing a drink in a single go.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-nightlife-20", "practice": false, "es": "abtanzen", "en": "To dance it properly out of your system.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-21", "practice": false, "es": "einen draufmachen", "en": "To go big tonight.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-22", "practice": false, "es": "durchmachen", "en": "To go straight through until morning.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-nightlife-23", "practice": false, "es": "auf ex", "en": "In one — downing a drink in a single go.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "de-nightlife-24", "es": "das Feierabendbier", "en": "The after-work beer — an institution rather than an event.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-night-sc-01",
+              "teaches": "de-nightlife-17",
+              "speaker": "them",
+              "situation": { "en": "Somebody invites you out and you want to know about the bit before." },
+              "question": { "es": "Wir sind um eins im Club.", "en": "We'll be at the club at one." },
+              "answers": [
+                { "es": "Wird vorher vorgeglüht?", "en": "Is there pre-drinking beforehand?" }
+              ],
+              "likelyReply": { "es": "Ja, ab zehn bei mir.", "en": "Yes — from ten at mine." },
+              "notes": "Literally to pre-glow. Berlin clubs fill after midnight, so the flat beforehand is most of the evening.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-night-sc-02",
+              "teaches": "de-nightlife-20",
+              "speaker": "them",
+              "situation": { "en": "A track everybody knows comes on and your friend is still at the table." },
+              "question": { "es": "Die Nummer ist gut!", "en": "This track's good!" },
+              "answers": [
+                { "es": "Komm, wir gehen abtanzen.", "en": "Come on — let's go and dance." }
+              ],
+              "likelyReply": { "es": "Ein Lied, mehr nicht.", "en": "One song, that's it." },
+              "notes": "Not just tanzen: abtanzen is dancing it out of your system, properly and for a while.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-night-sc-03",
+              "teaches": "de-nightlife-21",
+              "speaker": "them",
+              "situation": { "en": "It's somebody's last night in the city and nobody has plans." },
+              "question": { "es": "Was machen wir heute?", "en": "What are we doing today?" },
+              "answers": [
+                { "es": "Heute machen wir einen drauf.", "en": "Tonight we're going big." }
+              ],
+              "likelyReply": { "es": "Dann schlaf ich morgen.", "en": "I'll sleep tomorrow, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-night-sc-04",
+              "teaches": "de-nightlife-22",
+              "speaker": "them",
+              "situation": { "en": "It's five in the morning and somebody asks whether you're going home." },
+              "question": { "es": "Fährst du jetzt heim?", "en": "Are you heading home now?" },
+              "answers": [
+                { "es": "Nee, wir machen durch.", "en": "Nope — we're going straight through." }
+              ],
+              "likelyReply": { "es": "Dann Frühstück um acht.", "en": "Breakfast at eight, then." },
+              "notes": "Durchmachen is going through without sleeping, and in Berlin it is often the actual plan rather than an accident.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-night-sc-05",
+              "teaches": "de-nightlife-23",
+              "speaker": "them",
+              "situation": { "en": "A tray of shots arrives and somebody is waiting for everyone to be ready." },
+              "question": { "es": "Alle so weit?", "en": "Everybody ready?" },
+              "answers": [
+                { "es": "Auf ex!", "en": "Down in one!" }
+              ],
+              "likelyReply": { "es": "Auf uns!", "en": "To us!" },
+              "notes": "Ex is from the Latin. Auf ex is in one go, and it is what people say instead of counting down.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -1855,16 +3048,117 @@
           "id": "de-drunk-levels",
           "title": "The scale, bottom to top",
           "phrases": [
-            { "id": "de-drunk-01", "es": "beschwipst", "en": "Tipsy, in the nicest way — from schwippen, to sway.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-drunk-02", "es": "angeheitert", "en": "Merry — the polite one, safe at a work party.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-drunk-01", "practice": false, "es": "beschwipst", "en": "Tipsy, in the nicest way — from schwippen, to sway.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-drunk-02", "practice": false, "es": "angeheitert", "en": "Merry — the polite one, safe at a work party.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-drunk-03", "es": "einen sitzen haben", "en": "To have had a few — literally \"to have one sitting\".", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-drunk-04", "es": "blau sein", "en": "To be drunk — literally \"to be blue\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-drunk-04", "practice": false, "es": "blau sein", "en": "To be drunk — literally \"to be blue\".", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-drunk-05", "es": "betrunken", "en": "Drunk — the standard, neutral word.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-drunk-06", "es": "besoffen", "en": "Plastered — informal, a bit crude, very common.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-drunk-07", "es": "hacke dicht", "en": "Hammered — Berlin's own, and said with some pride.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
-            { "id": "de-drunk-08", "es": "sturzbetrunken", "en": "Falling-down drunk.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-drunk-06", "practice": false, "es": "besoffen", "en": "Plastered — informal, a bit crude, very common.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-drunk-07", "practice": false, "es": "hacke dicht", "en": "Hammered — Berlin's own, and said with some pride.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-drunk-08", "practice": false, "es": "sturzbetrunken", "en": "Falling-down drunk.", "difficulty": "hard", "quizQuestions": [] },
             { "id": "de-drunk-09", "es": "eine Schnapsleiche", "en": "Someone who has gone under — literally a \"schnapps corpse\".", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "de-drunk-10", "es": "total durch sein", "en": "Completely gone.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "de-drunk-10", "practice": false, "es": "total durch sein", "en": "Completely gone.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-drunk-sc-01",
+              "teaches": "de-drunk-01",
+              "speaker": "them",
+              "situation": { "en": "Two glasses of Sekt in, somebody checks how you're getting on." },
+              "question": { "es": "Und? Wie geht's dir so?", "en": "So? How are you doing?" },
+              "answers": [
+                { "es": "Ich bin schon leicht beschwipst.", "en": "I'm already slightly tipsy." }
+              ],
+              "likelyReply": { "es": "Das Zeug hat's in sich.", "en": "That stuff is stronger than it looks." },
+              "notes": "From schwippen, to sway. The bottom of the scale and the nicest word on it.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-sc-02",
+              "teaches": "de-drunk-02",
+              "speaker": "them",
+              "situation": { "en": "A colleague at the office Christmas party asks whether you've had too much." },
+              "question": { "es": "Hast du zu viel gehabt?", "en": "Have you had too much?" },
+              "answers": [
+                { "es": "Nur angeheitert, keine Sorge.", "en": "Just merry — don't worry." }
+              ],
+              "likelyReply": { "es": "Trink mal Wasser dazu.", "en": "Have some water with it." },
+              "notes": "The polite one, and the one to use at a work party. It says merry without admitting to drunk.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-sc-03",
+              "teaches": "de-drunk-04",
+              "speaker": "them",
+              "situation": { "en": "Somebody asks how the friend asleep in the armchair ended up there." },
+              "question": { "es": "Was ist denn mit ihm los?", "en": "What's up with him?" },
+              "answers": [
+                { "es": "Der ist völlig blau.", "en": "He's completely drunk." }
+              ],
+              "likelyReply": { "es": "Wir wecken ihn gleich.", "en": "We'll wake him in a minute." },
+              "notes": "Literally to be blue, and nobody agrees why. Everyday, and said about somebody more often than about yourself.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-sc-04",
+              "teaches": "de-drunk-06",
+              "speaker": "them",
+              "situation": { "en": "It's two in the morning and somebody is already on their way to the bar for you." },
+              "question": { "es": "Noch eins für dich?", "en": "Another one for you?" },
+              "answers": [
+                { "es": "Ich bin echt besoffen.", "en": "I'm really plastered." }
+              ],
+              "likelyReply": { "es": "Dann Wasser.", "en": "Water, then." },
+              "notes": "Informal and a bit crude, and extremely common. Betrunken is what you'd write; besoffen is what you'd say.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-sc-05",
+              "teaches": "de-drunk-07",
+              "speaker": "them",
+              "situation": { "en": "Someone asks how your night in Kreuzberg ended." },
+              "question": { "es": "Wie war's am Ende?", "en": "How did it end up?" },
+              "answers": [
+                { "es": "Ich war hacke dicht.", "en": "I was hammered." }
+              ],
+              "likelyReply": { "es": "Willkommen in Berlin.", "en": "Welcome to Berlin." },
+              "notes": "Berlin's own, and said with a certain amount of pride. Hacke alone does the job too.",
+              "difficulty": "hard",
+              "region": "berlin",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-sc-06",
+              "teaches": "de-drunk-08",
+              "speaker": "them",
+              "situation": { "en": "Somebody in the group can no longer stand up without help." },
+              "question": { "es": "Kannst du ihn halten?", "en": "Can you hold him up?" },
+              "answers": [
+                { "es": "Er ist sturzbetrunken.", "en": "He's falling-down drunk." }
+              ],
+              "likelyReply": { "es": "Ich ruf ein Taxi.", "en": "I'll call a taxi." },
+              "notes": "Sturz is a fall, and the compound says exactly what it looks like.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-drunk-sc-07",
+              "teaches": "de-drunk-10",
+              "speaker": "them",
+              "situation": { "en": "You've hit the point where the room has stopped being interesting." },
+              "question": { "es": "Wir ziehen noch weiter, kommst du mit?", "en": "We're going on somewhere — coming?" },
+              "answers": [
+                { "es": "Ich bin total durch.", "en": "I'm completely done." }
+              ],
+              "likelyReply": { "es": "Dann bring ich dich heim.", "en": "I'll take you home, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -2214,14 +3508,86 @@
           "id": "de-resacon-morning",
           "title": "Hangover vocabulary",
           "phrases": [
-            { "id": "de-resacon-09", "es": "der Kater", "en": "The hangover — literally \"the tomcat\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-resacon-09", "practice": false, "es": "der Kater", "en": "The hangover — literally \"the tomcat\".", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-resacon-10", "es": "verkatert", "en": "Hungover.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-resacon-11", "es": "das Katerfrühstück", "en": "The hangover breakfast — salty, and a genuine institution.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-resacon-12", "es": "das Konterbier", "en": "Hair of the dog — literally the \"counter-beer\".", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-resacon-13", "es": "der Filmriss", "en": "A blackout — literally the film tearing mid-reel.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-resacon-12", "practice": false, "es": "das Konterbier", "en": "Hair of the dog — literally the \"counter-beer\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-resacon-13", "practice": false, "es": "der Filmriss", "en": "A blackout — literally the film tearing mid-reel.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-resacon-14", "es": "der Restalkohol", "en": "What's still in you this morning — the word that stops you driving.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-resacon-15", "es": "einen Brand haben", "en": "To be desperately thirsty the day after — literally to have a fire.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "de-resacon-16", "es": "Nie wieder Alkohol.", "en": "Never again. Said sincerely, roughly monthly.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "de-resacon-15", "practice": false, "es": "einen Brand haben", "en": "To be desperately thirsty the day after — literally to have a fire.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-resacon-16", "practice": false, "es": "Nie wieder Alkohol.", "en": "Never again. Said sincerely, roughly monthly.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "de-resacon-sc-01",
+              "teaches": "de-resacon-09",
+              "speaker": "them",
+              "situation": { "en": "You appear in the kitchen at one in the afternoon and say nothing." },
+              "question": { "es": "Guten Morgen — oder auch nicht.", "en": "Good morning — or maybe not." },
+              "answers": [
+                { "es": "Ich hab einen fetten Kater.", "en": "I've got a monster hangover." }
+              ],
+              "likelyReply": { "es": "Kaffee steht da.", "en": "Coffee's over there." },
+              "notes": "Der Kater is the tomcat, and the hangover both. Probably from Katarrh rather than the animal, though nobody lets that get in the way.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-sc-02",
+              "teaches": "de-resacon-12",
+              "speaker": "them",
+              "situation": { "en": "Somebody opens a beer at eleven the next morning and offers you one." },
+              "question": { "es": "Willst du auch eins?", "en": "Do you want one too?" },
+              "answers": [
+                { "es": "Ein Konterbier, warum nicht.", "en": "Hair of the dog — why not." }
+              ],
+              "likelyReply": { "es": "Das rächt sich später.", "en": "You'll pay for that later." },
+              "notes": "Literally the counter-beer. The theory is disputed; the practice is widespread.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-sc-03",
+              "teaches": "de-resacon-13",
+              "speaker": "them",
+              "situation": { "en": "A friend asks what happened after midnight and you have nothing at all." },
+              "question": { "es": "Weißt du noch, was danach war?", "en": "Do you remember what happened after that?" },
+              "answers": [
+                { "es": "Ich hab einen Filmriss.", "en": "I've got a total blackout." }
+              ],
+              "likelyReply": { "es": "Dann erzähl ich's dir.", "en": "I'll tell you, then." },
+              "notes": "Literally the film tearing mid-reel, from the days when that happened in cinemas. The most vivid word in this section.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-sc-04",
+              "teaches": "de-resacon-15",
+              "speaker": "them",
+              "situation": { "en": "You've drunk three glasses of water and are pouring a fourth." },
+              "question": { "es": "Du trinkst ja literweise.", "en": "You're drinking by the litre." },
+              "answers": [
+                { "es": "Ich hab voll den Brand.", "en": "I'm absolutely parched." }
+              ],
+              "likelyReply": { "es": "Nimm Mineralwasser.", "en": "Have some mineral water." },
+              "notes": "Literally to have a fire. It is the thirst specifically, not the headache.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-resacon-sc-05",
+              "teaches": "de-resacon-16",
+              "speaker": "them",
+              "situation": { "en": "A friend catches you swearing off alcohol for what must be the hundredth time." },
+              "question": { "es": "Wie oft hast du das jetzt gesagt?", "en": "How many times have you said that now?" },
+              "answers": [
+                { "es": "Nie wieder Alkohol.", "en": "Never again." }
+              ],
+              "likelyReply": { "es": "Bis Samstag.", "en": "See you Saturday." },
+              "notes": "Said with total sincerity, roughly monthly.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         }
       ]
