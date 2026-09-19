@@ -255,11 +255,17 @@ export default function PracticePath({
                       />
                     </svg>
                   ) : node.parts > 1 ? (
-                    // Which part comes next, rather than an anonymous dot: on a
-                    // stone you come back to three times, the one thing worth
-                    // knowing at a glance is where you left off.
+                    // How much of the section is done, rather than an anonymous
+                    // dot: on a stone you come back to five times, that is the
+                    // one thing worth knowing at a glance.
+                    //
+                    // Done, not next. Numbering the part you are about to play
+                    // put "2/2" on a section that was half finished, which is
+                    // what a finished one would look like — while the ring
+                    // beside it was drawn at a half. All three now say the same
+                    // thing, and a full section shows a tick instead.
                     <span className="stone-part" aria-hidden="true">
-                      {node.done + 1}
+                      {node.done}
                       <span className="stone-part-of">/{node.parts}</span>
                     </span>
                   ) : (
@@ -268,18 +274,11 @@ export default function PracticePath({
                 </button>
               </div>
 
-              <span className="stone-label">
-                {node.title}
-                {/* Only once there is progress to report. "0 of 5 done" under
-                    every untouched section is the to-do list the stone count
-                    was already accused of being, and the stone itself already
-                    says which part is next. */}
-                {node.parts > 1 && node.done > 0 && !node.cleared && (
-                  <span className="stone-score">
-                    {node.done} of {node.parts} done
-                  </span>
-                )}
-              </span>
+              {/* The stone carries the count and the ring carries the
+                  fraction, so a line of text under the title saying the same
+                  thing a third time only makes the label taller. The words are
+                  on the button's aria-label, where they are needed. */}
+              <span className="stone-label">{node.title}</span>
 
               {node.current && <span className="stone-here">Start here</span>}
             </li>

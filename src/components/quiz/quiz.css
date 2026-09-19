@@ -1471,14 +1471,6 @@
   color: var(--color-ink);
 }
 
-.stone-score {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: var(--color-ink-soft);
-}
-
 .stone-here {
   font-size: 0.68rem;
   font-weight: 800;
