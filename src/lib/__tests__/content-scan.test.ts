@@ -224,29 +224,35 @@ describe("content integrity", () => {
       }
     });
 
-    it("gives every scene a word from its own list to carry", () => {
-      // A scene exists to put one of the subsection's words in a moment. One
-      // that shares no word with the list beside it has drifted into being a
-      // second dialogue section, and the word it was meant to teach is now
-      // taught nowhere.
-      const strays: string[] = [];
+    it("hands every word it stops asking about to a scene", () => {
+      // The invariant the whole split rests on. A phrase marked
+      // `practice: false` has come out of the deck because a scene now teaches
+      // it inside a line — so if no scene claims it, the word is on the
+      // scenario page and nowhere else, and practice quietly stopped teaching
+      // it. Checked both ways: a scene naming a word that is still asked as a
+      // definition is the same mistake from the other end.
       for (const category of getCategories(locale)) {
         for (const sub of category.subsections) {
           const scenes = sub.scenes ?? [];
-          if (scenes.length === 0) continue;
-          const words = ((sub as PhrasebookSubsection).phrases ?? []).flatMap((p) =>
-            normalizeAnswer(p.es).split(" ").filter((w) => w.length > 2)
-          );
-          const vocabulary = new Set(words);
-          for (const scene of scenes) {
-            const said = [scene.question.es, ...scene.answers.map((a) => a.es)]
-              .flatMap((line) => normalizeAnswer(line).split(" "))
-              .filter(Boolean);
-            if (!said.some((w) => vocabulary.has(w))) strays.push(`${scene.id} in ${sub.id}`);
+          const phrases = (sub as PhrasebookSubsection).phrases ?? [];
+          // Nothing to hand over where there is no word list: scenes on a
+          // dialogue subsection are simply material that was missing.
+          if (scenes.length === 0 || phrases.length === 0) continue;
+          const known = new Set(phrases.map((p) => p.id));
+          const taught = scenes.map((s) => s.teaches);
+
+          for (const id of taught) {
+            expect(id, `a scene in ${sub.id} names no phrase`).toBeTruthy();
+            expect(known.has(id!), `${sub.id}: no phrase ${id} for a scene to teach`).toBe(true);
           }
+          expect(new Set(taught).size, `${sub.id} has two scenes on one word`).toBe(taught.length);
+
+          const dropped = phrases.filter((p) => p.practice === false).map((p) => p.id);
+          expect([...dropped].sort(), `${sub.id}: dropped words and taught words differ`).toEqual(
+            [...taught].sort()
+          );
         }
       }
-      expect(strays).toEqual([]);
     });
 
     it("tags regions with values the badge knows how to render", () => {

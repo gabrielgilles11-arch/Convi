@@ -377,6 +377,60 @@
               "difficulty": "easy",
               "quizQuestions": []
             }
+          ],
+          "scenes": [
+            {
+              "id": "convo-sc-01",
+              "speaker": "them",
+              "situation": { "en": "Someone you've met once before spots you in the street and says hello." },
+              "question": { "es": "¡Hola! ¿Qué tal?", "en": "Hi! How are you?" },
+              "answers": [
+                { "es": "Bien, ¿y tú qué tal?", "en": "Good — how about you?" }
+              ],
+              "likelyReply": { "es": "Aquí andamos.", "en": "Getting by." },
+              "notes": "¿Qué tal? is the default how-are-you in Spain, ahead of ¿cómo estás? It is a greeting more than a question, so a short answer and the same question back is the whole exchange.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-sc-02",
+              "speaker": "them",
+              "situation": { "en": "A friend drops onto the stool next to you with no hello at all." },
+              "question": { "es": "¡Ey! ¿Qué pasa?", "en": "Hey! What's up?" },
+              "answers": [
+                { "es": "Nada, aquí tomando algo.", "en": "Nothing much — just having a drink." }
+              ],
+              "likelyReply": { "es": "Pues me pido otra y me quedo.", "en": "I'll get one and stay, then." },
+              "notes": "¿Qué pasa? is what's up between friends, not a question about what has happened. ¿Qué pasa, tío? is the full version.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-sc-03",
+              "speaker": "them",
+              "situation": { "en": "You've been talking to someone for ten minutes and neither of you has said your name." },
+              "question": { "es": "Por cierto, ¿cómo te llamas?", "en": "By the way, what's your name?" },
+              "answers": [
+                { "es": "Me llamo [NOMBRE]. ¿Y tú?", "en": "My name is [NAME]. And you?" }
+              ],
+              "likelyReply": { "es": "Encantado de conocerte.", "en": "Nice to meet you." },
+              "notes": "Me llamo is literally I call myself, and it is the normal answer. Soy [NOMBRE] works too and is a shade more casual.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-sc-04",
+              "speaker": "them",
+              "situation": { "en": "You're introduced to a friend's mother, who greets you properly." },
+              "question": { "es": "¿Cómo estás?", "en": "How are you?" },
+              "answers": [
+                { "es": "Muy bien, gracias. ¿Y usted?", "en": "Very well, thank you. And you?" }
+              ],
+              "likelyReply": { "es": "Muy bien, pasa, pasa.", "en": "Very well — come in, come in." },
+              "notes": "Usted with somebody's parents on a first meeting. They will almost certainly tell you to drop it within a minute, and that is the point at which you drop it.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -507,23 +561,95 @@
           "title": "Everyday casual",
           "phrases": [
             { "id": "slang-01", "es": "Qué fuerte/en serio.", "en": "No way / that's intense.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-02", "es": "Ni de broma.", "en": "No way / not even as a joke.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-03", "es": "Estoy a tope.", "en": "I'm all in / I'm at full energy (Spain).", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-04", "es": "Me da igual.", "en": "I don't care.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-05", "es": "Qué pena.", "en": "What a shame.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-06", "es": "Mola.", "en": "It's cool.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-02", "practice": false, "es": "Ni de broma.", "en": "No way / not even as a joke.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-03", "practice": false, "es": "Estoy a tope.", "en": "I'm all in / I'm at full energy (Spain).", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-04", "practice": false, "es": "Me da igual.", "en": "I don't care.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-05", "practice": false, "es": "Qué pena.", "en": "What a shame.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-06", "practice": false, "es": "Mola.", "en": "It's cool.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "slang-12", "es": "o sea", "en": "I mean / like — constant, and fills the same slot as en plan.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "slang-13", "es": "es que…", "en": "The thing is… — the universal excuse-opener, and arguably the most Spanish construction there is.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "slang-sc-01",
+              "teaches": "slang-02",
+              "speaker": "them",
+              "situation": { "en": "It's four in the morning and a friend dares you to get in the fountain." },
+              "question": { "es": "¿Te tiras a la fuente o qué?", "en": "Are you getting in the fountain or what?" },
+              "answers": [
+                { "es": "Ni de broma.", "en": "Not a chance." }
+              ],
+              "likelyReply": { "es": "Qué aburrido eres.", "en": "You're no fun." },
+              "notes": "Ni de broma is a flat no — literally 'not even as a joke'. It is the polite half of the pair; ni de coña is the same thing a notch cruder.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-02",
+              "teaches": "slang-03",
+              "speaker": "them",
+              "situation": { "en": "After three late nights, someone asks whether you're up for one more." },
+              "question": { "es": "¿Te apuntas otra vez esta noche?", "en": "Are you in again tonight?" },
+              "answers": [
+                { "es": "Estoy a tope, vamos.", "en": "I'm on full power — let's go." }
+              ],
+              "likelyReply": { "es": "Así me gusta.", "en": "That's what I like to hear." },
+              "notes": "Estar a tope is being at full capacity. It works for your own energy and for a bar that's rammed, which is why it turns up everywhere.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-03",
+              "teaches": "slang-04",
+              "speaker": "them",
+              "situation": { "en": "A friend can't choose between two bars and keeps asking what you think." },
+              "question": { "es": "¿Vamos al de siempre o probamos el nuevo?", "en": "The usual place, or shall we try the new one?" },
+              "answers": [
+                { "es": "Me da igual, decide tú.", "en": "I don't mind — you pick." }
+              ],
+              "likelyReply": { "es": "Pues el nuevo.", "en": "The new one, then." },
+              "notes": "Me da igual is genuinely neutral, not sulky. Say it with a shrug and a smile or it lands as 'whatever'.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-04",
+              "teaches": "slang-05",
+              "speaker": "them",
+              "situation": { "en": "You mention the place you came to see and are told it shut down." },
+              "question": { "es": "Eso cerró el año pasado.", "en": "That closed down last year." },
+              "answers": [
+                { "es": "Qué pena, tenía muchas ganas.", "en": "What a shame — I really wanted to see it." }
+              ],
+              "likelyReply": { "es": "Te llevo a uno mejor.", "en": "I'll take you to a better one." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-05",
+              "teaches": "slang-06",
+              "speaker": "you",
+              "situation": { "en": "A friend brings you up to the rooftop bar they picked and waits for your verdict." },
+              "question": { "es": "Mola un montón este sitio.", "en": "This place is seriously cool." },
+              "answers": [
+                { "es": "¿A que sí? Lo descubrí el mes pasado.", "en": "Right? I found it last month." }
+              ],
+              "likelyReply": null,
+              "notes": "Mola is the everyday 'it's cool', and it conjugates: me mola, te mola, molaría.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "slang-friendly",
           "title": "Friendly reactions",
           "phrases": [
-            { "id": "slang-07", "es": "¡Qué crack!", "en": "You're a legend (Spain).", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-07", "practice": false, "es": "¡Qué crack!", "en": "You're a legend (Spain).", "difficulty": "medium", "quizQuestions": [] },
             { "id": "slang-08", "es": "¡Qué grande!", "en": "You're amazing!", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-09", "es": "Me flipa.", "en": "I'm obsessed / I love it (Spain).", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-14", "es": "¡Toma ya!", "en": "Boom! / there you go! — celebration.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-09", "practice": false, "es": "Me flipa.", "en": "I'm obsessed / I love it (Spain).", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-14", "practice": false, "es": "¡Toma ya!", "en": "Boom! / there you go! — celebration.", "difficulty": "easy", "quizQuestions": [] },
             {
               "id": "slang-15",
               "es": "buen rollo / mal rollo",
@@ -531,27 +657,173 @@
               "difficulty": "medium",
               "quizQuestions": []
             },
-            { "id": "slang-16", "es": "¡Anda ya!", "en": "Get out of here! — disbelief.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-16", "practice": false, "es": "¡Anda ya!", "en": "Get out of here! — disbelief.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "slang-17", "es": "¡No veas!", "en": "You wouldn't believe it — an intensifier for a story.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-18", "es": "Me parto.", "en": "I'm cracking up.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "slang-18", "practice": false, "es": "Me parto.", "en": "I'm cracking up.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "slang-sc-06",
+              "teaches": "slang-07",
+              "speaker": "them",
+              "situation": { "en": "Someone sorts out the table you'd been told was impossible to get." },
+              "question": { "es": "Ya está, nos guardan la mesa.", "en": "Done — they're holding the table for us." },
+              "answers": [
+                { "es": "¡Qué crack eres!", "en": "You absolute legend!" }
+              ],
+              "likelyReply": { "es": "No es nada, hombre.", "en": "It's nothing, honestly." },
+              "notes": "Un crack is someone who is brilliant at something. Said to a friend it is pure praise; said flatly it can be sarcasm, so keep the energy up.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-07",
+              "teaches": "slang-09",
+              "speaker": "them",
+              "situation": { "en": "A friend plays you the band they've been going on about all week." },
+              "question": { "es": "Esta es la canción que te decía.", "en": "This is the song I was telling you about." },
+              "answers": [
+                { "es": "Me flipa, ponla otra vez.", "en": "I love it — put it on again." }
+              ],
+              "likelyReply": { "es": "Sabía que te iba a gustar.", "en": "I knew you'd like it." },
+              "notes": "Flipar is to be blown away. Me flipa is I love it; estoy flipando is I can't believe what I'm seeing.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-08",
+              "teaches": "slang-14",
+              "speaker": "you",
+              "situation": { "en": "Your team scores in the last minute and the whole bar is on its feet." },
+              "question": { "es": "¡Toma ya, en el último minuto!", "en": "Get in — in the last minute!" },
+              "answers": [
+                { "es": "¡Qué remontada!", "en": "What a comeback!" }
+              ],
+              "likelyReply": null,
+              "notes": "¡Toma ya! is the noise you make when something lands. It belongs to the moment, not to the conversation afterwards.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-09",
+              "teaches": "slang-16",
+              "speaker": "them",
+              "situation": { "en": "Someone tells you they queued nine hours for a ticket and you don't believe a word." },
+              "question": { "es": "Estuve nueve horas en la cola.", "en": "I was in that queue for nine hours." },
+              "answers": [
+                { "es": "¡Anda ya!", "en": "Get out of here!" }
+              ],
+              "likelyReply": { "es": "Te lo juro, mira la foto.", "en": "I swear — look at the photo." },
+              "notes": "¡Anda ya! is friendly disbelief, not an accusation. It invites the story rather than ending it.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-10",
+              "teaches": "slang-18",
+              "speaker": "them",
+              "situation": { "en": "A friend is telling a story so badly that you can't stop laughing." },
+              "question": { "es": "No te rías, que voy en serio.", "en": "Don't laugh — I'm being serious." },
+              "answers": [
+                { "es": "Es que me parto contigo.", "en": "You're killing me, honestly." }
+              ],
+              "likelyReply": { "es": "Encima te ríes.", "en": "And now you're laughing at me." },
+              "notes": "Partirse is to split — with laughter. Me parto is I'm in bits; me parto contigo is you're the reason.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "slang-intensifiers",
           "title": "\"Soft\" intensifiers",
           "phrases": [
-            { "id": "slang-10", "es": "Un montón.", "en": "A lot.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-10", "practice": false, "es": "Un montón.", "en": "A lot.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "slang-11", "es": "En plan…", "en": "Like… (filler).", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-19", "es": "mogollón", "en": "Loads. Madrid-leaning, understood everywhere.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-19", "practice": false, "es": "mogollón", "en": "Loads. Madrid-leaning, understood everywhere.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "slang-20", "es": "de flipar", "en": "Unbelievable — \"es de flipar\".", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-21", "es": "petado/a", "en": "Packed, rammed — \"el bar está petado\".", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-22", "es": "a saco", "en": "Full on / all out.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-23", "es": "ni de coña", "en": "No chance — a notch more casual than ni de broma.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "slang-21", "practice": false, "es": "petado/a", "en": "Packed, rammed — \"el bar está petado\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-22", "practice": false, "es": "a saco", "en": "Full on / all out.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-23", "practice": false, "es": "ni de coña", "en": "No chance — a notch more casual than ni de broma.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             {
               "id": "slang-24",
               "es": "tela",
               "en": "Seriously / a fortune — \"cuesta tela\" is it costs a bomb.",
               "difficulty": "hard",
+              "quizQuestions": []
+            }
+          ],
+          "scenes": [
+            {
+              "id": "slang-sc-11",
+              "teaches": "slang-10",
+              "speaker": "them",
+              "situation": { "en": "Someone asks whether the neighbourhood you stayed in was any good." },
+              "question": { "es": "¿Y qué tal el barrio?", "en": "So how was the neighbourhood?" },
+              "answers": [
+                { "es": "Me gustó un montón.", "en": "I liked it a whole lot." }
+              ],
+              "likelyReply": { "es": "Es de los mejores.", "en": "It's one of the best." },
+              "notes": "Un montón is a pile of something, used for anything you have a lot of — time, sleep, opinions.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-12",
+              "teaches": "slang-19",
+              "speaker": "them",
+              "situation": { "en": "A friend asks how many people turned up to the thing you went to." },
+              "question": { "es": "¿Fue mucha gente?", "en": "Did many people go?" },
+              "answers": [
+                { "es": "Había mogollón.", "en": "There were loads." }
+              ],
+              "likelyReply": { "es": "Pues me lo he perdido.", "en": "And I missed it." },
+              "notes": "Mogollón leans Madrid but is understood everywhere. It works alone, as here, or in front of a noun: mogollón de gente.",
+              "difficulty": "medium",
+              "region": "madrid",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-13",
+              "teaches": "slang-21",
+              "speaker": "you",
+              "situation": { "en": "You get to the door of the bar, see the crowd inside, and turn to your friend." },
+              "question": { "es": "Está petado, no cabe nadie más.", "en": "It's rammed — there's no room for anyone else." },
+              "answers": [
+                { "es": "Vamos al de al lado.", "en": "Let's go to the one next door." }
+              ],
+              "likelyReply": null,
+              "notes": "Petado is packed to bursting, for rooms and for phones. It agrees with what it describes: el bar está petado, la sala está petada.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-14",
+              "teaches": "slang-22",
+              "speaker": "them",
+              "situation": { "en": "Someone asks whether you're going to take the language thing seriously this trip." },
+              "question": { "es": "¿Vas a practicar español en serio?", "en": "Are you going to properly practise your Spanish?" },
+              "answers": [
+                { "es": "Voy a saco.", "en": "I'm going all out." }
+              ],
+              "likelyReply": { "es": "Así se habla.", "en": "Now you're talking." },
+              "notes": "A saco is full commitment, with no half measures. It attaches to any verb: entrar a saco, ir a saco.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-15",
+              "teaches": "slang-23",
+              "speaker": "them",
+              "situation": { "en": "A friend suggests you get up on stage and sing at the karaoke bar." },
+              "question": { "es": "Sube tú primero y cantas algo.", "en": "You go up first and sing something." },
+              "answers": [
+                { "es": "Ni de coña subo yo ahí.", "en": "There's no chance I'm going up there." }
+              ],
+              "likelyReply": { "es": "Cobarde.", "en": "Coward." },
+              "notes": "Ni de coña is ni de broma with the safety off. Fine among friends, worth avoiding with anyone's parents.",
+              "difficulty": "medium",
+              "young": true,
               "quizQuestions": []
             }
           ]
@@ -561,50 +833,277 @@
           "title": "The glue — what holds a Spanish sentence together",
           "phrases": [
             { "id": "slang-25", "es": "a ver…", "en": "Let's see / right then — opens a sentence while you think.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-26", "es": "pues nada", "en": "Anyway / well, that's that. Closes a conversation.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-27", "es": "venga, va", "en": "Oh go on then — agreeing reluctantly, or nudging someone along.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-28", "es": "qué va", "en": "No way / not at all. Much gentler than ni de broma.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "slang-29", "es": "vale, vale", "en": "Yeah yeah, okay okay — doubling it adds a note of impatience.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-26", "practice": false, "es": "pues nada", "en": "Anyway / well, that's that. Closes a conversation.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-27", "practice": false, "es": "venga, va", "en": "Oh go on then — agreeing reluctantly, or nudging someone along.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-28", "practice": false, "es": "qué va", "en": "No way / not at all. Much gentler than ni de broma.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-29", "practice": false, "es": "vale, vale", "en": "Yeah yeah, okay okay — doubling it adds a note of impatience.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "slang-30", "es": "total, que…", "en": "Anyway, so… — picking a story back up.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "slang-31", "es": "hombre…", "en": "Come on / well now. A sentence-opener, whoever you're talking to.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "slang-32", "es": "me da palo", "en": "I can't face it / it's awkward for me. Untranslatable and extremely common.", "difficulty": "hard", "quizQuestions": [] }
+            { "id": "slang-32", "practice": false, "es": "me da palo", "en": "I can't face it / it's awkward for me. Untranslatable and extremely common.", "difficulty": "hard", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "slang-sc-16",
+              "teaches": "slang-26",
+              "speaker": "them",
+              "situation": { "en": "The plan has fallen through and there's nothing left to arrange." },
+              "question": { "es": "Al final no hay entradas para nadie.", "en": "In the end there are no tickets for anyone." },
+              "answers": [
+                { "es": "Pues nada, otro día será.", "en": "Ah well — another day, then." }
+              ],
+              "likelyReply": { "es": "Eso, otro día.", "en": "Exactly — another day." },
+              "notes": "Pues nada closes a conversation without ending it badly. It is what Spaniards say instead of a long goodbye.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-17",
+              "teaches": "slang-27",
+              "speaker": "them",
+              "situation": { "en": "You've said no twice to one more drink and they ask a third time." },
+              "question": { "es": "¿Seguro que no quieres otra?", "en": "Are you sure you don't want another?" },
+              "answers": [
+                { "es": "Venga, va, la última.", "en": "Oh go on then — the last one." }
+              ],
+              "likelyReply": { "es": "Esa ya la he oído antes.", "en": "I've heard that one before." },
+              "notes": "Venga, va is giving in with good grace. The same two words nudge somebody else along, depending on who is stalling.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-18",
+              "teaches": "slang-28",
+              "speaker": "them",
+              "situation": { "en": "Someone assumes you must be finding the heat unbearable." },
+              "question": { "es": "Estarás muriéndote de calor, ¿no?", "en": "You must be dying in this heat, no?" },
+              "answers": [
+                { "es": "Qué va, se está bien.", "en": "Not at all — it's fine." }
+              ],
+              "likelyReply": { "es": "Eso es que ya te has aclimatado.", "en": "That means you've acclimatised." },
+              "notes": "Qué va is a soft no, much gentler than ni de broma. It contradicts the idea, not the person.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-19",
+              "teaches": "slang-29",
+              "speaker": "them",
+              "situation": { "en": "A friend is explaining the metro route to you for the third time." },
+              "question": { "es": "Y te bajas en la segunda parada, ¿eh?", "en": "And you get off at the second stop, all right?" },
+              "answers": [
+                { "es": "Vale, vale, que ya lo tengo.", "en": "Yeah yeah — I've got it." }
+              ],
+              "likelyReply": { "es": "Es que la última vez te perdiste.", "en": "It's just that last time you got lost." },
+              "notes": "Doubling vale adds impatience. One vale is agreement; two is I heard you the first time.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-20",
+              "teaches": "slang-32",
+              "speaker": "them",
+              "situation": { "en": "Someone suggests you ring the landlord about the broken boiler yourself." },
+              "question": { "es": "Llámale tú, que es tu piso.", "en": "You call him — it's your flat." },
+              "answers": [
+                { "es": "Me da palo llamar.", "en": "I can't face making the call." }
+              ],
+              "likelyReply": { "es": "Te acompaño si quieres.", "en": "I'll do it with you if you like." },
+              "notes": "Dar palo is the small dread of doing something mildly awkward. There is no English word for it, which is why it gets used constantly.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "slang-madrid",
           "title": "Castizo Madrid",
           "phrases": [
-            { "id": "slang-33", "es": "mazo", "en": "Loads / really — the defining Madrid intensifier. \"Mazo bueno.\"", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
-            { "id": "slang-34", "es": "la keli", "en": "The house / my place.", "difficulty": "hard", "region": "madrid", "young": true, "quizQuestions": [] },
-            { "id": "slang-35", "es": "la chupa", "en": "The jacket — any jacket.", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
-            { "id": "slang-36", "es": "tronco / tronca", "en": "Dude / mate. Retro, and still very much heard.", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
+            { "id": "slang-33", "practice": false, "es": "mazo", "en": "Loads / really — the defining Madrid intensifier. \"Mazo bueno.\"", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
+            { "id": "slang-34", "practice": false, "es": "la keli", "en": "The house / my place.", "difficulty": "hard", "region": "madrid", "young": true, "quizQuestions": [] },
+            { "id": "slang-35", "practice": false, "es": "la chupa", "en": "The jacket — any jacket.", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
+            { "id": "slang-36", "practice": false, "es": "tronco / tronca", "en": "Dude / mate. Retro, and still very much heard.", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
             { "id": "slang-37", "es": "dabuten", "en": "Brilliant. Deliberately old-fashioned, and it always gets a laugh.", "difficulty": "hard", "region": "madrid", "quizQuestions": [] },
             { "id": "slang-38", "es": "estar al loro", "en": "To be on the ball / paying attention.", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
-            { "id": "slang-39", "es": "pirarse", "en": "To bail — \"me piro\" is I'm off.", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
+            { "id": "slang-39", "practice": false, "es": "pirarse", "en": "To bail — \"me piro\" is I'm off.", "difficulty": "medium", "region": "madrid", "quizQuestions": [] },
             { "id": "slang-40", "es": "un gato", "en": "A born-and-bred Madrileño, three generations deep.", "difficulty": "hard", "region": "madrid", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "slang-sc-21",
+              "teaches": "slang-33",
+              "speaker": "them",
+              "situation": { "en": "A friend in Madrid asks what you made of the place they sent you to." },
+              "question": { "es": "¿Qué tal el sitio que te dije?", "en": "How was the place I told you about?" },
+              "answers": [
+                { "es": "Mazo bien, gracias.", "en": "Really good, thanks." }
+              ],
+              "likelyReply": { "es": "Te lo dije.", "en": "Told you." },
+              "notes": "Mazo is the Madrid intensifier, and it goes in front of anything: mazo bien, mazo de gente, mazo caro.",
+              "difficulty": "medium",
+              "region": "madrid",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-22",
+              "teaches": "slang-34",
+              "speaker": "them",
+              "situation": { "en": "It's late, the metro has stopped, and someone asks where the party moves to." },
+              "question": { "es": "¿Y ahora dónde seguimos?", "en": "So where do we carry on?" },
+              "answers": [
+                { "es": "Nos vamos a la keli.", "en": "We're going back to mine." }
+              ],
+              "likelyReply": { "es": "Yo llevo hielo.", "en": "I'll bring ice." },
+              "notes": "La keli is your place, from caló. Young, Madrid, and never said about somebody else's flat you don't know.",
+              "difficulty": "hard",
+              "region": "madrid",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-23",
+              "teaches": "slang-35",
+              "speaker": "them",
+              "situation": { "en": "You're about to leave the bar and can't find what you came in wearing." },
+              "question": { "es": "¿Te falta algo?", "en": "Are you missing something?" },
+              "answers": [
+                { "es": "No encuentro la chupa.", "en": "I can't find my jacket." }
+              ],
+              "likelyReply": { "es": "Mira detrás de la barra.", "en": "Have a look behind the bar." },
+              "notes": "La chupa is any jacket at all, not only a leather one, and it is what people actually say in Madrid.",
+              "difficulty": "medium",
+              "region": "madrid",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-24",
+              "teaches": "slang-36",
+              "speaker": "you",
+              "situation": { "en": "Someone in the group has been quiet all night and you want to check on them warmly." },
+              "question": { "es": "¿Todo bien, tronco?", "en": "You all right, mate?" },
+              "answers": [
+                { "es": "Sí, solo estoy cansado.", "en": "Yeah — just tired." }
+              ],
+              "likelyReply": null,
+              "notes": "Tronco is retro and still heard. Tronca for a woman. It lands as affectionate rather than cool, which is the joke.",
+              "difficulty": "medium",
+              "region": "madrid",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-25",
+              "teaches": "slang-39",
+              "speaker": "you",
+              "situation": { "en": "You've had enough of the night and want to tell your friends you're off." },
+              "question": { "es": "Me piro, que mañana madrugo.", "en": "I'm off — I'm up early tomorrow." },
+              "answers": [
+                { "es": "Escríbenos cuando llegues.", "en": "Text us when you're home." }
+              ],
+              "likelyReply": null,
+              "notes": "Pirarse is to bail. Me piro is the announcement; nos piramos takes the group with you.",
+              "difficulty": "medium",
+              "region": "madrid",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "slang-catalan",
           "title": "Catalan — the courtesy starter pack",
           "phrases": [
-            { "id": "slang-41", "es": "Bon dia", "en": "Good morning. The single highest-return word in Barcelona.", "difficulty": "easy", "region": "catalan", "quizQuestions": [] },
+            { "id": "slang-41", "practice": false, "es": "Bon dia", "en": "Good morning. The single highest-return word in Barcelona.", "difficulty": "easy", "region": "catalan", "quizQuestions": [] },
             { "id": "slang-42", "es": "Bona tarda / Bona nit", "en": "Good afternoon / good evening.", "difficulty": "easy", "region": "catalan", "quizQuestions": [] },
-            { "id": "slang-43", "es": "Si us plau", "en": "Please.", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
+            { "id": "slang-43", "practice": false, "es": "Si us plau", "en": "Please.", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
             { "id": "slang-44", "es": "Gràcies / De res", "en": "Thank you / you're welcome.", "difficulty": "easy", "region": "catalan", "quizQuestions": [] },
-            { "id": "slang-45", "es": "Adéu", "en": "Goodbye.", "difficulty": "easy", "region": "catalan", "quizQuestions": [] },
-            { "id": "slang-46", "es": "Som-hi!", "en": "Let's go!", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
-            { "id": "slang-47", "es": "Vinga!", "en": "Come on! — the Catalan cousin of venga.", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
+            { "id": "slang-45", "practice": false, "es": "Adéu", "en": "Goodbye.", "difficulty": "easy", "region": "catalan", "quizQuestions": [] },
+            { "id": "slang-46", "practice": false, "es": "Som-hi!", "en": "Let's go!", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
+            { "id": "slang-47", "practice": false, "es": "Vinga!", "en": "Come on! — the Catalan cousin of venga.", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
             { "id": "slang-48", "es": "Déu n'hi do!", "en": "Wow, that's something! Untranslatable, and unmistakably Catalan.", "difficulty": "hard", "region": "catalan", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "slang-sc-26",
+              "teaches": "slang-41",
+              "speaker": "them",
+              "situation": { "en": "You walk into a bakery in Barcelona in the morning and the owner looks up." },
+              "question": { "es": "Bon dia, què et poso?", "en": "Morning — what can I get you?" },
+              "answers": [
+                { "es": "Bon dia!", "en": "Morning!" }
+              ],
+              "likelyReply": { "es": "Molt bé, ara mateix.", "en": "Great — coming right up." },
+              "notes": "Catalan, not Spanish. Bon dia before anything else is the single highest-return thing you can say in Barcelona, and it changes how the rest of the exchange goes.",
+              "difficulty": "easy",
+              "region": "catalan",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-27",
+              "teaches": "slang-43",
+              "speaker": "you",
+              "situation": { "en": "You're ordering in Catalan for the first time and want to get the 'please' right." },
+              "question": { "es": "Un cafè, si us plau.", "en": "A coffee, please." },
+              "answers": [
+                { "es": "Ara te'l porto.", "en": "I'll bring it over." }
+              ],
+              "likelyReply": null,
+              "notes": "Si us plau is the Catalan please. Three words, said as one.",
+              "difficulty": "medium",
+              "region": "catalan",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-28",
+              "teaches": "slang-45",
+              "speaker": "them",
+              "situation": { "en": "You're leaving a shop in Gràcia and the owner says goodbye as you go." },
+              "question": { "es": "Adéu, fins aviat!", "en": "Bye — see you soon!" },
+              "answers": [
+                { "es": "Adéu!", "en": "Bye!" }
+              ],
+              "likelyReply": { "es": "Fins la propera.", "en": "Until next time." },
+              "notes": "Adéu covers both bye and see you. Mirroring it back is all that's wanted.",
+              "difficulty": "easy",
+              "region": "catalan",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-29",
+              "teaches": "slang-46",
+              "speaker": "them",
+              "situation": { "en": "Everyone has their coat on and one friend is still finishing their drink." },
+              "question": { "es": "Ja estem tots?", "en": "Are we all ready?" },
+              "answers": [
+                { "es": "Som-hi!", "en": "Let's go!" }
+              ],
+              "likelyReply": { "es": "Doncs anem.", "en": "Off we go, then." },
+              "notes": "Som-hi is the Catalan let's go, for setting off and for starting anything.",
+              "difficulty": "medium",
+              "region": "catalan",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-30",
+              "teaches": "slang-47",
+              "speaker": "them",
+              "situation": { "en": "A friend is dragging their feet and the table is booked for ten minutes' time." },
+              "question": { "es": "Espera, que acabo això.", "en": "Hang on, let me finish this." },
+              "answers": [
+                { "es": "Vinga, que arribem tard!", "en": "Come on — we're going to be late!" }
+              ],
+              "likelyReply": { "es": "Ja vaig, ja vaig.", "en": "I'm coming, I'm coming." },
+              "notes": "Vinga is the Catalan cousin of venga, and does the same two jobs: hurrying someone along, and giving in.",
+              "difficulty": "medium",
+              "region": "catalan",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "slang-barcelona",
           "title": "Barcelona — what things are called here",
           "phrases": [
-            { "id": "slang-49", "es": "un tallat", "en": "A cortado — what the menu will actually say.", "difficulty": "medium", "region": "barcelona", "quizQuestions": [] },
-            { "id": "slang-50", "es": "un bikini", "en": "A ham-and-cheese toastie. On every menu, and visitors never order it.", "difficulty": "medium", "region": "barcelona", "quizQuestions": [] },
-            { "id": "slang-51", "es": "plegar", "en": "To knock off work — \"a quina hora plegues?\"", "difficulty": "hard", "region": "catalan", "quizQuestions": [] },
+            { "id": "slang-49", "practice": false, "es": "un tallat", "en": "A cortado — what the menu will actually say.", "difficulty": "medium", "region": "barcelona", "quizQuestions": [] },
+            { "id": "slang-50", "practice": false, "es": "un bikini", "en": "A ham-and-cheese toastie. On every menu, and visitors never order it.", "difficulty": "medium", "region": "barcelona", "quizQuestions": [] },
+            { "id": "slang-51", "practice": false, "es": "plegar", "en": "To knock off work — \"a quina hora plegues?\"", "difficulty": "hard", "region": "catalan", "quizQuestions": [] },
             {
               "id": "slang-52",
               "es": "somiatruites",
@@ -615,11 +1114,89 @@
             },
             { "id": "slang-53", "es": "fer el préssec", "en": "To make a fool of yourself — literally \"to do the peach\".", "difficulty": "hard", "region": "catalan", "quizQuestions": [] },
             { "id": "slang-54", "es": "pixapins", "en": "City folk playing at countryside. Affectionately mocking.", "difficulty": "hard", "region": "catalan", "quizQuestions": [] },
-            { "id": "slang-55", "es": "Quina passada!", "en": "How amazing!", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
+            { "id": "slang-55", "practice": false, "es": "Quina passada!", "en": "How amazing!", "difficulty": "medium", "region": "catalan", "quizQuestions": [] },
             {
               "id": "slang-56",
+              "practice": false,
               "es": "Hi ha roba estesa",
               "en": "Careful — not in front of them. Literally \"there's laundry hanging out\".",
+              "difficulty": "hard",
+              "region": "catalan",
+              "quizQuestions": []
+            }
+          ],
+          "scenes": [
+            {
+              "id": "slang-sc-31",
+              "teaches": "slang-49",
+              "speaker": "them",
+              "situation": { "en": "You want a cortado in Barcelona and the waiter is waiting for the local word." },
+              "question": { "es": "Digui'm, què voldrà?", "en": "Go ahead — what will it be?" },
+              "answers": [
+                { "es": "Un tallat, si us plau.", "en": "A cortado, please." }
+              ],
+              "likelyReply": { "es": "Ara mateix.", "en": "Right away." },
+              "notes": "Un tallat is what the menu says in Barcelona. Ask for a cortado and you'll be understood; ask for a tallat and you'll be answered in Catalan.",
+              "difficulty": "medium",
+              "region": "barcelona",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-32",
+              "teaches": "slang-50",
+              "speaker": "them",
+              "situation": { "en": "You're hungry, it's four in the afternoon, and the kitchen is shut." },
+              "question": { "es": "La cuina està tancada fins al vespre.", "en": "The kitchen is shut until the evening." },
+              "answers": [
+                { "es": "¿Me pones un bikini entonces?", "en": "Can I have a bikini, then?" }
+              ],
+              "likelyReply": { "es": "Eso sí, ahora te lo hago.", "en": "That I can do — coming up." },
+              "notes": "Un bikini is a ham-and-cheese toastie, named after the Sala Bikini. It is on every menu in Barcelona and visitors never order it.",
+              "difficulty": "medium",
+              "region": "barcelona",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-33",
+              "teaches": "slang-51",
+              "speaker": "them",
+              "situation": { "en": "Someone you've been chatting to at the bar mentions they're on a break from work." },
+              "question": { "es": "A quina hora plegues?", "en": "What time do you knock off?" },
+              "answers": [
+                { "es": "Plego a les vuit.", "en": "I finish at eight." }
+              ],
+              "likelyReply": { "es": "Doncs ens veiem després.", "en": "See you afterwards, then." },
+              "notes": "Plegar is to knock off work — folding up for the day. In Barcelona it is more common than salir or acabar.",
+              "difficulty": "hard",
+              "region": "catalan",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-34",
+              "teaches": "slang-55",
+              "speaker": "you",
+              "situation": { "en": "You come around the corner and the whole city is laid out below you." },
+              "question": { "es": "Quina passada de vistes!", "en": "What an incredible view!" },
+              "answers": [
+                { "es": "I de nit encara més.", "en": "And even better at night." }
+              ],
+              "likelyReply": null,
+              "notes": "Quina passada is how amazing, for anything that goes beyond what you expected.",
+              "difficulty": "medium",
+              "region": "catalan",
+              "quizQuestions": []
+            },
+            {
+              "id": "slang-sc-35",
+              "teaches": "slang-56",
+              "speaker": "them",
+              "situation": { "en": "A friend starts gossiping about someone and you spot that person two tables away." },
+              "question": { "es": "Pues su novio me dijo que…", "en": "Well, her boyfriend told me that…" },
+              "answers": [
+                { "es": "Calla, que hi ha roba estesa.", "en": "Shush — there's company." }
+              ],
+              "likelyReply": { "es": "Uy, perdona.", "en": "Oops — sorry." },
+              "notes": "Literally 'there's laundry hanging out': careful, we can be overheard. One of the most useful things you can be told in a bar.",
               "difficulty": "hard",
               "region": "catalan",
               "quizQuestions": []
@@ -641,40 +1218,184 @@
           "id": "cuss-common",
           "title": "Common",
           "phrases": [
-            { "id": "cuss-01", "es": "Joder.", "en": "Roughly: \"damn/f*ck\" (Spain).", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "cuss-02", "es": "Mierda.", "en": "Sh*t.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "cuss-03", "es": "Hostia.", "en": "Damn! / Bloody hell! (strong exclamation, Spain)", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "cuss-07", "es": "¡Jolín!", "en": "Darn it! — the version you can say in front of children.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "cuss-01", "practice": false, "es": "Joder.", "en": "Roughly: \"damn/f*ck\" (Spain).", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "cuss-02", "practice": false, "es": "Mierda.", "en": "Sh*t.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "cuss-03", "practice": false, "es": "Hostia.", "en": "Damn! / Bloody hell! (strong exclamation, Spain)", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "cuss-07", "practice": false, "es": "¡Jolín!", "en": "Darn it! — the version you can say in front of children.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "cuss-08", "es": "¡Ostras!", "en": "Blimey! — literally \"oysters\", and the child-safe swap for hostia.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "cuss-09", "es": "¡Miércoles!", "en": "Sugar! — literally \"Wednesday\", started so you don't finish mierda.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "cuss-10", "es": "¡Mecachis!", "en": "Darn it! — softens the much ruder me cago en…", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "cuss-11", "es": "¡Vaya tela!", "en": "What a mess / unbelievable.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "cuss-11", "practice": false, "es": "¡Vaya tela!", "en": "What a mess / unbelievable.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "cuss-sc-01",
+              "teaches": "cuss-01",
+              "speaker": "them",
+              "situation": { "en": "You've just been told the last train left twenty minutes ago." },
+              "question": { "es": "El último tren ya se ha ido.", "en": "The last train has already gone." },
+              "answers": [
+                { "es": "Joder, ¿en serio?", "en": "Damn it — seriously?" }
+              ],
+              "likelyReply": { "es": "Te pido un taxi.", "en": "I'll get you a taxi." },
+              "notes": "Joder is the all-purpose Spanish swear and it is everywhere, including on the news. Strong, but not shocking.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-02",
+              "teaches": "cuss-02",
+              "speaker": "you",
+              "situation": { "en": "You reach for your wallet on the way out of the bar and the pocket is empty." },
+              "question": { "es": "Mierda, me he dejado la cartera dentro.", "en": "Crap — I've left my wallet inside." },
+              "answers": [
+                { "es": "Corre, que aún están abiertos.", "en": "Run — they're still open." }
+              ],
+              "likelyReply": null,
+              "notes": "Mierda is the everyday one, about level with 'crap'. Safe in almost any company that isn't your host's grandmother.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-03",
+              "teaches": "cuss-03",
+              "speaker": "them",
+              "situation": { "en": "A friend shows you the bill for a round nobody expected to cost that much." },
+              "question": { "es": "Mira lo que nos han cobrado.", "en": "Look what they charged us." },
+              "answers": [
+                { "es": "¡Hostia, qué caro!", "en": "Bloody hell, that's expensive!" }
+              ],
+              "likelyReply": { "es": "Nos han visto venir.", "en": "They saw us coming." },
+              "notes": "Hostia is the communion wafer, which is why it lands harder than it looks. Very Spain, and not for a first meeting with anyone religious.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-04",
+              "teaches": "cuss-07",
+              "speaker": "them",
+              "situation": { "en": "You stub your toe in a flat where somebody's small children are listening." },
+              "question": { "es": "¡Cuidado con el escalón!", "en": "Mind the step!" },
+              "answers": [
+                { "es": "¡Jolín, qué daño!", "en": "Ouch, that hurt!" }
+              ],
+              "likelyReply": { "es": "¿Te has hecho algo?", "en": "Have you hurt yourself?" },
+              "notes": "Jolín is the version you can say in front of children — the same slot as joder, none of the trouble.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-05",
+              "teaches": "cuss-11",
+              "speaker": "them",
+              "situation": { "en": "You arrive to find the flat you booked double-booked and nobody at the desk." },
+              "question": { "es": "No hay nadie aquí hasta las seis.", "en": "There's nobody here until six." },
+              "answers": [
+                { "es": "¡Vaya tela!", "en": "What a mess!" }
+              ],
+              "likelyReply": { "es": "Lo siento, es lo que hay.", "en": "Sorry — it is what it is." },
+              "notes": "Vaya tela is dismay at a situation rather than at a person, which is what makes it safe to say out loud.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "cuss-annoying",
           "title": "Calling someone annoying",
           "phrases": [
-            { "id": "cuss-04", "es": "Qué pesado/pesada.", "en": "You're so annoying.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "cuss-05", "es": "Vete a la mierda.", "en": "Go to hell (aggressive).", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "cuss-04", "practice": false, "es": "Qué pesado/pesada.", "en": "You're so annoying.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "cuss-05", "practice": false, "es": "Vete a la mierda.", "en": "Go to hell (aggressive).", "difficulty": "hard", "quizQuestions": [] },
             { "id": "cuss-12", "es": "un/a plasta", "en": "A bore — someone who sticks to you and won't come off.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "cuss-13", "es": "un petardo / una petarda", "en": "A drag.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "cuss-14", "es": "ser un rollo", "en": "To be tedious.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "cuss-15", "es": "estar hasta el gorro", "en": "To be fed up to here.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "cuss-16", "es": "tener morro", "en": "To have some nerve — \"¡qué morro!\"", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "cuss-14", "practice": false, "es": "ser un rollo", "en": "To be tedious.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "cuss-15", "practice": false, "es": "estar hasta el gorro", "en": "To be fed up to here.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "cuss-16", "practice": false, "es": "tener morro", "en": "To have some nerve — \"¡qué morro!\"", "difficulty": "hard", "quizQuestions": [] },
             { "id": "cuss-17", "es": "un caradura", "en": "A cheeky chancer.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "cuss-sc-06",
+              "teaches": "cuss-14",
+              "speaker": "them",
+              "situation": { "en": "A friend asks how the work event you were dreading actually went." },
+              "question": { "es": "¿Y qué tal la cena de empresa?", "en": "So how was the work dinner?" },
+              "answers": [
+                { "es": "Fue un rollo.", "en": "It was a drag." }
+              ],
+              "likelyReply": { "es": "Ya me lo imaginaba.", "en": "I thought as much." },
+              "notes": "Ser un rollo is to be tedious. Note the difference from buen rollo, which is good vibes — same word, different job.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-07",
+              "teaches": "cuss-15",
+              "speaker": "them",
+              "situation": { "en": "The flat's hot water has been broken for a week and nobody has fixed it." },
+              "question": { "es": "Han dicho que vienen el viernes.", "en": "They've said they'll come on Friday." },
+              "answers": [
+                { "es": "Estoy hasta el gorro.", "en": "I've had it up to here." }
+              ],
+              "likelyReply": { "es": "Pues llámales otra vez.", "en": "Then call them again." },
+              "notes": "Literally 'up to the hat'. Estar hasta el gorro is fed up but still printable; the ruder versions swap the hat for something else.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-08",
+              "teaches": "cuss-16",
+              "speaker": "them",
+              "situation": { "en": "Someone who never pays for a round asks you to get theirs again." },
+              "question": { "es": "¿Me pides tú la mía y ya te la paso?", "en": "Get mine and I'll send you the money?" },
+              "answers": [
+                { "es": "¡Qué morro tienes!", "en": "You've got some nerve!" }
+              ],
+              "likelyReply": { "es": "Que sí, que esta vez te la paso.", "en": "I will, honestly, this time." },
+              "notes": "Tener morro is to have cheek. Said with a laugh it is teasing; said flatly it is an accusation.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-09",
+              "teaches": "cuss-04",
+              "speaker": "them",
+              "situation": { "en": "Someone has asked you the same question four times in ten minutes." },
+              "question": { "es": "Pero ¿seguro que no te importa?", "en": "But are you sure you don't mind?" },
+              "answers": [
+                { "es": "Qué pesado eres.", "en": "You're such a pain." }
+              ],
+              "likelyReply": { "es": "Vale, ya paro.", "en": "All right, I'll stop." },
+              "notes": "Pesado is heavy going — someone who won't let a thing drop. It agrees with who you are talking to: pesado, pesada.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-10",
+              "teaches": "cuss-05",
+              "speaker": "them",
+              "situation": { "en": "Somebody who has been needling you all evening starts again." },
+              "question": { "es": "Es que tú no te enteras de nada.", "en": "You just don't get anything, do you." },
+              "answers": [
+                { "es": "Vete a la mierda.", "en": "Go to hell." }
+              ],
+              "likelyReply": { "es": "Oye, era broma.", "en": "Hey — I was joking." },
+              "notes": "This ends the conversation and possibly the friendship. Worth recognising more than saying.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "cuss-escape-hatch",
           "title": "\"I didn't mean it\" escape hatch",
           "phrases": [
-            { "id": "cuss-06", "es": "Perdón, se me fue.", "en": "Sorry, it slipped out.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "cuss-18", "es": "Era broma, ¿eh?", "en": "I was joking, all right?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "cuss-06", "practice": false, "es": "Perdón, se me fue.", "en": "Sorry, it slipped out.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "cuss-18", "practice": false, "es": "Era broma, ¿eh?", "en": "I was joking, all right?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "cuss-19", "es": "Sin acritud.", "en": "No hard feelings — literally \"without bitterness\".", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "cuss-20", "es": "No lo decía por ti.", "en": "I didn't mean you.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "cuss-20", "practice": false, "es": "No lo decía por ti.", "en": "I didn't mean you.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "cuss-21", "es": "Se me ha ido la olla.", "en": "I lost the plot — literally \"my pot has gone\".", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "cuss-22", "es": "Perdona, me he pasado.", "en": "Sorry, I went too far.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "cuss-22", "practice": false, "es": "Perdona, me he pasado.", "en": "Sorry, I went too far.", "difficulty": "medium", "quizQuestions": [] },
             {
               "id": "cuss-23",
               "es": "No quería molestar.",
@@ -682,7 +1403,79 @@
               "difficulty": "easy",
               "quizQuestions": []
             },
-            { "id": "cuss-24", "es": "Lo retiro.", "en": "I take it back.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "cuss-24", "practice": false, "es": "Lo retiro.", "en": "I take it back.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "cuss-sc-11",
+              "teaches": "cuss-06",
+              "speaker": "them",
+              "situation": { "en": "You swear without thinking and the table goes quiet." },
+              "question": { "es": "¿Perdona?", "en": "Excuse me?" },
+              "answers": [
+                { "es": "Perdón, se me fue.", "en": "Sorry — that slipped out." }
+              ],
+              "likelyReply": { "es": "No pasa nada, hombre.", "en": "It's fine, honestly." },
+              "notes": "Irse is to go — here, out of your mouth before you caught it. The single most useful sentence in this whole section.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-12",
+              "teaches": "cuss-18",
+              "speaker": "them",
+              "situation": { "en": "A joke you made has landed badly and the other person has stopped smiling." },
+              "question": { "es": "Pues no me ha hecho gracia.", "en": "Well, I didn't find that funny." },
+              "answers": [
+                { "es": "Era broma, ¿eh?", "en": "It was a joke, all right?" }
+              ],
+              "likelyReply": { "es": "Ya, pero avisa.", "en": "Sure — but warn me next time." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-13",
+              "teaches": "cuss-20",
+              "speaker": "them",
+              "situation": { "en": "You've complained about tourists and realised too late who you're talking to." },
+              "question": { "es": "Oye, que yo también soy turista.", "en": "Hey — I'm a tourist too." },
+              "answers": [
+                { "es": "No lo decía por ti.", "en": "I didn't mean you." }
+              ],
+              "likelyReply": { "es": "Ya, ya, tranquilo.", "en": "Sure, sure — relax." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-14",
+              "teaches": "cuss-22",
+              "speaker": "them",
+              "situation": { "en": "You went further than you meant to in an argument and the room noticed." },
+              "question": { "es": "Creo que te has pasado.", "en": "I think you went too far." },
+              "answers": [
+                { "es": "Perdona, me he pasado.", "en": "Sorry — I went too far." }
+              ],
+              "likelyReply": { "es": "Gracias por decirlo.", "en": "Thanks for saying so." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "cuss-sc-15",
+              "teaches": "cuss-24",
+              "speaker": "them",
+              "situation": { "en": "You said something about a friend's city that you'd like back." },
+              "question": { "es": "¿En serio piensas eso de Madrid?", "en": "Do you really think that about Madrid?" },
+              "answers": [
+                { "es": "Lo retiro.", "en": "I take it back." }
+              ],
+              "likelyReply": { "es": "Menos mal.", "en": "Just as well." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -703,24 +1496,96 @@
           "id": "flirting-compliments",
           "title": "Compliments (generally safe)",
           "phrases": [
-            { "id": "flirt-01", "es": "Qué guapo/guapa.", "en": "You're handsome/beautiful.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "flirt-02", "es": "Te queda muy bien.", "en": "That looks great on you.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "flirt-03", "es": "Me encanta tu estilo.", "en": "I love your style.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "flirt-04", "es": "Tienes una sonrisa preciosa.", "en": "You have a beautiful smile.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-01", "practice": false, "es": "Qué guapo/guapa.", "en": "You're handsome/beautiful.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-02", "practice": false, "es": "Te queda muy bien.", "en": "That looks great on you.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-03", "practice": false, "es": "Me encanta tu estilo.", "en": "I love your style.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-04", "practice": false, "es": "Tienes una sonrisa preciosa.", "en": "You have a beautiful smile.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "flirt-16", "es": "Se te ve buena gente.", "en": "You seem like good people.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-17", "es": "Contigo se habla muy a gusto.", "en": "You're really easy to talk to.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-17", "practice": false, "es": "Contigo se habla muy a gusto.", "en": "You're really easy to talk to.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "flirt-18", "es": "Tienes mucha chispa.", "en": "You've got a real spark to you.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "flirt-19", "es": "Me caes muy bien.", "en": "I really like you — as a person, not as a line.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "flirt-sc-01",
+              "teaches": "flirt-01",
+              "speaker": "them",
+              "situation": { "en": "Someone you like has just walked in and said hello." },
+              "question": { "es": "¡Hola! ¿Qué haces por aquí?", "en": "Hey! What are you doing here?" },
+              "answers": [
+                { "es": "Qué guapa estás.", "en": "You look beautiful." }
+              ],
+              "likelyReply": { "es": "Anda ya, tú sí que vas bien.", "en": "Oh come on — you're the one who looks good." },
+              "notes": "Estar guapa is how you look tonight; ser guapa is how you look always. Estar is the compliment, and the safer of the two.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-02",
+              "teaches": "flirt-02",
+              "speaker": "them",
+              "situation": { "en": "Someone asks what you think of the jacket they bought that afternoon." },
+              "question": { "es": "¿Qué tal me queda?", "en": "How does it look on me?" },
+              "answers": [
+                { "es": "Te queda muy bien.", "en": "It looks great on you." }
+              ],
+              "likelyReply": { "es": "Pues me la quedo.", "en": "I'm keeping it, then." },
+              "notes": "Quedar bien is about the fit and the look of a thing on a person — safe, specific and easy to say.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-03",
+              "teaches": "flirt-03",
+              "speaker": "them",
+              "situation": { "en": "You've been talking for an hour and want to say something warmer than nice shoes." },
+              "question": { "es": "¿Y qué te parece la gente de aquí?", "en": "So what do you make of the people here?" },
+              "answers": [
+                { "es": "Me encanta tu estilo.", "en": "I love your style." }
+              ],
+              "likelyReply": { "es": "Gracias, qué majo.", "en": "Thank you — that's kind." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-04",
+              "teaches": "flirt-04",
+              "speaker": "them",
+              "situation": { "en": "They laugh at something you said and you want to say what you noticed." },
+              "question": { "es": "Ay, qué tonto eres.", "en": "Oh, you're daft." },
+              "answers": [
+                { "es": "Tienes una sonrisa preciosa.", "en": "You have a beautiful smile." }
+              ],
+              "likelyReply": { "es": "Para, que me pongo roja.", "en": "Stop — you're making me blush." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-05",
+              "teaches": "flirt-17",
+              "speaker": "them",
+              "situation": { "en": "The conversation has been easy all evening and you want to say so before it ends." },
+              "question": { "es": "Qué rápido se ha pasado la noche.", "en": "The night has gone so fast." },
+              "answers": [
+                { "es": "Contigo se habla muy a gusto.", "en": "You're really easy to talk to." }
+              ],
+              "likelyReply": { "es": "Pues quedamos otro día.", "en": "Let's do it again another day, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "flirting-bolder",
           "title": "A bit bolder",
           "phrases": [
-            { "id": "flirt-05", "es": "Eres muy atractivo/atractiva.", "en": "You're very attractive.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-06", "es": "Me gustas.", "en": "I like you.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-07", "es": "¿Te invito a una copa?", "en": "Can I buy you a drink?", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-20", "es": "¿Nos vamos a otro sitio?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-05", "practice": false, "es": "Eres muy atractivo/atractiva.", "en": "You're very attractive.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-06", "practice": false, "es": "Me gustas.", "en": "I like you.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-07", "practice": false, "es": "¿Te invito a una copa?", "en": "Can I buy you a drink?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-20", "practice": false, "es": "¿Nos vamos a otro sitio?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "flirt-21", "es": "¿Te quedas un rato más?", "en": "Are you staying a bit longer?", "difficulty": "medium", "quizQuestions": [] },
             {
               "id": "flirt-22",
@@ -729,8 +1594,80 @@
               "difficulty": "easy",
               "quizQuestions": []
             },
-            { "id": "flirt-23", "es": "¿Quedamos otro día?", "en": "Shall we meet up another day?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-23", "practice": false, "es": "¿Quedamos otro día?", "en": "Shall we meet up another day?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "flirt-24", "es": "Ha sido una noche muy buena.", "en": "That's been a really good night.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "flirt-sc-06",
+              "teaches": "flirt-05",
+              "speaker": "them",
+              "situation": { "en": "You've been talking a while and decide to be straightforward about it." },
+              "question": { "es": "¿Y tú qué buscas exactamente?", "en": "And what exactly are you looking for?" },
+              "answers": [
+                { "es": "Me pareces muy atractiva.", "en": "I find you very attractive." }
+              ],
+              "likelyReply": { "es": "Directo, me gusta.", "en": "Straight to it — I like that." },
+              "notes": "Pareces softens it into an opinion rather than a verdict, which is what keeps it from landing as a line.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-07",
+              "teaches": "flirt-06",
+              "speaker": "them",
+              "situation": { "en": "They ask, half joking, why you've spent the whole night talking to them." },
+              "question": { "es": "¿Y por qué me hablas tanto?", "en": "So why are you talking to me so much?" },
+              "answers": [
+                { "es": "Pues porque me gustas.", "en": "Because I like you." }
+              ],
+              "likelyReply": { "es": "Ya me parecía.", "en": "I thought so." },
+              "notes": "Me gustas is the real thing, not a compliment — say it only if you mean it, because it will be taken at face value.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-08",
+              "teaches": "flirt-07",
+              "speaker": "them",
+              "situation": { "en": "Their glass is empty and you're standing near the bar." },
+              "question": { "es": "Me he quedado sin bebida.", "en": "I've run out of drink." },
+              "answers": [
+                { "es": "¿Te invito a una copa?", "en": "Can I buy you a drink?" }
+              ],
+              "likelyReply": { "es": "Venga, pero la siguiente la pago yo.", "en": "Go on — but I'm getting the next one." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-09",
+              "teaches": "flirt-20",
+              "speaker": "them",
+              "situation": { "en": "The bar is too loud to talk and you'd both rather keep talking." },
+              "question": { "es": "No te oigo nada con esta música.", "en": "I can't hear a thing with this music." },
+              "answers": [
+                { "es": "¿Nos vamos a otro sitio?", "en": "Shall we go somewhere else?" }
+              ],
+              "likelyReply": { "es": "Vale, conozco uno tranquilo.", "en": "Sure — I know a quiet one." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-10",
+              "teaches": "flirt-23",
+              "speaker": "them",
+              "situation": { "en": "You're saying goodbye and want to leave the door open." },
+              "question": { "es": "Bueno, me voy que es tardísimo.", "en": "Right, I'm off — it's so late." },
+              "answers": [
+                { "es": "¿Quedamos otro día?", "en": "Shall we meet up another day?" }
+              ],
+              "likelyReply": { "es": "Sí, escríbeme.", "en": "Yes — message me." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -738,27 +1675,175 @@
           "title": "\"Is this okay?\" check-in",
           "phrases": [
             { "id": "flirt-08", "es": "¿Te puedo decir algo?", "en": "Can I tell you something?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "flirt-09", "es": "Si te incomoda, paro.", "en": "If it makes you uncomfortable, I'll stop.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-25", "es": "¿Te parece bien?", "en": "Is that okay with you?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "flirt-26", "es": "¿Quieres que me vaya?", "en": "Do you want me to go?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-09", "practice": false, "es": "Si te incomoda, paro.", "en": "If it makes you uncomfortable, I'll stop.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-25", "practice": false, "es": "¿Te parece bien?", "en": "Is that okay with you?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-26", "practice": false, "es": "¿Quieres que me vaya?", "en": "Do you want me to go?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "flirt-27", "es": "Dímelo si es demasiado.", "en": "Tell me if it's too much.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-28", "es": "¿Me puedo sentar?", "en": "Can I sit down?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "flirt-29", "es": "¿Prefieres estar sola?", "en": "Would you rather be on your own?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-28", "practice": false, "es": "¿Me puedo sentar?", "en": "Can I sit down?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-29", "practice": false, "es": "¿Prefieres estar sola?", "en": "Would you rather be on your own?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "flirt-30", "es": "¿Estás a gusto?", "en": "Are you comfortable?", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "flirt-sc-11",
+              "teaches": "flirt-09",
+              "speaker": "them",
+              "situation": { "en": "You notice they've gone quiet since you moved closer." },
+              "question": { "es": "No, no, si está bien…", "en": "No, no, it's fine…" },
+              "answers": [
+                { "es": "Si te incomoda, paro.", "en": "If this makes you uncomfortable, I'll stop." }
+              ],
+              "likelyReply": { "es": "Gracias por preguntar.", "en": "Thanks for asking." },
+              "notes": "The single most important line in this section. Said plainly, it is never awkward — not saying it is.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-12",
+              "teaches": "flirt-25",
+              "speaker": "them",
+              "situation": { "en": "You've suggested walking them to their metro stop and want to check it's welcome." },
+              "question": { "es": "Está bastante lejos, ¿eh?", "en": "It's quite far, you know." },
+              "answers": [
+                { "es": "Te acompaño, ¿te parece bien?", "en": "I'll walk with you — is that okay?" }
+              ],
+              "likelyReply": { "es": "Sí, mejor acompañada.", "en": "Yes — better with company." },
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-13",
+              "teaches": "flirt-26",
+              "speaker": "them",
+              "situation": { "en": "Their friends have arrived and the mood has changed." },
+              "question": { "es": "Han llegado mis amigas.", "en": "My friends are here." },
+              "answers": [
+                { "es": "¿Quieres que me vaya?", "en": "Do you want me to go?" }
+              ],
+              "likelyReply": { "es": "No, quédate un rato.", "en": "No — stay a bit." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-14",
+              "teaches": "flirt-28",
+              "speaker": "them",
+              "situation": { "en": "There's a free stool next to someone you've been talking to across the room." },
+              "question": { "es": "¿Buscas sitio?", "en": "Looking for a seat?" },
+              "answers": [
+                { "es": "¿Me puedo sentar?", "en": "Can I sit down?" }
+              ],
+              "likelyReply": { "es": "Claro, siéntate.", "en": "Of course — sit down." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-15",
+              "teaches": "flirt-29",
+              "speaker": "them",
+              "situation": { "en": "They've given short answers twice and you want to give them an easy way out." },
+              "question": { "es": "Perdona, estoy un poco en mi mundo.", "en": "Sorry — I'm a bit in my own world." },
+              "answers": [
+                { "es": "¿Prefieres estar sola?", "en": "Would you rather be on your own?" }
+              ],
+              "likelyReply": { "es": "Un ratito sí, gracias.", "en": "For a little while, yes — thank you." },
+              "notes": "Offering the exit is the point. Asked once and accepted without argument, it is the difference between charming and a problem.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "flirting-reading",
           "title": "Reading the room (into it or just polite?)",
           "phrases": [
-            { "id": "flirt-10", "es": "¿Nos tomamos algo?", "en": "Green light: shall we grab a drink? (mutual interest).", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "flirt-11", "es": "Me lo estoy pasando genial contigo.", "en": "Green light: I'm having a great time with you.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-12", "es": "¿Me das tu Insta?", "en": "Low-pressure modern move: can I get your Instagram?", "difficulty": "easy", "young": true, "quizQuestions": [] },
+            { "id": "flirt-10", "practice": false, "es": "¿Nos tomamos algo?", "en": "Green light: shall we grab a drink? (mutual interest).", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-11", "practice": false, "es": "Me lo estoy pasando genial contigo.", "en": "Green light: I'm having a great time with you.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "flirt-12", "practice": false, "es": "¿Me das tu Insta?", "en": "Low-pressure modern move: can I get your Instagram?", "difficulty": "easy", "young": true, "quizQuestions": [] },
             { "id": "flirt-13", "es": "Es que he venido con mis amigos.", "en": "Soft brush-off: the thing is, I came with my friends.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "flirt-14", "es": "Eres majo/a, pero no me interesa.", "en": "Clear no: you're nice, but I'm not interested.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-15", "es": "Sin problema, que lo pases bien.", "en": "The graceful exit: no problem, have a good one.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "flirt-15", "practice": false, "es": "Sin problema, que lo pases bien.", "en": "The graceful exit: no problem, have a good one.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "flirt-31", "es": "Ya te escribo yo.", "en": "I'll message you — which means they won't.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "flirt-32", "es": "Me voy con mi grupo.", "en": "I'm going back to my group.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "flirt-32", "practice": false, "es": "Me voy con mi grupo.", "en": "I'm going back to my group.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "flirt-sc-16",
+              "teaches": "flirt-10",
+              "speaker": "them",
+              "situation": { "en": "You've been talking in a group and want to peel off with one person." },
+              "question": { "es": "Aquí no hay quien hable.", "en": "There's no talking in here." },
+              "answers": [
+                { "es": "¿Nos tomamos algo?", "en": "Shall we get a drink?" }
+              ],
+              "likelyReply": { "es": "Venga, vamos a la barra.", "en": "Sure — let's go to the bar." },
+              "notes": "A green light when it comes back at you, and a low-risk move when you make it: worst case they say no to one drink.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-17",
+              "teaches": "flirt-11",
+              "speaker": "them",
+              "situation": { "en": "It's late, you're both still there, and neither of you has mentioned leaving." },
+              "question": { "es": "¿Qué hora es? Ni idea.", "en": "What time is it? No idea." },
+              "answers": [
+                { "es": "Me lo estoy pasando genial contigo.", "en": "I'm having a great time with you." }
+              ],
+              "likelyReply": { "es": "Yo también, la verdad.", "en": "Me too, honestly." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-18",
+              "teaches": "flirt-12",
+              "speaker": "them",
+              "situation": { "en": "Their friends are calling them over and you have about four seconds." },
+              "question": { "es": "Me tengo que ir con ellas.", "en": "I have to go with them." },
+              "answers": [
+                { "es": "¿Me das tu Insta?", "en": "Can I get your Instagram?" }
+              ],
+              "likelyReply": { "es": "Sí, búscame y te acepto.", "en": "Sure — look me up and I'll accept." },
+              "notes": "Lower stakes than a phone number for both of you, which is exactly why it is the normal move now.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-19",
+              "teaches": "flirt-15",
+              "speaker": "them",
+              "situation": { "en": "Someone has made it clear they're not interested and you want to leave it well." },
+              "question": { "es": "Oye, mejor lo dejamos aquí.", "en": "Listen — let's leave it here." },
+              "answers": [
+                { "es": "Sin problema, que lo pases bien.", "en": "No problem — have a good one." }
+              ],
+              "likelyReply": { "es": "Igualmente, gracias.", "en": "You too — thanks." },
+              "notes": "Take the no cleanly and the night stays good for everybody, including you. There is no version of arguing that works.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "flirt-sc-20",
+              "teaches": "flirt-32",
+              "speaker": "you",
+              "situation": { "en": "You've decided you're done with this conversation and want out without a scene." },
+              "question": { "es": "Me voy con mi grupo, un placer.", "en": "I'm heading back to my group — nice to meet you." },
+              "answers": [
+                { "es": "Nada, que vaya bien.", "en": "No worries — take care." }
+              ],
+              "likelyReply": null,
+              "notes": "Polite, final, and impossible to argue with. Worth having ready before you need it.",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -2121,14 +3206,86 @@
           "id": "resacon-morning",
           "title": "The morning after",
           "phrases": [
-            { "id": "morning-01", "es": "resacón", "en": "A brutal hangover.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "morning-02", "es": "bajona", "en": "The comedown / feeling low after.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "morning-01", "practice": false, "es": "resacón", "en": "A brutal hangover.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "morning-02", "practice": false, "es": "bajona", "en": "The comedown / feeling low after.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "morning-03", "es": "empalmar", "en": "To party straight through to the next day, no sleep.", "difficulty": "hard", "young": true, "quizQuestions": [] },
             { "id": "morning-04", "es": "botellón", "en": "Outdoor group drinking in a park or plaza.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "morning-05", "es": "no vuelvo a beber (en la vida)", "en": "I'm never drinking again (ever) — everyone lies.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "morning-06", "es": "tener el cuerpo cortado", "en": "To feel wrecked and faintly ill — literally \"a cut-up body\".", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "morning-07", "es": "la resaca moral", "en": "The guilt hangover — last night replaying, on a loop.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "morning-05", "practice": false, "es": "no vuelvo a beber (en la vida)", "en": "I'm never drinking again (ever) — everyone lies.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "morning-06", "practice": false, "es": "tener el cuerpo cortado", "en": "To feel wrecked and faintly ill — literally \"a cut-up body\".", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "morning-07", "practice": false, "es": "la resaca moral", "en": "The guilt hangover — last night replaying, on a loop.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "morning-08", "es": "matar el gusanillo", "en": "To take the edge off — literally \"to kill the little worm\".", "difficulty": "hard", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "resacon-sc-01",
+              "teaches": "morning-01",
+              "speaker": "them",
+              "situation": { "en": "You surface at two in the afternoon and your flatmate is unsympathetic." },
+              "question": { "es": "Buenos días, bella durmiente.", "en": "Morning, sleeping beauty." },
+              "answers": [
+                { "es": "Tengo un resacón horrible.", "en": "I have a horrendous hangover." }
+              ],
+              "likelyReply": { "es": "Te lo has ganado.", "en": "You've earned it." },
+              "notes": "Resacón is resaca with the volume up. La resaca is the hangover; el resacón is the one that ruins the day.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-sc-02",
+              "teaches": "morning-02",
+              "speaker": "them",
+              "situation": { "en": "It's the Sunday after and a friend asks why you sound so flat." },
+              "question": { "es": "¿Estás malo o qué te pasa?", "en": "Are you ill, or what's up?" },
+              "answers": [
+                { "es": "Tengo bajona.", "en": "I've got the comedown." }
+              ],
+              "likelyReply": { "es": "Sal a dar una vuelta.", "en": "Go out for a walk." },
+              "notes": "La bajona is the dip after the high — as much a mood as a hangover, and said about Sundays in general.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-sc-03",
+              "teaches": "morning-05",
+              "speaker": "them",
+              "situation": { "en": "A friend catches you swearing off alcohol for what must be the hundredth time." },
+              "question": { "es": "¿Cuántas veces has dicho eso ya?", "en": "How many times have you said that now?" },
+              "answers": [
+                { "es": "Esta vez no vuelvo a beber en la vida.", "en": "This time I am never drinking again as long as I live." }
+              ],
+              "likelyReply": { "es": "Nos vemos el sábado.", "en": "See you on Saturday." },
+              "notes": "Said with total sincerity, roughly monthly. En la vida is the part that makes it funny, and the part nobody means.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-sc-04",
+              "teaches": "morning-06",
+              "speaker": "them",
+              "situation": { "en": "Someone offers you breakfast and the thought of it is unbearable." },
+              "question": { "es": "¿Te hago unos huevos?", "en": "Shall I make you some eggs?" },
+              "answers": [
+                { "es": "Tengo el cuerpo cortado.", "en": "I feel completely wrecked." }
+              ],
+              "likelyReply": { "es": "Entonces una tostada.", "en": "Just toast, then." },
+              "notes": "Literally a cut-up body: the faintly ill, unsettled feeling rather than the headache.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "resacon-sc-05",
+              "teaches": "morning-07",
+              "speaker": "them",
+              "situation": { "en": "You've been staring at your phone replaying everything you said last night." },
+              "question": { "es": "¿Por qué estás tan callado?", "en": "Why are you so quiet?" },
+              "answers": [
+                { "es": "Tengo resaca moral.", "en": "I've got the guilt hangover." }
+              ],
+              "likelyReply": { "es": "No dijiste nada raro, tranquilo.", "en": "You didn't say anything odd — relax." },
+              "notes": "The guilt hangover, and the reason everybody checks their sent messages on a Sunday.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -2798,14 +3955,86 @@
           "id": "nightlife-slang",
           "title": "Going-out slang",
           "phrases": [
-            { "id": "night-01", "es": "salir de marcha", "en": "To go out partying (nightlife = \"la marcha\").", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "night-02", "es": "estar de after", "en": "To be at an afterparty.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "night-03", "es": "¡qué guay!", "en": "How cool!", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "night-01", "practice": false, "es": "salir de marcha", "en": "To go out partying (nightlife = \"la marcha\").", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "night-02", "practice": false, "es": "estar de after", "en": "To be at an afterparty.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "night-03", "practice": false, "es": "¡qué guay!", "en": "How cool!", "difficulty": "easy", "quizQuestions": [] },
             { "id": "night-05", "es": "nen/nena", "en": "Dude / girl — Catalan term you'll hear in Barcelona.", "difficulty": "easy", "region": "barcelona", "young": true, "quizQuestions": [] },
-            { "id": "night-06", "es": "¿te apuntas?", "en": "You in? / Are you joining?", "difficulty": "easy", "young": true, "quizQuestions": [] },
-            { "id": "night-07", "es": "quedar", "en": "To meet up / make plans (\"¿quedamos?\").", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "night-06", "practice": false, "es": "¿te apuntas?", "en": "You in? / Are you joining?", "difficulty": "easy", "young": true, "quizQuestions": [] },
+            { "id": "night-07", "practice": false, "es": "quedar", "en": "To meet up / make plans (\"¿quedamos?\").", "difficulty": "easy", "quizQuestions": [] },
             { "id": "night-08", "es": "un garito", "en": "A joint / dive bar. \"Irse de garitos\" is bar-hopping.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "night-09", "es": "la previa", "en": "Pre-drinks at someone's flat before you go out.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "night-sc-01",
+              "teaches": "night-01",
+              "speaker": "them",
+              "situation": { "en": "It's Friday and someone asks what you're doing tonight." },
+              "question": { "es": "¿Qué plan tienes hoy?", "en": "What's your plan today?" },
+              "answers": [
+                { "es": "Salgo de marcha.", "en": "I'm going out on the town." }
+              ],
+              "likelyReply": { "es": "Avisa y me apunto.", "en": "Let me know and I'm in." },
+              "notes": "La marcha is nightlife itself. Salir de marcha is going out properly, not one quiet drink.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "night-sc-02",
+              "teaches": "night-02",
+              "speaker": "them",
+              "situation": { "en": "It's seven in the morning and someone texts asking where on earth you are." },
+              "question": { "es": "¿Pero tú dónde andas?", "en": "Where on earth are you?" },
+              "answers": [
+                { "es": "Estamos de after.", "en": "We're at an afterparty." }
+              ],
+              "likelyReply": { "es": "Vete a casa ya.", "en": "Go home already." },
+              "notes": "El after is the place you go when the club shuts. Estar de after says you never went to bed.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "night-sc-03",
+              "teaches": "night-03",
+              "speaker": "them",
+              "situation": { "en": "A friend points out the terrace on the roof of the club." },
+              "question": { "es": "Mira, hay azotea arriba.", "en": "Look — there's a roof terrace upstairs." },
+              "answers": [
+                { "es": "¡Qué guay!", "en": "How cool!" }
+              ],
+              "likelyReply": { "es": "Subimos luego.", "en": "We'll go up later." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "night-sc-04",
+              "teaches": "night-06",
+              "speaker": "you",
+              "situation": { "en": "You're putting a plan together and want to pull one more person in." },
+              "question": { "es": "Vamos al concierto, ¿te apuntas?", "en": "We're going to the gig — you in?" },
+              "answers": [
+                { "es": "Me apunto, ¿a qué hora?", "en": "I'm in — what time?" }
+              ],
+              "likelyReply": null,
+              "notes": "Apuntarse is to put your name down. ¿Te apuntas? is how every plan in Spain actually gets made.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "night-sc-05",
+              "teaches": "night-07",
+              "speaker": "them",
+              "situation": { "en": "Someone you met last night wants to make an actual plan." },
+              "question": { "es": "¿Y si nos vemos el sábado?", "en": "What about meeting on Saturday?" },
+              "answers": [
+                { "es": "Vale, ¿quedamos a las nueve?", "en": "Sure — shall we meet at nine?" }
+              ],
+              "likelyReply": { "es": "Perfecto, en la plaza.", "en": "Perfect — at the square." },
+              "notes": "Quedar is to arrange to meet, and it is not reflexive: ¿quedamos? not ¿nos quedamos?, which would mean shall we stay.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -2826,16 +4055,117 @@
           "id": "drunk-scale-levels",
           "title": "The scale, bottom to top",
           "phrases": [
-            { "id": "drunk-01", "es": "achispado/a", "en": "Tipsy, pleasantly buzzed.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "drunk-02", "es": "piripi", "en": "Tipsy and cheerful (cute, old-school).", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "drunk-03", "es": "estar puesto/a", "en": "Feeling it, a bit gone.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "drunk-01", "practice": false, "es": "achispado/a", "en": "Tipsy, pleasantly buzzed.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "drunk-02", "practice": false, "es": "piripi", "en": "Tipsy and cheerful (cute, old-school).", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "drunk-03", "practice": false, "es": "estar puesto/a", "en": "Feeling it, a bit gone.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "drunk-04", "es": "borracho/a", "en": "Drunk (the standard word).", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "drunk-05", "es": "ir/llevar un pedo", "en": "To be drunk — \"voy pedo\" works for anyone (never \"peda\").", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "drunk-06", "es": "ir ciego/a", "en": "Blind drunk.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "drunk-05", "practice": false, "es": "ir/llevar un pedo", "en": "To be drunk — \"voy pedo\" works for anyone (never \"peda\").", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "drunk-06", "practice": false, "es": "ir ciego/a", "en": "Blind drunk.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "drunk-07", "es": "estar mamado/a", "en": "Wasted.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "drunk-08", "es": "estar cocido/a", "en": "\"Cooked\" = hammered.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "drunk-08", "practice": false, "es": "estar cocido/a", "en": "\"Cooked\" = hammered.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "drunk-09", "es": "coger una cogorza/trompa/tajada", "en": "To get smashed.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "drunk-10", "es": "voy mazo pedo", "en": "I'm super drunk (very Madrid).", "difficulty": "medium", "region": "madrid", "young": true, "quizQuestions": [] }
+            { "id": "drunk-10", "practice": false, "es": "voy mazo pedo", "en": "I'm super drunk (very Madrid).", "difficulty": "medium", "region": "madrid", "young": true, "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "drunk-sc-01",
+              "teaches": "drunk-01",
+              "speaker": "them",
+              "situation": { "en": "Two glasses of wine in, someone checks how you're getting on." },
+              "question": { "es": "Llevas dos copas, ¿no?", "en": "That's two glasses you've had, right?" },
+              "answers": [
+                { "es": "Voy achispado, nada más.", "en": "Just pleasantly tipsy, nothing more." }
+              ],
+              "likelyReply": { "es": "Pues vamos bien.", "en": "We're doing well, then." },
+              "notes": "The bottom of the scale and the nicest place on it. Achispado, achispada.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "drunk-sc-02",
+              "teaches": "drunk-02",
+              "speaker": "them",
+              "situation": { "en": "Someone's aunt asks, kindly, whether you've had a bit much at the family meal." },
+              "question": { "es": "¿Estás bien, hijo?", "en": "Are you all right, love?" },
+              "answers": [
+                { "es": "Un poco piripi, nada grave.", "en": "A bit merry — nothing serious." }
+              ],
+              "likelyReply": { "es": "Bebe agua, anda.", "en": "Have some water, go on." },
+              "notes": "Piripi is old-fashioned and affectionate, which is exactly why it is the right word in front of somebody's family.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "drunk-sc-03",
+              "teaches": "drunk-03",
+              "speaker": "them",
+              "situation": { "en": "A friend has noticed you've gone quiet and asks whether you're still with them." },
+              "question": { "es": "¿Sigues aquí o qué?", "en": "Are you still with us or what?" },
+              "answers": [
+                { "es": "Estoy puesto ya.", "en": "I'm feeling it now." }
+              ],
+              "likelyReply": { "es": "Pues agua y para.", "en": "Water, then, and stop." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "drunk-sc-04",
+              "teaches": "drunk-05",
+              "speaker": "them",
+              "situation": { "en": "It's two in the morning and someone is already halfway to the bar for you." },
+              "question": { "es": "¿Te pido otra?", "en": "Shall I get you another one?" },
+              "answers": [
+                { "es": "Mejor no, que llevo un pedo.", "en": "Better not — I'm hammered." }
+              ],
+              "likelyReply": { "es": "Bien pensado.", "en": "Good call." },
+              "notes": "Llevar un pedo and ir pedo are the same thing. Never peda, whoever is saying it — the noun does not agree with you.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "drunk-sc-05",
+              "teaches": "drunk-06",
+              "speaker": "them",
+              "situation": { "en": "A friend asks how last night ended, and it ended badly." },
+              "question": { "es": "¿Cómo acabaste anoche?", "en": "How did you end up last night?" },
+              "answers": [
+                { "es": "Acabé ciego.", "en": "I ended up blind drunk." }
+              ],
+              "likelyReply": { "es": "Se te notaba.", "en": "It showed." },
+              "notes": "Ir ciego is blind drunk, and it is a step past pedo. Ciega for a woman.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "drunk-sc-06",
+              "teaches": "drunk-08",
+              "speaker": "them",
+              "situation": { "en": "A friend points across the bar at someone who is in no state to stay." },
+              "question": { "es": "¿Ese no venía contigo?", "en": "Wasn't he with you?" },
+              "answers": [
+                { "es": "Está cocido, hay que llevarlo a casa.", "en": "He's hammered — he needs taking home." }
+              ],
+              "likelyReply": { "es": "Yo pido el taxi.", "en": "I'll get the taxi." },
+              "notes": "Cocido is cooked. Said about somebody else far more often than about yourself.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "drunk-sc-07",
+              "teaches": "drunk-10",
+              "speaker": "them",
+              "situation": { "en": "A friend from Madrid texts to ask how the night is going, and you answer in their register." },
+              "question": { "es": "¿Cómo lo llevas, tronco?", "en": "How are you holding up, mate?" },
+              "answers": [
+                { "es": "Voy mazo pedo.", "en": "I am absolutely hammered." }
+              ],
+              "likelyReply": { "es": "Bebe agua ya.", "en": "Drink some water, now." },
+              "notes": "Mazo is the Madrid intensifier doing the job muy would do anywhere else. Outside Madrid it marks you as having learned your Spanish there.",
+              "difficulty": "medium",
+              "region": "madrid",
+              "quizQuestions": []
+            }
           ]
         },
         {
