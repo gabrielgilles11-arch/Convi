@@ -89,6 +89,10 @@ pay by card."), never as a translation of a line.
 }
 ```
 
+Dialogue subsections may also carry `scenes`, on the same terms as phrasebook
+ones (below) — though in practice they rarely need to, since their `exchanges`
+are already situations.
+
 Some `beer-food` and `flirting`-style subsections also carry a `"type": "tips"`
 list instead of exchanges — short natural-sounding phrases with no Q/A shape:
 
@@ -109,7 +113,8 @@ Used for Slang, Cuss Words, Flirting — flat phrase lists, no Q/A/reply shape.
 {
   "id": string,
   "title": string,
-  "phrases": Phrase[]
+  "phrases": Phrase[],
+  "scenes": Exchange[]    // optional; practice only — see below
 }
 ```
 
@@ -123,9 +128,36 @@ Used for Slang, Cuss Words, Flirting — flat phrase lists, no Q/A/reply shape.
   "difficulty": "easy" | "medium" | "hard",
   "region": Region,                  // optional; renders a regional badge. Omit for pan-regional.
   "young": true,                     // optional; renders a "young" badge for youth/informal slang. Omit otherwise.
+  "practice": false,                 // optional; keeps it off the practice deck — see below
   "quizQuestions": []     // populated in Step 3
 }
 ```
+
+### `scenes` — practice-only exchanges
+
+A word list is the right shape for the scenario page and the wrong shape for
+practice. Somebody reading `/scenarios/slang` came to look words up, and a
+scene per entry would bury the list they came for. Somebody in practice is
+being asked to produce a line, and a section that only ever asks *what does
+this mean* is not practising that — a slang stage used to run seven
+definitions and a matching screen, which is what `scenes` exist to fix.
+
+So a phrasebook subsection may carry a second array of `Exchange`es, in the
+exact shape dialogue subsections use. They are read by `buildQuizItems` and by
+`scripts/generate-audio.mjs`, and by nothing that renders the scenario page —
+adding one changes practice and leaves the page alone.
+
+Each scene puts one of the subsection's own words in a moment it would be said
+in. Writing a scene around a word that is not in the list beside it is a
+content bug, and the test suite fails on it: the word the scene was meant to
+teach then gets taught nowhere.
+
+**`practice: false`** is the other half. A word a scene already teaches stays
+on the scenario page and comes out of the deck, because asking for its
+definition *and* drilling it inside a line is the repetition being removed. At
+most three phrases per subsection stay in practice; the suite enforces that
+too. Everything the page shows is unchanged either way — `practice` is not read
+by any page.
 
 ## `Region`
 

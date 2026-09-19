@@ -116,7 +116,9 @@ function spokenLines(locale) {
 
   for (const category of data.categories) {
     for (const sub of category.subsections ?? []) {
-      for (const ex of sub.exchanges ?? []) {
+      // `scenes` are practice-only but just as spoken: the answer drawer reads
+      // the line back to you there the same way the scenario page does.
+      for (const ex of [...(sub.exchanges ?? []), ...(sub.scenes ?? [])]) {
         push(`${ex.id}-q`, ex.question?.es);
         push(`${ex.id}-r`, ex.likelyReply?.es);
         (ex.answers ?? []).forEach((a, i) => push(`${ex.id}-a${i}`, a.es));

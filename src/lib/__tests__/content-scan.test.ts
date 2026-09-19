@@ -13,6 +13,16 @@ import { buildRound, normalizeAnswer, tooAlike, type QuizItem } from "../quizTyp
 
 const locales = LOCALES.map((l) => l.locale);
 
+/**
+ * Everything authored in an edition, whichever array it sits in, tagged with
+ * whether practice asks about it.
+ *
+ * Four arrays now, not one: `exchanges` and `phrases` are what the scenario
+ * page shows, `scenes` are practice-only, and a phrase carrying
+ * `practice: false` is the reverse — page only. The uniqueness checks below
+ * want all of it, since two lines that collide collide wherever they are
+ * shown; only the deck-size check cares about the split.
+ */
 function itemsOf(locale: Locale) {
   const out: {
     id: string;
@@ -20,27 +30,40 @@ function itemsOf(locale: Locale) {
     source: string;
     gloss: string | null;
     situation: string | null;
+    inPractice: boolean;
   }[] = [];
   for (const category of getCategories(locale)) {
     for (const sub of category.subsections) {
-      if (isDialogueSubsection(sub)) {
-        const d = sub as DialogueSubsection;
-        for (const ex of d.exchanges ?? []) {
-          out.push({
-            id: ex.id,
-            sub: sub.id,
-            source: ex.question.es,
-            gloss: ex.question.en,
-            situation: ex.situation.en,
-          });
-        }
-        (d.items ?? []).forEach((tip, i) =>
-          out.push({ id: `${sub.id}-tip${i}`, sub: sub.id, source: tip.es, gloss: tip.en, situation: null })
-        );
-      } else {
-        for (const p of (sub as PhrasebookSubsection).phrases) {
-          out.push({ id: p.id, sub: sub.id, source: p.es, gloss: p.en, situation: null });
-        }
+      const d = sub as DialogueSubsection;
+      for (const ex of [...(d.exchanges ?? []), ...(sub.scenes ?? [])]) {
+        out.push({
+          id: ex.id,
+          sub: sub.id,
+          source: ex.question.es,
+          gloss: ex.question.en,
+          situation: ex.situation.en,
+          inPractice: true,
+        });
+      }
+      (d.items ?? []).forEach((tip, i) =>
+        out.push({
+          id: `${sub.id}-tip${i}`,
+          sub: sub.id,
+          source: tip.es,
+          gloss: tip.en,
+          situation: null,
+          inPractice: true,
+        })
+      );
+      for (const p of (sub as PhrasebookSubsection).phrases ?? []) {
+        out.push({
+          id: p.id,
+          sub: sub.id,
+          source: p.es,
+          gloss: p.en,
+          situation: null,
+          inPractice: p.practice !== false,
+        });
       }
     }
   }
@@ -158,31 +181,81 @@ describe("content integrity", () => {
     it("drops nothing on the way into the deck", () => {
       // A `them` exchange with no answers has no line for the learner to
       // produce, so quizItems skips it and the authored card silently
-      // never appears in practice.
-      const authored = items.length;
+      // never appears in practice. A phrase held back with `practice: false`
+      // is the one deliberate omission, and is excluded from the count rather
+      // than allowed to hide an accidental one.
+      const authored = items.filter((i) => i.inPractice).length;
       const built = buildQuizItems(locale).length;
       expect(built, `${authored - built} authored item(s) never reach practice`).toBe(authored);
     });
 
     it("sizes every subsection for a round", () => {
+      // Counted as practice sees it: a round is built out of stages, and a
+      // stage is cut out of what reaches the deck, not out of what the
+      // scenario page lists.
+      const bySub = new Map<string, number>();
+      for (const item of items) {
+        if (!item.inPractice) continue;
+        bySub.set(item.sub, (bySub.get(item.sub) ?? 0) + 1);
+      }
       for (const category of getCategories(locale)) {
         for (const sub of category.subsections) {
-          const count = isDialogueSubsection(sub)
-            ? ((sub as DialogueSubsection).exchanges?.length ?? 0) +
-              ((sub as DialogueSubsection).items?.length ?? 0)
-            : (sub as PhrasebookSubsection).phrases.length;
-          expect(count, `${sub.id} has ${count}`).toBeGreaterThanOrEqual(8);
-          expect(count, `${sub.id} has ${count}`).toBeLessThanOrEqual(14);
+          const count = bySub.get(sub.id) ?? 0;
+          expect(count, `${sub.id} gives practice ${count}`).toBeGreaterThanOrEqual(8);
+          expect(count, `${sub.id} gives practice ${count}`).toBeLessThanOrEqual(14);
         }
       }
+    });
+
+    it("asks what a word means at most three times per subsection", () => {
+      // The cap the scenes were written for. A round samples a stage, and a
+      // stage is cut out of a category rather than a subsection — so the only
+      // place to hold the ratio is at the source. Past three, a section starts
+      // asking what a word means over and over, which is what the scenes
+      // replaced.
+      for (const category of getCategories(locale)) {
+        for (const sub of category.subsections) {
+          if ((sub.scenes ?? []).length === 0) continue; // untouched section
+          const words = ((sub as PhrasebookSubsection).phrases ?? []).filter(
+            (p) => p.practice !== false
+          ).length;
+          expect(words, `${sub.id} still asks ${words} bare words`).toBeLessThanOrEqual(3);
+        }
+      }
+    });
+
+    it("gives every scene a word from its own list to carry", () => {
+      // A scene exists to put one of the subsection's words in a moment. One
+      // that shares no word with the list beside it has drifted into being a
+      // second dialogue section, and the word it was meant to teach is now
+      // taught nowhere.
+      const strays: string[] = [];
+      for (const category of getCategories(locale)) {
+        for (const sub of category.subsections) {
+          const scenes = sub.scenes ?? [];
+          if (scenes.length === 0) continue;
+          const words = ((sub as PhrasebookSubsection).phrases ?? []).flatMap((p) =>
+            normalizeAnswer(p.es).split(" ").filter((w) => w.length > 2)
+          );
+          const vocabulary = new Set(words);
+          for (const scene of scenes) {
+            const said = [scene.question.es, ...scene.answers.map((a) => a.es)]
+              .flatMap((line) => normalizeAnswer(line).split(" "))
+              .filter(Boolean);
+            if (!said.some((w) => vocabulary.has(w))) strays.push(`${scene.id} in ${sub.id}`);
+          }
+        }
+      }
+      expect(strays).toEqual([]);
     });
 
     it("tags regions with values the badge knows how to render", () => {
       for (const category of getCategories(locale)) {
         for (const sub of category.subsections) {
-          const tagged = isDialogueSubsection(sub)
-            ? ((sub as DialogueSubsection).exchanges ?? [])
-            : (sub as PhrasebookSubsection).phrases;
+          const tagged = [
+            ...((sub as DialogueSubsection).exchanges ?? []),
+            ...((sub as PhrasebookSubsection).phrases ?? []),
+          ];
           for (const item of tagged) {
             if (!item.region) continue;
             expect(REGION_LABELS[item.region], `${item.id}: ${item.region}`).toBeTruthy();

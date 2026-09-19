@@ -165,14 +165,30 @@ export const MISTAKES_STAGE_ID = "__mistakes__";
 
 /**
  * Capstone at the end of the path: the slang from every section at once, rather
- * than one category at a time. Phrasebook items *are* the slang across an
- * edition — slang, cuss words, flirting, Bayern — so the final draws from every
- * phrase-kind item in the deck.
+ * than one category at a time.
+ *
+ * It used to be defined as every phrase-kind item, on the reasoning that a
+ * phrasebook entry *was* slang. That stopped being true once those sections
+ * were rewritten as scenes: the slang is still there, it is just inside a
+ * moment now, and a final drawn on kind alone would have been the handful of
+ * words left over — every question a definition, which is the shape the
+ * rewrite existed to get away from. So it reads the sections by name, and
+ * keeps the loose words beside them.
  */
 export const SLANG_FINAL_ID = "__slang-final__";
 
+const SLANG_STAGES = new Set([
+  "slang",
+  "cuss-words",
+  "flirting",
+  "bayern-slang",
+  "berlin-slang",
+]);
+
 export function slangFinalItems(items: QuizItem[]): QuizItem[] {
-  return items.filter((i) => i.kind === "phrase");
+  return items.filter(
+    (i) => SLANG_STAGES.has(stageKeyOf(i.categoryId)) || i.kind === "phrase"
+  );
 }
 
 /** The final stays locked until every ordinary stage has been cleared. */
@@ -208,11 +224,15 @@ function interleaveByKind(items: QuizItem[]): QuizItem[] {
 }
 
 /**
- * Splits each category into stages of at most STAGE_SIZE items. A trailing
- * remainder smaller than 4 is folded back into the previous part rather than
- * becoming a stage of one or two — a round samples from whatever the stage
- * holds, so a slightly over-full last part is harmless while a stage of one is
- * pointless.
+ * Splits each category into parts of around STAGE_SIZE items, sized evenly.
+ *
+ * How many parts is decided first — ceiling, with a remainder smaller than 4
+ * folded back, so a category never ends on a stage of one or two — and then
+ * the items are dealt out across that many parts rather than filled one at a
+ * time. Greedy filling gave 16 items a 12 and a 4, and a stage of four cannot
+ * build a round out of its own material: most of what it asked came from
+ * somewhere else, while the part before it was full. Two parts of eight each
+ * stand on their own, and the path shows the same number of parts either way.
  */
 export function buildStages(items: QuizItem[], categories: QuizCategory[]): Stage[] {
   const ordered = [...categories].sort((a, b) => {
@@ -231,13 +251,17 @@ export function buildStages(items: QuizItem[], categories: QuizCategory[]): Stag
 
     const ids = interleaveByKind(mine).map((i) => i.id);
 
+    let parts = Math.max(1, Math.ceil(ids.length / STAGE_SIZE));
+    if (parts > 1 && ids.length - (parts - 1) * STAGE_SIZE < 4) parts -= 1;
+
     const chunks: string[][] = [];
-    for (let i = 0; i < ids.length; i += STAGE_SIZE) {
-      chunks.push(ids.slice(i, i + STAGE_SIZE));
-    }
-    if (chunks.length > 1 && chunks[chunks.length - 1].length < 4) {
-      const tail = chunks.pop()!;
-      chunks[chunks.length - 1].push(...tail);
+    let cut = 0;
+    for (let i = 0; i < parts; i++) {
+      // What is left, spread over the parts that are left: the sizes come out
+      // within one of each other however the division falls.
+      const size = Math.ceil((ids.length - cut) / (parts - i));
+      chunks.push(ids.slice(cut, cut + size));
+      cut += size;
     }
 
     chunks.forEach((chunk, i) => {
@@ -889,14 +913,18 @@ export function buildRound(
   const situations = (list: QuizItem[]) => list.filter((i) => i.kind === "situation");
   const phrases = (list: QuizItem[]) => list.filter((i) => i.kind === "phrase");
 
-  // The order below is the whole policy. Own material, then the same material
-  // from its other side, and only then a step backwards along the path.
-  take(situations(items), wantSituations, false);              // 1. own situations
-  take(phrases(items), slots - drafts.length, false);          // 2. own phrases
-  take(phrases(items), slots - drafts.length, true, true);     // 3. own phrases, flipped
-  take(situations(items), slots - drafts.length, true, true);  // 4. own situations, flipped
-  take(situations(earlier), slots - drafts.length, false);     // 5. earlier stages
-  take(phrases(earlier), slots - drafts.length, false);
+  // The order below is the whole policy. Own material first, but a situation
+  // slot is filled by a situation before anything else — including by stepping
+  // back along the path for one. A stage made mostly of words used to spend
+  // all five of those slots on "what does this mean?", so a slang round was
+  // seven definitions and a matching screen; revising a moment already met is
+  // a better question than a fourth definition of a word.
+  take(situations(items), wantSituations, false);                     // 1. own situations
+  take(situations(earlier), wantSituations - drafts.length, false);   // 2. borrowed situations
+  take(phrases(items), slots - drafts.length, false);                 // 3. own phrases
+  take(phrases(items), slots - drafts.length, true, true);            // 4. own phrases, flipped
+  take(situations(items), slots - drafts.length, true, true);         // 5. own situations, flipped
+  take(phrases(earlier), slots - drafts.length, false);               // 6. earlier phrases
   take(phrases(earlier), slots - drafts.length, true, true);
 
   if (drafts.length === 0) return [];

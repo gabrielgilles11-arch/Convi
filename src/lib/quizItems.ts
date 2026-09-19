@@ -11,10 +11,54 @@ import {
   DEFAULT_LOCALE,
   type Category,
   type DialogueSubsection,
+  type Exchange,
   type Locale,
   type PhrasebookSubsection,
 } from "./content";
 import type { QuizCategory, QuizItem } from "./quizTypes";
+
+/**
+ * One authored exchange as the deck sees it, or null where it has no line for
+ * the learner to produce.
+ *
+ * `speaker` decides which line that is, and which one comes back at them
+ * afterwards. When they ask, your line is among `answers` and their comeback is
+ * `likelyReply`; when you ask, the question is yours and everything else is
+ * theirs.
+ */
+function situationFrom(
+  exchange: Exchange,
+  category: Category,
+  subsectionId: string
+): QuizItem | null {
+  const theirTurn = exchange.speaker === "them";
+  const mine = theirTurn ? exchange.answers[0] : exchange.question;
+  const theirs = theirTurn
+    ? exchange.likelyReply
+    : (exchange.answers[0] ?? exchange.likelyReply);
+
+  if (!mine?.es || !exchange.situation?.en) return null;
+
+  return {
+    id: exchange.id,
+    categoryId: category.id,
+    categoryTitle: category.title,
+    subsectionId,
+    kind: "situation",
+    // The prompt is the situation, in English. It is the whole question:
+    // nothing in the target language is shown until you've answered.
+    prompt: "What do you say?",
+    front: exchange.situation.en,
+    frontTranslation: null,
+    correctAnswer: mine.es,
+    correctAnswerTranslation: mine.en,
+    // Shown after the answer settles, never before — it is the payoff,
+    // not part of the question.
+    reply: theirs?.es ? { source: theirs.es, en: theirs.en } : null,
+    frontAudioId: null,
+    answerAudioId: theirTurn ? `${exchange.id}-a0` : `${exchange.id}-q`,
+  };
+}
 
 export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
   const items: QuizItem[] = [];
@@ -22,40 +66,12 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
   for (const category of getCategories(locale)) {
     for (const sub of category.subsections) {
       const dialogue = sub as DialogueSubsection;
-      if (dialogue.exchanges) {
-        for (const exchange of dialogue.exchanges) {
-          // `speaker` decides which line the learner produces, and which one
-          // comes back at them afterwards. When they ask, your line is among
-          // `answers` and their comeback is `likelyReply`; when you ask, the
-          // question is yours and everything else is theirs.
-          const theirTurn = exchange.speaker === "them";
-          const mine = theirTurn ? exchange.answers[0] : exchange.question;
-          const theirs = theirTurn
-            ? exchange.likelyReply
-            : (exchange.answers[0] ?? exchange.likelyReply);
-
-          if (!mine?.es || !exchange.situation?.en) continue;
-
-          items.push({
-            id: exchange.id,
-            categoryId: category.id,
-            categoryTitle: category.title,
-            subsectionId: sub.id,
-            kind: "situation",
-            // The prompt is the situation, in English. It is the whole question:
-            // nothing in the target language is shown until you've answered.
-            prompt: "What do you say?",
-            front: exchange.situation.en,
-            frontTranslation: null,
-            correctAnswer: mine.es,
-            correctAnswerTranslation: mine.en,
-            // Shown after the answer settles, never before — it is the payoff,
-            // not part of the question.
-            reply: theirs?.es ? { source: theirs.es, en: theirs.en } : null,
-            frontAudioId: null,
-            answerAudioId: theirTurn ? `${exchange.id}-a0` : `${exchange.id}-q`,
-          });
-        }
+      // `exchanges` are authored for the scenario page and practice both;
+      // `scenes` exist only here, to put a word list's words in a moment. They
+      // build identically — the difference is only which surfaces read them.
+      for (const exchange of [...(dialogue.exchanges ?? []), ...(sub.scenes ?? [])]) {
+        const item = situationFrom(exchange, category, sub.id);
+        if (item) items.push(item);
       }
 
       if (dialogue.items) {
@@ -84,6 +100,10 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
       const phrasebook = sub as PhrasebookSubsection;
       if (phrasebook.phrases) {
         for (const phrase of phrasebook.phrases) {
+          // A word a scene already teaches stays on the scenario page and out
+          // of here, so the deck asks for its definition no more than three
+          // times per subsection.
+          if (phrase.practice === false) continue;
           items.push({
             id: phrase.id,
             categoryId: category.id,

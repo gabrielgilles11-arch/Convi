@@ -328,8 +328,9 @@ export default function QuizApp({ locale }: Props) {
       {mode === "path" && (
         <>
           <p className="path-intro">
-            Work along the path. Each stone is one round of {ROUND_LENGTH} — clear it at{" "}
-            {STAGE_CLEAR_SCORE}% to move on.
+            Work along the path. A round is {ROUND_LENGTH} questions — clear it at{" "}
+            {STAGE_CLEAR_SCORE}% and the circle fills. Bigger sections take a few rounds, so keep
+            tapping the same circle until it's full.
           </p>
           <PracticePath
             stages={stages}
