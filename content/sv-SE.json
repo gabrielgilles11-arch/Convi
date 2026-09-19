@@ -628,6 +628,7 @@
             },
             {
               "id": "sv-slang-02",
+              "practice": false,
               "es": "typ",
               "en": "Like / kind of.",
               "difficulty": "easy",
@@ -635,6 +636,7 @@
             },
             {
               "id": "sv-slang-03",
+              "practice": false,
               "es": "Nu kör vi",
               "en": "Let's go.",
               "difficulty": "easy",
@@ -649,6 +651,7 @@
             },
             {
               "id": "sv-slang-05",
+              "practice": false,
               "es": "fatta",
               "en": "To get / to understand.",
               "difficulty": "easy",
@@ -656,6 +659,7 @@
             },
             {
               "id": "sv-slang-06",
+              "practice": false,
               "es": "haja",
               "en": "To follow / to catch on — slangier than fatta.",
               "difficulty": "medium",
@@ -670,6 +674,7 @@
             },
             {
               "id": "sv-slang-08",
+              "practice": false,
               "es": "softa",
               "en": "To chill.",
               "difficulty": "easy",
@@ -677,6 +682,7 @@
             },
             {
               "id": "sv-slang-09",
+              "practice": false,
               "es": "taggad",
               "en": "Hyped / excited.",
               "difficulty": "easy",
@@ -684,8 +690,109 @@
             },
             {
               "id": "sv-slang-10",
+              "practice": false,
               "es": "sjukt",
               "en": "Insanely / really — \"sjukt bra\" = really good.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ],
+          "scenes": [
+            {
+              "id": "sv-slang-sc-01",
+              "teaches": "sv-slang-02",
+              "speaker": "them",
+              "situation": { "en": "Someone asks how long the walk to the place you're meeting at takes." },
+              "question": { "es": "Hur långt är det dit?", "en": "How far is it?" },
+              "answers": [
+                { "es": "Typ tio minuter.", "en": "Like ten minutes." }
+              ],
+              "likelyReply": { "es": "Då hinner vi.", "en": "We'll make it, then." },
+              "notes": "Typ is the Swedish like — an approximation, not a comparison. It goes in front of a number more often than anything else.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-02",
+              "teaches": "sv-slang-03",
+              "speaker": "them",
+              "situation": { "en": "Everyone has their coat on and the taxi is outside." },
+              "question": { "es": "Är alla klara?", "en": "Is everybody ready?" },
+              "answers": [
+                { "es": "Nu kör vi!", "en": "Let's go!" }
+              ],
+              "likelyReply": { "es": "Jag låser.", "en": "I'll lock up." },
+              "notes": "Literally 'now we drive'. Said whether or not anybody is driving.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-03",
+              "teaches": "sv-slang-05",
+              "speaker": "them",
+              "situation": { "en": "Someone has explained the ticket machine twice and checks you've got it." },
+              "question": { "es": "Fattar du hur jag menar?", "en": "Do you get what I mean?" },
+              "answers": [
+                { "es": "Ja, jag fattar.", "en": "Yes, I get it." }
+              ],
+              "likelyReply": { "es": "Bra, då kör vi.", "en": "Good — off we go." },
+              "notes": "Fatta is to grasp. Jag fattar inte is the single most useful thing to be able to say while you're learning.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-04",
+              "teaches": "sv-slang-06",
+              "speaker": "them",
+              "situation": { "en": "A friend has just explained a joke that took a while to land." },
+              "question": { "es": "Förstod du poängen nu?", "en": "Did you get the point now?" },
+              "answers": [
+                { "es": "Nu hajar jag.", "en": "Now I'm with you." }
+              ],
+              "likelyReply": { "es": "Äntligen.", "en": "Finally." },
+              "notes": "Haja is fatta with the collar turned up — slangier, younger, and used the same way.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-05",
+              "teaches": "sv-slang-08",
+              "speaker": "them",
+              "situation": { "en": "It's Sunday, the weather is bad, and someone asks what the plan is." },
+              "question": { "es": "Vad gör ni idag?", "en": "What are you all doing today?" },
+              "answers": [
+                { "es": "Vi softar hemma.", "en": "We're chilling at home." }
+              ],
+              "likelyReply": { "es": "Låter skönt.", "en": "Sounds nice." },
+              "notes": "Softa is to take it easy. Mjukisbyxor and a sofa are implied.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-06",
+              "teaches": "sv-slang-09",
+              "speaker": "them",
+              "situation": { "en": "The gig you've had tickets for since spring is tomorrow." },
+              "question": { "es": "Ser du fram emot imorgon?", "en": "Are you looking forward to tomorrow?" },
+              "answers": [
+                { "es": "Jag är så taggad.", "en": "I'm so hyped." }
+              ],
+              "likelyReply": { "es": "Jag med!", "en": "Me too!" },
+              "notes": "Taggad is spiked, in the sense of charged up. Peppad does the same job and is slightly gentler.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-07",
+              "teaches": "sv-slang-10",
+              "speaker": "them",
+              "situation": { "en": "A friend asks what you made of the restaurant they booked." },
+              "question": { "es": "Vad tyckte du om stället?", "en": "What did you think of the place?" },
+              "answers": [
+                { "es": "Sjukt bra.", "en": "Insanely good." }
+              ],
+              "likelyReply": { "es": "Va kul att du gillade det.", "en": "Glad you liked it." },
+              "notes": "Sjukt is literally 'sickly' and works as an intensifier in front of anything, good or bad.",
               "difficulty": "easy",
               "quizQuestions": []
             }
@@ -712,16 +819,89 @@
             },
             {
               "id": "sv-slang-13",
+              "practice": false,
               "es": "nice",
               "en": "Loanword, very common.",
               "difficulty": "easy",
               "quizQuestions": []
             },
-            { "id": "sv-slang-25", "es": "kanon!", "en": "Brilliant! — literally \"cannon\".", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-26", "es": "toppen!", "en": "Great!", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-27", "es": "grymt", "en": "Awesome — literally \"cruelly\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-slang-25", "practice": false, "es": "kanon!", "en": "Brilliant! — literally \"cannon\".", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-26", "practice": false, "es": "toppen!", "en": "Great!", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-27", "practice": false, "es": "grymt", "en": "Awesome — literally \"cruelly\".", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-28", "es": "as- (asbra, asgott)", "en": "Really, seriously — an intensifier prefix alongside skit-.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "sv-slang-29", "es": "snyggt!", "en": "Nice one! — about something done well, not about a person.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "sv-slang-29", "practice": false, "es": "snyggt!", "en": "Nice one! — about something done well, not about a person.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-slang-sc-08",
+              "teaches": "sv-slang-13",
+              "speaker": "them",
+              "situation": { "en": "Someone offers to sort out the tickets so you don't have to." },
+              "question": { "es": "Jag fixar biljetterna.", "en": "I'll sort the tickets." },
+              "answers": [
+                { "es": "Nice, tack.", "en": "Nice — thanks." }
+              ],
+              "likelyReply": { "es": "Inga problem.", "en": "No problem." },
+              "notes": "Borrowed straight from English and completely at home. Swedes use it where an English speaker might say 'great'.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-09",
+              "teaches": "sv-slang-25",
+              "speaker": "them",
+              "situation": { "en": "A friend has got you into the place everyone said was full." },
+              "question": { "es": "Vi kom in, jag fixade det.", "en": "We're in — I sorted it." },
+              "answers": [
+                { "es": "Kanon!", "en": "Brilliant!" }
+              ],
+              "likelyReply": { "es": "Eller hur.", "en": "Right?" },
+              "notes": "Literally 'cannon'. Said on its own, with feeling, and never mid-sentence.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-10",
+              "teaches": "sv-slang-26",
+              "speaker": "them",
+              "situation": { "en": "Someone suggests a time that happens to suit you perfectly." },
+              "question": { "es": "Ses vi vid sju?", "en": "Shall we meet at seven?" },
+              "answers": [
+                { "es": "Toppen!", "en": "Great!" }
+              ],
+              "likelyReply": { "es": "Då säger vi det.", "en": "Let's say that, then." },
+              "notes": "Toppen is the top. A shade more wholesome than kanon and safe with anybody's family.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-11",
+              "teaches": "sv-slang-27",
+              "speaker": "them",
+              "situation": { "en": "A friend tells you they got the job they interviewed for." },
+              "question": { "es": "Jag fick jobbet!", "en": "I got the job!" },
+              "answers": [
+                { "es": "Vad grymt!", "en": "That's awesome!" }
+              ],
+              "likelyReply": { "es": "Tack, jag är så glad.", "en": "Thanks — I'm so happy." },
+              "notes": "Grym means cruel. As praise it means the opposite, the way 'wicked' does in English.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-12",
+              "teaches": "sv-slang-29",
+              "speaker": "them",
+              "situation": { "en": "Someone parallel-parks into a space nobody thought would fit." },
+              "question": { "es": "Där, in på första försöket.", "en": "There — first try." },
+              "answers": [
+                { "es": "Snyggt!", "en": "Nice one!" }
+              ],
+              "likelyReply": { "es": "Tack, tack.", "en": "Thanks, thanks." },
+              "notes": "Snyggt is about the thing done, not the person who did it. Du är snygg is a compliment of a very different kind.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -730,6 +910,7 @@
           "phrases": [
             {
               "id": "sv-slang-14",
+              "practice": false,
               "es": "tuben",
               "en": "The metro (Tunnelbanan).",
               "difficulty": "easy",
@@ -746,6 +927,7 @@
             },
             {
               "id": "sv-slang-16",
+              "practice": false,
               "es": "tjacka",
               "en": "To buy.",
               "difficulty": "medium",
@@ -762,15 +944,93 @@
             },
             {
               "id": "sv-slang-18",
+              "practice": false,
               "es": "Medis",
               "en": "Medborgarplatsen.",
               "difficulty": "medium",
               "region": "stockholm",
               "quizQuestions": []
             },
-            { "id": "sv-slang-30", "es": "Söder", "en": "Södermalm — the southern island, and a whole personality with it.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] },
-            { "id": "sv-slang-31", "es": "Stureplan", "en": "The nightlife square — expensive, and fully aware of it.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] },
+            { "id": "sv-slang-30", "practice": false, "es": "Söder", "en": "Södermalm — the southern island, and a whole personality with it.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] },
+            { "id": "sv-slang-31", "practice": false, "es": "Stureplan", "en": "The nightlife square — expensive, and fully aware of it.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] },
             { "id": "sv-slang-32", "es": "SL", "en": "The transport network — the card, the app and the turnstile.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-slang-sc-13",
+              "teaches": "sv-slang-14",
+              "speaker": "them",
+              "situation": { "en": "You're deciding how to get across town and the traffic looks bad." },
+              "question": { "es": "Ska vi gå eller åka?", "en": "Shall we walk or take something?" },
+              "answers": [
+                { "es": "Vi åker tuben, det går fortare.", "en": "Let's take the metro — it's quicker." }
+              ],
+              "likelyReply": { "es": "Bra idé.", "en": "Good idea." },
+              "notes": "Tuben is Tunnelbanan, and it is what everybody calls it. The signs say T.",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-14",
+              "teaches": "sv-slang-16",
+              "speaker": "them",
+              "situation": { "en": "You've run out of something and are heading to the shop." },
+              "question": { "es": "Ska du ut nånstans?", "en": "Are you heading out somewhere?" },
+              "answers": [
+                { "es": "Jag ska tjacka lite mat.", "en": "I'm going to grab some food." }
+              ],
+              "likelyReply": { "es": "Köp kaffe också.", "en": "Get coffee too." },
+              "notes": "Tjacka is to buy, Stockholm slang, and casual enough that you wouldn't use it in a shop.",
+              "difficulty": "medium",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-15",
+              "teaches": "sv-slang-18",
+              "speaker": "them",
+              "situation": { "en": "Someone asks where to meet before dinner on Södermalm." },
+              "question": { "es": "Var ses vi innan?", "en": "Where shall we meet beforehand?" },
+              "answers": [
+                { "es": "Vid Medis, som vanligt.", "en": "At Medis, as usual." }
+              ],
+              "likelyReply": { "es": "Perfekt, vid statyn.", "en": "Perfect — by the statue." },
+              "notes": "Medis is Medborgarplatsen. Stockholm shortens every place name it uses often, and this is the one you'll hear most.",
+              "difficulty": "medium",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-16",
+              "teaches": "sv-slang-30",
+              "speaker": "them",
+              "situation": { "en": "Someone asks which part of the city you've been staying in." },
+              "question": { "es": "Var bor du nånstans?", "en": "Whereabouts are you staying?" },
+              "answers": [
+                { "es": "Jag bor på Söder.", "en": "I'm staying in Söder." }
+              ],
+              "likelyReply": { "es": "Trevligt område.", "en": "Nice area." },
+              "notes": "Söder is Södermalm, and saying you live there tells a Stockholmer more about you than the postcode does.",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-17",
+              "teaches": "sv-slang-31",
+              "speaker": "them",
+              "situation": { "en": "A friend suggests a night out somewhere you've heard is expensive." },
+              "question": { "es": "Vi kan dra ut ikväll.", "en": "We could go out tonight." },
+              "answers": [
+                { "es": "Inte Stureplan, det blir för dyrt.", "en": "Not Stureplan — it'll be too expensive." }
+              ],
+              "likelyReply": { "es": "Vi tar Söder istället.", "en": "We'll do Söder instead." },
+              "notes": "Stureplan is the expensive nightlife square, and knowing to avoid it is a Stockholm opinion you can hold on day one.",
+              "difficulty": "medium",
+              "region": "stockholm",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -791,12 +1051,84 @@
               "difficulty": "easy",
               "quizQuestions": []
             },
-            { "id": "sv-slang-33", "es": "förfest", "en": "The pre-party — where most of a Swedish night actually happens.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-34", "es": "efterfest", "en": "The afterparty.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-35", "es": "krogen", "en": "The pub — \"ut på krogen\" is going out for the night.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-slang-36", "es": "nubbe", "en": "A shot of snaps, usually with a song attached to it.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-slang-33", "practice": false, "es": "förfest", "en": "The pre-party — where most of a Swedish night actually happens.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-34", "practice": false, "es": "efterfest", "en": "The afterparty.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-35", "practice": false, "es": "krogen", "en": "The pub — \"ut på krogen\" is going out for the night.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-slang-36", "practice": false, "es": "nubbe", "en": "A shot of snaps, usually with a song attached to it.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-37", "es": "Systemet / Bolaget", "en": "Systembolaget, the state off-licence. Nobody says the whole word.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-38", "es": "folköl", "en": "3.5% supermarket beer — the only kind sold outside Systembolaget.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "sv-slang-38", "practice": false, "es": "folköl", "en": "3.5% supermarket beer — the only kind sold outside Systembolaget.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-slang-sc-18",
+              "teaches": "sv-slang-33",
+              "speaker": "them",
+              "situation": { "en": "Someone invites you out and you want to know about the bit before." },
+              "question": { "es": "Vi ses på klubben vid elva.", "en": "See you at the club at eleven." },
+              "answers": [
+                { "es": "Blir det förfest innan?", "en": "Is there a pre-party beforehand?" }
+              ],
+              "likelyReply": { "es": "Ja, hemma hos mig vid åtta.", "en": "Yes — at mine from eight." },
+              "notes": "Förfest is where a Swedish night actually happens. Drinks out are expensive, so the flat comes first and the club comes late.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-19",
+              "teaches": "sv-slang-34",
+              "speaker": "them",
+              "situation": { "en": "The club is closing and nobody in your group wants to go home." },
+              "question": { "es": "De stänger nu.", "en": "They're closing now." },
+              "answers": [
+                { "es": "Blir det efterfest nånstans?", "en": "Is there an afterparty somewhere?" }
+              ],
+              "likelyReply": { "es": "Hos Erik, han har plats.", "en": "At Erik's — he's got room." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-20",
+              "teaches": "sv-slang-35",
+              "speaker": "them",
+              "situation": { "en": "It's Friday afternoon and someone asks what you're doing tonight." },
+              "question": { "es": "Vad har du för planer ikväll?", "en": "What are your plans tonight?" },
+              "answers": [
+                { "es": "Vi ska ut på krogen.", "en": "We're going out to the pub." }
+              ],
+              "likelyReply": { "es": "Får jag haka på?", "en": "Can I tag along?" },
+              "notes": "Krogen covers the pub and the restaurant both. Ut på krogen means a night out, not one drink.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-21",
+              "teaches": "sv-slang-36",
+              "speaker": "them",
+              "situation": { "en": "It's midsummer, everyone is standing up, and a song is starting." },
+              "question": { "es": "Nu ska vi sjunga!", "en": "Time for a song!" },
+              "answers": [
+                { "es": "Då tar vi en nubbe.", "en": "Then let's have a snaps." }
+              ],
+              "likelyReply": { "es": "Helan går!", "en": "Here goes the first one!" },
+              "notes": "A nubbe is a small measure of snaps with a song attached. The song is not optional and there are dozens of them.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-22",
+              "teaches": "sv-slang-38",
+              "speaker": "them",
+              "situation": { "en": "It's eight in the evening, Systembolaget is shut, and someone still wants a beer." },
+              "question": { "es": "Hinner vi till Systemet?", "en": "Can we still make it to Systemet?" },
+              "answers": [
+                { "es": "Nej, men vi köper folköl.", "en": "No — but we can get supermarket beer." }
+              ],
+              "likelyReply": { "es": "Det duger.", "en": "That'll do." },
+              "notes": "Folköl is 3.5% and the strongest thing a supermarket may sell. Everything above that is Systembolaget only, and they close early.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -812,6 +1144,7 @@
             },
             {
               "id": "sv-slang-22",
+              "practice": false,
               "es": "Orka.",
               "en": "Standalone: \"ugh, no way\".",
               "difficulty": "medium",
@@ -820,6 +1153,7 @@
             },
             {
               "id": "sv-slang-23",
+              "practice": false,
               "es": "Vi tar tuben.",
               "en": "We'll take the metro.",
               "difficulty": "easy",
@@ -828,6 +1162,7 @@
             },
             {
               "id": "sv-slang-24",
+              "practice": false,
               "es": "Vi splittar en taxi.",
               "en": "We'll split a taxi.",
               "difficulty": "hard",
@@ -835,23 +1170,170 @@
               "quizQuestions": []
             },
             { "id": "sv-slang-39", "es": "liksom", "en": "Like / sort of — sits next to typ, often in the same sentence.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-40", "es": "jodå", "en": "Yes, actually — contradicts a negative, the way German uses doch.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-slang-40", "practice": false, "es": "jodå", "en": "Yes, actually — contradicts a negative, the way German uses doch.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-41", "es": "nja…", "en": "Hmm, sort of — the Swedish yes-and-no.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-slang-42", "es": "skitsamma", "en": "Whatever / never mind.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "sv-slang-42", "practice": false, "es": "skitsamma", "en": "Whatever / never mind.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-slang-sc-23",
+              "teaches": "sv-slang-22",
+              "speaker": "them",
+              "situation": { "en": "Somebody suggests walking home for forty minutes in the rain to save the fare." },
+              "question": { "es": "Vi kan gå hem istället.", "en": "We could walk home instead." },
+              "answers": [
+                { "es": "Orka.", "en": "Ugh, no." }
+              ],
+              "likelyReply": { "es": "Okej, okej, vi tar bussen.", "en": "Fine, fine — we'll take the bus." },
+              "notes": "Literally 'to have the energy', said alone as a flat refusal to have any. Young, very common, and slightly rude to a stranger.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-24",
+              "teaches": "sv-slang-23",
+              "speaker": "them",
+              "situation": { "en": "You're leaving a bar together and someone asks how you're getting back." },
+              "question": { "es": "Hur tar vi oss hem?", "en": "How are we getting home?" },
+              "answers": [
+                { "es": "Vi tar tuben.", "en": "We'll take the metro." }
+              ],
+              "likelyReply": { "es": "Den går till ett.", "en": "It runs until one." },
+              "notes": "",
+              "difficulty": "easy",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-25",
+              "teaches": "sv-slang-24",
+              "speaker": "them",
+              "situation": { "en": "It's two in the morning, the metro has stopped, and there are four of you." },
+              "question": { "es": "Tunnelbanan har slutat gå.", "en": "The metro has stopped running." },
+              "answers": [
+                { "es": "Vi splittar en taxi.", "en": "We'll split a taxi." }
+              ],
+              "likelyReply": { "es": "Jag beställer.", "en": "I'll order one." },
+              "notes": "Splitta is to split a cost. Swish makes it instant, which is why nobody argues about it.",
+              "difficulty": "hard",
+              "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-26",
+              "teaches": "sv-slang-40",
+              "speaker": "them",
+              "situation": { "en": "Someone assumes you haven't been to the island yet, and you have." },
+              "question": { "es": "Du har väl inte varit på Djurgården?", "en": "You haven't been to Djurgården, have you?" },
+              "answers": [
+                { "es": "Jodå, förra veckan.", "en": "Actually yes — last week." }
+              ],
+              "likelyReply": { "es": "Vad bra!", "en": "Oh, good!" },
+              "notes": "Jodå contradicts a negative question, the way doch does in German. Answering ja there would be understood as agreeing with the negative.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-27",
+              "teaches": "sv-slang-42",
+              "speaker": "them",
+              "situation": { "en": "Your friend is still apologising for a spilt drink ten minutes later." },
+              "question": { "es": "Förlåt igen för glaset.", "en": "Sorry again about the glass." },
+              "answers": [
+                { "es": "Skitsamma, glöm det.", "en": "Never mind — forget it." }
+              ],
+              "likelyReply": { "es": "Okej då.", "en": "All right then." },
+              "notes": "Literally 'shit same'. Milder than it looks: it means it does not matter, not that you are angry.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "sv-slang-glue",
           "title": "The glue — tiny words that carry a conversation",
           "phrases": [
-            { "id": "sv-slang-43", "es": "precis", "en": "Exactly.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-44", "es": "just det", "en": "That's right / oh, right — the remembering noise.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-45", "es": "jaså?", "en": "Oh really?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-43", "practice": false, "es": "precis", "en": "Exactly.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-44", "practice": false, "es": "just det", "en": "That's right / oh, right — the remembering noise.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-45", "practice": false, "es": "jaså?", "en": "Oh really?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-slang-46", "es": "äsch!", "en": "Oh, never mind.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-47", "es": "usch!", "en": "Ugh! — distaste, not anger.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-48", "es": "oj då!", "en": "Oh dear! / whoops!", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-48", "practice": false, "es": "oj då!", "en": "Oh dear! / whoops!", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-slang-49", "es": "nämen!", "en": "Well I never! — surprise, usually delighted.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-slang-50", "es": "det är lugnt", "en": "It's all good / no worries.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "sv-slang-50", "practice": false, "es": "det är lugnt", "en": "It's all good / no worries.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-slang-sc-28",
+              "teaches": "sv-slang-43",
+              "speaker": "them",
+              "situation": { "en": "Someone works out for themselves the thing you were trying to explain." },
+              "question": { "es": "Så bussen går först, sen tåget?", "en": "So the bus first, then the train?" },
+              "answers": [
+                { "es": "Precis.", "en": "Exactly." }
+              ],
+              "likelyReply": { "es": "Då fattar jag.", "en": "Got it." },
+              "notes": "Precis is the confirming noise Swedes make constantly, often several times in a row while somebody else is talking.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-29",
+              "teaches": "sv-slang-44",
+              "speaker": "them",
+              "situation": { "en": "You've been trying to remember the name of the place all evening and it lands." },
+              "question": { "es": "Det hette nåt med Väster…", "en": "It was something with Väster…" },
+              "answers": [
+                { "es": "Just det, Västerlånggatan!", "en": "That's right — Västerlånggatan!" }
+              ],
+              "likelyReply": { "es": "Där, ja!", "en": "That's the one!" },
+              "notes": "Just det is the remembering noise, for something you knew a second ago. Not the same as precis, which agrees with somebody else.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-30",
+              "teaches": "sv-slang-45",
+              "speaker": "them",
+              "situation": { "en": "Someone mentions in passing that they lived in your home town for a year." },
+              "question": { "es": "Jag bodde där ett år faktiskt.", "en": "I actually lived there for a year." },
+              "answers": [
+                { "es": "Jaså? Berätta.", "en": "Oh really? Tell me." }
+              ],
+              "likelyReply": { "es": "Det var länge sen nu.", "en": "It was a long time ago now." },
+              "notes": "Jaså is mild interest, and the tone does all the work: warm it is curiosity, flat it is suspicion.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-31",
+              "teaches": "sv-slang-48",
+              "speaker": "them",
+              "situation": { "en": "You knock a glass off the table and it goes everywhere." },
+              "question": { "es": "Passa dig!", "en": "Watch out!" },
+              "answers": [
+                { "es": "Oj då, förlåt.", "en": "Whoops — sorry." }
+              ],
+              "likelyReply": { "es": "Ingen fara alls.", "en": "No harm done at all." },
+              "notes": "Oj då is the small-accident noise. The då softens it into something almost affectionate.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-slang-sc-32",
+              "teaches": "sv-slang-50",
+              "speaker": "them",
+              "situation": { "en": "A friend apologises for being twenty minutes late." },
+              "question": { "es": "Förlåt att jag är sen.", "en": "Sorry I'm late." },
+              "answers": [
+                { "es": "Det är lugnt.", "en": "It's all good." }
+              ],
+              "likelyReply": { "es": "Skönt, jag stressade hit.", "en": "Good — I rushed here." },
+              "notes": "Lugn is calm. Det är lugnt is the Swedish no worries, and it answers almost any apology.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -874,6 +1356,7 @@
           "phrases": [
             {
               "id": "sv-cuss-01",
+              "practice": false,
               "es": "fan",
               "en": "Damn — extremely common.",
               "difficulty": "easy",
@@ -881,6 +1364,7 @@
             },
             {
               "id": "sv-cuss-02",
+              "practice": false,
               "es": "jävlar",
               "en": "Damn / \"holy hell\".",
               "difficulty": "medium",
@@ -893,11 +1377,83 @@
               "difficulty": "medium",
               "quizQuestions": []
             },
-            { "id": "sv-cuss-06", "es": "Jäklar!", "en": "Darn! — the softened jävlar.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-cuss-06", "practice": false, "es": "Jäklar!", "en": "Darn! — the softened jävlar.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-cuss-07", "es": "Attans!", "en": "Darn! — gentle and slightly old-fashioned.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-cuss-08", "es": "Sjutton!", "en": "Drat! — literally \"seventeen\".", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-cuss-09", "es": "Herregud!", "en": "Oh my god — mild, and safe in any company.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-cuss-08", "practice": false, "es": "Sjutton!", "en": "Drat! — literally \"seventeen\".", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-cuss-09", "practice": false, "es": "Herregud!", "en": "Oh my god — mild, and safe in any company.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-cuss-10", "es": "Fy bubblan!", "en": "Oh bother! — gently ridiculous and completely harmless.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-cuss-sc-01",
+              "teaches": "sv-cuss-01",
+              "speaker": "them",
+              "situation": { "en": "The doors close on the last train just as you reach the platform." },
+              "question": { "es": "Det var sista tåget.", "en": "That was the last train." },
+              "answers": [
+                { "es": "Fan också.", "en": "Damn it." }
+              ],
+              "likelyReply": { "es": "Vi tar en taxi.", "en": "We'll take a taxi." },
+              "notes": "Fan is the devil, and it is the workhorse Swedish swear — heard constantly and barely registering as rude.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-02",
+              "teaches": "sv-cuss-02",
+              "speaker": "them",
+              "situation": { "en": "A friend shows you what the round they just bought cost." },
+              "question": { "es": "Kolla vad det kostade.", "en": "Look what that cost." },
+              "answers": [
+                { "es": "Jävlar, vad dyrt.", "en": "Bloody hell, that's expensive." }
+              ],
+              "likelyReply": { "es": "Välkommen till Stockholm.", "en": "Welcome to Stockholm." },
+              "notes": "A step up from fan and still ordinary. Fy fan is the one to be careful with.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-03",
+              "teaches": "sv-cuss-06",
+              "speaker": "them",
+              "situation": { "en": "You drop your glove in a puddle in front of somebody's grandmother." },
+              "question": { "es": "Oj, den blev blöt.", "en": "Oh — that got wet." },
+              "answers": [
+                { "es": "Jäklar.", "en": "Darn." }
+              ],
+              "likelyReply": { "es": "Den torkar.", "en": "It'll dry." },
+              "notes": "Jäklar is jävlar with the teeth filed off: the version you say when you have remembered who is in the room.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-04",
+              "teaches": "sv-cuss-08",
+              "speaker": "them",
+              "situation": { "en": "You realise you've left your card at the bar you were in an hour ago." },
+              "question": { "es": "Har du kvar kortet?", "en": "Have you still got your card?" },
+              "answers": [
+                { "es": "Sjutton, det ligger kvar.", "en": "Drat — it's still there." }
+              ],
+              "likelyReply": { "es": "Ring dem, de stänger sent.", "en": "Call them — they close late." },
+              "notes": "Literally 'seventeen'. Nobody knows why, and it is completely harmless.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-05",
+              "teaches": "sv-cuss-09",
+              "speaker": "them",
+              "situation": { "en": "Someone tells you how much the flat they're renting costs a month." },
+              "question": { "es": "Tjugotusen i månaden.", "en": "Twenty thousand a month." },
+              "answers": [
+                { "es": "Herregud.", "en": "Oh my god." }
+              ],
+              "likelyReply": { "es": "Ja, det är sjukt.", "en": "Yeah — it's insane." },
+              "notes": "Safe in any company at all, including at work and in front of children.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -906,6 +1462,7 @@
           "phrases": [
             {
               "id": "sv-cuss-04",
+              "practice": false,
               "es": "dra åt helvete",
               "en": "Go to hell.",
               "difficulty": "hard",
@@ -913,31 +1470,177 @@
             },
             {
               "id": "sv-cuss-05",
+              "practice": false,
               "es": "håll käften",
               "en": "Shut up.",
               "difficulty": "hard",
               "quizQuestions": []
             },
-            { "id": "sv-cuss-11", "es": "Lägg av!", "en": "Cut it out! — also \"get out of here\" in disbelief.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-cuss-12", "es": "Skärp dig!", "en": "Pull yourself together!", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-cuss-11", "practice": false, "es": "Lägg av!", "en": "Cut it out! — also \"get out of here\" in disbelief.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-cuss-12", "practice": false, "es": "Skärp dig!", "en": "Pull yourself together!", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-cuss-13", "es": "Din tok!", "en": "You nutter! — affectionate.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-cuss-14", "es": "Din pucko!", "en": "You doofus!", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-cuss-15", "es": "fy fan", "en": "Ugh, hell — extremely common, and stronger than it looks written down.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "sv-cuss-15", "practice": false, "es": "fy fan", "en": "Ugh, hell — extremely common, and stronger than it looks written down.", "difficulty": "hard", "quizQuestions": [] },
             { "id": "sv-cuss-16", "es": "skitstövel", "en": "Jerk — literally \"shit boot\".", "difficulty": "hard", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-cuss-sc-06",
+              "teaches": "sv-cuss-04",
+              "speaker": "them",
+              "situation": { "en": "Someone has followed you down the street after being told twice to stop." },
+              "question": { "es": "Kom igen, bara en pratstund.", "en": "Come on — just a chat." },
+              "answers": [
+                { "es": "Dra åt helvete.", "en": "Go to hell." }
+              ],
+              "likelyReply": { "es": "Lugna dig.", "en": "Calm down." },
+              "notes": "The real thing, and the end of the conversation. Worth knowing on sight far more than worth saying.",
+              "difficulty": "hard",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-07",
+              "teaches": "sv-cuss-05",
+              "speaker": "them",
+              "situation": { "en": "Somebody has been talking over you for ten minutes and starts again." },
+              "question": { "es": "Nej, nu ska du lyssna på mig.", "en": "No — now you listen to me." },
+              "answers": [
+                { "es": "Håll käften.", "en": "Shut up." }
+              ],
+              "likelyReply": { "es": "Ursäkta?", "en": "Excuse me?" },
+              "notes": "Blunt and genuinely rude. Among close friends it can be a joke; with anybody else it is a fight.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-08",
+              "teaches": "sv-cuss-11",
+              "speaker": "them",
+              "situation": { "en": "A friend claims they once met the king in a queue at the supermarket." },
+              "question": { "es": "Jag träffade kungen i kön.", "en": "I met the king in the queue." },
+              "answers": [
+                { "es": "Lägg av!", "en": "Get out of here!" }
+              ],
+              "likelyReply": { "es": "Jag lovar, det är sant.", "en": "I promise — it's true." },
+              "notes": "Two jobs in one phrase: stop it, and you're joking. The tone tells you which, and this one is the friendly one.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-09",
+              "teaches": "sv-cuss-12",
+              "speaker": "them",
+              "situation": { "en": "Someone in your group is being loud and rude to the staff." },
+              "question": { "es": "De kan väl skynda sig lite!", "en": "They could hurry up a bit!" },
+              "answers": [
+                { "es": "Skärp dig.", "en": "Pull yourself together." }
+              ],
+              "likelyReply": { "es": "Ja ja, förlåt.", "en": "All right, all right — sorry." },
+              "notes": "Sharp, short, and aimed at behaviour rather than at the person. It is what a Swede says instead of a scene.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-10",
+              "teaches": "sv-cuss-15",
+              "speaker": "them",
+              "situation": { "en": "A friend tells you what happened to their bike overnight." },
+              "question": { "es": "De tog hela cykeln.", "en": "They took the whole bike." },
+              "answers": [
+                { "es": "Fy fan.", "en": "Bloody hell." }
+              ],
+              "likelyReply": { "es": "Jag vet, jag är så trött på det.", "en": "I know — I'm so sick of it." },
+              "notes": "Stronger spoken than it looks written. Sympathy here, but the same two words can start a fight.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            }
           ]
         },
         {
           "id": "sv-cuss-escape",
           "title": "\"I didn't mean it\" escape hatch & soft insults",
           "phrases": [
-            { "id": "sv-cuss-17", "es": "Jag skojade bara.", "en": "I was only joking.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-cuss-18", "es": "Förlåt, det blev fel.", "en": "Sorry, that came out wrong.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-cuss-19", "es": "Jag menade inget illa.", "en": "I didn't mean anything by it.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-cuss-20", "es": "Ta det inte personligt.", "en": "Don't take it personally.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-cuss-17", "practice": false, "es": "Jag skojade bara.", "en": "I was only joking.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-cuss-18", "practice": false, "es": "Förlåt, det blev fel.", "en": "Sorry, that came out wrong.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-cuss-19", "practice": false, "es": "Jag menade inget illa.", "en": "I didn't mean anything by it.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-cuss-20", "practice": false, "es": "Ta det inte personligt.", "en": "Don't take it personally.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-cuss-21", "es": "knäppskalle", "en": "Oddball — literally \"click-head\".", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-cuss-22", "es": "knasboll", "en": "Nutter — literally \"crazy ball\".", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-cuss-23", "es": "fjant", "en": "A silly, fussing, faintly ridiculous person.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "sv-cuss-24", "es": "dumbom", "en": "Fool — soft and slightly childish.", "difficulty": "medium", "quizQuestions": [] }
+            { "id": "sv-cuss-24", "practice": false, "es": "dumbom", "en": "Fool — soft and slightly childish.", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-cuss-sc-11",
+              "teaches": "sv-cuss-17",
+              "speaker": "them",
+              "situation": { "en": "A joke you made at someone's expense has landed badly." },
+              "question": { "es": "Det där var faktiskt taskigt.", "en": "That was actually mean." },
+              "answers": [
+                { "es": "Jag skojade bara.", "en": "I was only joking." }
+              ],
+              "likelyReply": { "es": "Okej, men säg inte så.", "en": "Okay — but don't say things like that." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-12",
+              "teaches": "sv-cuss-18",
+              "speaker": "them",
+              "situation": { "en": "You've said something in Swedish that came out much blunter than you meant." },
+              "question": { "es": "Menade du verkligen så?", "en": "Did you really mean that?" },
+              "answers": [
+                { "es": "Förlåt, det blev fel.", "en": "Sorry — that came out wrong." }
+              ],
+              "likelyReply": { "es": "Ingen fara.", "en": "No harm done." },
+              "notes": "The most useful sentence here while you are still learning, because it is true most of the time.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-13",
+              "teaches": "sv-cuss-19",
+              "speaker": "them",
+              "situation": { "en": "You've made a remark about Swedish weather to somebody who grew up in it." },
+              "question": { "es": "Du gillar visst inte vårt väder.", "en": "You don't much like our weather, then." },
+              "answers": [
+                { "es": "Jag menade inget illa.", "en": "I didn't mean anything by it." }
+              ],
+              "likelyReply": { "es": "Jag vet, jag skämtar.", "en": "I know — I'm teasing." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-14",
+              "teaches": "sv-cuss-20",
+              "speaker": "them",
+              "situation": { "en": "A friend has taken a general complaint about tourists as being about them." },
+              "question": { "es": "Var det riktat mot mig?", "en": "Was that aimed at me?" },
+              "answers": [
+                { "es": "Ta det inte personligt.", "en": "Don't take it personally." }
+              ],
+              "likelyReply": { "es": "Okej, jag släpper det.", "en": "All right — I'll drop it." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-cuss-sc-15",
+              "teaches": "sv-cuss-24",
+              "speaker": "them",
+              "situation": { "en": "You've locked yourself out with the keys visible on the kitchen table." },
+              "question": { "es": "Ligger nycklarna därinne?", "en": "Are the keys in there?" },
+              "answers": [
+                { "es": "Vilken dumbom jag är.", "en": "What a fool I am." }
+              ],
+              "likelyReply": { "es": "Det händer alla.", "en": "It happens to everyone." },
+              "notes": "Soft, slightly childish and mostly used about yourself. Calling somebody else a dumbom is nearly affectionate.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -960,6 +1663,7 @@
           "phrases": [
             {
               "id": "sv-flirt-01",
+              "practice": false,
               "es": "Du är snygg.",
               "en": "You're attractive.",
               "difficulty": "easy",
@@ -974,6 +1678,7 @@
             },
             {
               "id": "sv-flirt-03",
+              "practice": false,
               "es": "Jag gillar din stil.",
               "en": "I like your style.",
               "difficulty": "easy",
@@ -981,15 +1686,88 @@
             },
             {
               "id": "sv-flirt-04",
+              "practice": false,
               "es": "Du har ett fint leende.",
               "en": "You have a nice smile.",
               "difficulty": "easy",
               "quizQuestions": []
             },
-            { "id": "sv-flirt-12", "es": "Du är lätt att prata med.", "en": "You're easy to talk to.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-flirt-12", "practice": false, "es": "Du är lätt att prata med.", "en": "You're easy to talk to.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-flirt-13", "es": "Du har fin energi.", "en": "You've got a lovely energy.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-flirt-14", "es": "Jag gillar hur du tänker.", "en": "I like the way you think.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-flirt-14", "practice": false, "es": "Jag gillar hur du tänker.", "en": "I like the way you think.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-flirt-15", "es": "Du är rolig.", "en": "You're funny.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-flirt-sc-01",
+              "teaches": "sv-flirt-01",
+              "speaker": "them",
+              "situation": { "en": "Someone you like arrives at the pre-party and hangs their coat up." },
+              "question": { "es": "Hej! Har ni väntat länge?", "en": "Hi! Have you been waiting long?" },
+              "answers": [
+                { "es": "Du är snygg.", "en": "You look great." }
+              ],
+              "likelyReply": { "es": "Tack, det var snällt.", "en": "Thanks — that's kind." },
+              "notes": "Snygg is the everyday compliment about how somebody looks. Said plainly and once, it lands well; said twice it does not.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-02",
+              "teaches": "sv-flirt-03",
+              "speaker": "them",
+              "situation": { "en": "Someone mentions they put the outfit together from second-hand shops." },
+              "question": { "es": "Allt är från second hand faktiskt.", "en": "It's all second-hand, actually." },
+              "answers": [
+                { "es": "Jag gillar din stil.", "en": "I like your style." }
+              ],
+              "likelyReply": { "es": "Vad kul att höra.", "en": "That's nice to hear." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-03",
+              "teaches": "sv-flirt-04",
+              "speaker": "them",
+              "situation": { "en": "They laugh at something you said and you want to say what you noticed." },
+              "question": { "es": "Du är rolig, du.", "en": "You're funny, you are." },
+              "answers": [
+                { "es": "Du har ett fint leende.", "en": "You have a nice smile." }
+              ],
+              "likelyReply": { "es": "Nu blir jag blyg.", "en": "Now you're making me shy." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-04",
+              "teaches": "sv-flirt-12",
+              "speaker": "them",
+              "situation": { "en": "You've been talking for two hours and neither of you has looked at a phone." },
+              "question": { "es": "Oj, klockan är mycket.", "en": "Oh — it's late." },
+              "answers": [
+                { "es": "Du är lätt att prata med.", "en": "You're easy to talk to." }
+              ],
+              "likelyReply": { "es": "Detsamma faktiskt.", "en": "Same to you, actually." },
+              "notes": "High praise in Sweden, where small talk is not the default and somebody easy to talk to is genuinely noticed.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-05",
+              "teaches": "sv-flirt-14",
+              "speaker": "them",
+              "situation": { "en": "Someone has just argued the opposite of what you expected, and argued it well." },
+              "question": { "es": "Men så kan man ju också se på det.", "en": "But you can look at it that way too." },
+              "answers": [
+                { "es": "Jag gillar hur du tänker.", "en": "I like the way you think." }
+              ],
+              "likelyReply": { "es": "Då är vi två.", "en": "That makes two of us." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -998,6 +1776,7 @@
           "phrases": [
             {
               "id": "sv-flirt-05",
+              "practice": false,
               "es": "Jag tycker du är riktigt snygg.",
               "en": "I think you're really attractive.",
               "difficulty": "medium",
@@ -1005,17 +1784,90 @@
             },
             {
               "id": "sv-flirt-06",
+              "practice": false,
               "es": "Ska vi ta en öl nån gång?",
               "en": "Want to grab a beer sometime?",
               "difficulty": "medium",
               "quizQuestions": []
             },
-            { "id": "sv-flirt-16", "es": "Jag gillar dig.", "en": "I like you.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-flirt-17", "es": "Ska vi gå nån annanstans?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-flirt-16", "practice": false, "es": "Jag gillar dig.", "en": "I like you.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-flirt-17", "practice": false, "es": "Ska vi gå nån annanstans?", "en": "Shall we go somewhere else?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-flirt-18", "es": "Stannar du ett tag till?", "en": "Are you staying a bit longer?", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-flirt-19", "es": "Får jag ditt nummer?", "en": "Can I have your number?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-flirt-19", "practice": false, "es": "Får jag ditt nummer?", "en": "Can I have your number?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-flirt-20", "es": "Vi kanske ska ses igen?", "en": "Maybe we should see each other again?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-flirt-21", "es": "Det var kul att prata med dig.", "en": "It was good talking to you.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-flirt-sc-06",
+              "teaches": "sv-flirt-05",
+              "speaker": "them",
+              "situation": { "en": "They ask, half joking, why you keep looking over." },
+              "question": { "es": "Varför kollar du så mycket?", "en": "Why do you keep looking over?" },
+              "answers": [
+                { "es": "Jag tycker du är riktigt snygg.", "en": "I think you're really attractive." }
+              ],
+              "likelyReply": { "es": "Rakt på sak. Jag gillar det.", "en": "Straight to the point. I like that." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-07",
+              "teaches": "sv-flirt-06",
+              "speaker": "them",
+              "situation": { "en": "The group is breaking up and you'd like to see this one person again." },
+              "question": { "es": "Jag ska nog hem nu.", "en": "I think I'm heading home now." },
+              "answers": [
+                { "es": "Ska vi ta en öl nån gång?", "en": "Want to grab a beer sometime?" }
+              ],
+              "likelyReply": { "es": "Gärna, hör av dig.", "en": "I'd like that — get in touch." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-08",
+              "teaches": "sv-flirt-16",
+              "speaker": "them",
+              "situation": { "en": "They ask where this is going, directly, because it is late and nobody is pretending." },
+              "question": { "es": "Vad är det här, egentligen?", "en": "What is this, really?" },
+              "answers": [
+                { "es": "Jag gillar dig.", "en": "I like you." }
+              ],
+              "likelyReply": { "es": "Skönt att du sa det.", "en": "Good that you said it." },
+              "notes": "Gilla is to like, and here it means it. Älska is a long way further along and not a first-night word.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-09",
+              "teaches": "sv-flirt-17",
+              "speaker": "them",
+              "situation": { "en": "The music has got loud enough that you're both shouting." },
+              "question": { "es": "Jag hör inget!", "en": "I can't hear a thing!" },
+              "answers": [
+                { "es": "Ska vi gå nån annanstans?", "en": "Shall we go somewhere else?" }
+              ],
+              "likelyReply": { "es": "Ja, jag vet ett ställe.", "en": "Yes — I know a place." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-10",
+              "teaches": "sv-flirt-19",
+              "speaker": "them",
+              "situation": { "en": "Their friends are leaving and you have about ten seconds." },
+              "question": { "es": "Jag måste gå med dem.", "en": "I have to go with them." },
+              "answers": [
+                { "es": "Får jag ditt nummer?", "en": "Can I have your number?" }
+              ],
+              "likelyReply": { "es": "Ge mig din telefon.", "en": "Give me your phone." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -1024,6 +1876,7 @@
           "phrases": [
             {
               "id": "sv-flirt-07",
+              "practice": false,
               "es": "Ingen press om du inte vill.",
               "en": "No pressure if you don't want to.",
               "difficulty": "medium",
@@ -1031,6 +1884,7 @@
             },
             {
               "id": "sv-flirt-08",
+              "practice": false,
               "es": "Säg bara till om du inte är bekväm.",
               "en": "Just say if you're not comfortable.",
               "difficulty": "medium",
@@ -1038,16 +1892,92 @@
             },
             {
               "id": "sv-flirt-09",
+              "practice": false,
               "es": "Helt lugnt, jag respekterar det.",
               "en": "All good, I respect that.",
               "difficulty": "medium",
               "quizQuestions": []
             },
             { "id": "sv-flirt-22", "es": "Helt okej, inga problem.", "en": "Totally fine, no problem.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-flirt-23", "es": "Jag lämnar dig i fred.", "en": "I'll leave you in peace.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-flirt-23", "practice": false, "es": "Jag lämnar dig i fred.", "en": "I'll leave you in peace.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-flirt-24", "es": "Kul att träffas ändå.", "en": "Good to meet you anyway.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-flirt-25", "es": "Förlåt, jag missförstod.", "en": "Sorry, I misread that.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-flirt-25", "practice": false, "es": "Förlåt, jag missförstod.", "en": "Sorry, I misread that.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-flirt-26", "es": "Ha en bra kväll.", "en": "Have a good evening.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-flirt-sc-11",
+              "teaches": "sv-flirt-07",
+              "speaker": "them",
+              "situation": { "en": "You've suggested carrying on somewhere else and they've gone quiet." },
+              "question": { "es": "Jag vet inte riktigt…", "en": "I'm not really sure…" },
+              "answers": [
+                { "es": "Ingen press om du inte vill.", "en": "No pressure if you don't want to." }
+              ],
+              "likelyReply": { "es": "Tack, det var skönt att höra.", "en": "Thanks — that's good to hear." },
+              "notes": "",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-12",
+              "teaches": "sv-flirt-08",
+              "speaker": "them",
+              "situation": { "en": "You've moved closer on the sofa and want to check that was welcome." },
+              "question": { "es": "Det är lite trångt här.", "en": "It's a bit cramped here." },
+              "answers": [
+                { "es": "Säg bara till om du inte är bekväm.", "en": "Just say if you're not comfortable." }
+              ],
+              "likelyReply": { "es": "Det är lugnt, stanna.", "en": "It's fine — stay." },
+              "notes": "The single most important line in this section. Asked plainly it is never awkward; not asking is.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-13",
+              "teaches": "sv-flirt-09",
+              "speaker": "them",
+              "situation": { "en": "They tell you they're seeing somebody already." },
+              "question": { "es": "Jag träffar faktiskt nån.", "en": "I'm actually seeing someone." },
+              "answers": [
+                { "es": "Helt lugnt, jag respekterar det.", "en": "All good — I respect that." }
+              ],
+              "likelyReply": { "es": "Kul att prata ändå.", "en": "Nice talking anyway." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-14",
+              "teaches": "sv-flirt-23",
+              "speaker": "them",
+              "situation": { "en": "They've given one-word answers twice and are looking at their phone." },
+              "question": { "es": "Förlåt, jag är lite trött.", "en": "Sorry — I'm a bit tired." },
+              "answers": [
+                { "es": "Jag lämnar dig i fred.", "en": "I'll leave you in peace." }
+              ],
+              "likelyReply": { "es": "Tack för förståelsen.", "en": "Thanks for understanding." },
+              "notes": "Leaving cleanly is the skill. Ifred is one word here and means exactly what it says.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-15",
+              "teaches": "sv-flirt-25",
+              "speaker": "them",
+              "situation": { "en": "You read the evening as going one way and it was going another." },
+              "question": { "es": "Jag ville bara prata, faktiskt.", "en": "I just wanted to talk, actually." },
+              "answers": [
+                { "es": "Förlåt, jag missförstod.", "en": "Sorry — I misread that." }
+              ],
+              "likelyReply": { "es": "Ingen fara alls.", "en": "No harm at all." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -1063,17 +1993,92 @@
             },
             {
               "id": "sv-flirt-11",
+              "practice": false,
               "es": "Är det okej om jag bjuder dig på en drink?",
               "en": "Is it okay if I buy you a drink?",
               "difficulty": "medium",
               "quizQuestions": []
             },
-            { "id": "sv-flirt-27", "es": "Är det okej så här?", "en": "Is this okay?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-flirt-28", "es": "Vill du att jag går?", "en": "Do you want me to go?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-flirt-27", "practice": false, "es": "Är det okej så här?", "en": "Is this okay?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-flirt-28", "practice": false, "es": "Vill du att jag går?", "en": "Do you want me to go?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-flirt-29", "es": "Säg till om det blir för mycket.", "en": "Say if it gets to be too much.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-flirt-30", "es": "Får jag sätta mig?", "en": "May I sit down?", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-flirt-31", "es": "Vill du hellre vara ifred?", "en": "Would you rather be left alone?", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-flirt-30", "practice": false, "es": "Får jag sätta mig?", "en": "May I sit down?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-flirt-31", "practice": false, "es": "Vill du hellre vara ifred?", "en": "Would you rather be left alone?", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-flirt-32", "es": "Känns det bra för dig?", "en": "Does this feel all right to you?", "difficulty": "medium", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-flirt-sc-16",
+              "teaches": "sv-flirt-11",
+              "speaker": "them",
+              "situation": { "en": "Their glass is empty and you're already standing up." },
+              "question": { "es": "Jag har faktiskt slut.", "en": "I'm actually out." },
+              "answers": [
+                { "es": "Är det okej om jag bjuder dig på en drink?", "en": "Is it okay if I buy you a drink?" }
+              ],
+              "likelyReply": { "es": "Gärna, tack.", "en": "Yes please — thanks." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-17",
+              "teaches": "sv-flirt-27",
+              "speaker": "them",
+              "situation": { "en": "You've put an arm along the back of the bench they're sitting on." },
+              "question": { "es": "Hmm…", "en": "Hmm…" },
+              "answers": [
+                { "es": "Är det okej så här?", "en": "Is this okay?" }
+              ],
+              "likelyReply": { "es": "Ja, det är fint.", "en": "Yes — it's nice." },
+              "notes": "",
+              "difficulty": "easy",
+              "women": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-18",
+              "teaches": "sv-flirt-28",
+              "speaker": "them",
+              "situation": { "en": "Their friends have arrived and the mood at the table has changed." },
+              "question": { "es": "Nu kom mina kompisar.", "en": "My friends are here now." },
+              "answers": [
+                { "es": "Vill du att jag går?", "en": "Do you want me to go?" }
+              ],
+              "likelyReply": { "es": "Nej, stanna lite.", "en": "No — stay a while." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-19",
+              "teaches": "sv-flirt-30",
+              "speaker": "them",
+              "situation": { "en": "There's one free chair at the table and you've been talking across the room." },
+              "question": { "es": "Söker du en stol?", "en": "Looking for a chair?" },
+              "answers": [
+                { "es": "Får jag sätta mig?", "en": "May I sit down?" }
+              ],
+              "likelyReply": { "es": "Visst, varsågod.", "en": "Of course — go ahead." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-flirt-sc-20",
+              "teaches": "sv-flirt-31",
+              "speaker": "them",
+              "situation": { "en": "They've been looking out at the water rather than at the party for a while." },
+              "question": { "es": "Jag behövde lite luft bara.", "en": "I just needed some air." },
+              "answers": [
+                { "es": "Vill du hellre vara ifred?", "en": "Would you rather be left alone?" }
+              ],
+              "likelyReply": { "es": "En stund till, tack.", "en": "A little longer, thanks." },
+              "notes": "Offering the exit is the point. Asked once and accepted without argument is the whole difference.",
+              "difficulty": "medium",
+              "women": true,
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -2439,14 +3444,86 @@
           "id": "sv-nightlife-slang",
           "title": "Going-out slang",
           "phrases": [
-            { "id": "sv-nightlife-17", "es": "krogrunda", "en": "A pub crawl — literally a round of the bars.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-nightlife-17", "practice": false, "es": "krogrunda", "en": "A pub crawl — literally a round of the bars.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-nightlife-18", "es": "dörrvakt", "en": "The doorman — and the person who decides how your night goes.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-nightlife-19", "es": "sista beställning", "en": "Last orders.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-nightlife-20", "es": "dansgolvet", "en": "The dance floor.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-nightlife-21", "es": "dra vidare", "en": "To move on to the next place.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-nightlife-19", "practice": false, "es": "sista beställning", "en": "Last orders.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-nightlife-20", "practice": false, "es": "dansgolvet", "en": "The dance floor.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-nightlife-21", "practice": false, "es": "dra vidare", "en": "To move on to the next place.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-nightlife-22", "es": "nattmacka", "en": "The late-night sandwich you eat on the way home.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-nightlife-23", "es": "svartklubb", "en": "An unlicensed after-hours club — literally a \"black club\".", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "sv-nightlife-24", "es": "hänga", "en": "To hang out — the default word for doing nothing much together.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "sv-nightlife-24", "practice": false, "es": "hänga", "en": "To hang out — the default word for doing nothing much together.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-night-sc-01",
+              "teaches": "sv-nightlife-17",
+              "speaker": "them",
+              "situation": { "en": "Someone asks what the plan is for a Saturday with no plan." },
+              "question": { "es": "Vad gör vi på lördag?", "en": "What are we doing on Saturday?" },
+              "answers": [
+                { "es": "Vi kör en krogrunda.", "en": "Let's do a pub crawl." }
+              ],
+              "likelyReply": { "es": "Jag är med.", "en": "I'm in." },
+              "notes": "Literally a round of the pubs. Krogrunda is the word; barrunda works too and sounds more imported.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-night-sc-02",
+              "teaches": "sv-nightlife-19",
+              "speaker": "them",
+              "situation": { "en": "The lights have come up slightly and people are moving towards the bar." },
+              "question": { "es": "Varför står alla i kö?", "en": "Why is everyone queuing?" },
+              "answers": [
+                { "es": "Det är sista beställning.", "en": "It's last orders." }
+              ],
+              "likelyReply": { "es": "Då springer jag.", "en": "I'm running, then." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-night-sc-03",
+              "teaches": "sv-nightlife-20",
+              "speaker": "them",
+              "situation": { "en": "A song everybody knows comes on and your friend is still sitting down." },
+              "question": { "es": "Älskar den här låten!", "en": "I love this song!" },
+              "answers": [
+                { "es": "Kom, vi går ut på dansgolvet.", "en": "Come on — let's get on the dance floor." }
+              ],
+              "likelyReply": { "es": "Okej, en låt bara.", "en": "Okay — one song only." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-night-sc-04",
+              "teaches": "sv-nightlife-21",
+              "speaker": "them",
+              "situation": { "en": "The bar you're in has emptied out and the music has been turned down." },
+              "question": { "es": "Det är dött här nu.", "en": "It's dead in here now." },
+              "answers": [
+                { "es": "Ska vi dra vidare?", "en": "Shall we move on?" }
+              ],
+              "likelyReply": { "es": "Ja, jag vet ett ställe.", "en": "Yes — I know somewhere." },
+              "notes": "Dra is to pull, and it does all the moving in Swedish: dra hem, dra vidare, dra iväg.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-night-sc-05",
+              "teaches": "sv-nightlife-24",
+              "speaker": "them",
+              "situation": { "en": "Somebody you met last night messages to suggest something low-key." },
+              "question": { "es": "Har du nåt för dig ikväll?", "en": "Are you up to anything tonight?" },
+              "answers": [
+                { "es": "Vi kan hänga hemma hos mig.", "en": "We could hang out at mine." }
+              ],
+              "likelyReply": { "es": "Låter bra, jag tar med fika.", "en": "Sounds good — I'll bring something for fika." },
+              "notes": "Hänga is the default word for doing nothing much together, and a Swedish invitation is often exactly that.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         }
       ]
@@ -2464,15 +3541,101 @@
           "id": "sv-drunk-levels",
           "title": "The scale, bottom to top",
           "phrases": [
-            { "id": "sv-drunk-01", "es": "på snusen", "en": "Slightly tipsy.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-drunk-01", "practice": false, "es": "på snusen", "en": "Slightly tipsy.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-drunk-02", "es": "salongsberusad", "en": "\"Parlour drunk\" — pleasantly, presentably tipsy.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "sv-drunk-03", "es": "dragen", "en": "Merry.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-drunk-03", "practice": false, "es": "dragen", "en": "Merry.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-drunk-04", "es": "berusad", "en": "Intoxicated — the formal word, the one on the signs.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-drunk-05", "es": "full", "en": "Drunk. Never \"full\" as in fed — that is mätt.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-drunk-06", "es": "packad", "en": "Loaded.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-drunk-05", "practice": false, "es": "full", "en": "Drunk. Never \"full\" as in fed — that is mätt.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-drunk-06", "practice": false, "es": "packad", "en": "Loaded.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-drunk-07", "es": "asfull / skitfull", "en": "Hammered.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-drunk-08", "es": "kanonfull", "en": "Absolutely gone.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-drunk-09", "es": "plakat", "en": "Blackout drunk.", "difficulty": "hard", "quizQuestions": [] }
+            { "id": "sv-drunk-08", "practice": false, "es": "kanonfull", "en": "Absolutely gone.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-drunk-09", "practice": false, "es": "plakat", "en": "Blackout drunk.", "difficulty": "hard", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-drunk-sc-01",
+              "teaches": "sv-drunk-01",
+              "speaker": "them",
+              "situation": { "en": "Two glasses into an afterwork, a colleague checks how you're getting on." },
+              "question": { "es": "Hur känns det?", "en": "How are you feeling?" },
+              "answers": [
+                { "es": "Jag är lite på snusen.", "en": "I'm a bit tipsy." }
+              ],
+              "likelyReply": { "es": "Samma här.", "en": "Same here." },
+              "notes": "The bottom of the scale and the nicest place on it. Nothing to do with snus, despite appearances.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-drunk-sc-02",
+              "teaches": "sv-drunk-03",
+              "speaker": "them",
+              "situation": { "en": "Somebody notices you've become much more talkative than you were an hour ago." },
+              "question": { "es": "Du är på gott humör.", "en": "You're in a good mood." },
+              "answers": [
+                { "es": "Jag är lite dragen.", "en": "I'm a bit merry." }
+              ],
+              "likelyReply": { "es": "Det märks.", "en": "It shows." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-drunk-sc-03",
+              "teaches": "sv-drunk-05",
+              "speaker": "them",
+              "situation": { "en": "You've been offered a second helping and want to say you've had enough to drink, not to eat." },
+              "question": { "es": "Vill du ha mer?", "en": "Would you like some more?" },
+              "answers": [
+                { "es": "Nej tack, jag är full.", "en": "No thanks — I'm drunk." }
+              ],
+              "likelyReply": { "es": "Då tar vi vatten.", "en": "Water, then." },
+              "notes": "The trap worth knowing. Full is drunk, never fed: for that it is mätt, and saying full after dinner means something quite different.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-drunk-sc-04",
+              "teaches": "sv-drunk-06",
+              "speaker": "them",
+              "situation": { "en": "A friend asks how the person asleep in the corner ended up like that." },
+              "question": { "es": "Hur gick det till?", "en": "How did that happen?" },
+              "answers": [
+                { "es": "Han är helt packad.", "en": "He's completely loaded." }
+              ],
+              "likelyReply": { "es": "Vi väcker honom snart.", "en": "We'll wake him soon." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-drunk-sc-05",
+              "teaches": "sv-drunk-08",
+              "speaker": "them",
+              "situation": { "en": "Someone asks how last night's midsummer party ended for you." },
+              "question": { "es": "Hur slutade midsommar?", "en": "How did midsummer end?" },
+              "answers": [
+                { "es": "Jag blev kanonfull.", "en": "I got absolutely gone." }
+              ],
+              "likelyReply": { "es": "Det gör alla på midsommar.", "en": "Everyone does at midsummer." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-drunk-sc-06",
+              "teaches": "sv-drunk-09",
+              "speaker": "them",
+              "situation": { "en": "Somebody in your group has stopped answering and needs to go home now." },
+              "question": { "es": "Ska vi ringa en taxi åt honom?", "en": "Should we call him a taxi?" },
+              "answers": [
+                { "es": "Ja, han är plakat.", "en": "Yes — he's blackout drunk." }
+              ],
+              "likelyReply": { "es": "Jag följer med.", "en": "I'll go with him." },
+              "notes": "The top of the scale, and a word used about somebody rather than by them, for obvious reasons.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            }
           ]
         },
         {
@@ -2822,20 +3985,93 @@
           "id": "sv-resacon-morning",
           "title": "Hangover vocabulary",
           "phrases": [
-            { "id": "sv-resacon-09", "es": "bakis", "en": "Hungover — the everyday word.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-resacon-09", "practice": false, "es": "bakis", "en": "Hungover — the everyday word.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-resacon-10", "es": "bakfylla / baksmälla", "en": "The hangover itself.", "difficulty": "medium", "quizQuestions": [] },
             {
               "id": "sv-resacon-11",
+              "practice": false,
               "es": "fylleångest",
               "en": "The specific dread about what you said last night. Sweden names it; almost nobody else does.",
               "difficulty": "hard",
               "quizQuestions": []
             },
-            { "id": "sv-resacon-12", "es": "dagen efter", "en": "The day after — used on its own as a noun.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-resacon-12", "practice": false, "es": "dagen efter", "en": "The day after — used on its own as a noun.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-resacon-13", "es": "återställare", "en": "Hair of the dog — literally \"a restorer\".", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-resacon-14", "es": "betongkeps", "en": "A crushing hangover — literally a \"concrete cap\".", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "sv-resacon-15", "es": "ont i håret", "en": "Rough as anything — literally \"hair ache\".", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "sv-resacon-16", "es": "Aldrig mer.", "en": "Never again. Said monthly, meant every time.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "sv-resacon-15", "practice": false, "es": "ont i håret", "en": "Rough as anything — literally \"hair ache\".", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "sv-resacon-16", "practice": false, "es": "Aldrig mer.", "en": "Never again. Said monthly, meant every time.", "difficulty": "easy", "quizQuestions": [] }
+          ],
+          "scenes": [
+            {
+              "id": "sv-resacon-sc-01",
+              "teaches": "sv-resacon-09",
+              "speaker": "them",
+              "situation": { "en": "You appear in the kitchen at one in the afternoon and say nothing." },
+              "question": { "es": "God morgon, eller?", "en": "Morning — or is it?" },
+              "answers": [
+                { "es": "Jag är så bakis.", "en": "I'm so hungover." }
+              ],
+              "likelyReply": { "es": "Det finns kaffe.", "en": "There's coffee." },
+              "notes": "Bakis is the everyday word and the one you'll actually hear. Bakfull is the same thing, slightly more formal.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-resacon-sc-02",
+              "teaches": "sv-resacon-11",
+              "speaker": "them",
+              "situation": { "en": "You've been scrolling back through last night's messages for twenty minutes." },
+              "question": { "es": "Varför är du så tyst?", "en": "Why are you so quiet?" },
+              "answers": [
+                { "es": "Jag har fylleångest.", "en": "I've got the drinking dread." }
+              ],
+              "likelyReply": { "es": "Du sa inget konstigt, lova.", "en": "You didn't say anything odd, I promise." },
+              "notes": "Sweden has a word for the specific dread about what you said last night. Almost no other language names it, and everybody has it.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-resacon-sc-03",
+              "teaches": "sv-resacon-12",
+              "speaker": "them",
+              "situation": { "en": "Somebody suggests a long walk and you have other plans for the sofa." },
+              "question": { "es": "Ska vi ut och gå?", "en": "Shall we go for a walk?" },
+              "answers": [
+                { "es": "Inte idag, det är dagen efter.", "en": "Not today — it's the day after." }
+              ],
+              "likelyReply": { "es": "Då stannar vi inne.", "en": "We'll stay in, then." },
+              "notes": "Dagen efter works as a noun on its own. Nobody needs to ask after what.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-resacon-sc-04",
+              "teaches": "sv-resacon-15",
+              "speaker": "them",
+              "situation": { "en": "A friend asks, far too brightly, how you're feeling this morning." },
+              "question": { "es": "Hur mår du idag då?", "en": "So how are you feeling today?" },
+              "answers": [
+                { "es": "Jag har ont i håret.", "en": "I'm rough as anything." }
+              ],
+              "likelyReply": { "es": "Stackare.", "en": "Poor thing." },
+              "notes": "Literally 'my hair hurts'. Said with a straight face, which is what makes it funny.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-resacon-sc-05",
+              "teaches": "sv-resacon-16",
+              "speaker": "them",
+              "situation": { "en": "You are lying very still and a friend asks whether you've learned anything." },
+              "question": { "es": "Har du lärt dig nåt nu?", "en": "Have you learned anything now?" },
+              "answers": [
+                { "es": "Aldrig mer.", "en": "Never again." }
+              ],
+              "likelyReply": { "es": "Du sa det förra månaden också.", "en": "You said that last month too." },
+              "notes": "Said monthly, meant every time. The shortest complete sentence in this section.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
           ]
         }
       ]
