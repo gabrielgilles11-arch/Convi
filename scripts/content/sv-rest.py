@@ -28,7 +28,7 @@ PLAN = {
                 "sv-cuss-sc-03", "sv-cuss-06", "them",
                 "You drop your glove in a puddle in front of somebody's grandmother.",
                 "Oj, den blev blöt.", "Oh — that got wet.",
-                "Jäklar.", "Darn.",
+                "Jäklar.", "Blast.",
                 "Den torkar.", "It'll dry.",
                 notes="Jäklar is jävlar with the teeth filed off: the version you say when you have remembered who is in the room.",
                 difficulty="easy",
@@ -377,8 +377,8 @@ PLAN = {
                 "sv-night-sc-04", "sv-nightlife-21", "them",
                 "The bar you're in has emptied out and the music has been turned down.",
                 "Det är dött här nu.", "It's dead in here now.",
-                "Ska vi dra vidare?", "Shall we move on?",
-                "Ja, jag vet ett ställe.", "Yes — I know somewhere.",
+                "Vi drar vidare till nästa ställe.", "We're moving on to the next place.",
+                "Ja, jag vet ett bra.", "Good — I know a good one.",
                 notes="Dra is to pull, and it does all the moving in Swedish: dra hem, dra vidare, dra iväg.",
             ),
             scene(
@@ -410,7 +410,7 @@ PLAN = {
                 "sv-drunk-sc-02", "sv-drunk-03", "them",
                 "Somebody notices you've become much more talkative than you were an hour ago.",
                 "Du är på gott humör.", "You're in a good mood.",
-                "Jag är lite dragen.", "I'm a bit merry.",
+                "Jag är nog lite dragen.", "I think I've had a few.",
                 "Det märks.", "It shows.",
             ),
             scene(

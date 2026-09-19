@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildRound,
   answersMatch,
+  typedAnswerMatches,
   STAGE_CLEAR_SCORE,
   type Question,
   type QuizItem,
@@ -321,13 +322,13 @@ export default function TestMode({
   function submitTyped(event: React.SubmitEvent) {
     event.preventDefault();
     if (answered || !typed.trim()) return;
-    settle(answersMatch(typed, question!.answer));
+    settle(typedAnswerMatches(typed, question!.answer));
   }
 
   function submitBank() {
     if (answered || assembled.length === 0) return;
     const words = assembled.map((token) => token.slice(0, token.lastIndexOf("\u0000")));
-    settle(answersMatch(words.join(" "), question!.answer));
+    settle(typedAnswerMatches(words.join(" "), question!.answer));
   }
 
   function next() {

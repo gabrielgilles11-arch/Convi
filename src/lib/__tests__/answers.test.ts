@@ -5,6 +5,7 @@ import {
   normalizeAnswer,
   splitNote,
   tooAlike,
+  typedAnswerMatches,
 } from "../quizTypes";
 
 /**
@@ -95,6 +96,59 @@ describe("answersMatch", () => {
 
   it("rejects an answer that merely contains the expected one", () => {
     expect(answersMatch("Somos tres personas mas", "Somos tres")).toBe(false);
+  });
+
+  it("stays strict about spacing, because options are compared with it", () => {
+    // Two multiple-choice options that differ only in spacing must not both
+    // come back correct — that is a question with no wrong answer. The typed
+    // path is where the slack belongs.
+    expect(answersMatch("buen rollo", "buen rollo / mal rollo")).toBe(false);
+  });
+});
+
+describe("typedAnswerMatches", () => {
+  it("does not care where the apostrophe went", () => {
+    // The one that was costing people questions. On a keyboard without a
+    // convenient apostrophe, "ich's" gets typed "ichs", and the normaliser
+    // turned the punctuation into a space — so a perfectly typed line came
+    // back as the wrong number of words.
+    expect(typedAnswerMatches("Mensch, jetzt hab ichs", "Mensch, jetzt hab ich's.")).toBe(true);
+    expect(typedAnswerMatches("Wusste ichs doch", "Wusste ich's doch.")).toBe(true);
+    expect(typedAnswerMatches("Deu nhi do", "Déu n'hi do!")).toBe(true);
+  });
+
+  it("does not care whether a hyphen was typed as one", () => {
+    expect(typedAnswerMatches("secondhand", "second-hand")).toBe(true);
+    expect(typedAnswerMatches("second hand", "second-hand")).toBe(true);
+  });
+
+  it("takes either side of a line that teaches two ways to say it", () => {
+    expect(typedAnswerMatches("Perdona", "¡Perdona! / ¡Oye!")).toBe(true);
+    expect(typedAnswerMatches("oye", "¡Perdona! / ¡Oye!")).toBe(true);
+    expect(typedAnswerMatches("¡Perdona! / ¡Oye!", "¡Perdona! / ¡Oye!")).toBe(true);
+    expect(typedAnswerMatches("asfull", "asfull / skitfull")).toBe(true);
+  });
+
+  it("takes the masculine form of a line written with a gender ending", () => {
+    expect(typedAnswerMatches("achispado", "achispado/a")).toBe(true);
+  });
+
+  it("never lets a one-character side be the whole answer", () => {
+    expect(typedAnswerMatches("a", "achispado/a")).toBe(false);
+  });
+
+  it("keeps everything answersMatch already allowed", () => {
+    expect(typedAnswerMatches("donde esta el metro", "¿Dónde está el metro?")).toBe(true);
+    expect(typedAnswerMatches("DE BARRIL, GRACIAS", "De barril, gracias.")).toBe(true);
+    expect(typedAnswerMatches("¿Me das un recibo?", "¿Me das un recibo? (formal)")).toBe(true);
+  });
+
+  it("still rejects a different line", () => {
+    // Loosening the comparison must not turn it into a search. Running the
+    // words together is forgiven; producing another sentence is not.
+    expect(typedAnswerMatches("Vamos tres", "Somos tres")).toBe(false);
+    expect(typedAnswerMatches("Somos tres personas mas", "Somos tres")).toBe(false);
+    expect(typedAnswerMatches("", "Somos tres")).toBe(false);
   });
 });
 

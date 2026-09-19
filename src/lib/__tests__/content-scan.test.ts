@@ -255,6 +255,46 @@ describe("content integrity", () => {
       }
     });
 
+    it("never writes two scenes in one section that ask the same thing", () => {
+      // Two kinds of sameness, and both make a question unanswerable rather
+      // than merely repetitive: the same moment wanting different lines, and
+      // the same English wanting different lines. The second is the one that
+      // slipped through while these were being written — "I'm a bit tipsy."
+      // and "I'm a bit merry." are one question asked twice, and asked in the
+      // "how do you say this" direction only one of the two answers counts.
+      //
+      // Overlap both ways, not containment: "I like you" sits inside "I like
+      // the way you think" and nobody confuses those two questions.
+      const overlap = (a: string, b: string) => {
+        const ta = new Set(normalizeAnswer(a).split(" ").filter(Boolean));
+        const tb = new Set(normalizeAnswer(b).split(" ").filter(Boolean));
+        if (!ta.size || !tb.size) return 0;
+        const shared = [...ta].filter((t) => tb.has(t)).length;
+        return shared / (ta.size + tb.size - shared);
+      };
+
+      const clashes: string[] = [];
+      for (const category of getCategories(locale)) {
+        const scenes = category.subsections.flatMap((sub) => sub.scenes ?? []);
+        for (let i = 0; i < scenes.length; i++) {
+          for (let j = i + 1; j < scenes.length; j++) {
+            const a = scenes[i];
+            const b = scenes[j];
+            const mine = (s: typeof a) => (s.speaker === "them" ? s.answers[0] : s.question);
+            for (const [what, x, y] of [
+              ["moment", a.situation.en, b.situation.en],
+              ["meaning", mine(a)?.en ?? "", mine(b)?.en ?? ""],
+            ] as const) {
+              if (!x || !y || overlap(x, y) < 0.6) continue;
+              if (overlap(mine(a)?.es ?? "", mine(b)?.es ?? "") >= 0.6) continue;
+              clashes.push(`${category.id} ${what}: ${a.id} "${x}" / ${b.id} "${y}"`);
+            }
+          }
+        }
+      }
+      expect(clashes).toEqual([]);
+    });
+
     it("tags regions with values the badge knows how to render", () => {
       for (const category of getCategories(locale)) {
         for (const sub of category.subsections) {

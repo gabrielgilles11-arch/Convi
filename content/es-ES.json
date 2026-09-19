@@ -1040,9 +1040,9 @@
               "teaches": "slang-43",
               "speaker": "you",
               "situation": { "en": "You're ordering in Catalan for the first time and want to get the 'please' right." },
-              "question": { "es": "Un cafè, si us plau.", "en": "A coffee, please." },
+              "question": { "es": "Una aigua, si us plau.", "en": "A water, please." },
               "answers": [
-                { "es": "Ara te'l porto.", "en": "I'll bring it over." }
+                { "es": "Amb gas o sense?", "en": "Sparkling or still?" }
               ],
               "likelyReply": null,
               "notes": "Si us plau is the Catalan please. Three words, said as one.",
@@ -1619,7 +1619,7 @@
               "situation": { "en": "They ask, half joking, why you've spent the whole night talking to them." },
               "question": { "es": "¿Y por qué me hablas tanto?", "en": "So why are you talking to me so much?" },
               "answers": [
-                { "es": "Pues porque me gustas.", "en": "Because I like you." }
+                { "es": "Pues porque me gustas.", "en": "Because I fancy you." }
               ],
               "likelyReply": { "es": "Ya me parecía.", "en": "I thought so." },
               "notes": "Me gustas is the real thing, not a compliment — say it only if you mean it, because it will be taken at face value.",
