@@ -897,7 +897,16 @@ export function buildRound(
    */
   const take = (pool: QuizItem[], n: number, reverse: boolean, allowUsed = false) => {
     if (n <= 0) return;
-    for (const item of shuffle(pool)) {
+    const shuffled = shuffle(pool);
+    // A second pass may reuse an item in the other direction, but only once
+    // the untouched ones are gone. Taking at random meant a ten-item stage
+    // could ask "It's late and someone proposes one last drink" and then, two
+    // questions later, "How do you say 'go on then'?" — the same line twice,
+    // while five items it had not touched sat unused.
+    const order = allowUsed
+      ? [...shuffled.filter((i) => !used.has(i.id)), ...shuffled.filter((i) => used.has(i.id))]
+      : shuffled;
+    for (const item of order) {
       if (drafts.length >= slots) return;
       if (n <= 0) return;
       if (!allowUsed && used.has(item.id)) continue;

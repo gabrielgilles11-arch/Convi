@@ -47,6 +47,14 @@ export interface Exchange {
   speaker: "you" | "them";
   /** English description of the moment, used as the prompt in practice. */
   situation: { en: string };
+  /**
+   * On a practice scene, the id of the phrase it takes over from — the word it
+   * was written to put in a moment. Named rather than inferred from the text,
+   * because Spanish conjugates: a scene teaching `pirarse` says "me piro", and
+   * no amount of string matching makes those the same word without also
+   * matching things that are not.
+   */
+  teaches?: string;
   question: Bilingual;
   answers: Bilingual[];
   likelyReply: Bilingual | null;
