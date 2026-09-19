@@ -552,9 +552,13 @@ export default function TestMode({
               Check
             </button>
           )}
+          {/* Says what the grader actually does, so nobody hunts for an
+              apostrophe key or types both halves of a line that offers two
+              ways to say it. */}
           <p className="type-hint">
-            Accents, ß and punctuation are not marked wrong — and you never have to
-            type the note in brackets.
+            Capitals, accents, ß and punctuation are never marked wrong. Where a line
+            offers two ways to say it, either one counts, and you never have to type
+            the note in brackets.
           </p>
         </form>
       )}
