@@ -69,6 +69,8 @@ export interface DialogueSubsection {
   type?: "tips";
   exchanges?: Exchange[];
   items?: TipItem[];
+  /** Practice-only scenes. See `scenes` on PhrasebookSubsection. */
+  scenes?: Exchange[];
 }
 
 export interface Phrase {
@@ -78,6 +80,15 @@ export interface Phrase {
   difficulty: "easy" | "medium" | "hard";
   region?: Region;
   young?: boolean;
+  /**
+   * `false` keeps the phrase on the scenario page but out of the practice
+   * deck. Set on the words a subsection's `scenes` already teach: the word is
+   * still drilled, inside a line you produce, and asking for its definition as
+   * well is the "what does this mean" repetition the scenes were written to
+   * replace. Absent means yes, as it does for every phrase with no scenes
+   * beside it.
+   */
+  practice?: boolean;
   quizQuestions: unknown[];
 }
 
@@ -85,6 +96,18 @@ export interface PhrasebookSubsection {
   id: string;
   title: string;
   phrases: Phrase[];
+  /**
+   * Practice-only exchanges: the same words as `phrases`, each put in a moment
+   * you'd meet it in.
+   *
+   * They are a separate array rather than `exchanges` because the two surfaces
+   * want different things. The scenario page is a reference list — you came to
+   * look a word up, and a scene per entry would bury the list you came for —
+   * while practice asks you to produce a line, and a section that only ever
+   * asks what a word means is not practising that. So the page reads `phrases`
+   * and never sees these; `buildQuizItems` reads both.
+   */
+  scenes?: Exchange[];
 }
 
 export interface Category {

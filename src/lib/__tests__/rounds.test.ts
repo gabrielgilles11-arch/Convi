@@ -133,6 +133,39 @@ describe.each(locales)("%s deck", (locale) => {
     }
   });
 
+  it("asks what a line means at most three times in any round", () => {
+    // The property the content rewrite exists to hold. A round is eight
+    // questions; the matching screen is a word exercise by nature and is
+    // exempt. What is counted is everything else that hands you a line and
+    // asks what it means or how to say it, rather than naming a moment and
+    // asking what you would say in it.
+    //
+    // Run stage by stage with the pool a learner would actually have at that
+    // point, because that is where it used to fail: a stage of nothing but
+    // words came out as seven definitions and a board.
+    const byId = new Map(items.map((i) => [i.id, i]));
+    const stages = buildStages(items, getCategoryList(locale));
+
+    stages.forEach((stage, index) => {
+      const stageItems = stage.itemIds.map((id) => byId.get(id)!).filter(Boolean);
+      // Everything reached by the time this stage comes up, which is what
+      // QuizApp hands the builder.
+      const reached = new Set(stages.slice(0, index + 1).flatMap((s) => s.itemIds));
+      const seen = items.filter((i) => reached.has(i.id));
+
+      for (let run = 0; run < 10; run++) {
+        const round = buildRound(stageItems, seen);
+        const definitions = round.filter((q) => q.form !== "match" && !q.saidByYou);
+        expect(
+          definitions.length,
+          `${stage.id} run ${run}: ${definitions.length} of ${round.length} asked what a line means — ${JSON.stringify(
+            definitions.map((q) => q.shown)
+          )}`
+        ).toBeLessThanOrEqual(3);
+      }
+    });
+  });
+
   it("fills four options even for the smallest stage on the path", () => {
     // Spanish "Starting a convo" has one phrase item; without the fallback
     // pool it rendered a "multiple" choice of one. The guards are given up one
