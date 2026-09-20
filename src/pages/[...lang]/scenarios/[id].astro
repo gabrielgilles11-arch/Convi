@@ -353,6 +353,7 @@ const schema = [
 
 <style>
   .back {
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -383,6 +384,7 @@ const schema = [
   }
 
   .voice-toggle {
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -459,7 +461,7 @@ const schema = [
   }
 
   .quick-answer-label {
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.07em;
     text-transform: uppercase;
@@ -552,8 +554,10 @@ const schema = [
     padding: 0;
   }
 
+  /* Spaced so the speaker buttons on two consecutive lines cannot both claim
+     the same finger. See the note in Speaker.astro. */
   .answers li {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.75rem;
   }
 
   .answers li:last-child {
@@ -573,7 +577,7 @@ const schema = [
     color: #fff;
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     vertical-align: middle;
@@ -586,6 +590,13 @@ const schema = [
 
   .reply .label {
     background: var(--opt-b-deep);
+  }
+
+  /* Far enough below the last answer that the two speaker buttons cannot both
+     claim the same tap. Needs `.exchange` in front of it to outrank the
+     blanket paragraph margin above. See the note in Speaker.astro. */
+  .exchange .reply {
+    margin-top: 0.95rem;
   }
 
   .question {
@@ -665,7 +676,7 @@ const schema = [
 
   .tag {
     display: inline-block;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.03em;

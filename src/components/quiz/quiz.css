@@ -24,6 +24,7 @@
 }
 
 .mode-toggle button {
+  min-height: 44px;
   padding: 0.45rem 1.15rem;
   border: none;
   border-radius: 999px;
@@ -94,7 +95,7 @@
 }
 
 .flashcard .hint {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-primary-dark);
   font-weight: 600;
 }
@@ -237,7 +238,7 @@
 }
 
 .progress-row-status {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--color-ink-soft);
 }
@@ -266,7 +267,7 @@
 }
 
 .progress-row-meta {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-ink-soft);
 }
 
@@ -301,7 +302,7 @@
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   color: var(--color-ink-soft);
@@ -319,7 +320,7 @@
   border-radius: 999px;
   background: var(--color-primary);
   color: #fff;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -327,6 +328,8 @@
 }
 
 .sound-toggle {
+  min-width: 44px;
+  min-height: 44px;
   display: inline-grid;
   place-items: center;
   width: 2.4rem;
@@ -360,6 +363,8 @@
    the auto-margin that used to push the sound toggle to the right, so the pair
    sits together at the end of the toolbar. */
 .voice-toggle {
+  min-width: 44px;
+  min-height: 44px;
   display: inline-grid;
   place-items: center;
   width: 2.4rem;
@@ -417,7 +422,7 @@
   border: 1px solid var(--color-primary-tint-border);
   background: var(--color-primary-tint);
   color: var(--color-primary-dark);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -718,7 +723,7 @@
   grid-column: 1 / -1;
   margin: 0.35rem 0 0;
   text-align: center;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   font-weight: 800;
   letter-spacing: 0.03em;
   color: var(--color-ink-soft);
@@ -769,14 +774,14 @@
   align-items: center;
   gap: 0.6rem;
   flex-wrap: wrap;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-ink-soft);
   margin: 0 0 0.75rem;
 }
 
 .stage-flag {
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   color: var(--color-primary-dark);
   background: var(--color-primary-tint);
   border: 1px solid var(--color-primary-tint-border);
@@ -790,6 +795,7 @@
 }
 
 .stage-jump {
+  min-height: 44px;
   font: inherit;
   font-weight: 700;
   color: var(--color-primary-dark);
@@ -901,7 +907,7 @@
 
 .drawer-picked-label {
   flex: none;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -927,7 +933,7 @@
   border-radius: 999px;
   background: var(--color-border);
   padding: 0.1rem 0.45rem;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -951,7 +957,7 @@
 
 .drawer-line-label {
   margin: 0 0 0.25rem;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -1063,7 +1069,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.5rem 1.25rem;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--color-ink-soft);
   margin: 0 0 1.25rem;
@@ -1209,7 +1215,7 @@
 .type-hint {
   flex-basis: 100%;
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-ink-soft);
 }
 
@@ -1292,12 +1298,23 @@
   vertical-align: baseline;
 }
 
+/* Same bargain as the scenario page's speaker: small enough to sit inside a
+   line of text, with a 44px area around it for the finger. See the note in
+   Speaker.astro. */
+.audio-button::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: inherit;
+}
+
 .audio-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 2rem;
+  height: 2rem;
   margin-left: 0.45rem;
   padding: 0;
   border-radius: 999px;
@@ -1392,7 +1409,7 @@
 }
 
 .streak-unit {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-ink-soft);
 }
 
@@ -1490,7 +1507,7 @@
 }
 
 .talk-launch-sub {
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   line-height: 1.35;
   color: var(--color-ink-soft);
 }
@@ -1720,7 +1737,7 @@
  * to come from size and weight instead, and those cost nothing.
  */
 .stone-part-of {
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   font-weight: 700;
 }
 
@@ -1742,7 +1759,7 @@
 }
 
 .stone-here {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -2149,7 +2166,7 @@
 }
 
 .convo-card-meta {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--color-ink-soft);
 }
 
@@ -2204,7 +2221,7 @@
   background: var(--color-primary-tint);
   border: 1px solid var(--color-primary-tint-border);
   color: var(--color-primary-dark);
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   font-weight: 800;
 }
 
@@ -2303,12 +2320,15 @@
 /* The way out of a beat you have no idea about. Quiet on purpose: it is worth
    having once you have tried, and worth nothing before. */
 .convo-stuck {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   align-self: flex-end;
   border: 0;
   background: none;
   padding: 0.2rem 0.1rem;
   font: inherit;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--color-ink-soft);
   text-decoration: underline;
@@ -2337,7 +2357,7 @@
 
 .convo-also-label {
   margin: 0 0 0.3rem;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2365,7 +2385,7 @@
 
 .convo-also-en {
   flex-basis: 100%;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-ink-soft);
 }
@@ -2388,7 +2408,7 @@
 }
 
 .convo-full-label {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2435,7 +2455,7 @@
 /* `__` and `[BELOPP]` are authored: the line genuinely has a blank in it
    because the street or the amount changes every time you say it. */
 .convo-choice-slot {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -2501,7 +2521,7 @@
   background: var(--color-card);
   padding: 0.2rem 0.65rem;
   font: inherit;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--color-ink-soft);
   cursor: pointer;
@@ -2531,7 +2551,7 @@
 
 .convo-footnote {
   margin: 1.25rem 0 0;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-ink-soft);
 }
 
@@ -2585,7 +2605,7 @@
 
 .convo-footnote {
   margin: 1.25rem 0 0;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   color: var(--color-ink-soft);
 }
 
@@ -2641,7 +2661,7 @@
    says nothing about how often or how to stop. */
 .remind-terms {
   margin: 0.75rem 0 0;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   line-height: 1.5;
   color: var(--color-ink-soft);
 }
