@@ -60,8 +60,8 @@ const allScenariosPath = localePath(locale, "/scenarios");
 // in a dead end — and so the pages it links to gain something from existing.
 const others = getCategories(locale).filter((c) => c.id !== categoryId);
 
-const title = `${set.title} — what they actually mean`;
-const description = `${set.terms.slice(0, 4).map((t) => t.term).join(" · ")} — ${set.terms.length} ${info.language} words you'll hear in ${info.region}, what each one means and the line it turns up in. Free.`;
+const title = `${set.title}: what they actually mean`;
+const description = `${set.terms.slice(0, 4).map((t) => t.term).join(" · ")}: ${set.terms.length} ${info.language} words you'll hear in ${info.region}, what each one means and the line it turns up in. Free.`;
 
 const schema = [
   {

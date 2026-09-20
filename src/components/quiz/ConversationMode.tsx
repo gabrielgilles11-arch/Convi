@@ -89,7 +89,7 @@ function Correction({
   return (
     <div className="convo-correction">
       <p className="convo-correction-head">
-        {said.close ? "Almost — it goes like this:" : "Not quite. Here's the line:"}
+        {said.close ? "Almost. It goes like this:" : "Not quite. Here's the line:"}
       </p>
       <p className="convo-correction-line">
         {said.line.source}
@@ -363,7 +363,7 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
           <p className="convo-done-title">That's the whole conversation.</p>
           <p className="convo-done-sub">
             {turns.length} turns, start to finish, none of it in English. Run it
-            again and answer differently — every line you were offered is a real
+            again and answer differently: every line you were offered is a real
             thing to say there.
           </p>
           <div className="controls">

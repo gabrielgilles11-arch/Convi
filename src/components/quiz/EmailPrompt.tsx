@@ -66,7 +66,7 @@ export default function EmailPrompt({ onClose, onRegistered }: Props) {
           <>
             <h2 id="email-prompt-title">You're on the list.</h2>
             <p className="email-prompt-sub">
-              We'll email you when the app lands. Back to it —
+              We'll email you when the app lands. Back to it.
             </p>
             <button type="button" className="email-prompt-submit" onClick={onClose}>
               Keep practising

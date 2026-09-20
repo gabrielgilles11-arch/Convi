@@ -117,7 +117,7 @@ function copyFor(step: number, state: ReminderState, daysAway: number): Nudge {
             title: `Still want the ${language}?`,
             body: `You cleared a section already. The next one is shorter.`,
             subject: `Still want the ${language}?`,
-            preheader: `You cleared a section already — the next one is shorter.`,
+            preheader: `You cleared a section already, and the next one is shorter.`,
             cta: `Pick up where you left off`,
             last: false,
           };
@@ -138,9 +138,9 @@ function copyFor(step: number, state: ReminderState, daysAway: number): Nudge {
       return {
         step,
         daysAway,
-        title: `Last nudge — promise`,
+        title: `Last nudge, promise`,
         body: `We'll stop after this one. ${language} is here whenever you want it.`,
-        subject: `Last nudge from Try Convi — promise`,
+        subject: `Last nudge from Try Convi, promise`,
         preheader: `This is the last one. No unsubscribing needed.`,
         cta: `One more round`,
         last: true,

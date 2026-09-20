@@ -373,7 +373,7 @@ export default function TestMode({
           {correctCount} / {round.length}
         </p>
         <p className="round-done-sub taster-done">
-          That's the shape of it. Nothing here was scored — the path is where it
+          That's the shape of it. Nothing here was scored. The path is where it
           counts, one stage at a time, and it starts wherever you like.
         </p>
         <div className="controls">

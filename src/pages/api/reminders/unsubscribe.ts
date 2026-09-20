@@ -23,14 +23,14 @@ async function stop(id: unknown): Promise<boolean> {
 
 /** Shown in a browser after the link is followed. */
 function page(done: boolean): string {
-  const heading = done ? "That's it — no more reminders." : "Nothing to unsubscribe.";
+  const heading = done ? "That's it, no more reminders." : "Nothing to unsubscribe.";
   const line = done
-    ? "You won't get another push or email from us. Your practice progress is untouched — it never left your browser in the first place."
+    ? "You won't get another push or email from us. Your practice progress is untouched, since it never left your browser in the first place."
     : "That link has already been used, or the reminder it belonged to has expired. Either way, nothing is being sent.";
 
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Reminders off — Try Convi</title><meta name="robots" content="noindex">
+<title>Reminders off: Try Convi</title><meta name="robots" content="noindex">
 <style>
   body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
        background:#fff6ec;color:#241610;font:500 17px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:1.5rem;}
