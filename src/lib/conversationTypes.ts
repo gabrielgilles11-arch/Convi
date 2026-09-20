@@ -254,42 +254,71 @@ function contentWords(line: string): string[] {
     .filter((word) => word && !FUNCTION_WORDS.has(word) && !IS_SLOT.test(word));
 }
 
-/** Two words that are the same word, give or take a slip of the hand. */
+/**
+ * Two words that are the same word, give or take a slip of the hand.
+ *
+ * The first letter has to survive. One edit is most of a short word and
+ * Spanish is full of pairs a single letter apart — "vamos" and "somos",
+ * "pero" and "perro" — but almost nobody's slip is on the letter they started
+ * with, so holding that one fixed separates "kafe" for "kaffe" from a
+ * different word entirely. Below four letters nothing is forgiven at all.
+ */
 function sameWord(a: string, b: string): boolean {
-  return a === b || withinEdits(a, b, editBudget(Math.max(a.length, b.length)));
+  if (a === b) return true;
+  const longest = Math.max(a.length, b.length);
+  if (longest < 4 || a[0] !== b[0]) return false;
+  return withinEdits(a, b, Math.max(1, editBudget(longest)));
 }
 
 /**
- * The half-answer that is still an answer.
+ * How much of the authored line has to be in what you said.
+ *
+ * Four words in five. Enough that "hej kan jag har en kanellbulle och kafe
+ * tack" is the same order as "En kaffe och en kanelbulle, tack" — which it
+ * plainly is — and not so little that two words in common carries a different
+ * sentence over the line.
+ */
+const COVERAGE = 0.8;
+
+/**
+ * The half-answer, and the one with a greeting bolted on the front.
  *
  * A barista asks what you want and you say "café". That is what somebody
  * standing at a counter in Madrid actually says, and the authored line is "Un
  * café con leche, por favor" — so grading it letter by letter marks a correct
- * order wrong and teaches the learner that the app wants a recitation rather
- * than a sentence. This accepts it, in both directions: the words that carry
- * the meaning either sit inside the authored line or contain all of it, so
- * both the short order and the over-polite one come back right.
+ * order wrong and teaches that the app wants a recitation rather than a
+ * sentence.
  *
- * What it will not do is guess. Every content word has to land on one in the
- * line (typos allowed), so "cerveza" is still not "un café con leche", and a
+ * Two ways to be right, because there are two ways to be brief:
+ *
+ * **Everything you said is in the line.** The short order: "café". Nothing is
+ * missing that was not simply left unsaid.
+ *
+ * **You covered enough of the line.** The long way round: "hej kan jag har en
+ * kanellbulle och kafe tack" says everything "En kaffe och en kanelbulle,
+ * tack" says, plus a hello and a false start. Extra words cost nothing here,
+ * which is the whole difference: requiring every word you typed to land on one
+ * in the line meant a greeting the author did not happen to write was enough
+ * to mark a correct order wrong.
+ *
+ * What it will not do is guess. "Una cerveza" covers none of the coffee, a
  * line whose content is nothing but politeness is left to the exact
- * comparisons above rather than matched on an empty set.
+ * comparisons above rather than matched on an empty set, and a line with a
+ * blank in it is `slotPattern`'s business alone: the blank is the part being
+ * asked for, and content words drop it.
  */
 function keywordMatch(given: string, expected: string): boolean {
-  // A line with a blank in it is judged by `slotPattern` alone. The blank is
-  // the part being asked for — "Tio till [STATION], tack" without a station is
-  // the one thing that line cannot mean — and content words, which drop the
-  // slot, would wave it through.
   if (hasSlot(expected)) return false;
 
   const said = contentWords(given);
   const line = contentWords(expected);
   if (said.length === 0 || line.length === 0) return false;
 
-  const coveredBy = (words: string[], pool: string[]) =>
-    words.every((word) => pool.some((other) => sameWord(word, other)));
+  const inTheLine = said.every((word) => line.some((other) => sameWord(word, other)));
+  if (inTheLine) return true;
 
-  return coveredBy(said, line) || coveredBy(line, said);
+  const covered = line.filter((word) => said.some((other) => sameWord(word, other))).length;
+  return covered / line.length >= COVERAGE;
 }
 
 /** True when what somebody said is this line, blanks and all. */

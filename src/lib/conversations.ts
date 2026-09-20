@@ -98,6 +98,51 @@ function turnFrom(exchange: Exchange): ConvTurn | null {
 }
 
 /**
+ * The part of a comeback that is not asking you something.
+ *
+ * `likelyReply` was authored for the scenario page, where an exchange stands
+ * on its own and ending on a hook — "Vale. ¿Algo de comer?" — is good writing.
+ * Chained into a walk-through it is a question nothing answers: the next beat
+ * has its own opener, so the screen asks "anything to eat?" and then, without
+ * waiting, "draft or bottle?". Two questions, no turn in between, and the
+ * first one silently dropped. Forty-odd beats across the three editions read
+ * that way, and one Swedish beat asked "På fat eller flaska?" twice in a row.
+ *
+ * So mid-conversation a comeback keeps only the sentences in front of its
+ * first question. Nothing is rewritten and nothing is invented: the scenario
+ * pages still carry every authored line in full, and this is the one surface
+ * where a hook has something after it to collide with.
+ */
+function statementPartOf(line: string): string {
+  const sentences = line.trim().match(/[^.!?…]+[.!?…]*/g);
+  if (!sentences) return "";
+
+  const kept: string[] = [];
+  for (const sentence of sentences) {
+    if (/[?？]\s*$/.test(sentence)) break;
+    kept.push(sentence);
+  }
+
+  // A dangling "/" is left behind when the dropped half was a slash variant
+  // of the kept one: "Dime. / ¿Sí?".
+  return kept.join("").trim().replace(/[/\s]+$/, "").trim();
+}
+
+/**
+ * The same comeback, with a hook that nothing answers taken off it.
+ *
+ * A trimmed line and a clip of the untrimmed one are not the same line, so the
+ * clip is dropped with the text and the device voice reads what is on screen.
+ */
+function withoutDanglingQuestion(reply: ConvLine | null): ConvLine | null {
+  if (!reply || !/[?？]\s*$/.test(reply.source.trim())) return reply;
+
+  const source = statementPartOf(reply.source);
+  if (!source) return null;
+  return { source, en: reply.en ? statementPartOf(reply.en) || null : null, audioId: null };
+}
+
+/**
  * Every conversation in an edition, in content order.
  *
  * Two filters, and they exclude different things.
@@ -129,6 +174,15 @@ export function buildConversations(locale: Locale = DEFAULT_LOCALE): Conversatio
 
       if (turns.length < MIN_TURNS) continue;
 
+      // Every beat but the last: a hook has something after it to collide
+      // with. The final comeback keeps its question, because a conversation
+      // ending on one is how conversations end.
+      const walkable = turns.map((turn, i) =>
+        i === turns.length - 1
+          ? turn
+          : { ...turn, theirReply: withoutDanglingQuestion(turn.theirReply) }
+      );
+
       out.push({
         id: sub.id,
         categoryId: category.id,
@@ -137,7 +191,7 @@ export function buildConversations(locale: Locale = DEFAULT_LOCALE): Conversatio
         // `beer-food-main`, `hotel-checkin` — so the category's title is the
         // honest label rather than a made-up one.
         title: sub.title ?? category.title,
-        turns,
+        turns: walkable,
       });
     }
   }
