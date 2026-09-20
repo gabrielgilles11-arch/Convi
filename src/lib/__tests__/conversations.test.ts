@@ -17,6 +17,31 @@ import {
 const locales = LOCALES.map((l) => l.locale);
 
 /**
+ * A comeback is the authored line, or the authored line with the hook it ended
+ * on taken off.
+ *
+ * The one place the walk-through does not show a line exactly as written. A
+ * `likelyReply` ending in a question was authored for the scenario page, where
+ * nothing follows it; chained into a conversation it is a question the next
+ * beat never answers, so mid-conversation it keeps only the sentences in front
+ * of it. Still nothing invented: whatever is shown is a prefix of what a person
+ * wrote.
+ */
+function expectComeback(shown: string | null, authored: string | null) {
+  if (shown === null) {
+    // Dropped entirely only when the authored line was a question and nothing
+    // else, or there was no line to begin with.
+    if (authored !== null) expect(authored.trim()).toMatch(/[?？]$/);
+    return;
+  }
+  expect(authored).not.toBeNull();
+  if (shown === authored) return;
+  expect(authored!.trim()).toMatch(/[?？]$/);
+  expect(authored!.startsWith(shown)).toBe(true);
+  expect(shown).not.toMatch(/[?？]\s*$/);
+}
+
+/**
  * What Talk promises, checked against the content rather than against itself.
  *
  * The screen makes one claim worth testing — every line it offers was written
@@ -109,14 +134,14 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
         if (ex!.speaker === "them") {
           expect(turn.theirOpener?.source).toBe(ex!.question.es);
           expect(turn.yourLines.map((l) => l.source)).toEqual(ex!.answers.map((a) => a.es));
-          expect(turn.theirReply?.source ?? null).toBe(ex!.likelyReply?.es ?? null);
+          expectComeback(turn.theirReply?.source ?? null, ex!.likelyReply?.es ?? null);
         } else {
           expect(turn.theirOpener).toBeNull();
           expect(turn.yourLines.map((l) => l.source)).toEqual([ex!.question.es]);
           // Their answer to what you just said, or the follow-up line where the
           // exchange has no answers at all.
           const theirs = ex!.answers[0]?.es ?? ex!.likelyReply?.es ?? null;
-          expect(turn.theirReply?.source ?? null).toBe(theirs);
+          expectComeback(turn.theirReply?.source ?? null, theirs);
         }
       }
     }
@@ -148,7 +173,13 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
         if (ex.speaker === "them") {
           expect(turn.theirOpener?.audioId).toBe(`${turn.id}-q`);
           turn.yourLines.forEach((line, i) => expect(line.audioId).toBe(`${turn.id}-a${i}`));
-          if (turn.theirReply) expect(turn.theirReply.audioId).toBe(`${turn.id}-r`);
+          // A comeback that had its hook trimmed is no longer the line the clip
+          // was recorded of, so it carries none and the device voice reads what
+          // is actually on screen.
+          if (turn.theirReply) {
+            const whole = turn.theirReply.source === ex.likelyReply?.es;
+            expect(turn.theirReply.audioId).toBe(whole ? `${turn.id}-r` : null);
+          }
         } else {
           expect(turn.yourLines[0]!.audioId).toBe(`${turn.id}-q`);
         }
@@ -319,8 +350,39 @@ describe("replyMatches is generous about how much you say", () => {
   });
 
   it("still refuses a word that is merely nearby", () => {
-    // One edit apart, and two different verbs.
+    // One edit apart, and two different verbs. The first letter is what
+    // separates a slip of the hand from a different word.
     expect(replyMatches("Vamos tres", "Somos tres")).toBe(false);
+  });
+
+  /**
+   * Reported from a Swedish café, with a screenshot: this is the same order as
+   * the authored line and it came back wrong. Two things did it — a greeting
+   * the author did not happen to write, which had to land on a word in the
+   * line and could not, and "kafe" for "kaffe", one letter in a word too short
+   * to be given any slack at all.
+   */
+  it("takes the order with a hello on the front and a typo in the middle", () => {
+    expect(
+      replyMatches(
+        "Hej kan jag har en kanellbulle och kafe tack",
+        "En kaffe och en kanelbulle, tack."
+      )
+    ).toBe(true);
+  });
+
+  it("does not let a greeting carry an order that isn't there", () => {
+    expect(replyMatches("Hej tack", "En kaffe och en kanelbulle, tack.")).toBe(false);
+    expect(replyMatches("Hej kan jag har en öl tack", "En kaffe och en kanelbulle, tack.")).toBe(
+      false
+    );
+  });
+
+  it("wants most of the line, not two words of it", () => {
+    // Four words in five. "Nej … tack" is two thirds of "Nej tack, jag är
+    // nöjd" and does not carry it.
+    expect(replyMatches("Nej tack, jag är nöjd.", "Nej tack, jag är nöjd.")).toBe(true);
+    expect(replyMatches("Nej ice kaffee tack", "Nej tack, jag är nöjd.")).toBe(false);
   });
 
   it("does not care about punctuation or accents either way", () => {
@@ -411,4 +473,52 @@ describe("nextBeat", () => {
       }
     }
   });
+});
+
+/**
+ * Two questions in a row, with no turn of yours in between.
+ *
+ * The bug this locks out, reported from a Swedish café: they asked "Ska du ha
+ * den värmd?" and then, without waiting, "Vill du ha påtår?". Both were
+ * authored — the first as a scenario page's closing hook, the second as the
+ * next exchange's opener — and chaining them dropped the first question on the
+ * floor. Forty-six beats across the three editions read that way.
+ */
+describe.each(locales)("the walk-through reads as one conversation: %s", (locale: Locale) => {
+  const conversations = buildConversations(locale);
+  const asks = (line: string | null | undefined) => Boolean(line && /[?？]\s*$/.test(line.trim()));
+
+  it("never asks you a second question before you have answered the first", () => {
+    const clashes: string[] = [];
+    for (const convo of conversations) {
+      convo.turns.forEach((turn, i) => {
+        const next = convo.turns[i + 1];
+        if (!next) return;
+        if (asks(turn.theirReply?.source)) {
+          clashes.push(`${convo.id} beat ${i + 1}: "${turn.theirReply!.source}" then "${next.theirOpener?.source ?? next.situation}"`);
+        }
+      });
+    }
+    expect(clashes).toEqual([]);
+  });
+
+  it("keeps a comeback wherever it was not a hook", () => {
+    const kept = conversations.flatMap((c) => c.turns.filter((t) => t.theirReply));
+    // The trim is narrow: almost every beat still comes back at you.
+    expect(kept.length).toBeGreaterThan(conversations.length * 2);
+  });
+});
+
+/**
+ * The last beat is left alone.
+ *
+ * The trim exists because a hook collides with whatever is asked next. On the
+ * final beat nothing is asked next, and a parting question is how a
+ * conversation ends rather than a loose end — so it keeps its line whole.
+ */
+it("lets a conversation end on a question", () => {
+  const endings = locales.flatMap((locale) =>
+    buildConversations(locale).map((c) => c.turns[c.turns.length - 1]!.theirReply?.source ?? "")
+  );
+  expect(endings.some((line) => /[?？]\s*$/.test(line.trim()))).toBe(true);
 });
