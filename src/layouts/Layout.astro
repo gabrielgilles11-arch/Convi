@@ -242,7 +242,10 @@ const structuredData = {
        `-deep` is the variant that carries white text at 4.5:1 or better; the
        bare hue is for borders, badges and glows. */
     --opt-a: #f2683c;
-    --opt-a-deep: #c9491f;
+    /* Darkened to 4.65:1 against its own tint: the path stones use deep-on-tint
+       for a section not yet started, and this was the one hue of the four that
+       did not clear 4.5 that way. */
+    --opt-a-deep: #be451d;
     --opt-a-tint: #fff0e8;
     --opt-b: #6d5ce7;
     --opt-b-deep: #4f3fc4;
@@ -397,6 +400,7 @@ const structuredData = {
   }
 
   .nav-cta {
+    min-height: 44px;
     display: inline-block;
     padding: 0.55rem 1.15rem;
     border-radius: 999px;
@@ -475,7 +479,7 @@ const structuredData = {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 1rem 1.25rem;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: #8c796a;
   }
 
@@ -486,7 +490,27 @@ const structuredData = {
     margin-top: 0.5rem;
   }
 
+  /* Standalone links, not links inside a sentence, so the tap target rule
+     applies to them: 44px is the pad of a fingertip, and these sit close
+     enough together to punish a near miss. */
+  .footer-social a,
+  .brand-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Short words, so the height alone does not make the target: "About" is
+     38px wide and a thumb is wider than that. */
   .footer-legal a {
+    justify-content: center;
+    min-width: 44px;
+  }
+
+  .footer-legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: #8c796a;
     text-decoration: none;
   }
@@ -536,7 +560,7 @@ const structuredData = {
 
     .nav-cta {
       padding: 0.45rem 0.95rem;
-      font-size: 0.8rem;
+      font-size: 0.8125rem;
     }
   }
 

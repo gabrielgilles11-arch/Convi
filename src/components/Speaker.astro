@@ -45,12 +45,29 @@ const { audioId = null, text = null, label = "Hear it" } = Astro.props;
 }
 
 <style>
+  /*
+   * Small to look at, big to hit.
+   *
+   * There are sixty-odd of these on a long scenario page, sitting inline in
+   * the middle of a line of text, so the drawn button has to stay out of the
+   * way of the reading. The thing a finger has to land on does not: the pad of
+   * an adult fingertip is about 10mm and it covers the target on the way down,
+   * so you are aiming from memory over the last few millimetres. The circle
+   * below is what you see; `::after` is what you press, and it reaches the
+   * 44px both Apple and Material ask for.
+   *
+   * The rows on the scenario page are spaced so that two of these expanded
+   * areas never overlap. A target that quietly steals its neighbour's taps is
+   * worse than a small one, because a mistap here starts audio you did not
+   * ask for.
+   */
   .speak {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.7rem;
-    height: 1.7rem;
+    width: 2rem;
+    height: 2rem;
     margin-left: 0.35rem;
     padding: 0;
     border-radius: 999px;
@@ -59,6 +76,17 @@ const { audioId = null, text = null, label = "Hear it" } = Astro.props;
     color: var(--color-primary-dark);
     cursor: pointer;
     vertical-align: middle;
+  }
+
+  /* -7 rather than -6: the pseudo-element is laid out against the padding
+     box, which the 1px border makes 30px, so this is what reaches a round 44.
+     It extends 6px past the drawn circle on every side, which is exactly the
+     gap the scenario page leaves between two of them. */
+  .speak::after {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    border-radius: inherit;
   }
 
   .speak:hover {
