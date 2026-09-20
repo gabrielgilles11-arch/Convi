@@ -2213,3 +2213,33 @@
     max-width: 100%;
   }
 }
+
+/* ---- The reminder ask ---- */
+
+/* Reuses the email prompt's card wholesale — it is the same kind of thing asked
+   at a different moment, and a second modal style would only make the pair look
+   like two different products. These are the two pieces it does not have. */
+
+.remind-primary {
+  /* Full width, because it is the answer and the two lines under it are not. */
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+/* Said before the browser's permission dialogue appears, since that dialogue
+   says nothing about how often or how to stop. */
+.remind-terms {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+/* Two ways out under one answer would otherwise sit on top of each other. */
+.remind-terms + .email-prompt-skip {
+  margin-top: 0.5rem;
+}
+
+.email-prompt-skip + .email-prompt-skip {
+  margin-top: 0.15rem;
+}

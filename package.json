@@ -25,10 +25,12 @@
     "@upstash/redis": "^1.38.0",
     "astro": "^7.0.7",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@types/web-push": "^3.6.4",
     "typescript": "^6.0.3",
     "vitest": "^5.0.0"
   }

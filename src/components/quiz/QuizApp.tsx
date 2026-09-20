@@ -22,6 +22,7 @@ import {
   finishedConversations,
 } from "../../lib/progress";
 import type { Conversation, ConversationPayload } from "../../lib/conversationTypes";
+import { markReminderPrompt, reminderPromptAnswered } from "../../lib/reminderClient";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
@@ -29,6 +30,7 @@ import ProgressPanel from "./ProgressPanel";
 import Welcome from "./Welcome";
 import EmailPrompt from "./EmailPrompt";
 import StreakBadge from "./StreakBadge";
+import RemindPrompt from "./RemindPrompt";
 import ConversationPicker from "./ConversationPicker";
 import ConversationMode from "./ConversationMode";
 import { soundEnabled, setSoundEnabled } from "./sound";
@@ -120,6 +122,7 @@ export default function QuizApp({ locale }: Props) {
   const [convoError, setConvoError] = useState("");
   const [convoId, setConvoId] = useState<string | null>(null);
   const [convoDone, setConvoDone] = useState<string[]>([]);
+  const [askRemind, setAskRemind] = useState(false);
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
@@ -232,6 +235,16 @@ export default function QuizApp({ locale }: Props) {
     () => allStagesCleared(stages, bestScores),
     [stages, bestScores]
   );
+
+  /**
+   * Whether any section has been cleared, read from storage rather than from
+   * `bestScores`: this is called from inside the round-complete handler, and the
+   * memo it would otherwise read has not been recomputed yet at that point.
+   */
+  function anyStageCleared(): boolean {
+    const scores = loadProgress().bestScores;
+    return stages.some((stage) => (scores[stage.id] ?? 0) >= STAGE_CLEAR_SCORE);
+  }
 
   // A stale id — a locale switch while a conversation was open — resolves to
   // nothing, and nothing means the picker rather than a crash.
@@ -501,7 +514,14 @@ export default function QuizApp({ locale }: Props) {
               recordRound(locale ?? "es-ES");
               // Asked after the round is scored and the summary is up, which is
               // the one moment in a session where nothing is half-finished.
-              if (roundsCompleted() >= PROMPT_AFTER_ROUNDS && !emailPromptAnswered()) {
+              //
+              // Reminders come first when this is the round that cleared a
+              // section: it is the better ask of the two — there is now a
+              // streak to protect — and two modals stacked on one summary is
+              // how people learn to close things without reading them.
+              if (anyStageCleared() && !reminderPromptAnswered()) {
+                setAskRemind(true);
+              } else if (roundsCompleted() >= PROMPT_AFTER_ROUNDS && !emailPromptAnswered()) {
                 setAskEmail(true);
               }
             }}
@@ -532,6 +552,18 @@ export default function QuizApp({ locale }: Props) {
             onStart={setConvoId}
           />
         ))}
+
+      {askRemind && (
+        <RemindPrompt
+          locale={locale ?? "es-ES"}
+          streak={streak}
+          onClose={() => {
+            markReminderPrompt("dismissed");
+            setAskRemind(false);
+          }}
+          onEnabled={(channel) => markReminderPrompt(channel)}
+        />
+      )}
 
       {askEmail && (
         <EmailPrompt
