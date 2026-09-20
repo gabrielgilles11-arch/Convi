@@ -1353,6 +1353,99 @@
 
 /* ---- Practice path ---- */
 
+/* The path column and the Talk Mode rail, centred as a pair. The circles
+   shift left of centre by half the rail; the two together stay centred, which
+   reads better than a column pinned left with a gap beside it. */
+.path-stage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.talk-rail {
+  /* Four sections down the path, the way into Talk Mode should still be on
+     screen. The offset clears the sticky site header. */
+  position: sticky;
+  top: 5.5rem;
+  width: 10rem;
+  flex: none;
+}
+
+.talk-launch {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  text-align: left;
+  font: inherit;
+  padding: 0.9rem 1rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 16px;
+  background: var(--color-card);
+  box-shadow: 0 4px 0 var(--color-primary-dark);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.talk-launch:hover {
+  background: var(--color-primary-tint);
+}
+
+.talk-launch:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--color-primary-dark);
+}
+
+.talk-launch svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-primary);
+}
+
+.talk-launch-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.talk-launch-sub {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--color-ink-soft);
+}
+
+/* 320px of path plus a 160px rail does not fit a phone, so the rail goes above
+   the circles instead — the same `order` trick the home page hero uses, and for
+   the same reason: the thing worth tapping should not be below the fold. */
+@media (max-width: 560px) {
+  .path-stage {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .talk-rail {
+    order: -1;
+    position: static;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .talk-launch {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 0.6rem;
+  }
+
+  .talk-launch-sub {
+    flex-basis: 100%;
+  }
+}
+
 .path-intro {
   color: var(--color-ink-soft);
   font-size: 0.9rem;
@@ -2068,6 +2161,59 @@
 
 /* --- your turn --- */
 
+.convo-reply {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+/* The box comes first and the written lines come after it, because typing is
+   the thing being practised and a list of answers above the box is a list
+   nobody types past. */
+.convo-type {
+  display: flex;
+  gap: 0.5rem;
+  align-self: stretch;
+}
+
+.convo-type input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 14px;
+  border: 2px solid var(--color-primary-tint-border);
+  background: var(--color-card);
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.convo-type input:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.convo-type button {
+  flex: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  background: var(--color-primary);
+  box-shadow: 0 3px 0 var(--color-primary-dark);
+  font: inherit;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+}
+
+.convo-type button:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+  cursor: default;
+}
+
 .convo-choices {
   display: flex;
   flex-direction: column;
@@ -2076,8 +2222,8 @@
 }
 
 .convo-choices-label {
-  margin: 0.25rem 0 0.1rem;
-  font-size: 0.75rem;
+  margin: 0.4rem 0 0.1rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2088,13 +2234,13 @@
 /* A dashed edge, so an offer is visibly not yet a line in the transcript. */
 .convo-choice {
   align-self: flex-end;
-  max-width: 85%;
+  max-width: 90%;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
   text-align: right;
   font: inherit;
-  padding: 0.7rem 0.9rem;
+  padding: 0.6rem 0.85rem;
   border: 2px dashed var(--color-primary-tint-border);
   border-radius: 16px;
   background: var(--color-card);
@@ -2117,42 +2263,85 @@
   color: var(--color-ink-soft);
 }
 
-.convo-alts {
-  align-self: flex-end;
-  max-width: 85%;
-  font-size: 0.85rem;
-}
-
-.convo-alts summary {
-  cursor: pointer;
-  color: var(--color-primary-dark);
+/* `__` and `[BELOPP]` are authored: the line genuinely has a blank in it
+   because the street or the amount changes every time you say it. */
+.convo-choice-slot {
+  font-size: 0.7rem;
   font-weight: 700;
-  text-align: right;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
 }
 
-.convo-alts ul {
-  list-style: none;
-  margin: 0.4rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+/* --- being wrong --- */
+
+/* What you said stays in the transcript exactly as you said it, marked. The
+   line you were reaching for goes in the correction beneath — putting it in
+   your bubble instead would quietly rewrite your own half of the conversation
+   and leave nothing to compare against. */
+.convo-bubble--you.is-wrong {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
 }
 
-.convo-alts li {
+.convo-bubble--you.is-wrong .convo-source {
+  font-weight: 600;
+  text-decoration: line-through;
+  text-decoration-color: var(--color-error);
+  text-decoration-thickness: 1px;
+}
+
+.convo-correction {
+  align-self: stretch;
+  padding: 0.7rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid var(--color-primary-tint-border);
+  background: var(--color-primary-tint);
+}
+
+.convo-correction-head {
+  margin: 0 0 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+}
+
+.convo-correction-line {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 0.4rem;
   flex-wrap: wrap;
-}
-
-.convo-alt-source {
+  margin: 0;
   font-weight: 700;
 }
 
-.convo-alt-en {
+/* The English half. A correction that shows only the target language leaves
+   somebody who misread the question no way to find that out. */
+.convo-correction-en {
+  margin: 0.15rem 0 0;
+  font-size: 0.88rem;
   color: var(--color-ink-soft);
+}
+
+.convo-english-toggle {
+  margin-left: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-card);
+  padding: 0.2rem 0.65rem;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+
+.convo-english-toggle[aria-pressed="true"] {
+  background: var(--color-primary-tint);
+  border-color: var(--color-primary-tint-border);
+  color: var(--color-primary-dark);
 }
 
 /* The authored warning about a line — "this is rude in Madrid" — which is the
@@ -2209,7 +2398,60 @@
 
   .convo-bubble,
   .convo-choice,
-  .convo-alts {
+  /* The authored warning about a line — "this is rude in Madrid" — which is the
+   one thing on a beat that is worth more than the beat. */
+.convo-note {
+  margin: 0.2rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-bg);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+.convo-controls {
+  margin-top: 1.25rem;
+}
+
+.convo-footnote {
+  margin: 1.25rem 0 0;
+  font-size: 0.78rem;
+  color: var(--color-ink-soft);
+}
+
+.convo-done {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-card);
+  text-align: center;
+}
+
+.convo-done-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.convo-done-sub {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 420px) {
+  /* Three tabs plus two icon toggles is more than a narrow phone has room for
+     on one line. */
+  .mode-toggle button {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .convo-bubble,
+  .convo-choice {
     max-width: 100%;
   }
 }

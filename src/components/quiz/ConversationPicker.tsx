@@ -13,9 +13,15 @@ interface Props {
   /** Ids of the conversations this browser has been through at least once. */
   finished: string[];
   onStart: (id: string) => void;
+  onBack: () => void;
 }
 
-export default function ConversationPicker({ conversations, finished, onStart }: Props) {
+export default function ConversationPicker({
+  conversations,
+  finished,
+  onStart,
+  onBack,
+}: Props) {
   const groups = groupByCategory(conversations);
   const done = new Set(finished);
 
@@ -25,10 +31,18 @@ export default function ConversationPicker({ conversations, finished, onStart }:
 
   return (
     <div className="convo-picker">
+      <p className="stage-line">
+        <button type="button" className="stage-jump" onClick={onBack}>
+          Back to the path
+        </button>
+        <span>Talk Mode</span>
+      </p>
+
       <p className="convo-intro">
-        Pick a moment and talk your way through it, line by line. Every line you're
-        offered was written for that moment — nothing here is made up on the spot,
-        so there's nothing to get wrong.
+        Pick a place and hold the conversation that happens there. They speak
+        first, in the language you're learning, and you type back — get it wrong
+        and you'll be shown the line and what it means. Every line was written
+        for that moment, so there is always a right thing to say.
       </p>
 
       {groups.map((group) => (

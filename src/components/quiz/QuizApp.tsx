@@ -324,20 +324,15 @@ export default function QuizApp({ locale }: Props) {
       <div className="quiz-toolbar">
         <div className="mode-toggle" role="tablist">
           {/* Path stays lit through a round, because a round is the path: the
-              test screen is where a stone takes you, not a fourth place. */}
+              test screen is where a stone takes you, not a second place. Talk
+              Mode is not a tab — it sits beside the circles, which is where
+              somebody looking at the path can see it. */}
           <button
             type="button"
             className={mode === "path" || mode === "test" || mode === "taster" ? "active" : ""}
             onClick={() => setMode("path")}
           >
             Path
-          </button>
-          <button
-            type="button"
-            className={mode === "talk" ? "active" : ""}
-            onClick={() => setMode("talk")}
-          >
-            Talk
           </button>
           <button type="button" className={mode === "progress" ? "active" : ""} onClick={() => setMode("progress")}>
             Progress
@@ -446,14 +441,40 @@ export default function QuizApp({ locale }: Props) {
             {STAGE_CLEAR_SCORE}% and the circle fills. Bigger sections take a few rounds, so keep
             tapping the same circle until it's full.
           </p>
-          <PracticePath
-            stages={stages}
-            bestScores={bestScores}
-            suggestedId={suggestedId}
-            finalUnlocked={finalUnlocked}
-            finalId={SLANG_FINAL_ID}
-            onStart={startStage}
-          />
+          <div className="path-stage">
+            <PracticePath
+              stages={stages}
+              bestScores={bestScores}
+              suggestedId={suggestedId}
+              finalUnlocked={finalUnlocked}
+              finalId={SLANG_FINAL_ID}
+              onStart={startStage}
+            />
+
+            {/* Beside the circles rather than in the tab strip: the path is a
+                list of drills, and the thing worth offering next to it is the
+                place you use them. Sticky, so it is still there four sections
+                down. */}
+            <div className="talk-rail">
+              <button
+                type="button"
+                className="talk-launch"
+                onClick={() => {
+                  setConvoId(null);
+                  setMode("talk");
+                }}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M4.5 5h15a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19.5 16H12l-4.5 3.5V16H4.5A1.5 1.5 0 0 1 3 14.5v-8A1.5 1.5 0 0 1 4.5 5z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span className="talk-launch-title">Talk Mode</span>
+                <span className="talk-launch-sub">Hold a real conversation</span>
+              </button>
+            </div>
+          </div>
           {mistakes.length > 0 && (
             <button type="button" className="path-mistakes" onClick={() => startStage(MISTAKES_STAGE_ID)}>
               Drill your {mistakes.length} mistake{mistakes.length === 1 ? "" : "s"}
@@ -550,6 +571,7 @@ export default function QuizApp({ locale }: Props) {
             conversations={conversations}
             finished={convoDone}
             onStart={setConvoId}
+            onBack={() => setMode("path")}
           />
         ))}
 
