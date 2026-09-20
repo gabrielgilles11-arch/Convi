@@ -7,7 +7,7 @@ import { STAGE_CLEAR_SCORE, type Stage } from "../../lib/quizTypes";
  * A section is a category, not a stage. Big categories are still split into
  * parts — a round samples a stage, so a stage wants about a round's worth of
  * material — but a part is not a place. Giving each one its own stone put
- * "Slang — Part 1" through "Part 5" down the path as five separate
+ * "Slang: Part 1" through "Part 5" down the path as five separate
  * destinations, which read as thirty-three chores rather than fourteen
  * sections, and made a long category look like a worse category.
  *
@@ -72,7 +72,7 @@ function sectionsOf(stages: Stage[]): { categoryId: string; title: string; parts
   for (const stage of stages) {
     let section = byId.get(stage.categoryId);
     if (!section) {
-      // The stage title carries the part suffix ("Slang — Part 2"); the stone
+      // The stage title carries the part suffix ("Slang: Part 2"); the stone
       // is the whole section, so the suffix comes off and the count under it
       // says the same thing more usefully.
       section = { categoryId: stage.categoryId, title: stripPart(stage.title), parts: [] };
@@ -86,7 +86,9 @@ function sectionsOf(stages: Stage[]): { categoryId: string; title: string; parts
 }
 
 function stripPart(title: string): string {
-  return title.replace(/\s*[—-]\s*Part\s+\d+\s*$/i, "");
+  // Every separator the suffix has ever been written with, so a title stored
+  // under an older one still loses it rather than showing up on the stone.
+  return title.replace(/\s*[—–:-]\s*Part\s+\d+\s*$/i, "");
 }
 
 export default function PracticePath({

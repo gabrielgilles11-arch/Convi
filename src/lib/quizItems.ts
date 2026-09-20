@@ -52,6 +52,15 @@ function situationFrom(
     frontTranslation: null,
     correctAnswer: mine.es,
     correctAnswerTranslation: mine.en,
+    // Only where they opened: those are the lines written as answers to this
+    // scene. When you open, `answers` is what comes back at you, and marking
+    // their reply correct would be accepting the wrong half of the exchange.
+    alsoAccepted: theirTurn
+      ? exchange.answers
+          .slice(1)
+          .map((a) => a.es)
+          .filter((es): es is string => Boolean(es?.trim()))
+      : [],
     // Shown after the answer settles, never before — it is the payoff,
     // not part of the question.
     reply: theirs?.es ? { source: theirs.es, en: theirs.en } : null,
@@ -90,6 +99,7 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
             frontTranslation: null,
             correctAnswer: tip.en,
             correctAnswerTranslation: null,
+            alsoAccepted: [],
             reply: null,
             frontAudioId: id,
             answerAudioId: id,
@@ -115,6 +125,7 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
             frontTranslation: null,
             correctAnswer: phrase.en,
             correctAnswerTranslation: null,
+            alsoAccepted: [],
             reply: null,
             frontAudioId: phrase.id,
             answerAudioId: phrase.id,

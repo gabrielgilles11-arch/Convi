@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildRound,
-  answersMatch,
-  typedAnswerMatches,
+  answeredIt,
+  pickedIt,
   STAGE_CLEAR_SCORE,
   type Question,
   type QuizItem,
@@ -291,7 +291,7 @@ export default function TestMode({
       window.clearTimeout(voiceTimer.current);
       voiceTimer.current = window.setTimeout(() => {
         void speak(locale, line.audioId, line.text, "practice");
-      }, 380);
+      }, 260);
     }
 
     // Only the first go at a question counts. Without this the round would
@@ -316,19 +316,19 @@ export default function TestMode({
   function submitChoice(option: string) {
     if (answered) return;
     setChoice(option);
-    settle(answersMatch(option, question!.answer));
+    settle(pickedIt(option, question!.accepted));
   }
 
   function submitTyped(event: React.SubmitEvent) {
     event.preventDefault();
     if (answered || !typed.trim()) return;
-    settle(typedAnswerMatches(typed, question!.answer));
+    settle(answeredIt(typed, question!.accepted));
   }
 
   function submitBank() {
     if (answered || assembled.length === 0) return;
     const words = assembled.map((token) => token.slice(0, token.lastIndexOf("\u0000")));
-    settle(typedAnswerMatches(words.join(" "), question!.answer));
+    settle(answeredIt(words.join(" "), question!.accepted));
   }
 
   function next() {
@@ -391,7 +391,30 @@ export default function TestMode({
     const goalHit = roundsToday >= DAILY_GOAL;
 
     return (
-      <div className="round-done">
+      <div className={`round-done${cleared ? " is-cleared" : ""}`}>
+        {/* Clearing a stage is the thing the whole path is built around, and it
+            used to read the same as scraping a round: a number and a full
+            stop. The burst is only ever shown for a round that passed, so it
+            still means something when it turns up. */}
+        {cleared && (
+          <>
+            <div className="congrats-burst" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M5 12.5 L10 17.5 L19 7.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <p className="congrats-title">
+              {pct === 100 ? "Perfect round!" : scoreKey ? "Stage cleared!" : "Round passed!"}
+            </p>
+          </>
+        )}
         <p className="round-done-score">
           {correctCount} / {round.length}
         </p>
@@ -399,9 +422,9 @@ export default function TestMode({
         <p className="round-done-sub">
           {cleared
             ? scoreKey
-              ? "Stage cleared."
+              ? "That one's yours. The circle on the path is full."
               : "Strong round."
-            : `${STAGE_CLEAR_SCORE}% clears this stage \u2014 one more go?`}
+            : `${STAGE_CLEAR_SCORE}% clears this stage. One more go?`}
         </p>
 
         <div className="round-meta">
@@ -494,7 +517,7 @@ export default function TestMode({
       {q.form === "choice" && (
         <div className="options">
           {q.options.map((option, i) => {
-            const isAnswer = answersMatch(option, q.answer);
+            const isAnswer = pickedIt(option, q.accepted);
             const isPicked = option === choice;
             let className = "option";
             if (answered) {
@@ -626,7 +649,7 @@ export default function TestMode({
                 {q.form === "match"
                   ? wasRight
                     ? "All matched!"
-                    : "Matched \u2014 but not first time"
+                    : "Matched, but not first time"
                   : wasRight
                     ? "Correct!"
                     : "Not quite"}

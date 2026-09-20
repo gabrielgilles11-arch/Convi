@@ -5,7 +5,13 @@
 // from GET /api/conversations, which checks entitlement server-side. Importing
 // content here would pull all three content files into the browser bundle.
 
-import { normalizeAnswer, typedAnswerMatches } from "./quizTypes";
+import {
+  coreOf,
+  editBudget,
+  normalizeAnswer,
+  typedAnswerMatches,
+  withinEdits,
+} from "./quizTypes";
 
 /** A line of the target language with its English meaning. */
 export interface ConvLine {
@@ -203,11 +209,95 @@ function slotPattern(expected: string): RegExp | null {
   }
 }
 
+/**
+ * Words that carry no order in them.
+ *
+ * Articles, pronouns, prepositions and the politeness a line is padded with,
+ * across all three editions at once. One list rather than three because a
+ * Spanish function word is not a German content word: nothing in any edition
+ * is taught by asking somebody to produce "der" or "por" on its own, and a
+ * list per language would be three places to forget to update.
+ *
+ * Deliberately conservative. "Sí", "No", "Vale", "Tack" and "Danke" are whole
+ * answers somebody might give, so they stay out of it — a line that is nothing
+ * but politeness ends up with no content words at all, and `keywordMatch`
+ * declines to judge those rather than accepting anything polite.
+ */
+const FUNCTION_WORDS = new Set([
+  // Spanish
+  "un", "una", "unos", "unas", "el", "la", "los", "las", "lo", "de", "del",
+  "al", "a", "en", "con", "sin", "por", "para", "y", "e", "o", "u", "que",
+  "me", "te", "se", "le", "nos", "les", "mi", "tu", "su", "es", "esta",
+  "estoy", "soy", "hay", "muy", "mas", "porfa", "porfavor", "favor", "pues",
+  "oye", "quiero", "querria", "pongame", "pones", "puedo", "puede",
+  // Swedish
+  "en", "ett", "den", "det", "har", "dar", "jag", "du", "vi", "ni", "ar",
+  "vill", "skulle", "kan", "att", "och", "eller", "pa", "till", "med", "for",
+  "av", "sa", "ha", "garna", "jarna",
+  // German
+  "ein", "eine", "einen", "einem", "einer", "eines", "der", "die", "das",
+  "den", "dem", "des", "ich", "wir", "ihr", "sie", "ist", "sind", "habe",
+  "hatte", "haette", "gern", "gerne", "bitte", "und", "oder", "mit", "ohne",
+  "auf", "zu", "an", "von", "im", "ins", "mal", "doch", "noch", "wurde",
+]);
+
+/**
+ * The words in a line that actually say what it is.
+ *
+ * Blanks are dropped with the function words: a slot is the part of the line
+ * that changes every time it is said, so it cannot be something a learner is
+ * asked to have got right.
+ */
+function contentWords(line: string): string[] {
+  return normalizeAnswer(coreOf(line))
+    .split(" ")
+    .filter((word) => word && !FUNCTION_WORDS.has(word) && !IS_SLOT.test(word));
+}
+
+/** Two words that are the same word, give or take a slip of the hand. */
+function sameWord(a: string, b: string): boolean {
+  return a === b || withinEdits(a, b, editBudget(Math.max(a.length, b.length)));
+}
+
+/**
+ * The half-answer that is still an answer.
+ *
+ * A barista asks what you want and you say "café". That is what somebody
+ * standing at a counter in Madrid actually says, and the authored line is "Un
+ * café con leche, por favor" — so grading it letter by letter marks a correct
+ * order wrong and teaches the learner that the app wants a recitation rather
+ * than a sentence. This accepts it, in both directions: the words that carry
+ * the meaning either sit inside the authored line or contain all of it, so
+ * both the short order and the over-polite one come back right.
+ *
+ * What it will not do is guess. Every content word has to land on one in the
+ * line (typos allowed), so "cerveza" is still not "un café con leche", and a
+ * line whose content is nothing but politeness is left to the exact
+ * comparisons above rather than matched on an empty set.
+ */
+function keywordMatch(given: string, expected: string): boolean {
+  // A line with a blank in it is judged by `slotPattern` alone. The blank is
+  // the part being asked for — "Tio till [STATION], tack" without a station is
+  // the one thing that line cannot mean — and content words, which drop the
+  // slot, would wave it through.
+  if (hasSlot(expected)) return false;
+
+  const said = contentWords(given);
+  const line = contentWords(expected);
+  if (said.length === 0 || line.length === 0) return false;
+
+  const coveredBy = (words: string[], pool: string[]) =>
+    words.every((word) => pool.some((other) => sameWord(word, other)));
+
+  return coveredBy(said, line) || coveredBy(line, said);
+}
+
 /** True when what somebody said is this line, blanks and all. */
 export function replyMatches(given: string, expected: string): boolean {
   if (typedAnswerMatches(given, expected)) return true;
   const pattern = slotPattern(expected);
-  return pattern ? pattern.test(normalizeAnswer(given)) : false;
+  if (pattern && pattern.test(normalizeAnswer(given))) return true;
+  return keywordMatch(given, expected);
 }
 
 /** Shared words over total distinct words, for "close" rather than "right". */
@@ -262,4 +352,92 @@ export function gradeReply(given: string, options: ConvLine[]): ReplyVerdict {
   }
 
   return { correct: false, line: best, close: bestScore >= CLOSE_ENOUGH };
+}
+
+// ---------------------------------------------------------------------------
+// Which beat comes next
+// ---------------------------------------------------------------------------
+
+/**
+ * How far ahead a branch can reach. Three is two skippable beats: enough for
+ * "just a drink" to step over both the food beat and the follow-up about it,
+ * and not so far that the conversation stops being the one it started as.
+ */
+const LOOKAHEAD = 3;
+
+/** A jump has to be this much better than simply carrying on to be worth it. */
+const BRANCH_MARGIN = 0.12;
+
+/** Everything about a beat that is in English, for matching against intent. */
+function beatText(turn: ConvTurn): string {
+  return [
+    turn.situation,
+    turn.theirOpener?.en ?? "",
+    ...turn.yourLines.map((l) => l.en ?? ""),
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+/**
+ * How many beats a conversation is allowed to step over in one run.
+ *
+ * A third of them, so an eight-beat subsection keeps at least six and still
+ * reads as the same visit to the same bar. Without a cap, a learner who
+ * answers tersely would skip most of what was written for them.
+ */
+export function skipBudget(turns: ConvTurn[]): number {
+  return Math.max(0, Math.floor(turns.length / 3));
+}
+
+export interface NextBeat {
+  /** The beat to open. */
+  index: number;
+  /** Beats stepped over to get there, because of what was just said. */
+  skipped: number[];
+}
+
+/**
+ * Where the conversation goes after what you just said.
+ *
+ * The content is linear — eight beats in the order somebody wrote them — and
+ * nothing here invents a ninth. What it does is let an answer decide which of
+ * the next few authored beats is the one worth having: say you only want a
+ * drink and the beat about ordering food is stepped over rather than asked
+ * anyway, which is the difference between a conversation and a form.
+ *
+ * Forward only, and never further than `LOOKAHEAD`. A beat is skipped only
+ * when a later one is a clearly better answer to what was said than the next
+ * one is, which is why the margin exists: ties carry on in authored order, so
+ * a learner who says the expected thing walks the conversation as written.
+ */
+export function nextBeat(
+  turns: ConvTurn[],
+  from: number,
+  intent: string | null,
+  skipsUsed: number
+): NextBeat | null {
+  const straight = from + 1;
+  if (straight >= turns.length) return null;
+  if (!intent?.trim()) return { index: straight, skipped: [] };
+
+  const remaining = skipBudget(turns) - skipsUsed;
+  if (remaining <= 0) return { index: straight, skipped: [] };
+
+  const last = Math.min(turns.length - 1, straight + remaining, straight + LOOKAHEAD - 1);
+
+  let best = straight;
+  let bestScore = overlap(intent, beatText(turns[straight]!));
+
+  for (let i = straight + 1; i <= last; i++) {
+    const score = overlap(intent, beatText(turns[i]!));
+    if (score > bestScore + BRANCH_MARGIN) {
+      bestScore = score;
+      best = i;
+    }
+  }
+
+  const skipped: number[] = [];
+  for (let i = straight; i < best; i++) skipped.push(i);
+  return { index: best, skipped };
 }

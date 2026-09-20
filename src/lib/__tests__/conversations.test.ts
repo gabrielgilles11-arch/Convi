@@ -8,7 +8,9 @@ import {
   groupByCategory,
   gradeReply,
   hasSlot,
+  nextBeat,
   replyMatches,
+  skipBudget,
   type ConvLine,
 } from "../conversationTypes";
 
@@ -280,5 +282,133 @@ describe("conversations across editions", () => {
   it("keeps ids unique, so one id is enough to find a conversation", () => {
     const ids = locales.flatMap((l) => buildConversations(l).map((c) => c.id));
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+/**
+ * The half-answer.
+ *
+ * Somebody at a counter says "café", not "Un café con leche, por favor", and a
+ * conversation that marks the first one wrong is teaching recitation. These are
+ * the cases that has to cover, and the ones it must still refuse.
+ */
+describe("replyMatches is generous about how much you say", () => {
+  const coffee = "Un café con leche, por favor.";
+
+  it("takes the order without the packaging", () => {
+    expect(replyMatches("café", coffee)).toBe(true);
+    expect(replyMatches("cafe con leche", coffee)).toBe(true);
+    expect(replyMatches("un cafe", coffee)).toBe(true);
+  });
+
+  it("takes it with more packaging than was written", () => {
+    expect(replyMatches("Quiero un café con leche, por favor.", coffee)).toBe(true);
+  });
+
+  it("does not take a different order", () => {
+    expect(replyMatches("una cerveza", coffee)).toBe(false);
+    expect(replyMatches("un té", coffee)).toBe(false);
+    // Politeness on its own says nothing about what you want.
+    expect(replyMatches("por favor", coffee)).toBe(false);
+    expect(replyMatches("", coffee)).toBe(false);
+  });
+
+  it("forgives a slip of the hand in a line long enough to be sure", () => {
+    expect(replyMatches("Un cafe con lece, por favor.", coffee)).toBe(true);
+    expect(replyMatches("¿Dónde esta el metrro?", "¿Dónde está el metro?")).toBe(true);
+  });
+
+  it("still refuses a word that is merely nearby", () => {
+    // One edit apart, and two different verbs.
+    expect(replyMatches("Vamos tres", "Somos tres")).toBe(false);
+  });
+
+  it("does not care about punctuation or accents either way", () => {
+    expect(replyMatches("donde esta el metro", "¿Dónde está el metro?")).toBe(true);
+    expect(replyMatches("¡¿Dónde… está el metro?!", "Dónde está el metro")).toBe(true);
+  });
+
+  it("works the same way in the other two editions", () => {
+    expect(replyMatches("öl", "En öl, tack.")).toBe(true);
+    expect(replyMatches("Bier", "Ich hätte gern ein Bier, bitte.")).toBe(true);
+    expect(replyMatches("Wasser", "Ich hätte gern ein Bier, bitte.")).toBe(false);
+  });
+});
+
+/**
+ * Branching.
+ *
+ * Nothing here invents a beat. What it does is let an answer decide which of
+ * the next few authored beats is worth having, so saying you only want a drink
+ * does not walk you through the one about food anyway.
+ */
+describe("nextBeat", () => {
+  const line = (source: string, en: string): ConvLine => ({ source, en, audioId: null });
+
+  const turns = [
+    {
+      id: "t0",
+      situation: "The bartender asks what you want",
+      theirOpener: line("¿Qué te pongo?", "What can I get you?"),
+      yourLines: [line("Una caña.", "A small beer.")],
+      theirReply: null,
+      note: "",
+    },
+    {
+      id: "t1",
+      situation: "They ask whether you want something to eat with it",
+      theirOpener: line("¿Algo de comer?", "Anything to eat?"),
+      yourLines: [line("Una tapa.", "A tapa, please.")],
+      theirReply: null,
+      note: "",
+    },
+    {
+      id: "t2",
+      situation: "You ask for the bill",
+      theirOpener: null,
+      yourLines: [line("La cuenta, por favor.", "The bill, please.")],
+      theirReply: null,
+      note: "",
+    },
+    {
+      id: "t3",
+      situation: "They tell you where to pay",
+      theirOpener: line("En la barra.", "At the bar."),
+      yourLines: [line("Vale, gracias.", "Fine, thanks.")],
+      theirReply: null,
+      note: "",
+    },
+  ];
+
+  it("carries on in authored order when nothing was said", () => {
+    expect(nextBeat(turns, 0, null, 0)).toEqual({ index: 1, skipped: [] });
+  });
+
+  it("carries on in authored order when the answer fits the next beat", () => {
+    expect(nextBeat(turns, 0, "A tapa, please.", 0)?.index).toBe(1);
+  });
+
+  it("steps over a beat the answer has already closed", () => {
+    const next = nextBeat(turns, 0, "The bill, please. Nothing to eat.", 0);
+    expect(next?.index).toBe(2);
+    expect(next?.skipped).toEqual([1]);
+  });
+
+  it("stops at the end rather than walking off it", () => {
+    expect(nextBeat(turns, turns.length - 1, "anything", 0)).toBeNull();
+  });
+
+  it("spends a skip budget and then walks the rest as written", () => {
+    expect(skipBudget(turns)).toBe(1);
+    // Budget already spent: the branch is not taken a second time.
+    expect(nextBeat(turns, 0, "The bill, please.", 1)).toEqual({ index: 1, skipped: [] });
+  });
+
+  it("keeps a conversation long enough to be one", () => {
+    for (const locale of locales) {
+      for (const convo of buildConversations(locale)) {
+        expect(convo.turns.length - skipBudget(convo.turns)).toBeGreaterThanOrEqual(MIN_TURNS);
+      }
+    }
   });
 });
