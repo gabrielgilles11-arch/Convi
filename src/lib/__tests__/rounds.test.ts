@@ -167,6 +167,33 @@ describe.each(locales)("%s deck", (locale) => {
     });
   });
 
+  it("only ever asks you to type or assemble the language you came to learn", () => {
+    // The bug this exists for, with a screenshot attached: "What does 'En
+    // bärs, tack.' mean?" handed over the tiles A / very / casual / "beer, /
+    // please." and marked the learner wrong for leaving out the editor's
+    // "very casual". Assembling an English gloss tests whether you can
+    // reproduce somebody's phrasing, which is not what anybody is here for,
+    // and the tiles come out carrying stray quote marks.
+    const byId = new Map(items.map((i) => [i.id, i]));
+    const stages = buildStages(items, getCategoryList(locale));
+
+    stages.forEach((stage, index) => {
+      const stageItems = stage.itemIds.map((id) => byId.get(id)!).filter(Boolean);
+      const reached = new Set(stages.slice(0, index + 1).flatMap((s) => s.itemIds));
+      const seen = items.filter((i) => reached.has(i.id));
+
+      for (let run = 0; run < 8; run++) {
+        for (const q of buildRound(stageItems, seen)) {
+          if (q.form !== "type" && q.form !== "bank") continue;
+          expect(
+            q.answerLang,
+            `${stage.id} run ${run}: asked to produce English — "${q.shown}" -> "${q.answer}"`
+          ).toBe("source");
+        }
+      }
+    });
+  });
+
   it("never asks you to type a line its cue cannot identify", () => {
     // Multiple choice is safe by construction: buildOptions refuses a
     // distractor whose own cue is this cue, so the rival never appears beside
