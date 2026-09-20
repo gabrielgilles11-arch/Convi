@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildStages,
   recommendedStageId,
@@ -12,13 +12,20 @@ import {
   type Stage,
 } from "../../lib/quizTypes";
 import { buildTasterRound } from "../../lib/quizTypes";
-import { loadProgress, missedItemIds, roundsCompleted } from "../../lib/progress";
+import {
+  loadProgress,
+  missedItemIds,
+  roundsCompleted,
+  currentDayStreak,
+  roundsCompletedToday,
+} from "../../lib/progress";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
 import Welcome from "./Welcome";
 import EmailPrompt from "./EmailPrompt";
+import StreakBadge from "./StreakBadge";
 import { soundEnabled, setSoundEnabled } from "./sound";
 import { setVoiceEnabled, stopSpeaking, voiceEnabled } from "./speech";
 import "./quiz.css";
@@ -96,6 +103,10 @@ export default function QuizApp({ locale }: Props) {
   const [sound, setSound] = useState(true);
   const [voice, setVoice] = useState(true);
   const [askEmail, setAskEmail] = useState(false);
+  // Same story as the settings above: the streak lives in localStorage, so it
+  // starts at zero and is corrected after mount rather than read during render.
+  const [streak, setStreak] = useState(0);
+  const [roundsToday, setRoundsToday] = useState(0);
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
@@ -103,6 +114,34 @@ export default function QuizApp({ locale }: Props) {
     // so the intro decision cannot be made while rendering on the server.
     if (!introSeen()) setMode("intro");
   }, []);
+
+  // Re-read whenever a round is scored, and on every screen change: the streak
+  // is written by TestMode straight into localStorage, which signals React
+  // nothing at all.
+  useEffect(() => {
+    setStreak(currentDayStreak());
+    setRoundsToday(roundsCompletedToday());
+  }, [scoreVersion, mode]);
+
+  /**
+   * The streak in the tab title while it is alive.
+   *
+   * The page's own title is captured once, on mount, and restored on the way
+   * out — reading it again on each change would read back a title this effect
+   * had already prefixed, and the flames would stack up one per round.
+   */
+  const pageTitle = useRef("");
+  useEffect(() => {
+    pageTitle.current = document.title;
+    return () => {
+      document.title = pageTitle.current;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!pageTitle.current) return;
+    document.title = streak > 0 ? `\u{1F525} ${streak} \u00b7 ${pageTitle.current}` : pageTitle.current;
+  }, [streak]);
 
   useEffect(() => {
     let cancelled = false;
@@ -327,6 +366,9 @@ export default function QuizApp({ locale }: Props) {
 
       {mode === "path" && (
         <>
+          <div className="path-header">
+            <StreakBadge streak={streak} roundsToday={roundsToday} />
+          </div>
           <p className="path-intro">
             Work along the path. A round is {ROUND_LENGTH} questions — clear it at{" "}
             {STAGE_CLEAR_SCORE}% and the circle fills. Bigger sections take a few rounds, so keep
@@ -423,6 +465,8 @@ export default function QuizApp({ locale }: Props) {
         <ProgressPanel
           stages={stages}
           bestScores={bestScores}
+          streak={streak}
+          roundsToday={roundsToday}
           onReplayIntro={() => {
             markIntroSeen(false);
             setMode("intro");
