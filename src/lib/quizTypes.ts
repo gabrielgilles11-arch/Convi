@@ -1033,13 +1033,27 @@ export function buildRound(
   // Both directions of translation should appear when the material allows it.
   forceBothDirections(drafts, [...phrases(items), ...phrases(earlier)], items, seenPool);
 
-  // At most one slot becomes typing or assembly. Situations shown forward stay
-  // multiple choice: the answer is a whole spoken line, and typing one from a
-  // standing start is a different, much harder exercise than choosing it.
+  // At most one slot becomes typing or assembly, and only where producing the
+  // answer is a language exercise.
+  //
+  // Two things are excluded. A situation shown forward, because the answer is
+  // a whole spoken line and typing one from a standing start is a different,
+  // much harder exercise than choosing it. And anything whose answer is
+  // English, because assembling English is not practising anything: "What does
+  // 'En bärs, tack.' mean?" was handing over the tiles A / very / casual /
+  // "beer, / please." and marking a learner wrong for leaving out the editor's
+  // "very casual". Nobody is here to reproduce a gloss word for word. You only
+  // ever type or assemble the language you came to learn.
   let recall = 0;
   const asked: Question[] = drafts.map((d) => {
     const isForwardSituation = d.item.kind === "situation" && !d.reverse;
-    if (!isForwardSituation && recall < RECALL_PER_ROUND && cueIdentifies(d.question, seenPool)) {
+    const producesTheLanguage = d.question.answerLang === "source";
+    if (
+      !isForwardSituation &&
+      producesTheLanguage &&
+      recall < RECALL_PER_ROUND &&
+      cueIdentifies(d.question, seenPool)
+    ) {
       const form: QuestionForm | null = typeable(d.question.answer)
         ? "type"
         : bankable(d.question.answer)
