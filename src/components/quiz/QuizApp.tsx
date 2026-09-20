@@ -159,6 +159,23 @@ export default function QuizApp({ locale }: Props) {
     document.title = streak > 0 ? `\u{1F525} ${streak} \u00b7 ${pageTitle.current}` : pageTitle.current;
   }, [streak]);
 
+  /**
+   * Says when the island owns the screen, so the page can get out of its way.
+   *
+   * A round and a conversation are the app; the header above them is a shop
+   * window with a "Get started" button in it, which means nothing to somebody
+   * who started four questions ago. The layout reads this attribute and drops
+   * its own chrome \u2014 see `body[data-focus]` in Layout.astro.
+   */
+  useEffect(() => {
+    const focused = mode === "test" || mode === "taster" || mode === "talk";
+    if (focused) document.body.dataset.focus = "round";
+    else delete document.body.dataset.focus;
+    return () => {
+      delete document.body.dataset.focus;
+    };
+  }, [mode]);
+
   useEffect(() => {
     let cancelled = false;
     const query = locale ? `?locale=${encodeURIComponent(locale)}` : "";

@@ -201,8 +201,23 @@ const structuredData = {
     --color-bg: #fff6ec;
     --color-ink: #241610;
     --color-ink-soft: #5f4c3e;
-    --color-primary: #e8622c;
-    --color-primary-dark: #c94e1f;
+    /*
+     * Two jobs, two values, and the difference between them is a contrast
+     * requirement rather than a taste.
+     *
+     * `--color-primary` is a fill with white text on it: buttons, the lit tab,
+     * a cleared stone. That makes it text-on-a-background, so it has to clear
+     * 4.5:1 against white. The old orange managed 3.38, the old German gold
+     * 2.70 — a primary button whose label was the least legible text on the
+     * page.
+     *
+     * `--color-primary-dark` is the ink version: a link, a small label, the
+     * drop shadow under a button. It is measured against the cream page
+     * instead, and sits far enough below the fill that the shadow still reads
+     * as a shadow.
+     */
+    --color-primary: #cb4a16;
+    --color-primary-dark: #993b18;
     --color-primary-tint: #ffe6d5;
     --color-primary-tint-border: #f5c8a3;
     --color-accent: #f4a623;
@@ -254,9 +269,11 @@ const structuredData = {
     --color-wash-2: #e4f5f1;
   }
 
+  /* The gold moved furthest, because it had furthest to go: white on the old
+     one was 2.70:1, which is not a label so much as a suggestion of one. */
   [data-locale="de-DE"] {
-    --color-primary: #c8952b;
-    --color-primary-dark: #9c7220;
+    --color-primary: #946e20;
+    --color-primary-dark: #735418;
     --color-primary-tint: #faeed2;
     --color-primary-tint-border: #e6cf9a;
     --color-wash-1: #fbedcd;
@@ -297,6 +314,26 @@ const structuredData = {
     max-width: 720px;
     margin: 0 auto;
     padding: 1.5rem 1rem 4rem;
+  }
+
+  /*
+   * Focus mode: a round, a taster or a conversation.
+   *
+   * The header is a shop window and the footer is a site index. Both belong on
+   * the way in; neither belongs above a question somebody is in the middle of
+   * answering, and on a 390px phone they were costing enough room that the
+   * first answer option sat below the fold. The island sets `data-focus` on
+   * the body while it owns the screen, and the page keeps only what the round
+   * itself needs: the way out, the progress bar and the counters.
+   */
+  body[data-focus="round"] .site-header,
+  body[data-focus="round"] .site-footer,
+  body[data-focus="round"] .page-head {
+    display: none;
+  }
+
+  body[data-focus="round"] main {
+    padding-top: 0.75rem;
   }
 
   .container {
@@ -356,7 +393,7 @@ const structuredData = {
   }
 
   .site-header nav > a:hover {
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
   }
 
   .nav-cta {
@@ -439,7 +476,7 @@ const structuredData = {
     padding: 1rem 1.25rem;
     text-align: center;
     font-size: 0.8rem;
-    color: #8a7768;
+    color: #8c796a;
   }
 
   .footer-legal {
@@ -450,7 +487,7 @@ const structuredData = {
   }
 
   .footer-legal a {
-    color: #8a7768;
+    color: #8c796a;
     text-decoration: none;
   }
 
