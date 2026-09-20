@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { buildConversations } from "../conversations";
 import { getCategories, LOCALES, type DialogueSubsection, type Locale } from "../content";
-import { MIN_TURNS, groupByCategory } from "../conversationTypes";
+import {
+  MIN_TURNS,
+  CONVERSATION_STAGES,
+  conversationStageOf,
+  groupByCategory,
+  gradeReply,
+  hasSlot,
+  replyMatches,
+  type ConvLine,
+} from "../conversationTypes";
 
 const locales = LOCALES.map((l) => l.locale);
 
@@ -27,6 +36,32 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
 
   it("has conversations at all", () => {
     expect(conversations.length).toBeGreaterThan(0);
+  });
+
+  /**
+   * Talk Mode is the places where somebody talks back. Having exchanges is not
+   * the same thing: the drunk scale has eight of them and they are a scale, so
+   * walking it as a dialogue is a person being asked how drunk they are eight
+   * times over.
+   */
+  it("only offers sections that are somewhere you talk", () => {
+    for (const convo of conversations) {
+      expect(CONVERSATION_STAGES).toContain(conversationStageOf(convo.categoryId));
+    }
+  });
+
+  it("leaves the word lists and the drunk scale out", () => {
+    const stages = new Set(conversations.map((c) => conversationStageOf(c.categoryId)));
+    for (const excluded of ["drunk-scale", "slang", "cuss-words", "flirting"]) {
+      expect(stages.has(excluded)).toBe(false);
+    }
+  });
+
+  it("keeps the places a trip actually takes you", () => {
+    const stages = new Set(conversations.map((c) => conversationStageOf(c.categoryId)));
+    for (const kept of ["getting-around", "beer-food", "restaurant", "hotel"]) {
+      expect(stages.has(kept)).toBe(true);
+    }
   });
 
   it("only offers subsections long enough to be a conversation", () => {
@@ -146,6 +181,98 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
     // One group per category, so the picker can't list the same heading twice.
     const headings = groups.map((g) => g.categoryId);
     expect(new Set(headings).size).toBe(headings.length);
+  });
+});
+
+/**
+ * Grading what somebody types back.
+ *
+ * The screen corrects rather than fails: a wrong answer is shown the line it
+ * came closest to, in both languages, and the conversation carries on. So the
+ * thing worth testing is that "right" is generous in the ways a person typing
+ * a foreign language on an English keyboard needs it to be, and that the line
+ * it corrects you against is the one you were reaching for.
+ */
+describe("gradeReply", () => {
+  const line = (source: string, en: string | null = null): ConvLine => ({
+    source,
+    en,
+    audioId: null,
+  });
+
+  const options = [line("Una ca\u00f1a, por favor.", "A small beer, please."),
+                   line("Un vino tinto, por favor.", "A red wine, please.")];
+
+  it("accepts the line as written", () => {
+    expect(gradeReply("Una ca\u00f1a, por favor.", options).correct).toBe(true);
+  });
+
+  it("accepts it without the accent, the case or the punctuation", () => {
+    // Nobody should lose a turn to a keyboard that has no \u00f1 on it.
+    expect(gradeReply("una cana por favor", options).correct).toBe(true);
+    expect(gradeReply("UNA CA\u00d1A POR FAVOR", options).correct).toBe(true);
+  });
+
+  /**
+   * Every authored line counts, not just the first. Where a beat offers a
+   * polite version and a blunt one, both are things people say there, and
+   * marking one wrong would be teaching that it isn't.
+   */
+  it("accepts any of the lines the beat was written with", () => {
+    const verdict = gradeReply("Un vino tinto, por favor.", options);
+    expect(verdict.correct).toBe(true);
+    expect(verdict.line.source).toBe("Un vino tinto, por favor.");
+  });
+
+  it("rejects something else entirely, and says it was not close", () => {
+    const verdict = gradeReply("where is the train station", options);
+    expect(verdict.correct).toBe(false);
+    expect(verdict.close).toBe(false);
+  });
+
+  it("corrects you against the line you were reaching for", () => {
+    // Most of the right words, one of them wrong: the correction should be the
+    // wine line, not whichever option happens to be first.
+    const verdict = gradeReply("Un vino blanco, por favor.", options);
+    expect(verdict.correct).toBe(false);
+    expect(verdict.close).toBe(true);
+    expect(verdict.line.source).toBe("Un vino tinto, por favor.");
+  });
+
+  it("always has a line to correct against", () => {
+    expect(gradeReply("", options).line).toBeDefined();
+    expect(gradeReply("qqqq", [options[0]!]).line.source).toBe(options[0]!.source);
+  });
+});
+
+describe("replyMatches and blanks", () => {
+  it("accepts either side of a slash variant", () => {
+    expect(replyMatches("\u00a1Oye!", "\u00a1Perdona! / \u00a1Oye!")).toBe(true);
+    expect(replyMatches("\u00a1Perdona!", "\u00a1Perdona! / \u00a1Oye!")).toBe(true);
+  });
+
+  /**
+   * A line with a blank in it is a correct thing to say that nobody can type
+   * correctly, because the whole point of the blank is that your own street
+   * goes in it.
+   */
+  it("lets a blank be filled with anything", () => {
+    const expected = "A la calle __, n\u00famero __, por favor.";
+    expect(hasSlot(expected)).toBe(true);
+    expect(replyMatches("A la calle Mayor, n\u00famero 12, por favor.", expected)).toBe(true);
+    expect(replyMatches("a la calle gran via numero 4 por favor", expected)).toBe(true);
+  });
+
+  it("still requires the words around the blank", () => {
+    const expected = "A la calle __, n\u00famero __, por favor.";
+    expect(replyMatches("al aeropuerto, por favor", expected)).toBe(false);
+    // An empty blank is not an answer.
+    expect(replyMatches("A la calle , n\u00famero , por favor.", expected)).toBe(false);
+  });
+
+  it("handles a named blank the same way", () => {
+    expect(replyMatches("Tio till Slussen, tack.", "Tio till [STATION], tack.")).toBe(true);
+    expect(replyMatches("Tio till, tack.", "Tio till [STATION], tack.")).toBe(false);
   });
 });
 

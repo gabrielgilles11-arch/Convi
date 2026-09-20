@@ -13,6 +13,7 @@ import {
 } from "./content";
 import {
   MIN_TURNS,
+  isConversationCategory,
   type Conversation,
   type ConvLine,
   type ConvTurn,
@@ -99,7 +100,15 @@ function turnFrom(exchange: Exchange): ConvTurn | null {
 /**
  * Every conversation in an edition, in content order.
  *
- * Only `exchanges` become conversations. A subsection's `scenes` are separate
+ * Two filters, and they exclude different things.
+ *
+ * `isConversationCategory` keeps the sections where somebody talks back — a
+ * bar, a taxi, a hotel desk. The drunk scale is the one that fails it while
+ * still having exchanges: eight ways to say how far gone you are is a scale,
+ * and walking it as a dialogue is a person being asked how drunk they are
+ * eight times.
+ *
+ * Then only `exchanges` become turns. A subsection's `scenes` are separate
  * moments written to put one word each in context, and `items` are standalone
  * tips — stringing either into a transcript would produce a dialogue that
  * changes the subject every line.
@@ -108,6 +117,8 @@ export function buildConversations(locale: Locale = DEFAULT_LOCALE): Conversatio
   const out: Conversation[] = [];
 
   for (const category of getCategories(locale) as Category[]) {
+    if (!isConversationCategory(category.id)) continue;
+
     for (const sub of category.subsections) {
       const exchanges = (sub as DialogueSubsection).exchanges ?? [];
       if (exchanges.length < MIN_TURNS) continue;

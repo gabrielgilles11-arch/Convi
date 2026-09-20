@@ -1,20 +1,36 @@
-import { useEffect, useRef, useState } from "react";
-import type { Conversation, ConvLine, ConvTurn } from "../../lib/conversationTypes";
+import { useEffect, useMemo, useRef, useState, type SubmitEvent } from "react";
+import {
+  gradeReply,
+  hasSlot,
+  type Conversation,
+  type ConvLine,
+  type ConvTurn,
+  type ReplyVerdict,
+} from "../../lib/conversationTypes";
+import { shuffle } from "../../lib/quizTypes";
 import AudioButton from "./AudioButton";
 import { stopSpeaking } from "./speech";
 
 /**
- * Walking one conversation, beat by beat.
+ * Talk Mode: a conversation held in the target language.
  *
- * Not a test: there is no score, no wrong answer and nothing sent back around.
- * Where a beat offers two lines they are both right and differ in register, so
- * choosing is choosing how to sound, not guessing. That is what the content
- * supports — every line authored, none generated — and the screen says so
- * rather than dressing a fixed script up as a conversation that reacts.
+ * The screen speaks first and it speaks Spanish — or Swedish, or German. No
+ * English appears anywhere in the dialogue unless it is asked for, because the
+ * moment a translation sits under every line, that is the line people read.
+ * The one exception is a beat you open, where there is no line of theirs to
+ * react to and a stage direction is the only thing that can say what you want.
  *
- * The transcript is derived, never accumulated: `step` is the beat you are on
- * and `picked` is what you said on each beat before it, so re-rendering can
- * never drift from what is on screen, and "start over" is two resets.
+ * You answer by typing. What you type is graded against *every* line the beat
+ * was written with, not just the first — where a beat has a polite version and
+ * a blunt one, both are things people say there. Get it wrong and you are
+ * corrected in both languages and the conversation carries on: this is a
+ * conversation, not a test, and the round screens are the test.
+ *
+ * The written lines are still on offer, in a different order every run, for
+ * anybody who would otherwise be stuck staring at an empty box.
+ *
+ * Nothing branches. The content has one next line per beat, and inventing the
+ * others would mean teaching lines nobody wrote.
  */
 interface Props {
   conversation: Conversation;
@@ -24,28 +40,67 @@ interface Props {
   onFinish: (id: string) => void;
 }
 
-/** Their line, on the left. */
-function TheirBubble({ line, locale }: { line: ConvLine; locale: string }) {
+/** What was actually said on a beat, once it is settled. */
+interface Said {
+  /** The authored line it counts as. */
+  line: ConvLine;
+  /** What they typed, when they typed it and got it wrong. */
+  typed: string | null;
+  close: boolean;
+}
+
+function Bubble({
+  line,
+  side,
+  locale,
+  english,
+}: {
+  line: ConvLine;
+  side: "them" | "you";
+  locale: string;
+  english: boolean;
+}) {
   return (
-    <div className="convo-bubble convo-bubble--them">
+    <div className={`convo-bubble convo-bubble--${side}`}>
       <p className="convo-source">
         {line.source}
         <AudioButton locale={locale} audioId={line.audioId} text={line.source} surface="practice" />
       </p>
-      {line.en && <p className="convo-en">{line.en}</p>}
+      {english && line.en && <p className="convo-en">{line.en}</p>}
     </div>
   );
 }
 
-/** Your line, on the right, once you've said it. */
-function YourBubble({ line, locale }: { line: ConvLine; locale: string }) {
+/**
+ * The correction.
+ *
+ * Both languages, always, and in that order: the line you should have said,
+ * then what it means. Showing only the target language leaves somebody who
+ * misunderstood the question no way to find that out, and showing only English
+ * does not teach the line.
+ */
+function Correction({
+  said,
+  locale,
+}: {
+  said: Said;
+  locale: string;
+}) {
   return (
-    <div className="convo-bubble convo-bubble--you">
-      <p className="convo-source">
-        {line.source}
-        <AudioButton locale={locale} audioId={line.audioId} text={line.source} surface="practice" />
+    <div className="convo-correction">
+      <p className="convo-correction-head">
+        {said.close ? "Almost — it goes like this:" : "Not quite. Here's the line:"}
       </p>
-      {line.en && <p className="convo-en">{line.en}</p>}
+      <p className="convo-correction-line">
+        {said.line.source}
+        <AudioButton
+          locale={locale}
+          audioId={said.line.audioId}
+          text={said.line.source}
+          surface="practice"
+        />
+      </p>
+      {said.line.en && <p className="convo-correction-en">{said.line.en}</p>}
     </div>
   );
 }
@@ -54,117 +109,142 @@ function Beat({
   turn,
   index,
   locale,
-  pickedIndex,
-  onPick,
+  said,
+  english,
   active,
+  children,
 }: {
   turn: ConvTurn;
   index: number;
   locale: string;
-  pickedIndex: number | null;
-  onPick: (option: number) => void;
+  said: Said | null;
+  english: boolean;
   active: boolean;
+  children?: React.ReactNode;
 }) {
-  const spoken = pickedIndex !== null;
+  // The situation is English, so it only appears where nothing else can do its
+  // job: a beat you open has no line of theirs to answer, and without the cue
+  // there is no way to know what you are meant to want. Where they speak
+  // first, their line is the prompt and the cue hides behind the toggle.
+  const showCue = !turn.theirOpener || english;
 
   return (
     <li className={`convo-beat${active ? " is-active" : ""}`}>
-      <p className="convo-situation">
-        <span className="convo-beat-n" aria-hidden="true">
-          {index + 1}
-        </span>
-        {turn.situation}
-      </p>
-
-      {turn.theirOpener && <TheirBubble line={turn.theirOpener} locale={locale} />}
-
-      {spoken ? (
-        <>
-          <YourBubble line={turn.yourLines[pickedIndex]!} locale={locale} />
-          {/* The lines you passed over stay reachable but quiet: on a beat with
-              a polite option and a blunt one, the one you didn't take is half of
-              what the beat teaches. */}
-          {turn.yourLines.length > 1 && (
-            <details className="convo-alts">
-              <summary>You could also have said</summary>
-              <ul>
-                {turn.yourLines.map((line, i) =>
-                  i === pickedIndex ? null : (
-                    <li key={i}>
-                      <span className="convo-alt-source">{line.source}</span>
-                      {line.en && <span className="convo-alt-en">{line.en}</span>}
-                      <AudioButton
-                        locale={locale}
-                        audioId={line.audioId}
-                        text={line.source}
-                        surface="practice"
-                      />
-                    </li>
-                  )
-                )}
-              </ul>
-            </details>
-          )}
-          {turn.theirReply && <TheirBubble line={turn.theirReply} locale={locale} />}
-          {turn.note && <p className="convo-note">{turn.note}</p>}
-        </>
-      ) : (
-        <div className="convo-choices">
-          <p className="convo-choices-label">
-            {turn.yourLines.length > 1 ? "Say one of these" : "Say this"}
-          </p>
-          {turn.yourLines.map((line, i) => (
-            <button type="button" className="convo-choice" key={i} onClick={() => onPick(i)}>
-              <span className="convo-choice-source">{line.source}</span>
-              {line.en && <span className="convo-choice-en">{line.en}</span>}
-            </button>
-          ))}
-        </div>
+      {showCue && (
+        <p className="convo-situation">
+          <span className="convo-beat-n" aria-hidden="true">
+            {index + 1}
+          </span>
+          {turn.situation}
+        </p>
       )}
+
+      {turn.theirOpener && (
+        <Bubble line={turn.theirOpener} side="them" locale={locale} english={english} />
+      )}
+
+      {said && (
+        <>
+          {/* What you actually said goes in your bubble, right or wrong. The
+              correction sits under it with the line you were reaching for —
+              putting the right line in the bubble instead would quietly rewrite
+              your own half of the transcript. */}
+          {said.typed === null ? (
+            <Bubble line={said.line} side="you" locale={locale} english={english} />
+          ) : (
+            <>
+              <div className="convo-bubble convo-bubble--you is-wrong">
+                <p className="convo-source">{said.typed}</p>
+              </div>
+              <Correction said={said} locale={locale} />
+            </>
+          )}
+          {turn.theirReply && (
+            <Bubble line={turn.theirReply} side="them" locale={locale} english={english} />
+          )}
+          {english && turn.note && <p className="convo-note">{turn.note}</p>}
+        </>
+      )}
+
+      {children}
     </li>
   );
 }
 
 export default function ConversationMode({ conversation, locale, onBack, onFinish }: Props) {
+  const turns = conversation.turns;
+
   const [step, setStep] = useState(0);
-  const [picked, setPicked] = useState<(number | null)[]>(() =>
-    conversation.turns.map(() => null)
-  );
+  const [said, setSaid] = useState<(Said | null)[]>(() => turns.map(() => null));
+  const [typed, setTyped] = useState("");
+  const [english, setEnglish] = useState(false);
   const [done, setDone] = useState(false);
 
-  // A new conversation is a new transcript. Without this, opening a second one
-  // from the summary screen would keep the first one's choices.
+  // A new conversation is a new transcript; without this, opening a second one
+  // would keep the first one's answers.
   useEffect(() => {
     setStep(0);
-    setPicked(conversation.turns.map(() => null));
+    setSaid(turns.map(() => null));
+    setTyped("");
     setDone(false);
-  }, [conversation.id, conversation.turns]);
+  }, [conversation.id, turns]);
 
-  // A line still being read while the next beat opens is worse than not hearing
-  // it at all — the same rule the round screens follow.
+  // A line still being read while the next beat opens is worse than not
+  // hearing it at all — the same rule the round screens follow.
   useEffect(() => {
     return () => stopSpeaking();
   }, [conversation.id]);
 
-  const tail = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    // Bring the newest beat into view, but never on the first one: scrolling the
-    // page the moment a conversation opens hides the heading you just tapped.
-    if (step === 0) return;
-    tail.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [step]);
-
-  const turns = conversation.turns;
   const current = turns[step];
-  const spokenHere = step < turns.length && picked[step] !== null;
+  const settled = step < turns.length ? said[step] !== null : true;
   const lastBeat = step === turns.length - 1;
 
-  function pick(option: number) {
-    setPicked((prev) => {
+  /**
+   * The written lines, in a different order every beat and every run.
+   *
+   * Shuffled rather than authored-order because the first option is otherwise
+   * always the answer the deck would have marked, and a list whose first entry
+   * is always right teaches the position rather than the language.
+   */
+  const offered = useMemo(
+    () => (current ? shuffle(current.yourLines) : []),
+    // Re-shuffled per beat, and again if the conversation is restarted.
+    [current, step, conversation.id, done]
+  );
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const tail = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (step === 0 || done) return;
+    tail.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    // Focus follows the conversation, so a second answer needs no second tap.
+    inputRef.current?.focus({ preventScroll: true });
+  }, [step, done]);
+
+  function settle(verdict: ReplyVerdict, raw: string | null) {
+    setSaid((prev) => {
       const next = [...prev];
-      next[step] = option;
+      next[step] = {
+        line: verdict.line,
+        typed: verdict.correct ? null : raw,
+        close: verdict.close,
+      };
       return next;
     });
+    setTyped("");
+  }
+
+  function submit(event: SubmitEvent) {
+    event.preventDefault();
+    if (settled || !typed.trim() || !current) return;
+    settle(gradeReply(typed, current.yourLines), typed.trim());
+  }
+
+  /** Tapping a written line is saying it — there is nothing to get wrong. */
+  function say(line: ConvLine) {
+    if (settled) return;
+    settle({ correct: true, line, close: false }, null);
   }
 
   function advance() {
@@ -178,7 +258,8 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
 
   function startOver() {
     setStep(0);
-    setPicked(turns.map(() => null));
+    setSaid(turns.map(() => null));
+    setTyped("");
     setDone(false);
   }
 
@@ -189,6 +270,17 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
           All conversations
         </button>
         <span>{conversation.title}</span>
+        {/* Off by default and never automatic. The whole point of the screen is
+            that the language on it is the one being learned; this is the escape
+            hatch for the beat where that stops being useful. */}
+        <button
+          type="button"
+          className="convo-english-toggle"
+          aria-pressed={english}
+          onClick={() => setEnglish((on) => !on)}
+        >
+          {english ? "Hide English" : "Show English"}
+        </button>
       </p>
 
       <div className="round-head">
@@ -213,10 +305,54 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
             turn={turn}
             index={i}
             locale={locale}
-            pickedIndex={picked[i] ?? null}
-            onPick={pick}
+            said={said[i] ?? null}
+            english={english}
             active={i === step && !done}
-          />
+          >
+            {i === step && !done && !settled && (
+              <div className="convo-reply">
+                <form className="convo-type" onSubmit={submit}>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={typed}
+                    onChange={(e) => setTyped(e.target.value)}
+                    placeholder="Say it back…"
+                    aria-label="Your reply, in the language you're learning"
+                    autoComplete="off"
+                    autoCapitalize="sentences"
+                    spellCheck={false}
+                  />
+                  <button type="submit" disabled={!typed.trim()}>
+                    Say it
+                  </button>
+                </form>
+
+                <p className="convo-choices-label">or say one of these</p>
+                <div className="convo-choices">
+                  {offered.map((line) => (
+                    <button
+                      type="button"
+                      className="convo-choice"
+                      key={line.audioId ?? line.source}
+                      onClick={() => say(line)}
+                    >
+                      <span className="convo-choice-source">{line.source}</span>
+                      {/* A blank is authored — the street, the amount, the
+                          station — so it is worth saying so rather than letting
+                          it look like text that failed to load. */}
+                      {hasSlot(line.source) && (
+                        <span className="convo-choice-slot">fill in the blank</span>
+                      )}
+                      {english && line.en && (
+                        <span className="convo-choice-en">{line.en}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </Beat>
         ))}
       </ol>
 
@@ -226,8 +362,9 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
         <div className="convo-done">
           <p className="convo-done-title">That's the whole conversation.</p>
           <p className="convo-done-sub">
-            {turns.length} turns, start to finish. Run it again and take the other
-            lines — they're the same moment said a different way.
+            {turns.length} turns, start to finish, none of it in English. Run it
+            again and answer differently — every line you were offered is a real
+            thing to say there.
           </p>
           <div className="controls">
             <button type="button" className="review-primary" onClick={startOver}>
@@ -239,24 +376,13 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
           </div>
         </div>
       ) : (
-        spokenHere && (
+        settled && (
           <div className="controls convo-controls">
             <button type="button" className="review-primary" onClick={advance}>
               {lastBeat ? "Finish" : "Next line"}
             </button>
           </div>
         )
-      )}
-
-      {/* Said once, at the bottom, where it answers the question the screen
-          raises rather than pre-empting it: the lines don't branch, and the
-          reason they don't is that a branch nobody wrote would have to be
-          invented. */}
-      {!done && current && (
-        <p className="convo-footnote">
-          Every line here was written for this moment. Picking a different one
-          changes how you sound, not what they say next.
-        </p>
       )}
     </div>
   );
