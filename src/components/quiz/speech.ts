@@ -255,8 +255,19 @@ const CLIPS_ENABLED_ON: readonly Surface[] = ["scenarios"];
 
 let playing: HTMLAudioElement | null = null;
 
+/**
+ * Bumped by everything that starts or stops a line.
+ *
+ * A queued line checks the number it was queued under before it opens its
+ * mouth: tapping a speaker button, leaving the screen or answering the next
+ * question all move it on, and anything still waiting its turn under the old
+ * one drops out rather than talking over whatever is happening now.
+ */
+let generation = 0;
+
 /** Stops whatever is currently being said. */
 export function stopSpeaking(): void {
+  generation++;
   if (playing) {
     playing.pause();
     playing = null;
@@ -275,23 +286,35 @@ export async function speak(
   locale: string,
   audioId: string | null,
   text: string,
-  surface: Surface = "scenarios"
+  surface: Surface = "scenarios",
+  options: { untilDone?: boolean } = {}
 ): Promise<boolean> {
   if (!voiceEnabled() || !text.trim()) return false;
 
   // Whatever was mid-sentence is abandoned. Two lines over each other is worse
   // than either of them, and a learner tapping twice means "say it again".
   stopSpeaking();
+  const mine = generation;
 
   const url = CLIPS_ENABLED_ON.includes(surface) ? await clipUrl(locale, audioId) : null;
+  if (mine !== generation) return false;
   if (url) {
     try {
       const audio = new Audio(url);
       playing = audio;
-      audio.addEventListener("ended", () => {
-        if (playing === audio) playing = null;
+      const finished = new Promise<void>((resolve) => {
+        const done = () => {
+          if (playing === audio) playing = null;
+          resolve();
+        };
+        audio.addEventListener("ended", done);
+        audio.addEventListener("error", done);
+        // A pause is `stopSpeaking`, which is a caller who no longer wants
+        // whatever was going to follow this line either.
+        audio.addEventListener("pause", done);
       });
       await audio.play();
+      if (options.untilDone) await finished;
       return true;
     } catch {
       // Autoplay policy, or a file that 404s between the probe and the play.
@@ -311,10 +334,38 @@ export async function speak(
     // Slightly under conversational pace. These are lines to copy, and the
     // learner is hearing the language for the first time.
     utterance.rate = 0.92;
+    const finished = new Promise<void>((resolve) => {
+      utterance.addEventListener("end", () => resolve());
+      utterance.addEventListener("error", () => resolve());
+    });
     engine.speak(utterance);
+    if (options.untilDone) await finished;
     return true;
   } catch {
     return false;
+  }
+}
+
+/**
+ * Says several lines in order, waiting for each before starting the next.
+ *
+ * A conversation is two people, and hearing "¿Qué te pongo?" and your own
+ * answer on top of each other teaches neither. Anything that starts a new line
+ * mid-queue — tapping a speaker, answering, leaving the screen — abandons what
+ * was still waiting rather than saying it late.
+ */
+export async function speakInTurn(
+  locale: string,
+  lines: { audioId: string | null; text: string }[],
+  surface: Surface = "scenarios"
+): Promise<void> {
+  for (const line of lines) {
+    if (!line.text.trim()) continue;
+    const before = generation;
+    await speak(locale, line.audioId, line.text, surface, { untilDone: true });
+    // `speak` bumps the generation itself, so the check is against what this
+    // line's own call left behind: anything else since means stop.
+    if (generation !== before + 1) return;
   }
 }
 

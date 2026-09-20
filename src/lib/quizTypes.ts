@@ -37,6 +37,18 @@ export interface QuizItem {
   /** Situation: the line you produce. Phrase: the English meaning. */
   correctAnswer: string;
   correctAnswerTranslation: string | null;
+  /**
+   * The other lines the author wrote for this same moment.
+   *
+   * An exchange is allowed more than one answer, and where it has them they
+   * are alternatives rather than a first choice and some runners-up: "Tja!"
+   * and "Hej!" are both what you say when a Swede says "Tja!". The deck used
+   * to ask the situation and then accept only `answers[0]`, so typing the
+   * other authored line — the one printed on the scenario page, under the
+   * same scene — came back wrong. These are accepted too, and kept out of the
+   * multiple-choice options, where a second right answer is unanswerable.
+   */
+  alsoAccepted: string[];
   /** What they say back, revealed once the question is settled. */
   reply: Line | null;
   /** Ids of the generated clips, or null where the side has no spoken line. */
@@ -269,7 +281,7 @@ export function buildStages(items: QuizItem[], categories: QuizCategory[]): Stag
       stages.push({
         id: multi ? `${category.id}#${i + 1}` : category.id,
         categoryId: category.id,
-        title: multi ? `${category.title} — Part ${i + 1}` : category.title,
+        title: multi ? `${category.title}: Part ${i + 1}` : category.title,
         part: multi ? i + 1 : null,
         partCount: chunks.length,
         itemIds: chunk,
@@ -306,10 +318,80 @@ export function normalizeAnswer(value: string): string {
     .replace(/ß/g, "ss")
     .replace(/ø/gi, "o")
     .replace(/æ/gi, "ae")
-    .replace(/[¿¡?!.,;:"'’“”()\-–—/]/g, " ")
+    // Everything a keyboard puts between words. `_` and `[]` survive on
+    // purpose: they are how a fill-in slot is authored, and slotPattern reads
+    // them back off this same normalised form.
+    .replace(/[¿¡?!.,;:"'’‘‚“”„«»()\-–—/…·•*~`´^{}<>|+=&]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
+}
+
+/**
+ * How many typos a word or line of this length is allowed before it stops
+ * being the same thing.
+ *
+ * Deliberately mean at the short end. One edit is most of a five-letter word
+ * and Spanish is full of pairs that differ by exactly one — "pero" and
+ * "perro", "vamos" and "somos" — so nothing under six characters gets any
+ * slack at all. Past that it is roughly one slip per ten characters: enough
+ * for a doubled letter, a missing one or two fingers landing out of order in a
+ * line long enough that no other line is that close to it.
+ */
+export function editBudget(length: number): number {
+  if (length < 6) return 0;
+  if (length < 12) return 1;
+  if (length < 22) return 2;
+  return 3;
+}
+
+/**
+ * Damerau-Levenshtein, asked as a yes/no question.
+ *
+ * The full distance is never interesting here — only whether two strings are
+ * within `budget` edits of each other — so the row is abandoned as soon as
+ * every cell in it has already spent more than that. Transpositions count as
+ * one edit rather than two, because "eine" for "eien" is one slip of the hand.
+ */
+export function withinEdits(a: string, b: string, budget: number): boolean {
+  if (a === b) return true;
+  if (budget <= 0) return false;
+  if (Math.abs(a.length - b.length) > budget) return false;
+
+  let prev2: number[] = [];
+  let prev: number[] = Array.from({ length: b.length + 1 }, (_, j) => j);
+  let row: number[] = [];
+
+  for (let i = 1; i <= a.length; i++) {
+    row = new Array(b.length + 1);
+    row[0] = i;
+    let best = row[0];
+
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      let value = Math.min(row[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        value = Math.min(value, prev2[j - 2] + 1);
+      }
+      row[j] = value;
+      if (value < best) best = value;
+    }
+
+    if (best > budget) return false;
+    prev2 = prev;
+    prev = row;
+  }
+
+  return prev[b.length] <= budget;
+}
+
+/** The same line typed with a slip or two in it. Spacing is not the test. */
+export function nearlyTyped(given: string, expected: string): boolean {
+  const key = (text: string) => normalizeAnswer(text).replace(/\s+/g, "");
+  const typed = key(given);
+  const target = key(expected);
+  if (!typed || !target) return false;
+  return withinEdits(typed, target, editBudget(target.length));
 }
 
 /**
@@ -452,13 +534,35 @@ function variantsOf(line: string): string[] {
  * this comparison ignores them.
  *
  * **A slash variant** — see `variantsOf`.
+ *
+ * **A typo.** A line typed out in full with one letter wrong is the line, not
+ * a different answer, and telling somebody otherwise teaches them to distrust
+ * their own spelling rather than to speak. See `editBudget` for how much slack
+ * a line of a given length gets.
  */
 export function typedAnswerMatches(given: string, expected: string): boolean {
   if (answersMatch(given, expected)) return true;
   const key = (text: string) => normalizeAnswer(text).replace(/\s+/g, "");
   const typed = key(coreOf(given));
   if (!typed) return false;
-  return variantsOf(expected).some((variant) => key(variant) === typed);
+  const variants = variantsOf(expected);
+  if (variants.some((variant) => key(variant) === typed)) return true;
+  return variants.some((variant) => nearlyTyped(typed, variant));
+}
+
+/**
+ * True when what was typed or assembled answers the question at all.
+ *
+ * A scene with two authored lines has two right answers, and which one the
+ * deck happens to hold first is not something the learner can see. Both count.
+ */
+export function answeredIt(given: string, accepted: string[]): boolean {
+  return accepted.some((line) => typedAnswerMatches(given, line));
+}
+
+/** The same, for an option picked off a list rather than typed. */
+export function pickedIt(option: string, accepted: string[]): boolean {
+  return accepted.some((line) => answersMatch(option, line));
 }
 
 /**
@@ -511,6 +615,16 @@ export interface Question {
    * question settles, which is where the difference it marks is worth seeing.
    */
   answerNote: string | null;
+  /**
+   * Every line that counts as having answered this question, `answer` first.
+   *
+   * More than one only where the author wrote more than one for the same
+   * moment, and only when the question is asked forward — "someone greets you,
+   * what do you say?" has as many right answers as the exchange has lines.
+   * Asked backwards it is a translation of one specific line, so the set is
+   * that line alone.
+   */
+  accepted: string[];
   answerLang: AnswerLang;
   /**
    * True when the answer is a line the learner would actually say in the
@@ -640,6 +754,15 @@ export function buildQuestion(
   const answerNote = split.note ?? subSplit?.note ?? null;
   shown = glossed ? coreOf(shown) : translationCore(shown);
 
+  // The siblings ride along only on the forward direction. Reversed, the cue
+  // is the English of this line and no other, so a second line answering it
+  // would be answering a question that wasn't asked.
+  const forwardSituation = item.kind === "situation" && !reverse;
+  const accepted = [
+    answer,
+    ...(forwardSituation ? item.alsoAccepted.map((line) => splitNote(line).text) : []),
+  ].filter((line, i, all) => line && all.findIndex((x) => answersMatch(x, line)) === i);
+
   const question: Question = {
     itemId: item.id,
     categoryId: item.categoryId,
@@ -651,8 +774,9 @@ export function buildQuestion(
     answer,
     answerSub,
     answerNote,
+    accepted,
     answerLang,
-    saidByYou: item.kind === "situation" && !reverse,
+    saidByYou: forwardSituation,
     // The scene of a situation is English, so only the answer is ever spoken.
     // A phrase shows its source side only in the forward direction.
     shownAudio: item.kind === "phrase" && !reverse ? item.frontAudioId : null,
@@ -667,7 +791,7 @@ export function buildQuestion(
   };
 
   if (form === "choice") {
-    question.options = buildOptions(answer, answerLang, pool, fallbackPool, item, shown);
+    question.options = buildOptions(answer, answerLang, pool, fallbackPool, item, shown, accepted);
   } else if (form === "bank") {
     question.tiles = buildTiles(answer, answerLang, pool, fallbackPool);
   }
@@ -699,9 +823,15 @@ export function buildOptions(
    * and "Una cerveza, por favor." both mean "a beer, please", so offering one
    * as the wrong answer to the other's meaning is unanswerable.
    */
-  cue?: string
+  cue?: string,
+  /**
+   * Every line that would be marked right, so none of them is offered as a
+   * wrong one. An exchange written with two answers to the same scene has two
+   * right boxes on the screen if this is not honoured.
+   */
+  alsoRight: string[] = []
 ): string[] {
-  const seen = new Set([normalizeAnswer(answer)]);
+  const seen = new Set([normalizeAnswer(answer), ...alsoRight.map(normalizeAnswer)]);
   const distractors: string[] = [];
   const otherLang: AnswerLang = answerLang === "source" ? "en" : "source";
 
@@ -745,6 +875,7 @@ export function buildOptions(
         if (seen.has(key)) continue;
         // Rejected on either side: a line that means what the answer means, or
         // one that answers the same cue by another route.
+        if (guard !== "none" && alsoRight.some((right) => tooAlike(candidate, right))) continue;
         if (guard !== "none" && tooAlike(candidate, answer)) continue;
         if (guard === "both" && cue && tooAlike(answerTextFor(item, otherLang), cue)) continue;
         seen.add(key);
@@ -904,6 +1035,9 @@ export function buildMatchQuestion(
     answer: "",
     answerSub: null,
     answerNote: null,
+    // A matching screen scores row by row against its own pairs; there is no
+    // single line for the typed comparison to accept.
+    accepted: [],
     answerLang: "source",
     saidByYou: false,
     shownAudio: null,

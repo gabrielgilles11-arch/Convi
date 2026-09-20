@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  answeredIt,
   answersMatch,
   buildOptions,
   buildQuestion,
   buildRound,
   buildStages,
   coreOf,
+  pickedIt,
   tooAlike,
   translationCore,
   type AnswerLang,
@@ -393,5 +395,58 @@ describe("buildOptions", () => {
     const options = buildOptions(answer, "source", one, [], one[0]);
     expect(options).toContain(answer);
     expect(options.length).toBeGreaterThanOrEqual(1);
+  });
+});
+
+/**
+ * Every line the author wrote for one moment.
+ *
+ * An exchange is allowed more than one answer, and where it has them they are
+ * alternatives rather than a winner and some runners-up. The deck used to ask
+ * the situation and accept only the first, so a learner who typed the other
+ * line — printed on the scenario page under the same scene — was told they were
+ * wrong. Both halves of that have to hold: the alternatives count, and none of
+ * them is ever offered as a wrong answer to pick.
+ */
+describe.each(LOCALES.map((l) => l.locale))("all the right answers: %s", (locale: Locale) => {
+  const items = buildQuizItems(locale);
+  const withAlternatives = items.filter(
+    (i) => i.kind === "situation" && i.alsoAccepted.length > 0
+  );
+
+  it("has exchanges written with more than one answer", () => {
+    expect(withAlternatives.length).toBeGreaterThan(0);
+  });
+
+  it("accepts every one of them when the scene is asked forward", () => {
+    for (const item of withAlternatives) {
+      const question = buildQuestion(item, false, "type", items, items);
+      if (!question) continue;
+      for (const line of item.alsoAccepted) {
+        expect(
+          answeredIt(line, question.accepted),
+          `${item.id}: "${line}" is authored for this scene and was refused`
+        ).toBe(true);
+      }
+      // The line the deck happens to hold first still counts, obviously.
+      expect(answeredIt(item.correctAnswer, question.accepted)).toBe(true);
+    }
+  });
+
+  it("asks it backwards about one line only", () => {
+    for (const item of withAlternatives) {
+      const question = buildQuestion(item, true, "type", items, items);
+      // Reversed, the cue is the English of this line and no other.
+      if (question) expect(question.accepted.length).toBe(1);
+    }
+  });
+
+  it("never offers a second right answer to pick from", () => {
+    for (const item of withAlternatives) {
+      const question = buildQuestion(item, false, "choice", items, items);
+      if (!question) continue;
+      const right = question.options.filter((option) => pickedIt(option, question.accepted));
+      expect(right.length, `${item.id}: ${right.length} correct options`).toBe(1);
+    }
   });
 });

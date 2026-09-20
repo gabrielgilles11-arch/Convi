@@ -1074,6 +1074,84 @@
   flex-wrap: wrap;
 }
 
+/* ---- Clearing something ---- */
+
+/* Only ever on a round that passed and on the end of a conversation, so it
+   still means something when it turns up. The tinted card is the difference
+   you see before you have read a single word of it. */
+.round-done.is-cleared,
+.convo-congrats {
+  border-color: var(--color-primary-tint-border);
+  background: linear-gradient(180deg, var(--color-primary-tint), var(--color-card) 62%);
+}
+
+.congrats-burst {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 0.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 0 0 8px var(--color-primary-tint);
+  animation: congrats-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+.congrats-burst svg {
+  width: 38px;
+  height: 38px;
+}
+
+.congrats-title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1.1;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  color: var(--color-primary-dark);
+  animation: congrats-rise 0.4s 0.1s ease both;
+}
+
+.congrats-score {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 0 0.2rem;
+}
+
+@keyframes congrats-pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes congrats-rise {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* The celebration is decoration; somebody who asked for less motion gets the
+   same words without any of it. */
+@media (prefers-reduced-motion: reduce) {
+  .congrats-burst,
+  .congrats-title {
+    animation: none;
+  }
+}
+
 
 /* ---- Typed answers ---- */
 
@@ -2214,53 +2292,136 @@
   cursor: default;
 }
 
-.convo-choices {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  align-self: stretch;
+/* The way out of a beat you have no idea about. Quiet on purpose: it is worth
+   having once you have tried, and worth nothing before. */
+.convo-stuck {
+  align-self: flex-end;
+  border: 0;
+  background: none;
+  padding: 0.2rem 0.1rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 
-.convo-choices-label {
-  margin: 0.4rem 0 0.1rem;
-  font-size: 0.72rem;
+.convo-stuck:hover {
+  color: var(--color-primary-dark);
+}
+
+/* --- what else would have worked --- */
+
+/* After the answer, never before. A list of lines above the box is a list
+   nobody types past, and the beat stops being a question. */
+.convo-also {
+  align-self: flex-end;
+  max-width: 92%;
+  margin-top: 0.35rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 14px;
+  border: 1px dashed var(--color-border);
+  background: var(--color-card);
+  text-align: right;
+}
+
+.convo-also-label {
+  margin: 0 0 0.3rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-ink-soft);
-  align-self: flex-end;
 }
 
-/* A dashed edge, so an offer is visibly not yet a line in the transcript. */
-.convo-choice {
-  align-self: flex-end;
-  max-width: 90%;
+.convo-also ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  text-align: right;
-  font: inherit;
-  padding: 0.6rem 0.85rem;
-  border: 2px dashed var(--color-primary-tint-border);
-  border-radius: 16px;
-  background: var(--color-card);
-  cursor: pointer;
-  transition: border-color 0.12s ease, background-color 0.12s ease;
+  gap: 0.45rem;
 }
 
-.convo-choice:hover {
-  border-style: solid;
-  border-color: var(--color-primary);
-  background: var(--color-primary-tint);
-}
-
-.convo-choice-source {
+.convo-also li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.92rem;
   font-weight: 700;
 }
 
-.convo-choice-en {
-  font-size: 0.85rem;
+.convo-also-en {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--color-ink-soft);
+}
+
+/* --- the line in full --- */
+
+/* Shown when a short answer was accepted: "café" is what you say at a counter
+   and the whole line is what you were reaching for, so both belong on screen. */
+.convo-full {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  max-width: 90%;
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-ink-soft);
+}
+
+.convo-full-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--color-primary-tint);
+  color: var(--color-primary-dark);
+}
+
+/* --- tap a line for its meaning --- */
+
+/* The whole line is the target, so checking one is a tap rather than a hunt
+   for a glyph. It carries no button chrome: it has to read as the line. */
+.convo-tap {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.convo-tap:disabled {
+  cursor: default;
+}
+
+.convo-bubble.is-open {
+  border-color: var(--color-primary);
+}
+
+.convo-pop {
+  margin: 0.4rem 0 0;
+  padding: 0.4rem 0.55rem;
+  border-radius: 10px;
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-primary-tint-border);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 /* `__` and `[BELOPP]` are authored: the line genuinely has a blank in it
