@@ -95,14 +95,14 @@
 
 .flashcard .hint {
   font-size: 0.8rem;
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
   font-weight: 600;
 }
 
 .flashcard .label {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
   font-weight: 700;
 }
 
@@ -1375,7 +1375,7 @@
 }
 
 .streak-badge.is-live .streak-flame {
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
 }
 
 .streak-count {
@@ -1710,10 +1710,18 @@
   line-height: 1;
 }
 
+/*
+ * The denominator is smaller than the number, and that is the whole of how it
+ * is subordinate to it.
+ *
+ * It used to be dimmed to 72% as well, which read fine and measured 3.11:1.
+ * White on a filled stone is only 4.64:1 to begin with, so there is no opacity
+ * low enough to be visible as "dimmed" and still clear 4.5 — the hierarchy has
+ * to come from size and weight instead, and those cost nothing.
+ */
 .stone-part-of {
   font-size: 0.65rem;
   font-weight: 700;
-  opacity: 0.72;
 }
 
 /* The dot keeps a one-part stone from looking like an empty ring. */
@@ -2706,4 +2714,19 @@
     animation: none;
     opacity: 0.45;
   }
+}
+
+/* ---- Focus mode ---- */
+
+/* Inside a round the tab pair is the one control that goes: "Back to path"
+   above the question already does what Path does, and Progress is a place to
+   visit between rounds rather than during one. The voice and sound toggles
+   stay, because muting the thing talking at you is worth one tap at any
+   moment. See `body[data-focus]` in Layout.astro. */
+body[data-focus="round"] .mode-toggle {
+  display: none;
+}
+
+body[data-focus="round"] .quiz-toolbar {
+  justify-content: flex-end;
 }
