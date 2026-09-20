@@ -4,8 +4,10 @@ import ScenarioGate from "../../../components/ScenarioGate";
 import Speaker from "../../../components/Speaker.astro";
 import buzzwords from "../../../../content/buzzwords.json";
 import {
+  getCategories,
   getCategoryById,
   getLocaleInfo,
+  LOCALES,
   isDialogueSubsection,
   isPremiumCategory,
   localeFromSlug,
@@ -19,9 +21,33 @@ import {
 } from "../../../lib/content";
 import { ENT_COOKIE, verifyEntitlement } from "../../../lib/entitlement";
 
-// Rendered on demand so premium content can be gated per-request: locked
-// content is never sent to the browser for unentitled visitors.
-export const prerender = false;
+import { PAYWALL_ENABLED } from "../../../lib/paywall";
+
+/**
+ * Static while nothing is paid; rendered per request the moment something is.
+ *
+ * These pages are the front door — the search-intent titles, the answer-first
+ * block and the LearningResource schema all live here — and a page that is not
+ * built is a page the sitemap cannot list. That is exactly what had happened:
+ * the sitemap held twelve URLs and not one of the forty scenario pages, because
+ * this route was rendered on demand so that premium categories could be gated
+ * per request. There are no premium categories while PAYWALL_ENABLED is false,
+ * so it was paying the whole cost of a gate that was switched off.
+ *
+ * Reinstating the paywall is still one line. Flipping that flag flips this
+ * back to per-request rendering and the entitlement check below starts
+ * running again; Astro then warns that getStaticPaths is ignored, which is the
+ * correct thing for it to say and costs nothing.
+ */
+export const prerender = !PAYWALL_ENABLED;
+
+export function getStaticPaths() {
+  return LOCALES.flatMap((l) =>
+    getCategories(l.locale).map((category) => ({
+      params: { lang: l.slug || undefined, id: category.id },
+    }))
+  );
+}
 
 const locale = localeFromSlug(Astro.params.lang);
 if (!locale) {
@@ -36,7 +62,11 @@ if (!category) {
 }
 
 const isPremium = isPremiumCategory(category.id);
-const entitled = !!verifyEntitlement(Astro.cookies.get(ENT_COOKIE)?.value);
+// Only asked when the answer can be anything but false. A prerendered page has
+// no request to read a cookie from, and there is nothing to be entitled to
+// while the paywall is off.
+const entitled =
+  PAYWALL_ENABLED && !!verifyEntitlement(Astro.cookies.get(ENT_COOKIE)?.value);
 const showContent = !isPremium || entitled;
 
 const gateCopy =

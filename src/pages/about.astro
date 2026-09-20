@@ -1,0 +1,306 @@
+---
+import Layout from "../layouts/Layout.astro";
+import {
+  LOCALES,
+  countCategoryItems,
+  getCategories,
+  localePath,
+  searchTitle,
+} from "../lib/content";
+
+/**
+ * What the site is, and every page on it.
+ *
+ * Two jobs, and the second is the reason it earns a place in the footer of
+ * every page. The first is the obvious one: somebody who has landed on "how to
+ * order a beer in Spain" from a search has no idea what the rest of this is,
+ * and an answer engine asked "what is Try Convi" has nowhere to read it but
+ * the marketing copy on the home page.
+ *
+ * The second is crawl depth. Scenario pages were reachable only from their own
+ * edition's index, which is itself two clicks from anywhere; the full section
+ * list below puts all 44 of them one click from every page on the site. That
+ * is a site index rather than a link farm — it is what somebody looking for
+ * "the one about the pharmacy" would want too.
+ *
+ * No FAQ schema, deliberately, for the reason in ARCHITECTURE.md. The straight
+ * answers below are written as questions because that is how people ask them,
+ * not to claim a rich result that no longer exists.
+ */
+const editions = LOCALES.map((l) => ({
+  ...l,
+  categories: getCategories(l.locale),
+}));
+
+const categoryCount = editions.reduce((n, e) => n + e.categories.length, 0);
+const lineCount = editions.reduce(
+  (n, e) => n + e.categories.reduce((m, c) => m + countCategoryItems(c), 0),
+  0
+);
+
+const title = "About Try Convi — real Spanish, Swedish and German phrases";
+const description = `What Try Convi is, who it's for, and every one of its ${categoryCount} scenario sections in one place. Free to read, no account, human-written per country.`;
+
+const schema = [
+  {
+    "@type": "AboutPage",
+    "@id": "https://tryconvi.com/about#page",
+    url: "https://tryconvi.com/about",
+    name: title,
+    description,
+    inLanguage: "en",
+    // Points at the Organization the layout already declares rather than
+    // describing it again: one graph, one definition of who this is.
+    about: { "@id": "https://tryconvi.com/#org" },
+    isPartOf: { "@id": "https://tryconvi.com/#website" },
+  },
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="about">
+    <h1>What Try Convi is</h1>
+
+    <p class="lead">
+      A free phrasebook and practice app for the conversations you actually
+      have on a trip — ordering the second round, arguing with a taxi driver,
+      getting into a club, asking a pharmacist for something for your head.
+      Three editions, {categoryCount} sections, {lineCount} lines, no account
+      and nothing to buy.
+    </p>
+
+    <h2>Three editions, written separately</h2>
+    <p>
+      Spanish, Swedish and German are three independent bodies of content, not
+      one set of phrases translated three ways. A Swedish line is what somebody
+      in Stockholm would say in that moment, arrived at on its own — which is
+      why the Swedish and Spanish editions do not have all the same sections as
+      each other, and why the German one has separate Bavarian and Berlin sets.
+      Machine-translating one edition into another would have been faster and
+      would have taught people to sound like a translation.
+    </p>
+
+    <ul class="edition-links">
+      {
+        editions.map((e) => (
+          <li>
+            <span class="edition-flag" aria-hidden="true">{e.flag}</span>
+            <div>
+              <strong>{e.language} — {e.region}</strong>
+              <p>
+                {e.categories.length} sections.{" "}
+                <a href={localePath(e.locale, "/scenarios")}>Read the scenarios</a>{" "}
+                or <a href={localePath(e.locale, "/practice")}>practise them</a>.
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>What's on a scenario page</h2>
+    <p>
+      The most useful line first, then the exchanges in full: what they ask,
+      what you say, and what they will probably say back. That last part is the
+      bit textbooks leave out, and it is the reason a phrase you learned
+      cleanly still leaves you stuck — you produced your line and then someone
+      answered.
+    </p>
+    <p>
+      Lines carry warnings where they need them. A phrase marked
+      <em>Català</em> is not Spanish, and one marked <em>Bairisch</em> will
+      make you sound like a tourist doing an accent outside Bavaria. Register
+      is flagged the same way, because the difference between friendly and
+      rude is not something you want to discover in person.
+    </p>
+
+    <h2>Practice, and Talk Mode</h2>
+    <p>
+      <a href="/practice">Practice</a> is a guided path through every section:
+      rounds of eight, mixing situations, matching pairs and typed answers, so
+      the line arrives when you need it rather than two hours later.
+    </p>
+    <p>
+      <strong>Talk Mode</strong> sits beside the path and is the other half of
+      it. It opens a conversation in the language — the bartender asks what
+      you're having, and you type back. Get it wrong and you are shown the line
+      you were reaching for, in the language and in English, and the
+      conversation carries on. There is no English on the screen otherwise,
+      because a translation under every line is the line people read.
+    </p>
+
+    <h2>Straight answers</h2>
+
+    <h3>Is it free?</h3>
+    <p>
+      Entirely. Every scenario, every language, and the whole practice section.
+      There is no trial, no card and nothing held back for a paid tier.
+    </p>
+
+    <h3>Do I need an account?</h3>
+    <p>
+      No, and there isn't one to make. Your progress lives in your own browser,
+      which is also the honest downside: clear your site data and it goes with
+      it.
+    </p>
+
+    <h3>Which Spanish is this?</h3>
+    <p>
+      Spain Spanish — <em>vosotros</em>, <em>caña</em>, <em>vale</em>. It is
+      not Latin American, and a lot of it would mark you out as a visitor in
+      Mexico City. Swedish is Stockholm-weighted. German is Germany-wide, with
+      Bavarian and Berlin handled separately rather than blended in.
+    </p>
+
+    <h3>Is any of it machine-translated?</h3>
+    <p>
+      No. Every line is written by a person and reviewed before it ships, and
+      the test suite checks each edition for lines that accidentally teach the
+      same thing twice.
+    </p>
+
+    <h3>Can I use it offline?</h3>
+    <p>
+      No. There is a service worker, but it exists only so reminders can reach
+      you — it does not cache the site. Caching a phrasebook means somebody
+      eventually reading a line that was corrected a month ago, which is worse
+      than needing a connection.
+    </p>
+
+    <h2>Every section</h2>
+    <p class="section-note">
+      All {categoryCount} of them, across the three editions.
+    </p>
+
+    {
+      editions.map((e) => (
+        <section class="section-index">
+          <h3>
+            <span aria-hidden="true">{e.flag}</span> {e.language}
+          </h3>
+          <ul>
+            {e.categories.map((category) => (
+              <li>
+                <a href={localePath(e.locale, `/scenarios/${category.id}`)}>
+                  {category.title}
+                </a>
+                <span class="section-count">{countCategoryItems(category)} lines</span>
+                <span class="section-intent">{searchTitle(category, e.locale)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    <h2>Contact</h2>
+    <p>
+      <a href="mailto:hello@tryconvi.com">hello@tryconvi.com</a>. If a line is
+      wrong, or nobody says it that way where you live, that is the most useful
+      email we can get — say where you heard it and what you'd say instead.
+    </p>
+  </article>
+</Layout>
+
+<style>
+  .about {
+    line-height: 1.6;
+  }
+
+  .about h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    color: var(--color-ink-soft);
+    margin-top: 0;
+  }
+
+  .about h2 {
+    margin-top: 2.5rem;
+    font-size: 1.35rem;
+  }
+
+  .about h3 {
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .about a {
+    color: var(--color-primary-dark);
+    font-weight: 600;
+  }
+
+  .edition-links {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .edition-links li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background: var(--color-card);
+  }
+
+  .edition-links p {
+    margin: 0.15rem 0 0;
+    font-size: 0.95rem;
+    color: var(--color-ink-soft);
+  }
+
+  .edition-flag {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .section-note {
+    color: var(--color-ink-soft);
+    margin-bottom: 0;
+  }
+
+  .section-index h3 {
+    margin-top: 1.75rem;
+  }
+
+  .section-index ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .section-index li {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-count {
+    font-size: 0.8rem;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+  }
+
+  /* The search the page is written to answer, spelled out. It is the most
+     useful thing to put next to a link nobody has clicked yet — "Slang" says
+     less than "How to use slang in Spain". */
+  .section-intent {
+    flex-basis: 100%;
+    font-size: 0.82rem;
+    color: var(--color-ink-soft);
+  }
+</style>
