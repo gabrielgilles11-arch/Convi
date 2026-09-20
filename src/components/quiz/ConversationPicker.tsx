@@ -40,7 +40,7 @@ export default function ConversationPicker({
 
       <p className="convo-intro">
         Pick a place and hold the conversation that happens there. They speak
-        first, in the language you're learning, and you type back — get it wrong
+        first, in the language you're learning, and you type back. Get it wrong
         and you'll be shown the line and what it means. Every line was written
         for that moment, so there is always a right thing to say.
       </p>

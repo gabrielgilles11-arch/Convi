@@ -36,7 +36,7 @@ function line(category: Category, locale: Locale): string {
   const url = `${SITE}${localePath(locale, `/scenarios/${category.id}`)}`;
   const answer = quickAnswer(category);
   const count = countCategoryItems(category);
-  const sample = answer?.es ? `${answer.es} — ` : "";
+  const sample = answer?.es ? `${answer.es}: ` : "";
   return `- [${searchTitle(category, locale)}](${url}): ${sample}${count} lines, with what they say back.`;
 }
 
@@ -45,7 +45,7 @@ function section(locale: Locale): string {
   const rows = getCategories(locale).map((c) => line(c, locale));
 
   return [
-    `## ${language} — ${region} ${flag}`,
+    `## ${language} (${region}) ${flag}`,
     "",
     `- [All ${language} scenarios](${SITE}${localePath(locale, "/scenarios")}): every ${language} category in one list.`,
     ...rows,
@@ -64,8 +64,8 @@ export const GET: APIRoute = () => {
     "> Every page is free to read, with no account and no paywall.",
     "",
     `${total} scenario categories across three independent editions. Each scenario`,
-    "page opens with a short answer — the single most useful line for that",
-    "situation — followed by the full exchanges: what they ask, what you say, and",
+    "page opens with a short answer, the single most useful line for that",
+    "situation, followed by the full exchanges: what they ask, what you say, and",
     "their likely reply. Practice drills the same material, and Talk Mode holds a",
     "whole conversation in the target language.",
     "",

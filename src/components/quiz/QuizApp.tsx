@@ -437,7 +437,7 @@ export default function QuizApp({ locale }: Props) {
             <StreakBadge streak={streak} roundsToday={roundsToday} />
           </div>
           <p className="path-intro">
-            Work along the path. A round is {ROUND_LENGTH} questions — clear it at{" "}
+            Work along the path. A round is {ROUND_LENGTH} questions: clear it at{" "}
             {STAGE_CLEAR_SCORE}% and the circle fills. Bigger sections take a few rounds, so keep
             tapping the same circle until it's full.
           </p>
@@ -486,7 +486,7 @@ export default function QuizApp({ locale }: Props) {
       {mode === "taster" && (
         <>
           <p className="stage-line">
-            <span>A taste of what's ahead — six questions, nothing scored</span>
+            <span>A taste of what's ahead: six questions, nothing scored</span>
           </p>
           <TestMode
             items={payload.items}

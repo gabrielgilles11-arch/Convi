@@ -71,13 +71,13 @@ export default function PracticeGate({ locale }: Props) {
       <h2>Unlock Practice</h2>
       <p>
         Get full access to Practice: a guided path through every scenario, in rounds of ten, with
-        typed answers, word building and multiple choice — one-time payment, yours forever.
+        typed answers, word building and multiple choice. One-time payment, yours forever.
       </p>
       <p className="gate-all-langs">
         <span className="gate-flags" aria-hidden="true">
           🇪🇸 🇸🇪 🇩🇪
         </span>
-        One purchase unlocks <strong>all three languages</strong> — Spanish, Swedish and German —
+        One purchase unlocks <strong>all three languages</strong> (Spanish, Swedish and German),
         plus every members-only scenario pack.
       </p>
       <a className="gate-buy" href={GUMROAD_PRODUCT_URL} target="_blank" rel="noopener">

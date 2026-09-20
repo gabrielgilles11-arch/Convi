@@ -219,9 +219,9 @@ export default function PracticePath({
                   onClick={() => onStart(node.nextStageId)}
                   aria-label={
                     node.locked
-                      ? `${node.title} — locked until every section is cleared`
+                      ? `${node.title}, locked until every section is cleared`
                       : node.parts > 1
-                        ? `${node.cleared ? "Practise" : "Continue"} ${node.title} — ${node.done} of ${node.parts} parts cleared`
+                        ? `${node.cleared ? "Practise" : "Continue"} ${node.title}, ${node.done} of ${node.parts} parts cleared`
                         : `Start ${node.title}`
                   }
                 >

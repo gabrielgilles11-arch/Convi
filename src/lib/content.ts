@@ -289,8 +289,8 @@ function stageOf(categoryId: string): string {
 export function searchTitle(category: Category, locale: Locale): string {
   const { language, region } = getLocaleInfo(locale);
   const intent = SEARCH_INTENT[stageOf(category.id)];
-  if (!intent) return `${category.title} — ${language} phrases`;
-  return `How to ${intent} in ${region} — real ${language} phrases`;
+  if (!intent) return `${category.title}: ${language} phrases`;
+  return `How to ${intent} in ${region}: real ${language} phrases`;
 }
 
 /**
@@ -307,7 +307,7 @@ export function searchBlurb(category: Category, locale: Locale): string {
   const intent = SEARCH_INTENT[stageOf(category.id)] ?? category.title.toLowerCase();
   const sample = samplePhrases(category, 3).join(" · ");
   const count = countCategoryItems(category);
-  const lead = sample ? `${sample} — the ` : "The ";
+  const lead = sample ? `${sample}: the ` : "The ";
   return `${lead}${language} you actually need to ${intent} in ${region}. ${count} real lines with what they'll say back. Free, no sign-up.`;
 }
 

@@ -38,7 +38,7 @@ const lineCount = editions.reduce(
   0
 );
 
-const title = "About Try Convi — real Spanish, Swedish and German phrases";
+const title = "About Try Convi: real Spanish, Swedish and German phrases";
 const description = `What Try Convi is, who it's for, and every one of its ${categoryCount} scenario sections in one place. Free to read, no account, human-written per country.`;
 
 const schema = [
@@ -73,7 +73,7 @@ const schema = [
     <p>
       Spanish, Swedish and German are three independent bodies of content, not
       one set of phrases translated three ways. A Swedish line is what somebody
-      in Stockholm would say in that moment, arrived at on its own — which is
+      in Stockholm would say in that moment, arrived at on its own. That is
       why the Swedish and Spanish editions do not have all the same sections as
       each other, and why the German one has separate Bavarian and Berlin sets.
       Machine-translating one edition into another would have been faster and
@@ -86,7 +86,7 @@ const schema = [
           <li>
             <span class="edition-flag" aria-hidden="true">{e.flag}</span>
             <div>
-              <strong>{e.language} — {e.region}</strong>
+              <strong>{e.language} ({e.region})</strong>
               <p>
                 {e.categories.length} sections.{" "}
                 <a href={localePath(e.locale, "/scenarios")}>Read the scenarios</a>{" "}
@@ -103,7 +103,7 @@ const schema = [
       The most useful line first, then the exchanges in full: what they ask,
       what you say, and what they will probably say back. That last part is the
       bit textbooks leave out, and it is the reason a phrase you learned
-      cleanly still leaves you stuck — you produced your line and then someone
+      cleanly still leaves you stuck: you produced your line and then someone
       answered.
     </p>
     <p>
@@ -122,7 +122,7 @@ const schema = [
     </p>
     <p>
       <strong>Talk Mode</strong> sits beside the path and is the other half of
-      it. It opens a conversation in the language — the bartender asks what
+      it. It opens a conversation in the language: the bartender asks what
       you're having, and you type back. Get it wrong and you are shown the line
       you were reaching for, in the language and in English, and the
       conversation carries on. There is no English on the screen otherwise,
@@ -146,7 +146,7 @@ const schema = [
 
     <h3>Which Spanish is this?</h3>
     <p>
-      Spain Spanish — <em>vosotros</em>, <em>caña</em>, <em>vale</em>. It is
+      Spain Spanish: <em>vosotros</em>, <em>caña</em>, <em>vale</em>. It is
       not Latin American, and a lot of it would mark you out as a visitor in
       Mexico City. Swedish is Stockholm-weighted. German is Germany-wide, with
       Bavarian and Berlin handled separately rather than blended in.
@@ -162,7 +162,7 @@ const schema = [
     <h3>Can I use it offline?</h3>
     <p>
       No. There is a service worker, but it exists only so reminders can reach
-      you — it does not cache the site. Caching a phrasebook means somebody
+      you. It does not cache the site. Caching a phrasebook means somebody
       eventually reading a line that was corrected a month ago, which is worse
       than needing a connection.
     </p>
@@ -197,7 +197,7 @@ const schema = [
     <p>
       <a href="mailto:hello@tryconvi.com">hello@tryconvi.com</a>. If a line is
       wrong, or nobody says it that way where you live, that is the most useful
-      email we can get — say where you heard it and what you'd say instead.
+      email we can get: say where you heard it and what you'd say instead.
     </p>
   </article>
 </Layout>

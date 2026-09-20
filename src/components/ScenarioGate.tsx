@@ -10,7 +10,7 @@ interface Props {
 
 export default function ScenarioGate({
   heading = "This one's part of the paid pack",
-  body = "For the girls, cuss words, flirting, nightlife, emergencies and the hungover pack unlock with a one-time purchase — the same buy that unlocks Practice. Yours forever.",
+  body = "For the girls, cuss words, flirting, nightlife, emergencies and the hungover pack unlock with a one-time purchase, the same buy that unlocks Practice. Yours forever.",
 }: Props) {
   const [email, setEmail] = useState("");
   const [verifying, setVerifying] = useState(false);
