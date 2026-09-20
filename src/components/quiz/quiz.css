@@ -1260,6 +1260,97 @@
   height: 1rem;
 }
 
+/* ---- The streak ---- */
+
+/* Sits above the path, so the number is the first thing the screen you come
+   back to says about you. */
+.path-header {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 0.85rem;
+}
+
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem 0.45rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+/* Cold until it is real. A flame-orange pill on a zero would be the loudest
+   thing on the screen saying the least. */
+.streak-flame {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  color: var(--color-border);
+}
+
+.streak-badge.is-live {
+  border-color: var(--color-primary-tint-border);
+  background: var(--color-primary-tint);
+}
+
+.streak-badge.is-live .streak-flame {
+  color: var(--color-primary);
+}
+
+.streak-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  color: var(--color-ink);
+}
+
+.streak-count strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.streak-unit {
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+}
+
+/* A hairline divider rather than a bullet: the two halves are a count and a
+   note about today, and a dot between them reads as one sentence. */
+.streak-note {
+  padding-left: 0.6rem;
+  border-left: 1px solid var(--color-border);
+}
+
+.streak-badge.is-live .streak-note {
+  border-left-color: var(--color-primary-tint-border);
+}
+
+.streak-badge--panel {
+  margin: 0 0 0.85rem;
+}
+
+@media (max-width: 380px) {
+  /* Two lines rather than a pill that runs off the edge. */
+  .streak-badge {
+    flex-wrap: wrap;
+    border-radius: 14px;
+  }
+
+  .streak-note {
+    padding-left: 0;
+    border-left: none;
+    flex-basis: 100%;
+  }
+
+  .streak-badge.is-live .streak-note {
+    border-left-color: transparent;
+  }
+}
+
 /* ---- Practice path ---- */
 
 .path-intro {
