@@ -15,6 +15,12 @@ export interface Progress {
   roundsCompleted: number;
   /** Items answered wrong and not yet answered right since — the mistake queue. */
   missedItemIds: string[];
+  /**
+   * Conversations walked all the way to the end at least once. Nothing is
+   * scored in Talk, so "finished" is the only state it has, and the picker uses
+   * it to tick what you've already been through.
+   */
+  finishedConversationIds: string[];
 }
 
 /** Rounds per day that count as hitting the daily goal. */
@@ -35,6 +41,7 @@ function defaultProgress(): Progress {
     roundsToday: 0,
     roundsCompleted: 0,
     missedItemIds: [],
+    finishedConversationIds: [],
   };
 }
 
@@ -188,4 +195,27 @@ export function missedItemIds(progress: Progress = loadProgress()): string[] {
 
 export function roundsCompletedToday(progress: Progress = loadProgress()): number {
   return progress.lastRoundDay === dayKey() ? progress.roundsToday : 0;
+}
+
+/**
+ * Conversation walked to its last line. Idempotent: running the same one twice
+ * is a thing people do on purpose, to take the other lines.
+ */
+export function markConversationFinished(id: string): Progress {
+  const progress = loadProgress();
+  const list = progress.finishedConversationIds ?? [];
+  if (!list.includes(id)) {
+    progress.finishedConversationIds = [...list, id];
+    saveProgress(progress);
+  }
+  return progress;
+}
+
+/**
+ * Which conversations have been finished. Missing on progress saved before the
+ * field existed, which reads as none — those people see an unticked picker
+ * once, which is a smaller lie than a tick they did not earn.
+ */
+export function finishedConversations(progress: Progress = loadProgress()): string[] {
+  return progress.finishedConversationIds ?? [];
 }

@@ -18,7 +18,10 @@ import {
   roundsCompleted,
   currentDayStreak,
   roundsCompletedToday,
+  markConversationFinished,
+  finishedConversations,
 } from "../../lib/progress";
+import type { Conversation, ConversationPayload } from "../../lib/conversationTypes";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
@@ -26,11 +29,13 @@ import ProgressPanel from "./ProgressPanel";
 import Welcome from "./Welcome";
 import EmailPrompt from "./EmailPrompt";
 import StreakBadge from "./StreakBadge";
+import ConversationPicker from "./ConversationPicker";
+import ConversationMode from "./ConversationMode";
 import { soundEnabled, setSoundEnabled } from "./sound";
 import { setVoiceEnabled, stopSpeaking, voiceEnabled } from "./speech";
 import "./quiz.css";
 
-type Mode = "intro" | "taster" | "path" | "test" | "progress";
+type Mode = "intro" | "taster" | "path" | "test" | "progress" | "talk";
 
 /**
  * Set once the welcome and its six questions have been seen. Somebody who has
@@ -107,6 +112,14 @@ export default function QuizApp({ locale }: Props) {
   // starts at zero and is corrected after mount rather than read during render.
   const [streak, setStreak] = useState(0);
   const [roundsToday, setRoundsToday] = useState(0);
+
+  // Talk. The deck is fetched the first time the tab is opened rather than
+  // alongside the quiz deck: it carries both sides of every exchange, and most
+  // sessions never open it.
+  const [conversations, setConversations] = useState<Conversation[] | null>(null);
+  const [convoError, setConvoError] = useState("");
+  const [convoId, setConvoId] = useState<string | null>(null);
+  const [convoDone, setConvoDone] = useState<string[]>([]);
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
@@ -165,6 +178,35 @@ export default function QuizApp({ locale }: Props) {
     };
   }, [locale]);
 
+  // Fires once: `conversations` is only null before the first open, and the
+  // catch below sets an error rather than leaving it null and re-fetching.
+  useEffect(() => {
+    if (mode !== "talk" || conversations !== null || convoError) return;
+    let cancelled = false;
+    const query = locale ? `?locale=${encodeURIComponent(locale)}` : "";
+
+    fetch(`/api/conversations${query}`)
+      .then(async (res) => {
+        if (res.status === 403) throw new Error("This practice content needs a purchase to unlock.");
+        if (!res.ok) throw new Error("Couldn't load the conversations.");
+        return (await res.json()) as ConversationPayload;
+      })
+      .then((data) => {
+        if (!cancelled) setConversations(data.conversations);
+      })
+      .catch((err: Error) => {
+        if (!cancelled) setConvoError(err.message);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mode, conversations, convoError, locale]);
+
+  useEffect(() => {
+    if (mode === "talk") setConvoDone(finishedConversations());
+  }, [mode, convoId]);
+
   const stages = useMemo<Stage[]>(
     () => (payload ? buildStages(payload.items, payload.categories) : []),
     [payload]
@@ -190,6 +232,10 @@ export default function QuizApp({ locale }: Props) {
     () => allStagesCleared(stages, bestScores),
     [stages, bestScores]
   );
+
+  // A stale id — a locale switch while a conversation was open — resolves to
+  // nothing, and nothing means the picker rather than a crash.
+  const chosenConvo = convoId ? (conversations?.find((c) => c.id === convoId) ?? null) : null;
 
   const stageIndex = stages.findIndex((s) => s.id === stageId);
   const nextStage = stageIndex >= 0 && stageIndex + 1 < stages.length ? stages[stageIndex + 1] : null;
@@ -264,8 +310,21 @@ export default function QuizApp({ locale }: Props) {
     <div className="quiz-app">
       <div className="quiz-toolbar">
         <div className="mode-toggle" role="tablist">
-          <button type="button" className={mode !== "progress" ? "active" : ""} onClick={() => setMode("path")}>
+          {/* Path stays lit through a round, because a round is the path: the
+              test screen is where a stone takes you, not a fourth place. */}
+          <button
+            type="button"
+            className={mode === "path" || mode === "test" || mode === "taster" ? "active" : ""}
+            onClick={() => setMode("path")}
+          >
             Path
+          </button>
+          <button
+            type="button"
+            className={mode === "talk" ? "active" : ""}
+            onClick={() => setMode("talk")}
+          >
+            Talk
           </button>
           <button type="button" className={mode === "progress" ? "active" : ""} onClick={() => setMode("progress")}>
             Progress
@@ -450,6 +509,29 @@ export default function QuizApp({ locale }: Props) {
           />
         </>
       )}
+
+      {mode === "talk" &&
+        (convoError ? (
+          <p className="quiz-error">{convoError}</p>
+        ) : conversations === null ? (
+          <p className="quiz-loading">Loading the conversations...</p>
+        ) : chosenConvo ? (
+          <ConversationMode
+            conversation={chosenConvo}
+            locale={locale ?? "es-ES"}
+            onBack={() => setConvoId(null)}
+            onFinish={(id) => {
+              markConversationFinished(id);
+              setConvoDone(finishedConversations());
+            }}
+          />
+        ) : (
+          <ConversationPicker
+            conversations={conversations}
+            finished={convoDone}
+            onStart={setConvoId}
+          />
+        ))}
 
       {askEmail && (
         <EmailPrompt
