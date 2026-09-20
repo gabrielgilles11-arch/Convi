@@ -2,7 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
-import { LOCALES, getCategories } from "../lib/content";
+import { LOCALES, getCategories, localePath, DEFAULT_LOCALE } from "../lib/content";
+import { LAST_LOCALE_KEY } from "../lib/lastLocale";
 
 // Counts come from the content files so this copy can never drift out of date
 // as categories are added to any edition.
@@ -26,6 +27,29 @@ const marquee = editions.flatMap((e) => [
   ...(MARQUEE_WORDS[e.locale] ?? []).map((word) => ({ flag: null, word })),
 ]);
 
+/**
+ * Where the hero's one button goes, per edition.
+ *
+ * Built here rather than in the browser so the script below never has to know
+ * a slug table, and so a stored slug can be checked against real editions
+ * before it is allowed anywhere near an href. Keyed by slug because that is
+ * what the browser remembers.
+ */
+const startTargets = Object.fromEntries(
+  LOCALES.map((l) => [
+    l.slug,
+    {
+      practice: localePath(l.locale, "/practice"),
+      scenarios: localePath(l.locale, "/scenarios"),
+      label: `Start practising ${l.language}`,
+      flag: l.flag,
+    },
+  ])
+);
+
+// What the page ships with, for everyone arriving for the first time and for
+// anyone with JavaScript off: the default edition, already a working link.
+const defaultStart = startTargets[LOCALES.find((l) => l.locale === DEFAULT_LOCALE)!.slug];
 ---
 
 <Layout>
@@ -34,15 +58,26 @@ const marquee = editions.flatMap((e) => [
       <div class="hero-copy reveal">
         <p class="eyebrow"><Logo size="sm" /> <span>· for travelers with somewhere to be</span></p>
         <h1 class="tagline">Learn how to speak like a local.</h1>
+        <div class="cta">
+          {/* One tap into the language you were last reading — no menu, no
+              second decision. The href and the label ship as the default
+              edition and are rewritten below if this browser has a choice
+              already. Picking a different language is still here, one step to
+              the side, which is where a thing you do once belongs. */}
+          <a class="button start-cta" id="start-cta" href={defaultStart.practice}>
+            <span class="start-cta-flag" aria-hidden="true" id="start-cta-flag">{defaultStart.flag}</span>
+            <span id="start-cta-label">{defaultStart.label}</span>
+          </a>
+          <LangMenu path="/practice" label="Another language" variant="secondary" />
+        </div>
+        <p class="hero-alt">
+          <a id="browse-cta" href={defaultStart.scenarios}>or read the scenarios first →</a>
+        </p>
         <p class="sub">
           Skip the textbook. This is the Spanish, Swedish and German you'll
           actually use: ordering the second round, flirting at the bar, arguing
           with a taxi driver, and catching the slang locals fire back at you.
         </p>
-        <div class="cta">
-          <LangMenu path="/scenarios" label="Start exploring" variant="primary" />
-          <LangMenu path="/practice" label="Try Practice" variant="secondary" />
-        </div>
         <p class="language-note">
           <strong>Three editions live now.</strong> Pick your language above.
           {
@@ -82,6 +117,35 @@ const marquee = editions.flatMap((e) => [
       </div>
     </div>
   </section>
+
+  {/* Inline and right here on purpose: the button is a few lines above, and a
+      bundled module script would run after first paint, so the label would be
+      seen saying "Spanish" before it corrected itself. */}
+  <script is:inline define:vars={{ startTargets, LAST_LOCALE_KEY }}>
+    (() => {
+      let slug;
+      try {
+        slug = window.localStorage.getItem(LAST_LOCALE_KEY);
+      } catch {
+        return; // Private mode. The default edition is already in the href.
+      }
+      // A stored value is a value from outside, and this one ends up in an
+      // href. Only a slug that names a real edition gets used; anything else
+      // leaves the default in place.
+      if (slug === null || !Object.prototype.hasOwnProperty.call(startTargets, slug)) return;
+
+      const target = startTargets[slug];
+      const start = document.getElementById("start-cta");
+      const browse = document.getElementById("browse-cta");
+      const label = document.getElementById("start-cta-label");
+      const flag = document.getElementById("start-cta-flag");
+
+      if (start) start.setAttribute("href", target.practice);
+      if (browse) browse.setAttribute("href", target.scenarios);
+      if (label) label.textContent = target.label;
+      if (flag) flag.textContent = target.flag;
+    })();
+  </script>
 
   <section class="marquee full-bleed" aria-hidden="true">
     <div class="marquee-track">
@@ -273,6 +337,33 @@ const marquee = editions.flatMap((e) => [
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .start-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .start-cta-flag {
+    font-size: 1.15em;
+    line-height: 1;
+  }
+
+  .hero-alt {
+    margin: 0.85rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .hero-alt a {
+    color: var(--color-ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hero-alt a:hover {
+    color: var(--color-primary-dark);
   }
 
   .hero-art {
@@ -323,13 +414,56 @@ const marquee = editions.flatMap((e) => [
   @media (max-width: 720px) {
     .hero-grid {
       grid-template-columns: 1fr;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
+    /* The whole point of the mobile hero: copy first.
+       `order: -1` used to put the paper plane above the headline, which spent
+       the top of every phone screen on decoration and pushed the button off it
+       — on a 390×844 screen the first thing you could tap was below the fold.
+       The art is a grid item and the lines below are flex items of .hero-copy,
+       so the two sets of `order` values never interact: this one only says
+       "after the copy". */
     .hero-art {
-      order: -1;
-      max-width: 220px;
-      justify-self: flex-start;
+      order: 1;
+      max-width: 180px;
+      justify-self: center;
+    }
+
+    /* Headline, then the button, then the pitch. The paragraph explaining what
+       this is matters to somebody deciding; it does not need to come before the
+       way in, and 130px of it between the two is what put the button off the
+       screen. */
+    .eyebrow {
+      order: 1;
+      margin-bottom: 0.5rem;
+    }
+    .tagline {
+      order: 2;
+      /* 15ch broke "Learn how to speak like a local." over three lines at phone
+         width. Two lines is 42px back. */
+      font-size: clamp(2.05rem, 9vw, 2.6rem);
+      max-width: 20ch;
+      margin: 0 0 0.9rem;
+    }
+    .cta {
+      order: 3;
+    }
+    .hero-alt {
+      order: 4;
+    }
+    .sub {
+      order: 5;
+      margin: 1.25rem 0 0;
+      font-size: 1.05rem;
+    }
+    .language-note {
+      order: 6;
+    }
+
+    .hero {
+      /* Every rem above the fold is one the button pays for. */
+      padding: 1.5rem 0 2.25rem;
     }
   }
 
@@ -415,10 +549,15 @@ const marquee = editions.flatMap((e) => [
   @media (max-width: 480px) {
     .cta {
       flex-direction: column;
+      align-items: stretch;
     }
 
     .button {
       text-align: center;
+    }
+
+    .start-cta {
+      justify-content: center;
     }
   }
 

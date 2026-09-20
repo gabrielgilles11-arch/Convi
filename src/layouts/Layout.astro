@@ -1,7 +1,7 @@
 ---
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
-import { localePath, localeFromSlug, DEFAULT_LOCALE, type Locale } from "../lib/content";
+import { localePath, localeFromSlug, getLocaleInfo, DEFAULT_LOCALE, type Locale } from "../lib/content";
 
 interface Props {
   title?: string;
@@ -36,6 +36,11 @@ const navPath = (path: string) => localePath(navLocale, path);
 // there even though their nav links resolve to the default edition.
 const navCurrent = locale as Locale | undefined;
 
+// The edition this page belongs to, as a URL slug, for the browser to remember.
+// Spanish's slug is the empty string, so the attribute is rendered empty rather
+// than omitted — present-and-empty is "Spanish", absent is "no edition here".
+const localeSlug = navCurrent ? getLocaleInfo(navCurrent).slug : undefined;
+
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL("/og-image.png", Astro.site);
 
@@ -65,7 +70,7 @@ const structuredData = {
 };
 ---
 
-<html lang="en" data-locale={locale}>
+<html lang="en" data-locale={locale} data-locale-slug={localeSlug}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -148,7 +153,16 @@ const structuredData = {
         before anything is written. See src/lib/stats.ts. */}
     <script>
       import { recordView } from "../lib/usage";
+      import { rememberLocaleSlug } from "../lib/lastLocale";
       recordView();
+
+      // Remember which edition this was, so the home page's one button can open
+      // it again next time. Read off the document rather than passed in: this
+      // script is bundled once for every page, so it cannot be templated.
+      // `undefined` means a page outside any edition (home, privacy, terms) —
+      // those must not overwrite a real choice, and "" is Spanish, not nothing.
+      const slug = document.documentElement.dataset.localeSlug;
+      if (slug !== undefined) rememberLocaleSlug(slug);
     </script>
   </body>
 </html>
