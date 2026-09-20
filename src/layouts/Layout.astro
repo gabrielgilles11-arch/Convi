@@ -450,6 +450,39 @@ const structuredData = {
     }
   }
 
+  /* Brand, nav and CTA do not fit on one line at phone width, and
+     space-between plus wrap put each of them on a line of its own: three rows,
+     145px of a 390px screen, before any page had said anything. The brand takes
+     the first row outright and the other two share the second. */
+  @media (max-width: 560px) {
+    .site-header .container {
+      padding: 0.6rem 1.25rem;
+      row-gap: 0.35rem;
+    }
+
+    .site-header .brand-link {
+      flex: 1 0 100%;
+    }
+
+    .site-header nav {
+      margin-left: 0;
+      margin-right: auto;
+      gap: 0.85rem;
+    }
+
+    /* The nav links are LangMenu <summary>s, not <a>s, so the 0.95rem rule
+       above does not reach them and they were inheriting the 17px body size —
+       which is the 40px that stopped the nav and the CTA sharing a row. */
+    .site-header nav summary {
+      font-size: 0.9rem;
+    }
+
+    .nav-cta {
+      padding: 0.45rem 0.95rem;
+      font-size: 0.8rem;
+    }
+  }
+
   a {
     color: inherit;
   }
