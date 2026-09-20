@@ -8,7 +8,7 @@ import Layout from "../layouts/Layout.astro";
 >
   <article class="legal">
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: 11 September 2026</p>
+    <p class="updated">Last updated: 20 September 2026</p>
 
     <p>
       This Privacy Policy explains what information Try Convi ("we", "us")
@@ -19,9 +19,25 @@ import Layout from "../layouts/Layout.astro";
     <h2>Information we collect</h2>
     <ul>
       <li>
-        <strong>Email address.</strong> Only if you choose to give us one, so we
-        can tell you when the app is ready. It is never required to use
-        anything on the site.
+        <strong>Email address.</strong> Only if you choose to give us one, and
+        only for the thing you gave it for — either to be told when the app is
+        ready, or to be reminded to practise. It is never required to use
+        anything on the site, and we store it so that we can actually do what
+        you asked rather than losing it the moment a send fails.
+      </li>
+      <li>
+        <strong>Reminders, if you ask for them.</strong> If you turn on
+        reminders after clearing a section, we keep one small record: a
+        notification address from your browser or your email address, which
+        language you were practising, when your browser last opened the site,
+        and how many reminders we have sent since. It is filed under a random
+        identifier your own browser generates — there is no name and no account
+        attached to it, and none of your practice progress is in it. We send at
+        most four reminders before stopping on our own, and every one of them
+        has a one-click way out that needs no login. That identifier is also
+        what a reminder needs in order to know you have been away: while
+        reminders are on, opening any page on the site tells us "this browser
+        was here today", and nothing else.
       </li>
       <li>
         <strong>Usage analytics.</strong> We use Vercel Web Analytics, which
@@ -53,10 +69,12 @@ import Layout from "../layouts/Layout.astro";
       <li>
         <strong>Local storage.</strong> Your practice progress — which stages
         you've cleared, your streak, which lines you got wrong — is kept in your
-        own browser, along with your sound and voice settings. None of it is
-        ever sent to us; the only thing that leaves your device is the anonymous
-        "one more round was finished" tick described above, which says which
-        language deck it was and nothing else.
+        own browser, along with your sound and voice settings and which edition
+        you read last. None of it is ever sent to us. The only things that leave
+        your device are the anonymous "one more round was finished" tick
+        described above, which says which language deck it was and nothing else,
+        and — if and only if you turned reminders on — the "this browser was
+        here today" ping described above.
       </li>
       <li>
         <strong>Technical data.</strong> We briefly process IP addresses to
@@ -69,6 +87,10 @@ import Layout from "../layouts/Layout.astro";
     <h2>How we use your information</h2>
     <ul>
       <li>To send you product updates and respond to your messages.</li>
+      <li>
+        To send the practice reminders you asked for, and to stop sending them
+        when you come back, when you ask us to, or after four.
+      </li>
       <li>To understand overall traffic and improve the site.</li>
       <li>To see how much the site and the practice section are actually used.</li>
       <li>To protect the service from abuse.</li>
@@ -91,7 +113,9 @@ import Layout from "../layouts/Layout.astro";
     <h2>Your rights</h2>
     <p>
       You can ask us to access or delete the personal data we hold about you at
-      any time. Just email us and we'll take care of it.
+      any time. Just email us and we'll take care of it. If you turned reminders
+      on, the link at the bottom of any reminder deletes that record outright,
+      immediately, without asking you anything.
     </p>
 
     <h2>Contact</h2>

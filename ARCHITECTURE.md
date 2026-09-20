@@ -69,6 +69,31 @@ then `none`. A small stage gives up guards rather than rendering a two-option
 then makes a repair pass, because taking the first question that fits can
 strand a twin at the end next to the one question it cannot follow.
 
+## Talk: the conversations were already written
+
+`/api/conversations` serves a third thing built from the same JSON. A dialogue
+subsection — "Taxi / rideshare", "At the door" — is already eight consecutive
+beats in one place: the line that opens each one, the lines you could answer
+with, and what comes back. Walking it needs no model, and the only thing the
+JSON does not say in a single field is which of those lines is whose.
+
+`speaker` decides that, and resolving it is the whole of `conversations.ts`:
+
+```
+speaker: "them"   their question opens  →  answers are yours  →  likelyReply comes back
+speaker: "you"    the question is yours →  answers are theirs →  likelyReply follows
+```
+
+The consequence is stated on the screen rather than hidden: **the conversation
+does not branch.** Picking the bolder of two replies changes how you sound, not
+what they say next, because the content has one next. Generating the others
+would mean teaching unreviewed lines as if they were authored, which is the
+trade the whole content model exists to refuse.
+
+Only `exchanges` become conversations. `scenes` are separate moments written to
+put one word each in context, so a transcript made of them would change the
+subject every line.
+
 ## Progress, and what stays on the device
 
 Everything a learner accumulates — stages cleared, streak, mistake queue —
@@ -78,6 +103,8 @@ there is nothing to attach it to and no reason to want it.
 The consequence is honest rather than hidden: clearing site data loses your
 progress. For a free site with no login, that beat asking people to make an
 account so a server could hold a number for them.
+
+One thing now leaves, and only for people who ask for it: see **Coming back**.
 
 ## Counting without identifying
 
@@ -101,6 +128,52 @@ part.
 
 Rounds are the one signal the device reports about itself, and only as a
 milestone crossed — `1`, `5`, `10`, `25`, `50` — once ever.
+
+## Coming back
+
+A reminder is a message sent to somebody who is not here, which is the one
+thing the design above cannot do: it needs to know how to reach them, and that
+they are away. Neither fact fits in their own browser.
+
+So reminders, and only reminders, store something per person:
+
+```
+opt-in  ──▶ convi:rem:sub:<id>   push endpoint or email · edition · lastSeen
+                                 lastSentAt · nudges sent since lastSeen
+        ──▶ convi:rem:index      sorted set, scored by lastSeen
+```
+
+`<id>` is a UUID the browser generates. It is the only handle on the record and
+nothing else is attached to it — no name, no progress, no answer history — and
+because it is unguessable it can serve as the authorisation on an unsubscribe
+link, which is how somebody opts out of a site they have no account on.
+
+**Can we actually tell they stopped using it?** Yes, with one honest limit.
+Every page fires a heartbeat — the reminder id, nothing else, at most once per
+local day — so `lastSeen` is genuinely "last visit", not "last finished round";
+somebody who reads scenarios all week is not away. The limit is that it is per
+browser: clear site data and the id goes with it, so the heartbeats stop while
+the visits continue. That is what the four-nudge cap and the one-click
+unsubscribe in every message are for.
+
+The heartbeat is deliberately **not** folded into the anonymous view beacon.
+That one carries nothing and must stay that way — attaching a subscriber id to
+the site counters would turn them into per-person analytics, which is the thing
+`visitor.ts` exists to avoid.
+
+`reminderPlan.ts` holds the decision and is pure, so it is the part under test:
+four rungs at 2, 4, 8 and 16 days, never two inside 48 hours, reset by a single
+visit, and the last one says out loud that it is the last. A nightly Vercel cron
+asks it who is due and sends what it says. Push first where there is one — it
+arrives now and spends no inbox goodwill — with email as the fallback, never a
+second copy.
+
+| Missing | What happens |
+| :--- | :--- |
+| No Redis | The opt-in card is never shown. Nothing is taken that cannot be stored. |
+| No VAPID keys | Push is not offered; email still is. |
+| No `CRON_SECRET` | `/api/reminders/run` is a 404. The one endpoint that can send mail is the one that must not be guessable. |
+| No `ResendAPI` | Nudges are planned and not sent. The ladder does not advance on a failure. |
 
 ## Dormant payments
 
@@ -133,5 +206,12 @@ read, is not.
 - **No FAQ schema.** Google deprecated FAQ rich results for most sites in 2026;
   emitting it now would be cargo cult.
 - **No component library.** One designer, one product, a handful of screens.
-- **No database.** Nothing needs to outlive a visit except counters, and
-  counters are integers.
+- **No offline cache.** There is a service worker, but only so that a push
+  notification has something to be handled by when the tab is closed. Caching a
+  three-edition content site would mean deciding what to keep and when it is
+  stale, and a learner reading a phrase that was corrected a month ago is a
+  worse failure than a page that needs a connection.
+- **No database.** Nothing needs to outlive a visit except counters, the signup
+  list, and reminder subscriptions — all of which are integers, a sorted set of
+  addresses, and one small record per person who asked to be reminded. None of
+  it is a schema, and none of it is on the read path of a page.

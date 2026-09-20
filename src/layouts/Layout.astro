@@ -154,6 +154,8 @@ const structuredData = {
     <script>
       import { recordView } from "../lib/usage";
       import { rememberLocaleSlug } from "../lib/lastLocale";
+      import { reminderHeartbeat } from "../lib/reminderClient";
+      import { currentDayStreak } from "../lib/progress";
       recordView();
 
       // Remember which edition this was, so the home page's one button can open
@@ -163,6 +165,19 @@ const structuredData = {
       // those must not overwrite a real choice, and "" is Spanish, not nothing.
       const slug = document.documentElement.dataset.localeSlug;
       if (slug !== undefined) rememberLocaleSlug(slug);
+
+      // "They are here", for anybody who asked to be reminded — a no-op for
+      // everyone else, which is almost everyone. It runs from every page and not
+      // only from practice, because not finishing a round is not the same thing
+      // as not turning up, and it is what makes "they stopped using the site"
+      // something the sender can actually check rather than assume. Separate
+      // from the view beacon above on purpose: that one carries nothing, and
+      // attaching a subscriber id to it would turn site counters into
+      // per-person analytics.
+      reminderHeartbeat({
+        locale: document.documentElement.dataset.locale,
+        streak: currentDayStreak(),
+      });
     </script>
   </body>
 </html>
