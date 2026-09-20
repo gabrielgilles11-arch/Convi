@@ -2,7 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
-import { LOCALES, getCategories, localePath, DEFAULT_LOCALE } from "../lib/content";
+import {
+  LOCALES,
+  countCategoryItems,
+  getCategories,
+  localePath,
+  DEFAULT_LOCALE,
+} from "../lib/content";
 import { LAST_LOCALE_KEY } from "../lib/lastLocale";
 
 // Counts come from the content files so this copy can never drift out of date
@@ -50,9 +56,29 @@ const startTargets = Object.fromEntries(
 // What the page ships with, for everyone arriving for the first time and for
 // anyone with JavaScript off: the default edition, already a working link.
 const defaultStart = startTargets[LOCALES.find((l) => l.locale === DEFAULT_LOCALE)!.slug];
+
+/**
+ * The home page's own title and description.
+ *
+ * It had neither, so it inherited the layout's fallback and went to search as
+ * "Try Convi" — which names a site nobody has heard of and says nothing about
+ * what is on it. Every other page on the site carries a search-intent title
+ * built from its content; this one, the most linked page there is, was the
+ * exception.
+ *
+ * The counts come from the content files for the same reason the copy below
+ * does: a number typed into a meta tag is a number that goes stale silently.
+ */
+const lineCount = editions.reduce(
+  (n, e) => n + getCategories(e.locale).reduce((m, c) => m + countCategoryItems(c), 0),
+  0
+);
+
+const pageTitle = "Try Convi — real Spanish, Swedish and German phrases for travellers";
+const pageDescription = `The Spanish, Swedish and German people actually speak — ordering, taxis, slang, nightlife — with what they'll say back. ${categoryCount} free scenario packs and ${lineCount} lines. No account, no paywall.`;
 ---
 
-<Layout>
+<Layout title={pageTitle} description={pageDescription}>
   <section class="hero full-bleed">
     <div class="container hero-grid">
       <div class="hero-copy reveal">
@@ -170,6 +196,7 @@ const defaultStart = startTargets[LOCALES.find((l) => l.locale === DEFAULT_LOCAL
         Chapter 3. Three independent editions, in Spanish, Swedish and German.
         Read every scenario, then drill them in practice mode until they stick
         — all of it free, no account needed.
+        <a class="explainer-more" href="/about">What this is, and every section →</a>
       </p>
       <div class="tier-grid reveal">
         <div class="tier-card">
@@ -623,6 +650,18 @@ const defaultStart = startTargets[LOCALES.find((l) => l.locale === DEFAULT_LOCAL
     font-size: 1.05rem;
     max-width: 56ch;
     margin: 0 0 2.5rem;
+  }
+
+  .explainer-more {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .explainer-more:hover {
+    text-decoration: underline;
   }
 
   .tier-grid {
