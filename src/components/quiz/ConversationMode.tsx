@@ -51,6 +51,17 @@ interface Said {
   close: boolean;
 }
 
+/**
+ * How long a settled beat sits before the next one opens.
+ *
+ * The floor is for a device with the voice off, where nothing is spoken and
+ * the reply has to be readable before it scrolls. The ceiling is the safety
+ * net: there is no button any more, so a clip that never reports finishing
+ * must not be able to end the conversation there.
+ */
+const READ_TIME = 1400;
+const MAX_WAIT = 7000;
+
 /** The line they said, in English, as the signal for where to go next. */
 function intentOf(said: Said | undefined): string | null {
   if (!said) return null;
@@ -317,8 +328,16 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
   // Openers are announced once each. Without this, any re-render that touches
   // the effect's inputs would start the line again mid-sentence.
   const announced = useRef<Set<number>>(new Set());
+  /**
+   * Which walk-through a pending advance belongs to. Restarting, leaving or
+   * opening another conversation moves it on, and a beat still waiting to open
+   * under the old number drops out rather than arriving in the middle of
+   * whatever is on screen now.
+   */
+  const runId = useRef(0);
 
   function reset() {
+    runId.current++;
     setRoute([0]);
     setSkipped([]);
     setSaid({});
@@ -333,9 +352,13 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
   useEffect(reset, [conversation.id, turns]);
 
   // A line still being read while the next beat opens is worse than not
-  // hearing it at all — the same rule the round screens follow.
+  // hearing it at all — the same rule the round screens follow. Leaving also
+  // abandons any beat that was waiting its turn to open.
   useEffect(() => {
-    return () => stopSpeaking();
+    return () => {
+      runId.current++;
+      stopSpeaking();
+    };
   }, [conversation.id]);
 
   /**
@@ -386,7 +409,7 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
     // point of having held it. The corrected line is the one spoken where the
     // answer was wrong — it is the line worth copying either way.
     const reply = turns[step]?.theirReply;
-    void speakInTurn(
+    const spoken = speakInTurn(
       locale,
       [
         { audioId: entry.line.audioId, text: entry.line.source },
@@ -394,6 +417,8 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
       ],
       "practice"
     );
+
+    carryOn(step, entry, spoken);
   }
 
   function submit(event: SubmitEvent) {
@@ -408,19 +433,38 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
     settle({ correct: false, line: current.yourLines[0]!, close: false }, null);
   }
 
-  function advance() {
-    const next = nextBeat(turns, step, intentOf(said[step]), skipped.length);
-    if (!next) {
-      setDone(true);
-      onFinish(conversation.id);
-      stopSpeaking();
-      return;
-    }
-    if (next.skipped.length > 0) setSkipped((prev) => [...prev, ...next.skipped]);
-    setRoute((prev) => [...prev, next.index]);
-  }
+  /**
+   * Moving on, without being asked to.
+   *
+   * Nobody taps "next" in a conversation. The beat settles, the exchange is
+   * heard, and the next thing is said to you — so the wait is however long the
+   * two lines take to speak, floored so a silent device still leaves time to
+   * read them and capped so a promise that never resolves cannot strand a
+   * conversation that now has no button in it.
+   */
+  function carryOn(from: number, entry: Said, spoken: Promise<void>) {
+    const run = ++runId.current;
+    const next = nextBeat(turns, from, intentOf(entry), skipped.length);
 
-  const lastBeat = nextBeat(turns, step, intentOf(said[step]), skipped.length) === null;
+    const read = new Promise<void>((resolve) => {
+      window.setTimeout(resolve, READ_TIME);
+    });
+    const ceiling = new Promise<void>((resolve) => {
+      window.setTimeout(resolve, MAX_WAIT);
+    });
+
+    void Promise.race([Promise.all([spoken, read]), ceiling]).then(() => {
+      if (run !== runId.current) return;
+      if (!next) {
+        stopSpeaking();
+        setDone(true);
+        onFinish(conversation.id);
+        return;
+      }
+      if (next.skipped.length > 0) setSkipped((prev) => [...prev, ...next.skipped]);
+      setRoute((prev) => [...prev, next.index]);
+    });
+  }
 
   return (
     <div className="convo-mode">
@@ -541,12 +585,17 @@ export default function ConversationMode({ conversation, locale, onBack, onFinis
           </div>
         </div>
       ) : (
+        // Nothing to press. The beat settles, the exchange plays, and the next
+        // line arrives on its own, the way a conversation does.
         settled && (
-          <div className="controls convo-controls">
-            <button type="button" className="review-primary" onClick={advance}>
-              {lastBeat ? "Finish" : "Next line"}
-            </button>
-          </div>
+          <p className="convo-waiting" role="status" aria-live="polite">
+            <span aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="sr-only">Waiting for the next line</span>
+          </p>
         )
       )}
     </div>
