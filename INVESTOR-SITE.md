@@ -18,11 +18,23 @@ last session's questions.
   opens, you produce a line, they come back. Built from `content/es-ES.json` at
   build time (`src/lib/heroDemo.ts`), so no Spanish is retyped into a template
   and a content edit that breaks a beat fails `npm test` rather than the page.
-- *There is a person on the site.* A founder block above the email capture,
-  signed Gabriel Gilles. The paragraph claims only what the repository can
-  back: one author, the counts read from the content files, no account and no
-  card. **The story of why he started it is his to write** — swap the paragraph
-  for his own words before the send.
+- *There is a person on the site.* A founder block on `/about`, under "Who
+  made this", in the founder's own words: 40-plus countries, three languages,
+  a dual degree in Business and Global Affairs with a minor in German from the
+  School of Foreign Service at Georgetown. Placed there rather than on the home
+  page at his request, one click from every page via the footer, which is where
+  somebody who has decided they want to know who wrote this goes looking.
+- *Counts are said, not recited.* Line counts read "over 500" rather than
+  "943" in every sentence on the site (`roughLineCount`). Still computed from
+  the content files, so still undriftable; rounded down, so never larger than
+  what is there. The exact per-section figures stay in the `/about` section
+  index, where they are a directory rather than a claim.
+- *The page fills the window.* The site was a 960px column with 384px of empty
+  page either side of it on a 16-inch laptop, and `main` inside that was 720px.
+  Widths are now three tokens in `Layout.astro` (`--shell-wide` 1240,
+  `--shell-text` 800, `--shell-pad` a clamp from 16px to 40px) rather than five
+  pixel numbers that disagreed. Verified from 320px to 2560px: no horizontal
+  overflow at any width, and the hero, header and footer share one left edge.
 
 **Shipped earlier.** The welcome card is gone (`51aa4bd`). A first-time visitor lands
 on the practice path with the first stone one tap away, verified on a clean
@@ -38,8 +50,7 @@ on the progress panel, and the second set of scoring rules TestMode ran under.
 1. Which three figures from `/stats` you are willing to publish (rounds
    practised, visitors, countries). With those, edit 3, the live proof strip,
    goes in in one pass.
-2. Your own words for the founder paragraph. What is there now is true and
-   flat; it is a placeholder for a sentence only you can write.
+2. Nothing else. The founder paragraph is now his own.
 
 ## Measured against
 
@@ -112,12 +123,12 @@ The numbers need reading and three of them need publishing.
    buy" three. The Gumroad flow and entitlement checks are built and switched
    off (`PAYWALL_ENABLED` in `src/lib/paywall.ts`). One honest line about the
    intended model beats silence.
-7. **A founder line.** *Done, pending his words.* Creandum and Sequoia both
-   weight team heavily, and the ask is to back a person. The block is on the
-   home page above the email capture; the paragraph in it is placeholder prose
-   that only states what the repository can prove. It should be replaced with
-   the founder's own account of why he started it, which is the part that
-   actually does the work with this reader.
+7. **A founder line.** *Done.* Creandum and Sequoia both weight team heavily,
+   and the ask is to back a person. It lives on `/about` rather than the home
+   page, by the founder's call: a visitor landing on the home page wants the
+   product, and a bio between them and it is in the way. For the investor send
+   this means linking `/about` directly rather than assuming they scroll to
+   the footer.
 
 ## The scalable process
 
@@ -137,10 +148,14 @@ between a one-off review and a standard.
 
 - Deploys from `main`; a push there is a production build. See `AGENTS.md`.
 - `npm test && npx astro check && npm run build` before any push to `main`.
-- 228 tests currently pass.
+- 231 tests currently pass.
 - The paywall is off, so every gate and purchase path is dormant, not deleted.
 - Design pass already shipped: WCAG AA contrast across the site, 44px tap
   targets, a 13px type floor (12px for uppercase tracked labels), and focus
   mode that drops the marketing header during a round.
 - Still open from the design review, deliberately not done: dark mode
   (scrapped by request), onboarding, and the reward economy.
+- Found while widening the layout, not fixed because it is nobody's ask yet:
+  the header's two nav dropdowns are 22px tall and the `/about` section index
+  links are 27px, against the 44px the design pass set for tap targets. Both
+  predate this work.
