@@ -43,6 +43,9 @@ const demo = getHeroDemo();
 const STEP_MS = { them: 1500, you: 1300, reply: 1800 };
 const HOLD_MS = 2600;
 
+/** Steps in a beat: their line, yours, their comeback. */
+const PER_BEAT = 3;
+
 const delays = demo.beats.flatMap(() => [STEP_MS.them, STEP_MS.you, STEP_MS.reply]);
 const lastStep = delays.length - 1;
 ---
@@ -57,7 +60,7 @@ const lastStep = delays.length - 1;
   <ol class="demo-feed">
     {
       demo.beats.map((beat, i) => (
-        <li class="demo-beat">
+        <li class="demo-beat" data-beat={i}>
           <p class="demo-situation demo-step" data-step={i * 3}>
             {beat.situation}
           </p>
@@ -87,12 +90,13 @@ const lastStep = delays.length - 1;
     hides it to start the loop. Left to a bundled module it would run after
     first paint, so the whole conversation would be seen at once and then blink
     out. */}
-<script is:inline define:vars={{ delays, lastStep, HOLD_MS }}>
+<script is:inline define:vars={{ delays, lastStep, HOLD_MS, PER_BEAT }}>
   (() => {
     const root = document.querySelector("[data-demo]");
     if (!root) return;
 
     const steps = Array.from(root.querySelectorAll("[data-step]"));
+    const beats = Array.from(root.querySelectorAll("[data-beat]"));
     if (steps.length === 0 || lastStep < 0) return;
 
     // How long the finished conversation sits blank before it starts over, and
@@ -110,10 +114,26 @@ const lastStep = delays.length - 1;
     let started = false;
     let onScreen = false;
 
-    /** Everything up to and including `upTo`. `-1` is an empty card. */
+    /**
+     * The conversation as far as `upTo`. `-1` is an empty card.
+     *
+     * Only the beat that step belongs to is on screen. Stacking every beat and
+     * revealing down the card meant reserving height for all of them, so the
+     * hero opened on one line of Spanish and four hundred pixels of nothing,
+     * and sat that way for a second and a half of every loop. One beat at a
+     * time in one place is a third of the height and never empty, and it costs
+     * nothing: the beats are in the same grid cell, so the card is still
+     * exactly as tall on the first frame as on the last.
+     */
     const show = (upTo) => {
+      const active = upTo < 0 ? -1 : Math.floor(upTo / PER_BEAT);
+
+      for (const el of beats) {
+        el.classList.toggle("is-in", Number(el.dataset.beat) === active);
+      }
       for (const el of steps) {
-        el.classList.toggle("is-in", Number(el.dataset.step) <= upTo);
+        const n = Number(el.dataset.step);
+        el.classList.toggle("is-in", n <= upTo && Math.floor(n / PER_BEAT) === active);
       }
     };
 
@@ -319,8 +339,26 @@ const lastStep = delays.length - 1;
     color: var(--color-ink-soft);
   }
 
-  /* Only once the script opts in. Without it every step stays as served, which
-     is visible — see the note at the top of this file. */
+  /* Everything below is only once the script opts in. Without it the card
+     stays as served: every beat listed down the page, every line visible. That
+     is the no-JS and reduced-motion rendering, and it has to be a list rather
+     than a stack or the beats would sit on top of each other. */
+  .demo-ready .demo-feed {
+    display: grid;
+  }
+
+  /* One cell, so the beats overlap and the card is as tall as the tallest of
+     them rather than the sum. */
+  .demo-ready .demo-beat {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .demo-ready .demo-beat.is-in {
+    opacity: 1;
+  }
+
   .demo-ready .demo-step {
     opacity: 0;
     transform: translateY(6px);
@@ -333,8 +371,14 @@ const lastStep = delays.length - 1;
   }
 
   /* Belt to the script's braces. If anything ever stops the media query being
-     read in JavaScript, the steps still never move. */
+     read in JavaScript, the card falls back to the list: nothing stacked,
+     nothing hidden, nothing moving. */
   @media (prefers-reduced-motion: reduce) {
+    .demo-ready .demo-feed {
+      display: flex;
+    }
+
+    .demo-ready .demo-beat,
     .demo-ready .demo-step {
       opacity: 1;
       transform: none;

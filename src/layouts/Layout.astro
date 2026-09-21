@@ -215,17 +215,25 @@ const structuredData = {
      * 40px on a desktop. Putting a vw term in the caps as well was double
      * counting, and cost a 320px screen six pixels of the only thing on it.
      *
-     * --shell-wide  bands that are mostly layout: the hero, the section grids,
-     *               the header and footer that have to line up with them.
+     * --shell-wide  bands that are mostly layout: the hero and the section
+     *               grids.
      * --shell-text  anything that is a paragraph somebody reads top to bottom.
      *               Deliberately not --shell-wide: a line of prose 1,200px
      *               long is harder to read, not easier, and the fix for a
      *               cramped page is never a 130-character measure.
      * --shell-pad   the side gutter, never below the 16px the design pass set.
+     *
+     * The header and footer take neither cap. They are the frame rather than
+     * the content: the wordmark belongs at the edge of the window, not 320px
+     * into it behind a margin that exists to keep sentences readable. So they
+     * run the full width and the gutter alone holds them off the edge, which
+     * is the usual arrangement and the one that reads as a site rather than a
+     * column. The bands below stay centred and capped, because that is what a
+     * line of text needs and a navigation bar does not.
      */
-    --shell-wide: 1240px;
+    --shell-wide: 1600px;
     --shell-text: 800px;
-    --shell-pad: clamp(1rem, 3vw, 2.5rem);
+    --shell-pad: clamp(1rem, 3vw, 3rem);
 
     --color-bg: #fff6ec;
     --color-ink: #241610;
@@ -345,7 +353,7 @@ const structuredData = {
   main {
     max-width: var(--shell-text);
     margin: 0 auto;
-    padding: 1.5rem var(--shell-pad) 4rem;
+    padding: clamp(1.5rem, 3vw, 2.75rem) var(--shell-pad) clamp(4rem, 6vw, 6rem);
   }
 
   /*
@@ -403,8 +411,8 @@ const structuredData = {
     justify-content: space-between;
     gap: 0.75rem;
     flex-wrap: wrap;
-    max-width: var(--shell-wide);
-    padding: 0.85rem var(--shell-pad);
+    max-width: none;
+    padding: 0.9rem var(--shell-pad);
   }
 
   .site-header .brand-link {
@@ -462,14 +470,20 @@ const structuredData = {
   }
 
   .site-footer .container {
-    max-width: var(--shell-wide);
-    padding: 3rem var(--shell-pad) 2rem;
+    max-width: none;
+    padding: clamp(2.75rem, 5vw, 4.5rem) var(--shell-pad) 2rem;
   }
 
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+    /* Tracks stop growing at the point a column stops reading as one; past
+       that the window's extra width goes into the gap instead. */
+    gap: clamp(2rem, 4vw, 5rem);
+  }
+
+  .footer-grid > * {
+    max-width: 34rem;
   }
 
   .footer-tagline {
