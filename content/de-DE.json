@@ -53,13 +53,13 @@
               "situation": {
                 "en": "In a Munich beer garden, they ask what size beer you want."
               },
-              "question": { "es": "Maß oder Halbe?", "en": "Litre or half-litre?" },
+              "question": { "es": "Maß oder Halbe?", "en": "Liter or half-liter?" },
               "answers": [
-                { "es": "Eine Maß, bitte.", "en": "A litre, please (Bayern only)." },
-                { "es": "Eine Halbe, bitte.", "en": "A half-litre, please." }
+                { "es": "Eine Maß, bitte.", "en": "A liter, please (Bayern only)." },
+                { "es": "Eine Halbe, bitte.", "en": "A half-liter, please." }
               ],
               "likelyReply": { "es": "Gute Wahl.", "en": "Good choice." },
-              "notes": "Size is its own question, asked after you've said what you want and whether it's draft. It's a Bavarian one: a Maß is the litre stein, a Halbe the half-litre. Order a Maß in Hamburg and you'll get a look. Die Maß is feminine, so it's eine Maß, not einen.",
+              "notes": "Size is its own question, asked after you've said what you want and whether it's draft. It's a Bavarian one: a Maß is the liter stein, a Halbe the half-liter. Order a Maß in Hamburg and you'll get a look. Die Maß is feminine, so it's eine Maß, not einen.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -252,7 +252,7 @@
             {
               "id": "de-starting-convo-08",
               "speaker": "you",
-              "situation": { "en": "You've been chatting a while and realise you never said your name." },
+              "situation": { "en": "You've been chatting a while and realize you never said your name." },
               "question": { "es": "Ich bin übrigens [NAME].", "en": "I'm [NAME], by the way." },
               "answers": [
                 { "es": "Freut mich, ich bin [NAME].", "en": "Nice to meet you, I'm [NAME]." }
@@ -553,7 +553,7 @@
             { "id": "de-slang-13", "practice": false, "es": "ich schwöre", "en": "I swear.", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "de-slang-14", "es": "Bist du lost?", "en": "Are you clueless? Can come across as rude.", "difficulty": "hard", "young": true, "quizQuestions": [] },
             { "id": "de-slang-28", "practice": false, "es": "Genau.", "en": "Exactly — and, just as often, pure filler while they think.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-29", "practice": false, "es": "Ach so!", "en": "Ohh, I see — the realisation noise.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-29", "practice": false, "es": "Ach so!", "en": "Ohh, I see — the realization noise.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-30", "practice": false, "es": "Echt jetzt?", "en": "Seriously?", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-31", "practice": false, "es": "Quatsch!", "en": "Nonsense! / rubbish!", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-32", "es": "Jein", "en": "Yes and no — ja plus nein, and a real dictionary word.", "difficulty": "medium", "quizQuestions": [] }
@@ -598,7 +598,7 @@
                 { "es": "Ach so!", "en": "Ohh, I see!" }
               ],
               "likelyReply": { "es": "Ja, hier ist sonntags alles zu.", "en": "Yes — everything's shut here on Sundays." },
-              "notes": "The realisation noise, and one of the first things you'll catch yourself saying without deciding to.",
+              "notes": "The realization noise, and one of the first things you'll catch yourself saying without deciding to.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -637,7 +637,7 @@
     {
       "id": "de-bayern-slang",
       "order": 5,
-      "title": "Bayern slang / Bavarian flavour",
+      "title": "Bayern slang / Bavarian flavor",
       "icon": "🥨",
       "type": "phrasebook",
       "description": "Identity language for Bavaria and parts of Austria",
@@ -761,7 +761,7 @@
         },
         {
           "id": "de-bayern-flavor",
-          "title": "Bavaria flavour words",
+          "title": "Bavaria flavor words",
           "phrases": [
             {
               "id": "de-bayern-04",
@@ -889,7 +889,7 @@
             { "id": "de-bayern-19", "es": "Mia san mia.", "en": "We are who we are — Bavaria's unofficial motto.", "difficulty": "medium", "region": "bayerisch", "quizQuestions": [] },
             { "id": "de-bayern-20", "es": "a Brotzeit", "en": "The bread-and-cold-cuts meal — a fixed part of the day, not a snack.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
             { "id": "de-bayern-21", "practice": false, "es": "a Semmel", "en": "A bread roll — a Brötchen everywhere north of here.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
-            { "id": "de-bayern-22", "practice": false, "es": "a Hoibe", "en": "A half-litre of beer — the everyday order, not the tourist litre.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
+            { "id": "de-bayern-22", "practice": false, "es": "a Hoibe", "en": "A half-liter of beer — the everyday order, not the tourist liter.", "difficulty": "easy", "region": "bayerisch", "quizQuestions": [] },
             { "id": "de-bayern-23", "practice": false, "es": "a Radler", "en": "Beer with lemonade — orderable anywhere in Bayern without comment.", "difficulty": "easy", "region": "bayern", "quizQuestions": [] },
             {
               "id": "de-bayern-24",
@@ -905,7 +905,7 @@
               "id": "de-bayern-sc-11",
               "teaches": "de-bayern-06",
               "speaker": "them",
-              "situation": { "en": "You've apologised twice for being forty cents short and they've stopped listening." },
+              "situation": { "en": "You've apologized twice for being forty cents short and they've stopped listening." },
               "question": { "es": "Es fehlen vierzig Cent.", "en": "You're forty cents short." },
               "answers": [
                 { "es": "Passt scho.", "en": "It's fine." }
@@ -951,12 +951,12 @@
               "teaches": "de-bayern-22",
               "speaker": "them",
               "situation": { "en": "You're in a beer garden and want the size the locals are drinking." },
-              "question": { "es": "A Maß?", "en": "A litre?" },
+              "question": { "es": "A Maß?", "en": "A liter?" },
               "answers": [
                 { "es": "Na, a Hoibe bitte.", "en": "No — a half, please." }
               ],
               "likelyReply": { "es": "Kommt sofort.", "en": "Coming right up." },
-              "notes": "A Hoibe is the half-litre, and it is what most people at the table are actually drinking. The litre Maß is for the Wiesn and for tourists.",
+              "notes": "A Hoibe is the half-liter, and it is what most people at the table are actually drinking. The liter Maß is for the Wiesn and for tourists.",
               "difficulty": "easy",
               "region": "bayerisch",
               "quizQuestions": []
@@ -1218,7 +1218,7 @@
               "id": "de-flirt-sc-02",
               "teaches": "de-flirt-02",
               "speaker": "them",
-              "situation": { "en": "They get flustered ordering and apologise for it." },
+              "situation": { "en": "They get flustered ordering and apologize for it." },
               "question": { "es": "Sorry, ich bin durcheinander.", "en": "Sorry — I'm all over the place." },
               "answers": [
                 { "es": "Du bist echt süß.", "en": "You're really cute." }
@@ -1440,7 +1440,7 @@
               "id": "de-flirt-sc-15",
               "teaches": "de-flirt-26",
               "speaker": "them",
-              "situation": { "en": "You realise you've been standing closer than they are comfortable with." },
+              "situation": { "en": "You realize you've been standing closer than they are comfortable with." },
               "question": { "es": "Ein bisschen Platz wär gut.", "en": "A bit of space would be good." },
               "answers": [
                 { "es": "Ich wollte nicht aufdringlich sein.", "en": "I didn't mean to be pushy." }
@@ -1576,7 +1576,7 @@
               "situation": {
                 "en": "Before getting in, you want to know what a taxi into town costs."
               },
-              "question": { "es": "Was kostet es ins Zentrum?", "en": "What does it cost to the centre?" },
+              "question": { "es": "Was kostet es ins Zentrum?", "en": "What does it cost to the center?" },
               "answers": [
                 { "es": "Ungefähr 40 Euro.", "en": "Around 40 euros." },
                 { "es": "Kommt auf den Verkehr an.", "en": "Depends on the traffic." }
@@ -1870,7 +1870,7 @@
               "situation": { "en": "Two platforms serve the same line and you don't know which one you want." },
               "question": { "es": "Welche Richtung?", "en": "Which direction?" },
               "answers": [
-                { "es": "Richtung Hauptbahnhof.", "en": "Towards the main station." }
+                { "es": "Richtung Hauptbahnhof.", "en": "Toward the main station." }
               ],
               "likelyReply": null,
               "notes": "",
@@ -2609,7 +2609,7 @@
             {
               "id": "de-berlin-10",
               "es": "der Kiez",
-              "en": "Your neighbourhood — Berliners identify with theirs more than with the city.",
+              "en": "Your neighborhood — Berliners identify with theirs more than with the city.",
               "difficulty": "easy",
               "region": "berlin",
               "quizQuestions": []
@@ -3195,7 +3195,7 @@
             {
               "id": "de-drunk-13",
               "speaker": "you",
-              "situation": { "en": "You stand up and realise the room is doing something it shouldn't." },
+              "situation": { "en": "You stand up and realize the room is doing something it shouldn't." },
               "question": { "es": "Ich glaube, ich bin blau.", "en": "I think I'm drunk." },
               "answers": [
                 { "es": "Trink mal Wasser.", "en": "Have some water." }
@@ -3312,7 +3312,7 @@
                 { "es": "Respekt.", "en": "Respect." }
               ],
               "likelyReply": null,
-              "notes": "Germany's limit is 0.5, and 0.0 for your first two years of licence. \"Ich fahre\" ends the conversation — nobody pushes.",
+              "notes": "Germany's limit is 0.5, and 0.0 for your first two years of license. \"Ich fahre\" ends the conversation — nobody pushes.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -3565,7 +3565,7 @@
               "teaches": "de-resacon-15",
               "speaker": "them",
               "situation": { "en": "You've drunk three glasses of water and are pouring a fourth." },
-              "question": { "es": "Du trinkst ja literweise.", "en": "You're drinking by the litre." },
+              "question": { "es": "Du trinkst ja literweise.", "en": "You're drinking by the liter." },
               "answers": [
                 { "es": "Ich hab voll den Brand.", "en": "I'm absolutely parched." }
               ],
@@ -4059,7 +4059,7 @@
             {
               "id": "de-girls-16",
               "speaker": "you",
-              "situation": { "en": "Your group is drifting towards the door and you don't want to be last." },
+              "situation": { "en": "Your group is drifting toward the door and you don't want to be last." },
               "question": { "es": "Geh nicht ohne mich.", "en": "Don't leave without me." },
               "answers": [
                 { "es": "Mach ich nicht.", "en": "I won't." }

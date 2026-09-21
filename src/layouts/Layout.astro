@@ -6,7 +6,7 @@ import { localePath, localeFromSlug, getLocaleInfo, DEFAULT_LOCALE, type Locale 
 interface Props {
   title?: string;
   description?: string;
-  /** Drives the per-edition accent colour via [data-locale] below. */
+  /** Drives the per-edition accent color via [data-locale] below. */
   locale?: string;
   /**
    * Page-specific schema.org objects, joined to the site-wide ones in a single
@@ -272,10 +272,10 @@ const structuredData = {
     --color-wash-1: #ffe3cd;
     --color-wash-2: #f1ecff;
 
-    /* Answer-choice hues. Four fixed colours, one per slot, so the options read
-       as four distinct things rather than four identical grey boxes.
+    /* Answer-choice hues. Four fixed colors, one per slot, so the options read
+       as four distinct things rather than four identical gray boxes.
        Deliberately no green and no red among them: those two stay reserved for
-       right/wrong, so a colour never means two things at once.
+       right/wrong, so a color never means two things at once.
        `-deep` is the variant that carries white text at 4.5:1 or better; the
        bare hue is for borders, badges and glows. */
     --opt-a: #f2683c;
