@@ -5,6 +5,7 @@ import {
   countCategoryItems,
   getCategories,
   localePath,
+  roughLineCount,
   searchTitle,
 } from "../lib/content";
 
@@ -39,6 +40,14 @@ const lineCount = editions.reduce(
 );
 
 const title = "About Try Convi: real Spanish, Swedish and German phrases";
+/**
+ * The exact count still drives the section index at the bottom of this page,
+ * where somebody is choosing what to read and the number is a fact about a
+ * list. In the lead it is a claim, and a claim reads better rounded. See
+ * `roughLineCount`.
+ */
+const roughLines = roughLineCount(lineCount);
+
 const description = `What Try Convi is, who it's for, and every one of its ${categoryCount} scenario sections in one place. Free to read, no account, human-written per country.`;
 
 const schema = [
@@ -63,9 +72,9 @@ const schema = [
 
     <p class="lead">
       A free phrasebook and practice app for the conversations you actually
-      have on a trip — ordering the second round, arguing with a taxi driver,
+      have on a trip: ordering the second round, arguing with a taxi driver,
       getting into a club, asking a pharmacist for something for your head.
-      Three editions, {categoryCount} sections, {lineCount} lines, no account
+      Three editions, {categoryCount} sections, {roughLines} lines, no account
       and nothing to buy.
     </p>
 
@@ -128,6 +137,45 @@ const schema = [
       conversation carries on. There is no English on the screen otherwise,
       because a translation under every line is the line people read.
     </p>
+
+    {/* The person behind it.
+
+        Moved off the home page at the founder's request: a visitor landing
+        there wants the product, and a bio in the middle of the path to it is
+        in the way. Here it is one click from every page in the site, in the
+        footer, which is where somebody who has decided they want to know who
+        wrote this goes looking.
+
+        The words are his. Nothing in this block is inferred or embellished
+        beyond joining his sentences up. */}
+    <h2 id="who-made-this">Who made this</h2>
+    <div class="founder">
+      <p class="founder-mark" aria-hidden="true">GG</p>
+      <div class="founder-words">
+        <p>
+          Hi, I'm Gabriel Gilles. I love travelling and I love languages, and
+          this site is what came of the two.
+        </p>
+        <p>
+          I've been to more than 40 countries and I'm proficient in three
+          languages. I studied at the School of Foreign Service at Georgetown
+          University, where I took a dual degree in Business and Global Affairs
+          with a minor in German.
+        </p>
+        <p>
+          Travelling that much teaches you something a classroom does not:
+          knowing a language and holding your own in it are two different
+          skills, and the second one falls apart the moment somebody answers
+          faster than you expected. That is why every scenario here comes with
+          the reply. It is the half that gets left out, and it is the half you
+          actually need.
+        </p>
+        <p class="founder-sign">
+          <strong>Gabriel Gilles</strong>
+          <span class="founder-role">founder, Try Convi</span>
+        </p>
+      </div>
+    </div>
 
     <h2>Straight answers</h2>
 
@@ -303,4 +351,74 @@ const schema = [
     font-size: 0.82rem;
     color: var(--color-ink-soft);
   }
+
+  /* Who made this. Initials rather than a photograph: a real face belongs here
+     and there isn't one in the repository, and a stock portrait would be worse
+     than a mark. */
+  .founder {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    margin-top: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-card);
+  }
+
+  .founder-mark {
+    flex: none;
+    margin: 0;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  .founder-words > p {
+    margin: 0 0 0.85rem;
+  }
+
+  .founder-words > p:first-child {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+
+  .founder-sign {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .founder-role {
+    color: var(--color-ink-soft);
+    font-size: 0.8125rem;
+  }
+
+  /* Side by side costs the paragraph a third of a 390px line, which turns it
+     into six words per row. The mark goes above the words instead, where it
+     costs one row once rather than an indent on every line. */
+  @media (max-width: 560px) {
+    .founder {
+      flex-direction: column;
+      padding: 1.15rem;
+      gap: 0.9rem;
+    }
+
+    .founder-mark {
+      width: 46px;
+      height: 46px;
+      font-size: 1.05rem;
+    }
+  }
+
 </style>

@@ -8,6 +8,7 @@ import {
   countCategoryItems,
   getCategories,
   localePath,
+  roughLineCount,
   DEFAULT_LOCALE,
 } from "../lib/content";
 import { LAST_LOCALE_KEY } from "../lib/lastLocale";
@@ -75,8 +76,16 @@ const lineCount = editions.reduce(
   0
 );
 
+/**
+ * The same number, said the way a person says it.
+ *
+ * Still read from the content files, so it cannot drift; just not read out to
+ * the digit. See `roughLineCount`.
+ */
+const roughLines = roughLineCount(lineCount);
+
 const pageTitle = "Try Convi: real Spanish, Swedish and German phrases for travellers";
-const pageDescription = `The Spanish, Swedish and German people actually speak, from ordering and taxis to slang and nightlife, with what they'll say back. ${categoryCount} free scenario packs and ${lineCount} lines. No account, no paywall.`;
+const pageDescription = `The Spanish, Swedish and German people actually speak, from ordering and taxis to slang and nightlife, with what they'll say back. ${categoryCount} free scenario packs and ${roughLines} lines. No account, no paywall.`;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -185,9 +194,9 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
       <p class="for-travellers-kicker reveal">Who it's for</p>
       <h2 class="for-travellers-line reveal">Built for travellers, not for classrooms.</h2>
       <p class="for-travellers-sub reveal">
-        You have a week, not a semester. These are the {lineCount} lines you'll
-        actually use on the trip, written for the country you're going to, with
-        what they'll say back to you.
+        You have a week, not a semester. This is what you'll actually use on
+        the trip: {roughLines} lines, written for the country you're going to,
+        each one with what they'll say back to you.
       </p>
     </div>
   </section>
@@ -235,42 +244,6 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
             <li>Free, no account, no card</li>
           </ul>
           <LangMenu path="/practice" label="Start practising" variant="primary" />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* Somebody is behind this.
-
-      Until now nobody was: the site had a product, a licence and a privacy
-      policy, and no person anywhere on it. That is a gap for a traveller
-      deciding whether to trust a phrasebook written by a stranger, and it is
-      the first thing an investor looks for.
-
-      Every claim below is one the repository can back: three editions, the
-      counts read from the content files, and no account or card anywhere in
-      the product. Nothing about the founder beyond the name, deliberately.
-      The story of why he started it is his to tell and not this file's to
-      invent, so this says what was built and signs it. Replace the paragraph
-      with his own words when there are some. */}
-  <section class="founder full-bleed">
-    <div class="container reveal">
-      <p class="founder-kicker">Who made this</p>
-      <div class="founder-body">
-        <p class="founder-mark" aria-hidden="true">GG</p>
-        <div>
-          <p class="founder-note">
-            Try Convi is built and written by one person, not scraped or
-            machine-translated. Every one of its {lineCount} lines was chosen
-            for a country rather than translated into one, across
-            {" "}{categoryCount} scenarios in Spain, Sweden and Germany. All of
-            it is free to read, with no account and no card, because a
-            phrasebook you cannot open at the bar is not a phrasebook.
-          </p>
-          <p class="founder-sign">
-            <strong>Gabriel Gilles</strong>
-            <span class="founder-role">founder, Try Convi</span>
-          </p>
         </div>
       </div>
     </div>
@@ -357,17 +330,24 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   .hero .container {
-    max-width: 960px;
+    max-width: var(--shell-wide);
   }
 
+  /*
+   * Copy left, conversation right.
+   *
+   * `minmax(0, …)` on both tracks because a grid column's default floor is the
+   * width of its longest unbreakable word, which is what lets a long Spanish
+   * line in the card push the whole row wider than the page at middling
+   * widths. The gap grows with the window rather than sitting at one value:
+   * 8rem was set when the right-hand column held a paper plane that could be
+   * any size, and it squeezed the card to 340px once the card held sentences.
+   */
   .hero-grid {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     align-items: center;
-    /* 8rem when the right-hand column held a paper plane, which could be as
-       small as it liked. It now holds a conversation, and at 8rem the card was
-       squeezed to 340px and the Spanish wrapped mid-phrase. */
-    gap: 3.5rem;
+    gap: clamp(2rem, 4vw, 4.5rem);
   }
 
   .hero-copy {
@@ -393,7 +373,10 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     line-height: 1.02;
     letter-spacing: -0.02em;
     margin: 0.5rem 0 1rem;
-    max-width: 15ch;
+    /* Three lines at this measure, which is the shape the headline was drawn
+       at. Left to the full column it goes to two long ones and stops reading
+       as a headline. */
+    max-width: 14ch;
   }
 
   .sub {
@@ -401,7 +384,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     line-height: 1.5;
     color: var(--color-ink-soft);
     margin: 0 0 1.75rem;
-    max-width: 46ch;
+    max-width: 50ch;
   }
 
   .cta {
@@ -443,7 +426,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .hero-art {
     justify-self: center;
     width: 100%;
-    max-width: 380px;
+    max-width: 440px;
   }
 
   @media (max-width: 720px) {
@@ -656,7 +639,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   .for-travellers .container {
-    max-width: 960px;
+    max-width: var(--shell-wide);
   }
 
   .for-travellers-kicker {
@@ -705,7 +688,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   .explainer .container {
-    max-width: 960px;
+    max-width: var(--shell-wide);
   }
 
   .explainer h2 {
@@ -720,6 +703,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     max-width: 56ch;
     margin: 0 0 2.5rem;
   }
+
 
   .explainer-more {
     min-height: 44px;
@@ -737,7 +721,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .tier-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    gap: clamp(1.5rem, 2.5vw, 2.25rem);
   }
 
   .tier-card {
@@ -825,91 +809,13 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     }
   }
 
-  /* The person behind it, directly above the email capture, so the page ends
-     on somebody rather than on a form. */
-  .founder {
-    background: #fff;
-    border-top: 1px solid var(--color-border);
-    padding: 3.25rem 0;
-  }
-
-  .founder .container {
-    max-width: 720px;
-  }
-
-  .founder-kicker {
-    margin: 0 0 1rem;
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-primary-dark);
-  }
-
-  .founder-body {
-    display: flex;
-    gap: 1.25rem;
-    align-items: flex-start;
-  }
-
-  /* Initials rather than a photograph. A real face belongs here and there
-     isn't one in the repository; a stock portrait would be worse than a mark. */
-  .founder-mark {
-    flex: none;
-    margin: 0;
-    width: 56px;
-    height: 56px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: var(--color-primary);
-    color: #fff;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.25rem;
-    letter-spacing: 0.02em;
-  }
-
-  .founder-note {
-    margin: 0 0 1rem;
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: var(--color-ink);
-  }
-
-  .founder-sign {
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem;
-    font-size: 0.95rem;
-  }
-
-  .founder-role {
-    color: var(--color-ink-soft);
-    font-size: 0.8125rem;
-  }
-
-  @media (max-width: 480px) {
-    .founder-body {
-      gap: 1rem;
-    }
-
-    .founder-mark {
-      width: 46px;
-      height: 46px;
-      font-size: 1.05rem;
-    }
-  }
-
   .signup {
     background: #ffe6d5;
     padding: 3.5rem 0;
   }
 
   .signup .container {
-    max-width: 560px;
+    max-width: min(620px, 94vw);
   }
 
   .signup h2 {
