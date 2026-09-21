@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
+import HeroDemo from "../components/HeroDemo.astro";
 import {
   LOCALES,
   countCategoryItems,
@@ -82,7 +83,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   <section class="hero full-bleed">
     <div class="container hero-grid">
       <div class="hero-copy reveal">
-        <p class="eyebrow"><Logo size="sm" /> <span>· for travelers with somewhere to be</span></p>
+        <p class="eyebrow"><Logo size="sm" /> <span>· for travellers with somewhere to be</span></p>
         <h1 class="tagline">Learn how to speak like a local.</h1>
         <div class="cta">
           {/* One tap into the language you were last reading — no menu, no
@@ -121,25 +122,10 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
         </p>
       </div>
 
-      <div class="hero-art reveal" aria-hidden="true">
-        <svg viewBox="0 0 320 320" role="presentation" class="plane-svg">
-          <path
-            class="flight-path"
-            d="M40 250 C 90 120, 210 90, 285 55"
-            fill="none"
-          />
-          <g class="plane">
-            <path
-              d="M285 55 L232 78 L246 92 L241 116 L258 100 L292 108 Z"
-              fill="var(--color-primary)"
-            />
-            <path
-              d="M285 55 L246 92 L241 116 L263 96 Z"
-              fill="var(--color-primary-dark)"
-            />
-          </g>
-          <circle class="pin" cx="40" cy="250" r="7" />
-        </svg>
+      {/* No `reveal` on this one. The card runs its own entrance, and two
+          fade-ins on the same element is the jank the demo was built to avoid. */}
+      <div class="hero-art">
+        <HeroDemo />
       </div>
     </div>
   </section>
@@ -187,6 +173,25 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     </div>
   </section>
 
+  {/* Who this is for, at the size the headline is.
+
+      The headline stays what it was, because "Learn how to speak like a local"
+      is the promise and it is the founder's line. What it does not say is who
+      is making the trip, and the only place the site said that was six words
+      of grey text in the eyebrow above it. A traveller reading this page had
+      to infer that it was written for them. This says it. */}
+  <section class="for-travellers full-bleed">
+    <div class="container">
+      <p class="for-travellers-kicker reveal">Who it's for</p>
+      <h2 class="for-travellers-line reveal">Built for travellers, not for classrooms.</h2>
+      <p class="for-travellers-sub reveal">
+        You have a week, not a semester. These are the {lineCount} lines you'll
+        actually use on the trip, written for the country you're going to, with
+        what they'll say back to you.
+      </p>
+    </div>
+  </section>
+
   <section class="explainer full-bleed">
     <div class="container">
       <h2 class="reveal">What is Try Convi?</h2>
@@ -230,6 +235,42 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
             <li>Free, no account, no card</li>
           </ul>
           <LangMenu path="/practice" label="Start practising" variant="primary" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Somebody is behind this.
+
+      Until now nobody was: the site had a product, a licence and a privacy
+      policy, and no person anywhere on it. That is a gap for a traveller
+      deciding whether to trust a phrasebook written by a stranger, and it is
+      the first thing an investor looks for.
+
+      Every claim below is one the repository can back: three editions, the
+      counts read from the content files, and no account or card anywhere in
+      the product. Nothing about the founder beyond the name, deliberately.
+      The story of why he started it is his to tell and not this file's to
+      invent, so this says what was built and signs it. Replace the paragraph
+      with his own words when there are some. */}
+  <section class="founder full-bleed">
+    <div class="container reveal">
+      <p class="founder-kicker">Who made this</p>
+      <div class="founder-body">
+        <p class="founder-mark" aria-hidden="true">GG</p>
+        <div>
+          <p class="founder-note">
+            Try Convi is built and written by one person, not scraped or
+            machine-translated. Every one of its {lineCount} lines was chosen
+            for a country rather than translated into one, across
+            {" "}{categoryCount} scenarios in Spain, Sweden and Germany. All of
+            it is free to read, with no account and no card, because a
+            phrasebook you cannot open at the bar is not a phrasebook.
+          </p>
+          <p class="founder-sign">
+            <strong>Gabriel Gilles</strong>
+            <span class="founder-role">founder, Try Convi</span>
+          </p>
         </div>
       </div>
     </div>
@@ -323,7 +364,10 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     align-items: center;
-    gap: 8rem;
+    /* 8rem when the right-hand column held a paper plane, which could be as
+       small as it liked. It now holds a conversation, and at 8rem the card was
+       squeezed to 340px and the Spanish wrapped mid-phrase. */
+    gap: 3.5rem;
   }
 
   .hero-copy {
@@ -399,46 +443,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .hero-art {
     justify-self: center;
     width: 100%;
-    max-width: 340px;
-  }
-
-  .plane-svg {
-    width: 100%;
-    height: auto;
-    overflow: visible;
-  }
-
-  .flight-path {
-    stroke: var(--color-primary);
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-dasharray: 6 12;
-    opacity: 0.6;
-  }
-
-  .pin {
-    fill: var(--color-primary-dark);
-  }
-
-  .plane {
-    transform-origin: center;
-    animation: plane-float 4s ease-in-out infinite;
-  }
-
-  @keyframes plane-float {
-    0%,
-    100% {
-      transform: translateY(0) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-8px) rotate(-2deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .plane {
-      animation: none;
-    }
+    max-width: 380px;
   }
 
   @media (max-width: 720px) {
@@ -454,10 +459,15 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
        The art is a grid item and the lines below are flex items of .hero-copy,
        so the two sets of `order` values never interact: this one only says
        "after the copy". */
+    /* Full width now, not 180px. The plane was decoration and could be shrunk
+       to a thumbnail; a conversation at 180px is unreadable, which would make
+       it decoration too. It still sits after the copy, so the fold is
+       unaffected either way. */
     .hero-art {
       order: 1;
-      max-width: 180px;
+      max-width: 420px;
       justify-self: center;
+      margin-top: 0.5rem;
     }
 
     /* Headline, then the button, then the pitch. The paragraph explaining what
@@ -632,6 +642,62 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     padding-bottom: 0;
   }
 
+  /* Who it's for, said at headline size.
+
+     Display type and a full-bleed tint, so it reads as a statement rather than
+     another paragraph of body copy. Sized just under .tagline: it is the
+     second-largest thing on the page, which is what "somewhere else in big
+     letters" means when the headline keeps the top spot. */
+  .for-travellers {
+    background: var(--color-primary-tint);
+    border-top: 1px solid var(--color-primary-tint-border);
+    border-bottom: 1px solid var(--color-primary-tint-border);
+    padding: 3.25rem 0;
+  }
+
+  .for-travellers .container {
+    max-width: 960px;
+  }
+
+  .for-travellers-kicker {
+    margin: 0 0 0.6rem;
+    /* Uppercase and tracked, which is the one case the 13px floor gives way. */
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary-dark);
+  }
+
+  .for-travellers-line {
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    max-width: 18ch;
+    color: var(--color-ink);
+  }
+
+  .for-travellers-sub {
+    margin: 0;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    max-width: 52ch;
+  }
+
+  @media (max-width: 720px) {
+    .for-travellers {
+      padding: 2.5rem 0;
+    }
+
+    .for-travellers-line {
+      max-width: 14ch;
+    }
+  }
+
   .explainer {
     background: #fff;
     border-top: 1px solid var(--color-border);
@@ -756,6 +822,84 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   @media (max-width: 720px) {
     .tier-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  /* The person behind it, directly above the email capture, so the page ends
+     on somebody rather than on a form. */
+  .founder {
+    background: #fff;
+    border-top: 1px solid var(--color-border);
+    padding: 3.25rem 0;
+  }
+
+  .founder .container {
+    max-width: 720px;
+  }
+
+  .founder-kicker {
+    margin: 0 0 1rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary-dark);
+  }
+
+  .founder-body {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  /* Initials rather than a photograph. A real face belongs here and there
+     isn't one in the repository; a stock portrait would be worse than a mark. */
+  .founder-mark {
+    flex: none;
+    margin: 0;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  .founder-note {
+    margin: 0 0 1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--color-ink);
+  }
+
+  .founder-sign {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .founder-role {
+    color: var(--color-ink-soft);
+    font-size: 0.8125rem;
+  }
+
+  @media (max-width: 480px) {
+    .founder-body {
+      gap: 1rem;
+    }
+
+    .founder-mark {
+      width: 46px;
+      height: 46px;
+      font-size: 1.05rem;
     }
   }
 
