@@ -359,6 +359,27 @@ export function quickAnswer(category: Category): { es: string; en: string | null
   return null;
 }
 
+/**
+ * A line count as it should be said in prose, rounded down to the nearest 500.
+ *
+ * The exact figure belongs in the section index on /about, where it is a
+ * directory and somebody is deciding what to read. It does not belong in a
+ * sentence on a landing page: a precise number invites the reader to audit it,
+ * it changes every time a line is added, and "943" is a worse claim than "over
+ * 500" for the same reason a price of 9.99 is a worse claim than free.
+ *
+ * Rounded down rather than to nearest, so the phrase is true the day it is
+ * written and stays true as the editions grow. It only becomes wrong if
+ * content is deleted below the step, which is not a thing that happens
+ * quietly.
+ */
+export function roughLineCount(n: number): string {
+  const floored = Math.floor(n / 500) * 500;
+  // Below the first step there is nothing to round to and no claim to make.
+  if (floored <= 0) return String(n);
+  return `over ${floored.toLocaleString("en-GB")}`;
+}
+
 export function countCategoryItems(category: Category): number {
   return category.subsections.reduce((sum, sub) => {
     if (isDialogueSubsection(sub)) {

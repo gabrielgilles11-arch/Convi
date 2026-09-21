@@ -198,6 +198,35 @@ const structuredData = {
     --font-display: "Fredoka", system-ui, sans-serif;
     --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 
+    /*
+     * How wide the page is allowed to get.
+     *
+     * Three tokens rather than a pixel number repeated in nine places, because
+     * the old numbers disagreed with each other: the header sat at 960, `main`
+     * at 720 and the marketing bands at 960, so on a 16-inch laptop the site
+     * was a 960px column with 384px of empty page either side of it and the
+     * text inside it narrower still. That reads as compressed, which is what
+     * it was.
+     *
+     * The caps are plain pixels and the gutter is a clamp, so the width is
+     * continuous: below the cap a band is simply the window less its padding,
+     * and it grows with the window at every size rather than jumping at two or
+     * three breakpoints. The gutter does the same, from 16px on a phone to
+     * 40px on a desktop. Putting a vw term in the caps as well was double
+     * counting, and cost a 320px screen six pixels of the only thing on it.
+     *
+     * --shell-wide  bands that are mostly layout: the hero, the section grids,
+     *               the header and footer that have to line up with them.
+     * --shell-text  anything that is a paragraph somebody reads top to bottom.
+     *               Deliberately not --shell-wide: a line of prose 1,200px
+     *               long is harder to read, not easier, and the fix for a
+     *               cramped page is never a 130-character measure.
+     * --shell-pad   the side gutter, never below the 16px the design pass set.
+     */
+    --shell-wide: 1240px;
+    --shell-text: 800px;
+    --shell-pad: clamp(1rem, 3vw, 2.5rem);
+
     --color-bg: #fff6ec;
     --color-ink: #241610;
     --color-ink-soft: #5f4c3e;
@@ -314,9 +343,9 @@ const structuredData = {
   }
 
   main {
-    max-width: 720px;
+    max-width: var(--shell-text);
     margin: 0 auto;
-    padding: 1.5rem 1rem 4rem;
+    padding: 1.5rem var(--shell-pad) 4rem;
   }
 
   /*
@@ -340,9 +369,15 @@ const structuredData = {
   }
 
   .container {
-    max-width: 760px;
+    max-width: var(--shell-text);
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: 0 var(--shell-pad);
+  }
+
+  /* Opt-in for a section that is layout rather than prose. A page says which
+     of its bands are which; the default stays the readable one. */
+  .container--wide {
+    max-width: var(--shell-wide);
   }
 
   .full-bleed {
@@ -368,8 +403,8 @@ const structuredData = {
     justify-content: space-between;
     gap: 0.75rem;
     flex-wrap: wrap;
-    max-width: 960px;
-    padding: 0.85rem 1.25rem;
+    max-width: var(--shell-wide);
+    padding: 0.85rem var(--shell-pad);
   }
 
   .site-header .brand-link {
@@ -427,8 +462,8 @@ const structuredData = {
   }
 
   .site-footer .container {
-    max-width: 960px;
-    padding: 3rem 1.25rem 2rem;
+    max-width: var(--shell-wide);
+    padding: 3rem var(--shell-pad) 2rem;
   }
 
   .footer-grid {
@@ -537,7 +572,7 @@ const structuredData = {
      the first row outright and the other two share the second. */
   @media (max-width: 560px) {
     .site-header .container {
-      padding: 0.6rem 1.25rem;
+      padding: 0.6rem var(--shell-pad);
       row-gap: 0.35rem;
     }
 
