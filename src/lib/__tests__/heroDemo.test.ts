@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { getHeroDemo, HERO_DEMO_LOCALE } from "../heroDemo";
-import { getCategories, isDialogueSubsection, type DialogueSubsection } from "../content";
+import {
+  getCategories,
+  isDialogueSubsection,
+  roughLineCount,
+  type DialogueSubsection,
+} from "../content";
 
 /**
  * The home page hero plays a conversation out of `content/es-ES.json`.
@@ -87,5 +92,36 @@ describe("the hero conversation", () => {
   it("points at the Spanish practice path", () => {
     // Spanish is the edition that lives at the root, so no slug.
     expect(demo.href).toBe("/practice");
+  });
+});
+
+/**
+ * Counts read out loud.
+ *
+ * The exact figure belongs in the section index on /about, where it is a
+ * directory. In a sentence on a landing page it is a claim, and a claim that
+ * names 943 invites the reader to audit it and goes stale on the next content
+ * edit.
+ */
+describe("saying a line count in prose", () => {
+  it("rounds down to the nearest 500", () => {
+    expect(roughLineCount(943)).toBe("over 500");
+    expect(roughLineCount(500)).toBe("over 500");
+    expect(roughLineCount(1400)).toBe("over 1,000");
+    expect(roughLineCount(2000)).toBe("over 2,000");
+  });
+
+  it("never rounds up, so the claim is never larger than the content", () => {
+    for (const n of [499, 500, 501, 942, 943, 999, 1000, 1001, 4321]) {
+      const stated = Number(roughLineCount(n).replace(/[^0-9]/g, ""));
+      expect(stated, `${n} stated as ${stated}`).toBeLessThanOrEqual(n);
+    }
+  });
+
+  it("gives the exact number when there is nothing to round to", () => {
+    // No edition is this small, but a claim of "over 0 lines" would be worse
+    // than the truth if one ever were.
+    expect(roughLineCount(12)).toBe("12");
+    expect(roughLineCount(0)).toBe("0");
   });
 });
