@@ -1955,14 +1955,145 @@
   margin: 0 0 1.25rem;
 }
 
-.convo-group {
-  margin: 0 0 1.5rem;
+/* --- Talk Mode, screen one: the places --- */
+
+.convo-tally {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
 }
 
-.convo-group-title {
-  font-size: 1rem;
-  margin: 0 0 0.5rem;
+.convo-tally strong {
+  color: var(--color-primary-dark);
 }
+
+/*
+ * A grid rather than a column.
+ *
+ * Ten places stacked one per row is most of a screen before anything is
+ * chosen. `auto-fill` with a 15rem floor gives three across on a laptop, two
+ * on a tablet and one on a phone without a single breakpoint, and the whole
+ * set fits above the fold on a desktop.
+ */
+.convo-cats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.75rem;
+}
+
+.convo-cat {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+  font: inherit;
+  /* 4.25rem is 68px, comfortably past the 44px tap target floor. */
+  min-height: 4.25rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-card);
+  cursor: pointer;
+  transition: border-color 0.12s ease, background-color 0.12s ease, transform 0.12s ease;
+}
+
+.convo-cat:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  transform: translateY(-1px);
+}
+
+.convo-cat:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.convo-cat.is-done {
+  border-color: var(--color-success-deep);
+}
+
+/* The emoji sits in a tinted disc so the tiles line up on one left edge
+   whatever width the glyph happens to render at. */
+.convo-cat-icon {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-bg);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.convo-cat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.convo-cat-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.convo-cat-meta {
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
+}
+
+.cat-ring,
+.cat-go {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-success-deep);
+}
+
+/* Nothing held here yet: a way in rather than an empty gauge. */
+.cat-go {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-border);
+}
+
+.convo-cat:hover .cat-go {
+  color: var(--color-primary);
+}
+
+.cat-ring-text {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 800;
+  fill: var(--color-primary-dark);
+}
+
+.cat-ring-track {
+  stroke: var(--color-border);
+}
+
+.cat-ring-fill {
+  stroke: var(--color-primary);
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.convo-cat.is-done .cat-ring-fill {
+  stroke: var(--color-success-deep);
+}
+
+/* The category's icon beside its name on screen two. */
+.convo-head-icon {
+  margin-right: 0.35rem;
+}
+
 
 .convo-list {
   list-style: none;

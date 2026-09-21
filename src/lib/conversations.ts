@@ -187,6 +187,7 @@ export function buildConversations(locale: Locale = DEFAULT_LOCALE): Conversatio
         id: sub.id,
         categoryId: category.id,
         categoryTitle: category.title,
+        categoryIcon: category.icon,
         // A subsection with no title of its own is the category's only one —
         // `beer-food-main`, `hotel-checkin` — so the category's title is the
         // honest label rather than a made-up one.

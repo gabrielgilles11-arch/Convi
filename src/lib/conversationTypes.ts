@@ -62,6 +62,9 @@ export interface Conversation {
   id: string;
   categoryId: string;
   categoryTitle: string;
+  /** The category's authored emoji. The picker's first screen is a grid of
+   *  categories, and an icon is what makes one scannable at a glance. */
+  categoryIcon: string;
   /** The subsection's title, or the category's where it has none. */
   title: string;
   turns: ConvTurn[];
@@ -126,19 +129,29 @@ export function isConversationCategory(categoryId: string): boolean {
  */
 export const MIN_TURNS = 3;
 
+export interface ConversationGroup {
+  categoryId: string;
+  categoryTitle: string;
+  categoryIcon: string;
+  conversations: Conversation[];
+}
+
 /** Conversations grouped by the category they were written under, in order. */
-export function groupByCategory(
-  conversations: Conversation[]
-): { categoryId: string; categoryTitle: string; conversations: Conversation[] }[] {
-  const out: { categoryId: string; categoryTitle: string; conversations: Conversation[] }[] = [];
-  const byId = new Map<string, (typeof out)[number]>();
+export function groupByCategory(conversations: Conversation[]): ConversationGroup[] {
+  const out: ConversationGroup[] = [];
+  const byId = new Map<string, ConversationGroup>();
 
   // First-seen order is content order, which is the order the editions were
   // written in and the order the scenario pages list them in.
   for (const convo of conversations) {
     let group = byId.get(convo.categoryId);
     if (!group) {
-      group = { categoryId: convo.categoryId, categoryTitle: convo.categoryTitle, conversations: [] };
+      group = {
+        categoryId: convo.categoryId,
+        categoryTitle: convo.categoryTitle,
+        categoryIcon: convo.categoryIcon,
+        conversations: [],
+      };
       byId.set(convo.categoryId, group);
       out.push(group);
     }
