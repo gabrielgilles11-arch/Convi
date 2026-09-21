@@ -25,7 +25,7 @@ import {
  * home-screen app.
  */
 interface Props {
-  /** Edition being practised, so a reminder opens the right one. */
+  /** Edition being practiced, so a reminder opens the right one. */
   locale: string;
   /** Current day streak, so the first nudge can name it. */
   streak: number;
@@ -141,7 +141,7 @@ export default function RemindPrompt({ locale, streak, onClose, onEnabled }: Pro
                 : "One email if you go quiet for a couple of days, and never more than four in a row. Every one of them has a one-click way out."}
             </p>
             <button type="button" className="email-prompt-submit" onClick={onClose}>
-              Keep practising
+              Keep practicing
             </button>
           </>
         ) : stage === "email" || !canPush ? (

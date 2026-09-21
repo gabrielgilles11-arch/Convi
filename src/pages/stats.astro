@@ -191,16 +191,16 @@ const countryTotal = stats.countries.reduce((sum, c) => sum + c.visitors, 0);
       }
 
       <p class="note">
-        "Back" is a browser that had been here on an earlier day, recognised by
+        "Back" is a browser that had been here on an earlier day, recognized by
         a salted one-way hash that expires after 30 quiet days — no address is
         stored and nothing here identifies a person. Phone networks share one
         address between many people, so treat it as a good estimate rather than
         a headcount. See src/lib/visitor.ts.
       </p>
       {
-        stats.configured && !stats.recognising && (
+        stats.configured && !stats.recognizing && (
           <p class="warn">
-            No visitors recognised yet. If this stays empty while views climb,
+            No visitors recognized yet. If this stays empty while views climb,
             the store could not provide a salt — see <code>STATS_SALT</code>.
           </p>
         )

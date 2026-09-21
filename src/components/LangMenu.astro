@@ -47,7 +47,7 @@ const id = `lang-menu-${path.replace(/\W+/g, "-")}-${variant}`;
 
 <script>
   // Progressive enhancement only — <details> already opens, closes and takes
-  // keyboard focus on its own. This just adds the dismiss behaviour a menu is
+  // keyboard focus on its own. This just adds the dismiss behavior a menu is
   // expected to have. Astro bundles this once no matter how many menus render.
   const menus = () => document.querySelectorAll<HTMLDetailsElement>("details.lang-menu");
 
@@ -181,7 +181,7 @@ const id = `lang-menu-${path.replace(/\W+/g, "-")}-${variant}`;
     background: var(--color-primary-tint);
   }
 
-  /* The current edition is marked by weight and colour rather than a tick
+  /* The current edition is marked by weight and color rather than a tick
      glyph — the tinted row plus aria-current already carry the state. */
   .item.current .lang {
     color: var(--color-primary-dark);

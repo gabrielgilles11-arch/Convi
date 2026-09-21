@@ -106,7 +106,7 @@ export default function PracticePath({
     // Clicking a section means "carry on with it", so it opens the first part
     // still owing. A section with nothing owing replays its last part rather
     // than doing nothing, because a finished stone is still a place to go back
-    // to and practise.
+    // to and practice.
     const next = section.parts.find((p) => !cleared(p.id)) ?? section.parts[section.parts.length - 1];
     return {
       id: section.categoryId,
@@ -223,7 +223,7 @@ export default function PracticePath({
                     node.locked
                       ? `${node.title}, locked until every section is cleared`
                       : node.parts > 1
-                        ? `${node.cleared ? "Practise" : "Continue"} ${node.title}, ${node.done} of ${node.parts} parts cleared`
+                        ? `${node.cleared ? "Practice" : "Continue"} ${node.title}, ${node.done} of ${node.parts} parts cleared`
                         : `Start ${node.title}`
                   }
                 >

@@ -107,7 +107,7 @@ const categories = getCategories(locale).sort(
   }
 
   /* Cards cycle through the same four hues the answer choices use, so a
-     category is something you recognise by colour before you read it. Each card
+     category is something you recognize by color before you read it. Each card
      sets the three variables once and everything below reads them. */
   .card {
     --hue: var(--opt-a);
@@ -157,7 +157,7 @@ const categories = getCategories(locale).sort(
     --hue-on: var(--color-ink);
   }
 
-  /* A band of the card's colour across the top edge — enough to identify the
+  /* A band of the card's color across the top edge — enough to identify the
      card at a glance without tinting the text behind it. */
   .card::before {
     content: "";
