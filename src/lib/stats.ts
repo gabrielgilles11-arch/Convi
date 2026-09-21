@@ -195,7 +195,7 @@ export interface DayRow {
 export interface Stats {
   configured: boolean;
   /** False when no salt is available, which means no visitor counts at all. */
-  recognising: boolean;
+  recognizing: boolean;
   totals: {
     views: number;
     fresh: number;
@@ -230,7 +230,7 @@ function num(value: unknown): number {
 export async function readStats(days = 30, now = new Date()): Promise<Stats> {
   const empty: Stats = {
     configured: kv !== null,
-    recognising: false,
+    recognizing: false,
     totals: {
       views: 0,
       fresh: 0,
@@ -309,7 +309,7 @@ export async function readStats(days = 30, now = new Date()): Promise<Stats> {
 
   return {
     configured: true,
-    recognising: totals.fresh + totals.returning > 0,
+    recognizing: totals.fresh + totals.returning > 0,
     totals,
     days: rows,
     countries,

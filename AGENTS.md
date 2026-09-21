@@ -29,9 +29,15 @@ npm test && npx astro check && npm run build
 **American English, everywhere a visitor can read it.** Color, center, traveler,
 practice (noun and verb), license, liter, realize, recognize, neighbor, behavior,
 toward. The pages, the components and the English half of every content file are
-standardized; internal identifiers that predate this (`normaliseLang` in
-`components/quiz/speech.ts`, the `recognising` field on the stats payload) are
-code rather than copy and were deliberately left alone.
+standardized. One internal identifier is deliberately left alone: `normaliseLang`
+in `components/quiz/speech.ts`, which is code rather than copy.
+
+Watch the boundary between the two. A blanket pass over `.astro` and `.tsx`
+renamed a property *access* in `pages/stats.astro` while the interface
+declaring it lived in `lib/stats.ts` and was out of scope, which typechecks as
+an error and builds fine, because `astro build` does not typecheck. `astro
+check` is what catches it. Read its count carefully: it prints `1 error`,
+singular, so a grep for "errors" silently passes a broken tree.
 
 When editing `content/*.json`, convert only the English-bearing fields: `en`,
 `notes`, `note`, `gloss`, `blurb`, `heading`, `heardIn`, `title`, `description`.
