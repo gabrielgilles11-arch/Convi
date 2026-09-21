@@ -2051,11 +2051,11 @@
                 "en": "Do you have a reservation?"
               },
               "answers": [
-                { "es": "Ja, für zwei Nächte.", "en": "Yes, for two nights." },
-                { "es": "Nein, haben Sie noch ein Zimmer frei?", "en": "No — do you have a room free?" }
+                { "es": "Nein, haben Sie noch ein Zimmer frei?", "en": "No, do you have a room free?" },
+                { "es": "Ja, für zwei Nächte.", "en": "Yes, for two nights." }
               ],
               "likelyReply": { "es": "Ja, wir haben noch eins.", "en": "Yes, we've got one left." },
-              "notes": "",
+              "notes": "The situation is that you did not book, so the line to reach for is the one that says so. \"Ja, für zwei Nächte\" is here too because the same question gets asked of people who did book.",
               "difficulty": "easy",
               "quizQuestions": []
             },
