@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildConversations } from "../conversations";
+import { placeName } from "../../components/quiz/ConversationPicker";
 import { getCategories, LOCALES, type DialogueSubsection, type Locale } from "../content";
 import {
   MIN_TURNS,
@@ -521,4 +522,75 @@ it("lets a conversation end on a question", () => {
     buildConversations(locale).map((c) => c.turns[c.turns.length - 1]!.theirReply?.source ?? "")
   );
   expect(endings.some((line) => /[?？]\s*$/.test(line.trim()))).toBe(true);
+});
+
+/**
+ * What the picker's first screen is built from.
+ *
+ * Talk Mode opens on a grid of places rather than every conversation at once,
+ * and a tile is an icon, a title and a count. The icon comes from the content
+ * file, so a category that loses one renders a tile with a hole in it and
+ * nothing else would notice.
+ */
+describe("grouping conversations into places", () => {
+  for (const locale of LOCALES.map((l) => l.locale)) {
+    describe(locale, () => {
+      const groups = groupByCategory(buildConversations(locale));
+
+      it("gives every place an icon and a title", () => {
+        expect(groups.length).toBeGreaterThan(0);
+        for (const group of groups) {
+          expect(group.categoryTitle, `${group.categoryId} title`).toBeTruthy();
+          expect(group.categoryIcon, `${group.categoryId} icon`).toBeTruthy();
+        }
+      });
+
+      it("puts every conversation in exactly one place", () => {
+        const all = buildConversations(locale);
+        const grouped = groups.flatMap((g) => g.conversations);
+        expect(grouped).toHaveLength(all.length);
+        expect(new Set(grouped.map((c) => c.id)).size).toBe(all.length);
+      });
+
+      it("keeps the tile grid short enough to scan", () => {
+        // The whole point of the two screens: the first one should fit on a
+        // laptop without scrolling. Three columns of tiles means twelve or so
+        // is the ceiling before it stops being a glance.
+        expect(groups.length).toBeLessThanOrEqual(12);
+      });
+    });
+  }
+});
+
+/**
+ * Tile titles.
+ *
+ * The picker's first screen shows a place name beside an icon, cut down from
+ * the authored category title. The cut has to be safe on every title in every
+ * edition, because a bad one leaves a fragment on the tile and nobody would
+ * see it until they opened that language.
+ */
+describe("shortening a category title for a tile", () => {
+  it("drops a trailing parenthetical and anything after a dash", () => {
+    expect(placeName("Getting around (taxi + metro)")).toBe("Getting around");
+    expect(placeName("Checking in (hotel/hostel/Airbnb)")).toBe("Checking in");
+    expect(placeName("Nightlife — into the club & making friends")).toBe("Nightlife");
+  });
+
+  it("leaves a title alone when cutting it would leave a fragment", () => {
+    expect(placeName("Robbed & emergencies")).toBe("Robbed & emergencies");
+    expect(placeName("Shopping, markets & haggling")).toBe("Shopping, markets & haggling");
+    expect(placeName("At a restaurant")).toBe("At a restaurant");
+  });
+
+  it("never returns an empty or stub name for any real category", () => {
+    for (const locale of LOCALES.map((l) => l.locale)) {
+      for (const group of groupByCategory(buildConversations(locale))) {
+        const name = placeName(group.categoryTitle);
+        expect(name.length, `${locale} ${group.categoryId} -> "${name}"`).toBeGreaterThanOrEqual(3);
+        // A cut that ends on punctuation means the split landed mid-phrase.
+        expect(name, `${locale} ${group.categoryId}`).not.toMatch(/[,&/(-]$/);
+      }
+    }
+  });
 });
