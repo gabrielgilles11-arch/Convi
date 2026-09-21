@@ -1055,7 +1055,7 @@
             { "id": "sv-slang-34", "practice": false, "es": "efterfest", "en": "The afterparty.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-slang-35", "practice": false, "es": "krogen", "en": "The pub — \"ut på krogen\" is going out for the night.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-36", "practice": false, "es": "nubbe", "en": "A shot of snaps, usually with a song attached to it.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-slang-37", "es": "Systemet / Bolaget", "en": "Systembolaget, the state off-licence. Nobody says the whole word.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-37", "es": "Systemet / Bolaget", "en": "Systembolaget, the state liquor store. Nobody says the whole word.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-slang-38", "practice": false, "es": "folköl", "en": "3.5% supermarket beer — the only kind sold outside Systembolaget.", "difficulty": "medium", "quizQuestions": [] }
           ],
           "scenes": [
@@ -1238,7 +1238,7 @@
               "id": "sv-slang-sc-27",
               "teaches": "sv-slang-42",
               "speaker": "them",
-              "situation": { "en": "Your friend is still apologising for a spilt drink ten minutes later." },
+              "situation": { "en": "Your friend is still apologizing for a spilled drink ten minutes later." },
               "question": { "es": "Förlåt igen för glaset.", "en": "Sorry again about the glass." },
               "answers": [
                 { "es": "Skitsamma, glöm det.", "en": "Never mind — forget it." }
@@ -1324,7 +1324,7 @@
               "id": "sv-slang-sc-32",
               "teaches": "sv-slang-50",
               "speaker": "them",
-              "situation": { "en": "A friend apologises for being twenty minutes late." },
+              "situation": { "en": "A friend apologizes for being twenty minutes late." },
               "question": { "es": "Förlåt att jag är sen.", "en": "Sorry I'm late." },
               "answers": [
                 { "es": "Det är lugnt.", "en": "It's all good." }
@@ -1430,7 +1430,7 @@
               "id": "sv-cuss-sc-04",
               "teaches": "sv-cuss-08",
               "speaker": "them",
-              "situation": { "en": "You realise you've left your card at the bar you were in an hour ago." },
+              "situation": { "en": "You realize you've left your card at the bar you were in an hour ago." },
               "question": { "es": "Har du kvar kortet?", "en": "Have you still got your card?" },
               "answers": [
                 { "es": "Sjutton, det ligger kvar.", "en": "Drat — it's still there." }
@@ -1537,7 +1537,7 @@
                 { "es": "Skärp dig.", "en": "Pull yourself together." }
               ],
               "likelyReply": { "es": "Ja ja, förlåt.", "en": "All right, all right — sorry." },
-              "notes": "Sharp, short, and aimed at behaviour rather than at the person. It is what a Swede says instead of a scene.",
+              "notes": "Sharp, short, and aimed at behavior rather than at the person. It is what a Swede says instead of a scene.",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -2116,7 +2116,7 @@
               "situation": {
                 "en": "Before getting in, you want to know what a taxi into town costs."
               },
-              "question": { "es": "Vad kostar det till centrum?", "en": "What does it cost to the centre?" },
+              "question": { "es": "Vad kostar det till centrum?", "en": "What does it cost to the center?" },
               "answers": [
                 { "es": "Runt 500 kronor.", "en": "Around 500 kronor." },
                 { "es": "Beror på trafiken.", "en": "Depends on the traffic." }
@@ -2445,7 +2445,7 @@
               "situation": { "en": "Two platforms serve the same line and you don't know which you want." },
               "question": { "es": "Vilken riktning?", "en": "Which direction?" },
               "answers": [
-                { "es": "Mot Ropsten.", "en": "Towards Ropsten." }
+                { "es": "Mot Ropsten.", "en": "Toward Ropsten." }
               ],
               "likelyReply": null,
               "notes": "",
@@ -2503,7 +2503,7 @@
               "id": "sv-getting-around-27",
               "speaker": "you",
               "situation": { "en": "You're at a stop with four bus numbers on the sign." },
-              "question": { "es": "Vilken buss går till centrum?", "en": "Which bus goes to the centre?" },
+              "question": { "es": "Vilken buss går till centrum?", "en": "Which bus goes to the center?" },
               "answers": [
                 { "es": "Fyran, från andra sidan.", "en": "The number four, from the other side." }
               ],
@@ -3472,7 +3472,7 @@
               "id": "sv-night-sc-02",
               "teaches": "sv-nightlife-19",
               "speaker": "them",
-              "situation": { "en": "The lights have come up slightly and people are moving towards the bar." },
+              "situation": { "en": "The lights have come up slightly and people are moving toward the bar." },
               "question": { "es": "Varför står alla i kö?", "en": "Why is everyone queuing?" },
               "answers": [
                 { "es": "Det är sista beställning.", "en": "It's last orders." }
@@ -4433,7 +4433,7 @@
             {
               "id": "sv-girls-16",
               "speaker": "you",
-              "situation": { "en": "Your group is drifting towards the door and you don't want to be last." },
+              "situation": { "en": "Your group is drifting toward the door and you don't want to be last." },
               "question": { "es": "Gå inte utan mig.", "en": "Don't leave without me." },
               "answers": [
                 { "es": "Det gör jag inte.", "en": "I won't." }

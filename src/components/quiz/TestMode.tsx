@@ -57,9 +57,9 @@ interface Props {
 const SLOT_SPLIT = /(_{2,}|\[[^\]]+\])/g;
 const IS_SLOT = /^(_{2,}|\[[^\]]+\])$/;
 
-// Each choice gets a letter so it can be named. Colour used to vary per slot
+// Each choice gets a letter so it can be named. Color used to vary per slot
 // too, which turned out to read as meaning — four hues plus green and red is
-// too many things for colour to be saying at once. All four boxes now share
+// too many things for color to be saying at once. All four boxes now share
 // the edition tint and only the letter tells them apart.
 // buildOptions caps a round at four; the modulo only guards against that
 // changing underneath us.

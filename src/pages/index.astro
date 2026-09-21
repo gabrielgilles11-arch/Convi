@@ -49,7 +49,7 @@ const startTargets = Object.fromEntries(
     {
       practice: localePath(l.locale, "/practice"),
       scenarios: localePath(l.locale, "/scenarios"),
-      label: `Start practising ${l.language}`,
+      label: `Start practicing ${l.language}`,
       flag: l.flag,
     },
   ])
@@ -84,7 +84,7 @@ const lineCount = editions.reduce(
  */
 const roughLines = roughLineCount(lineCount);
 
-const pageTitle = "Try Convi: real Spanish, Swedish and German phrases for travellers";
+const pageTitle = "Try Convi: real Spanish, Swedish and German phrases for travelers";
 const pageDescription = `The Spanish, Swedish and German people actually speak, from ordering and taxis to slang and nightlife, with what they'll say back. ${categoryCount} free scenario packs and ${roughLines} lines. No account, no paywall.`;
 ---
 
@@ -92,7 +92,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   <section class="hero full-bleed">
     <div class="container hero-grid">
       <div class="hero-copy reveal">
-        <p class="eyebrow"><Logo size="sm" /> <span>· for travellers with somewhere to be</span></p>
+        <p class="eyebrow"><Logo size="sm" /> <span>· for travelers with somewhere to be</span></p>
         <h1 class="tagline">Learn how to speak like a local.</h1>
         <div class="cta">
           {/* One tap into the language you were last reading — no menu, no
@@ -187,13 +187,13 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
       The headline stays what it was, because "Learn how to speak like a local"
       is the promise and it is the founder's line. What it does not say is who
       is making the trip, and the only place the site said that was six words
-      of grey text in the eyebrow above it. A traveller reading this page had
+      of gray text in the eyebrow above it. A traveler reading this page had
       to infer that it was written for them. This says it. */}
-  <section class="for-travellers full-bleed">
+  <section class="for-travelers full-bleed">
     <div class="container">
-      <p class="for-travellers-kicker reveal">Who it's for</p>
-      <h2 class="for-travellers-line reveal">Built for travellers, not for classrooms.</h2>
-      <p class="for-travellers-sub reveal">
+      <p class="for-travelers-kicker reveal">Who it's for</p>
+      <h2 class="for-travelers-line reveal">Built for travelers, not for classrooms.</h2>
+      <p class="for-travelers-sub reveal">
         You have a week, not a semester. This is what you'll actually use on
         the trip: {roughLines} lines, written for the country you're going to,
         each one with what they'll say back to you.
@@ -230,7 +230,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
           <LangMenu path="/scenarios" label="Browse scenarios" variant="secondary" />
         </div>
         <div class="tier-card tier-card--highlight">
-          <span class="tier-badge tier-badge--accent">Practise</span>
+          <span class="tier-badge tier-badge--accent">Practice</span>
           <h3>Make it stick before you land</h3>
           <p>
             A guided path through every scenario in every language, so the line
@@ -243,7 +243,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
             <li>Spanish, Swedish <em>and</em> German</li>
             <li>Free, no account, no card</li>
           </ul>
-          <LangMenu path="/practice" label="Start practising" variant="primary" />
+          <LangMenu path="/practice" label="Start practicing" variant="primary" />
         </div>
       </div>
     </div>
@@ -646,18 +646,18 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
      another paragraph of body copy. Sized just under .tagline: it is the
      second-largest thing on the page, which is what "somewhere else in big
      letters" means when the headline keeps the top spot. */
-  .for-travellers {
+  .for-travelers {
     background: var(--color-primary-tint);
     border-top: 1px solid var(--color-primary-tint-border);
     border-bottom: 1px solid var(--color-primary-tint-border);
     padding: clamp(3rem, 6vw, 6rem) 0;
   }
 
-  .for-travellers .container {
+  .for-travelers .container {
     max-width: var(--shell-wide);
   }
 
-  .for-travellers-kicker {
+  .for-travelers-kicker {
     margin: 0 0 0.9rem;
     /* Uppercase and tracked, which is the one case the 13px floor gives way. */
     font-size: 0.75rem;
@@ -667,7 +667,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     color: var(--color-primary-dark);
   }
 
-  .for-travellers-line {
+  .for-travelers-line {
     font-family: var(--font-display);
     font-size: clamp(2.1rem, 5.5vw, 3.4rem);
     font-weight: 700;
@@ -678,7 +678,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     color: var(--color-ink);
   }
 
-  .for-travellers-sub {
+  .for-travelers-sub {
     margin: 0;
     font-size: clamp(1.05rem, 2vw, 1.25rem);
     line-height: 1.55;
@@ -687,11 +687,11 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   @media (max-width: 720px) {
-    .for-travellers {
+    .for-travelers {
       padding: 2.5rem 0;
     }
 
-    .for-travellers-line {
+    .for-travelers-line {
       max-width: 14ch;
     }
   }
