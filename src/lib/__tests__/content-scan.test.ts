@@ -402,3 +402,53 @@ describe("the line an item teaches", () => {
     });
   }
 });
+
+/**
+ * The branch the deck teaches has to be the branch the situation describes.
+ *
+ * When they open an exchange, `situationFrom` teaches `answers[0]` and files
+ * the rest as also-accepted. Where the answers are a yes/no fork rather than
+ * two registers of the same thing, that makes the order load-bearing: a
+ * situation reading "you walk in without booking ahead" alongside a taught
+ * line of "yes, for two nights" asks the learner to produce a sentence that
+ * contradicts the scene they were just shown, and the comeback underneath it
+ * answers the other branch. That shipped in the German hotel section and was
+ * found from a screenshot rather than from a test.
+ */
+describe("yes/no exchanges teach the branch the situation is in", () => {
+  const AFFIRMATIVE = /^\s*(sí|si|ja)\b/i;
+  const NEGATIVE = /^\s*(no|nein|nej)\b/i;
+  /** English cues that place the learner in the negative branch. */
+  const SITUATION_IS_NEGATIVE =
+    /\b(without|haven't|have not|didn't|did not|don't|do not|not booked|no (reservation|booking|table|room)|forgot|never)\b/i;
+
+  for (const locale of locales) {
+    it(`${locale}`, () => {
+      const offenders: string[] = [];
+
+      for (const category of getCategories(locale)) {
+        for (const sub of category.subsections) {
+          for (const ex of (sub as DialogueSubsection).exchanges ?? []) {
+            if (ex.speaker !== "them") continue;
+            const answers = ex.answers.map((a) => a.es ?? "");
+            if (answers.length < 2) continue;
+
+            // A fork, not two ways of saying the same thing.
+            const taughtIsYes = AFFIRMATIVE.test(answers[0]!);
+            const otherIsNo = answers.slice(1).some((a) => NEGATIVE.test(a));
+            if (!taughtIsYes || !otherIsNo) continue;
+
+            if (SITUATION_IS_NEGATIVE.test(ex.situation.en)) {
+              offenders.push(
+                `${ex.id}: "${ex.situation.en}" teaches "${answers[0]}" ` +
+                  `while "${answers.find((a) => NEGATIVE.test(a))}" is the branch it describes`
+              );
+            }
+          }
+        }
+      }
+
+      expect(offenders).toEqual([]);
+    });
+  }
+});
