@@ -31,10 +31,14 @@ last session's questions.
   index, where they are a directory rather than a claim.
 - *The page fills the window.* The site was a 960px column with 384px of empty
   page either side of it on a 16-inch laptop, and `main` inside that was 720px.
-  Widths are now three tokens in `Layout.astro` (`--shell-wide` 1240,
-  `--shell-text` 800, `--shell-pad` a clamp from 16px to 40px) rather than five
-  pixel numbers that disagreed. Verified from 320px to 2560px: no horizontal
-  overflow at any width, and the hero, header and footer share one left edge.
+  Widths are now tokens in `Layout.astro` (`--shell-wide` 1600 for layout bands,
+  `--shell-text` 800 for prose, `--shell-pad` a clamp from 16px to 48px) rather
+  than five pixel numbers that disagreed. The header and footer take neither
+  cap: they are the frame, so the wordmark sits at the window's edge rather
+  than 320px into it. Vertical rhythm is clamps too, so the space between
+  blocks grows with the window instead of staying at a laptop's measure.
+  Verified from 320px to 2560px: no horizontal overflow at any width and the
+  wordmark within 60px of the edge at every one.
 
 **Shipped earlier.** The welcome card is gone (`51aa4bd`). A first-time visitor lands
 on the practice path with the first stone one tap away, verified on a clean
@@ -110,7 +114,10 @@ The numbers need reading and three of them need publishing.
    hidden tab, and it renders as a complete, readable conversation with
    JavaScript off and under `prefers-reduced-motion`. Swedish and German would
    be the same component with a different locale; one edition was the point,
-   two would be a language picker in a hero.
+   two would be a language picker in a hero. The card plays one beat at a time
+   in one place rather than reserving height for the whole conversation, which
+   is what stopped the hero opening on one line of Spanish and four hundred
+   pixels of nothing.
 3. **Live proof strip under the hero.** Rounds practised, countries, lines.
    Read from the counters above so it cannot go stale.
 4. **Why now.** Missing entirely, and there is a real one: translation made

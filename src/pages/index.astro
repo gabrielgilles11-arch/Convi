@@ -316,7 +316,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .hero {
     background: radial-gradient(120% 100% at 85% 0%, #ffe6d5 0%, #fff 55%);
     margin-top: -1.5rem;
-    padding: 3.5rem 0 3rem;
+    padding: clamp(2.5rem, 5.5vw, 6rem) 0 clamp(2.75rem, 5vw, 5.5rem);
     /* Clip sideways only. A plain `overflow: hidden` here also cut the language
        dropdown off at the bottom of the hero — on a wide screen the panel hangs
        about 36px past it, so "German" was sliced in half by the edge of the
@@ -328,6 +328,11 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     overflow-x: clip;
     overflow-y: visible;
   }
+
+  /* Every vertical measure on this page is a clamp rather than a fixed rem.
+     A 3.5rem band is generous on a laptop and cramped on a 27-inch monitor,
+     which is what made the page feel tight at width: the columns got wider
+     and the space between things did not. */
 
   .hero .container {
     max-width: var(--shell-wide);
@@ -347,7 +352,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     align-items: center;
-    gap: clamp(2rem, 4vw, 4.5rem);
+    gap: clamp(2rem, 5vw, 6.5rem);
   }
 
   .hero-copy {
@@ -361,7 +366,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     align-items: center;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin: 0 0 1rem;
+    margin: 0 0 1.25rem;
     font-size: 0.85rem;
     color: var(--color-ink-soft);
   }
@@ -372,7 +377,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     font-weight: 700;
     line-height: 1.02;
     letter-spacing: -0.02em;
-    margin: 0.5rem 0 1rem;
+    margin: 0.75rem 0 1.75rem;
     /* Three lines at this measure, which is the shape the headline was drawn
        at. Left to the full column it goes to two long ones and stops reading
        as a headline. */
@@ -383,7 +388,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     font-size: clamp(1.1rem, 2.2vw, 1.35rem);
     line-height: 1.5;
     color: var(--color-ink-soft);
-    margin: 0 0 1.75rem;
+    margin: 1.75rem 0 0;
     max-width: 50ch;
   }
 
@@ -406,7 +411,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   .hero-alt {
-    margin: 0.85rem 0 0;
+    margin: 1.25rem 0 0;
     font-size: 0.95rem;
   }
 
@@ -423,10 +428,15 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     color: var(--color-primary-dark);
   }
 
+  /* Hard against the right edge of the band, not floating in the middle of
+     its column. The card has a cap on it, so centring it left a margin on both
+     sides of a column that was already narrower than the band: the hero read
+     as two things adrift rather than two columns. Ending it squares the card
+     off against the same edge the header's button sits on. */
   .hero-art {
-    justify-self: center;
+    justify-self: end;
     width: 100%;
-    max-width: 440px;
+    max-width: 460px;
   }
 
   @media (max-width: 720px) {
@@ -451,6 +461,11 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
       max-width: 420px;
       justify-self: center;
       margin-top: 0.5rem;
+    }
+
+    .hero-grid {
+      /* One column, so there is no right edge to end against. */
+      justify-items: stretch;
     }
 
     /* Headline, then the button, then the pitch. The paragraph explaining what
@@ -493,7 +508,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   /* Slang marquee */
   .marquee {
     background: var(--color-primary);
-    padding: 0.85rem 0;
+    padding: clamp(0.85rem, 1.4vw, 1.25rem) 0;
     overflow: hidden;
     display: flex;
   }
@@ -585,7 +600,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   .language-note {
-    margin: 1.25rem 0 0;
+    margin: 2.25rem 0 0;
     font-size: 0.85rem;
     color: var(--color-ink-soft);
     max-width: 46ch;
@@ -635,7 +650,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     background: var(--color-primary-tint);
     border-top: 1px solid var(--color-primary-tint-border);
     border-bottom: 1px solid var(--color-primary-tint-border);
-    padding: 3.25rem 0;
+    padding: clamp(3rem, 6vw, 6rem) 0;
   }
 
   .for-travellers .container {
@@ -643,7 +658,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   .for-travellers-kicker {
-    margin: 0 0 0.6rem;
+    margin: 0 0 0.9rem;
     /* Uppercase and tracked, which is the one case the 13px floor gives way. */
     font-size: 0.75rem;
     font-weight: 800;
@@ -658,7 +673,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     font-weight: 700;
     line-height: 1.04;
     letter-spacing: -0.02em;
-    margin: 0 0 1rem;
+    margin: 0 0 1.5rem;
     max-width: 18ch;
     color: var(--color-ink);
   }
@@ -684,7 +699,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .explainer {
     background: #fff;
     border-top: 1px solid var(--color-border);
-    padding: 4rem 0;
+    padding: clamp(3.5rem, 6.5vw, 7rem) 0;
   }
 
   .explainer .container {
@@ -694,14 +709,14 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .explainer h2 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
-    margin: 0 0 0.75rem;
+    margin: 0 0 1rem;
   }
 
   .explainer-sub {
     color: var(--color-ink-soft);
     font-size: 1.05rem;
     max-width: 56ch;
-    margin: 0 0 2.5rem;
+    margin: 0 0 clamp(2.5rem, 4.5vw, 4rem);
   }
 
 
@@ -721,14 +736,14 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .tier-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: clamp(1.5rem, 2.5vw, 2.25rem);
+    gap: clamp(1.5rem, 3vw, 3rem);
   }
 
   .tier-card {
     background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 16px;
-    padding: 1.75rem;
+    padding: clamp(1.75rem, 2.5vw, 2.5rem);
     display: flex;
     flex-direction: column;
   }
@@ -811,7 +826,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
 
   .signup {
     background: #ffe6d5;
-    padding: 3.5rem 0;
+    padding: clamp(3rem, 5.5vw, 5.5rem) 0;
   }
 
   .signup .container {
