@@ -8,7 +8,6 @@ interface Props {
   streak: number;
   roundsToday: number;
   /** Replays the welcome and its six questions. */
-  onReplayIntro?: () => void;
 }
 
 /**
@@ -24,7 +23,6 @@ export default function ProgressPanel({
   bestScores,
   streak,
   roundsToday,
-  onReplayIntro,
 }: Props) {
   const cleared = stages.filter((s) => (bestScores[s.id] ?? 0) >= STAGE_CLEAR_SCORE).length;
 
@@ -64,11 +62,6 @@ export default function ProgressPanel({
       {/* The intro shows once, on the first unlock. It is still the clearest
           answer to "what is this app", so it stays reachable rather than being
           gone the moment it's been seen. */}
-      {onReplayIntro && (
-        <button type="button" className="replay-intro" onClick={onReplayIntro}>
-          Replay the intro
-        </button>
-      )}
     </div>
   );
 }
