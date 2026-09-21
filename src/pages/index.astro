@@ -428,15 +428,16 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     color: var(--color-primary-dark);
   }
 
-  /* Hard against the right edge of the band, not floating in the middle of
-     its column. The card has a cap on it, so centring it left a margin on both
-     sides of a column that was already narrower than the band: the hero read
-     as two things adrift rather than two columns. Ending it squares the card
-     off against the same edge the header's button sits on. */
+  /* Ends against the right of the band, then pulled back off it.
+     Flush right squared the card against the header's button but left it
+     further from the copy than from anything else on the page. The inset is
+     about an inch at desktop width and scales down with the window, so the
+     card stays off the edge without stranding itself on a phone. */
   .hero-art {
     justify-self: end;
     width: 100%;
     max-width: 460px;
+    margin-right: clamp(0rem, 4.8vw, 6rem);
   }
 
   @media (max-width: 720px) {
@@ -460,6 +461,8 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
       order: 1;
       max-width: 420px;
       justify-self: center;
+      /* One column: there is no right edge to sit off. */
+      margin-right: 0;
       margin-top: 0.5rem;
     }
 
