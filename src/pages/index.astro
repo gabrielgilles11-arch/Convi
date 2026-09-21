@@ -653,8 +653,14 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     padding: clamp(3rem, 6vw, 6rem) 0;
   }
 
+  /* Centered, at the band's full width.
+     Ranged left, the headline stopped a third of the way across a 1,600px band
+     and the rest of it read as a mistake rather than as space. This is the one
+     band on the page whose whole job is to say one thing, so it says it in the
+     middle. */
   .for-travelers .container {
     max-width: var(--shell-wide);
+    text-align: center;
   }
 
   .for-travelers-kicker {
@@ -673,13 +679,16 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     font-weight: 700;
     line-height: 1.04;
     letter-spacing: -0.02em;
-    margin: 0 0 1.5rem;
-    max-width: 18ch;
+    /* `auto` sides so the measure itself centers. 22ch rather than 18ch:
+       centered text wants a wider measure before it starts looking like a
+       column, and the line still breaks in two. */
+    margin: 0 auto 1.5rem;
+    max-width: 22ch;
     color: var(--color-ink);
   }
 
   .for-travelers-sub {
-    margin: 0;
+    margin: 0 auto;
     font-size: clamp(1.05rem, 2vw, 1.25rem);
     line-height: 1.55;
     color: var(--color-ink-soft);
@@ -704,6 +713,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
 
   .explainer .container {
     max-width: var(--shell-wide);
+    text-align: center;
   }
 
   .explainer h2 {
@@ -716,13 +726,14 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     color: var(--color-ink-soft);
     font-size: 1.05rem;
     max-width: 56ch;
-    margin: 0 0 clamp(2.5rem, 4.5vw, 4rem);
+    margin: 0 auto clamp(2.5rem, 4.5vw, 4rem);
   }
 
 
   .explainer-more {
     min-height: 44px;
     display: block;
+    text-align: center;
     margin-top: 0.75rem;
     color: var(--color-primary-dark);
     font-weight: 700;
@@ -740,6 +751,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   }
 
   .tier-card {
+    text-align: left;
     background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 16px;
