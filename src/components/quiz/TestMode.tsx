@@ -3,6 +3,7 @@ import {
   buildRound,
   answeredIt,
   pickedIt,
+  wonLine,
   STAGE_CLEAR_SCORE,
   type Question,
   type QuizItem,
@@ -19,6 +20,15 @@ import {
   roundsCompletedToday,
   DAILY_GOAL,
 } from "../../lib/progress";
+
+/**
+ * Lines listed on the round summary before it turns into a wall.
+ *
+ * A round is eight questions and the matching screen settles four items at
+ * once, so a clean round can win eleven lines. Five is what fits under the
+ * score without pushing the buttons off a phone; the rest are counted.
+ */
+const CAN_NOW_SHOWN = 5;
 
 interface Props {
   /** Items in the current stage. */
@@ -159,6 +169,14 @@ export default function TestMode({
   const [typed, setTyped] = useState("");
   const [assembled, setAssembled] = useState<string[]>([]);
   const [correctCount, setCorrectCount] = useState(0);
+  /**
+   * Ids of the items answered right first time, in the order they were won.
+   *
+   * `correctCount` alone is a number, and a number cannot say what you can now
+   * do. Same first-attempt rule as the count, so the summary lists what was
+   * actually produced and not what was eventually arrived at.
+   */
+  const [wonIds, setWonIds] = useState<string[]>([]);
   const [done, setDone] = useState(false);
   const [dayStreak, setDayStreak] = useState(() => currentDayStreak());
   const [roundsToday, setRoundsToday] = useState(() => roundsCompletedToday());
@@ -238,6 +256,9 @@ export default function TestMode({
     setAttempt(0);
     resetQuestion();
     setCorrectCount(0);
+    // Same reset as the count, and for the same reason. Without it "Another
+    // round" would list the lines from the round before it as well.
+    setWonIds([]);
     setDone(false);
   }
 
@@ -292,8 +313,12 @@ export default function TestMode({
     setAttempted((a) => [...a, position]);
     if (results) {
       for (const r of results) recordQuestionResult(r.itemId, r.correct);
+      // A matching screen settles several items at once, and the rows that
+      // went right are won even when the screen as a whole did not.
+      setWonIds((ids) => [...ids, ...results.filter((r) => r.correct).map((r) => r.itemId)]);
     } else {
       recordQuestionResult(question!.itemId, correct);
+      if (correct) setWonIds((ids) => [...ids, question!.itemId]);
     }
     if (correct) setCorrectCount((c) => c + 1);
   }
@@ -351,6 +376,20 @@ export default function TestMode({
     const cleared = pct >= STAGE_CLEAR_SCORE;
     const goalHit = roundsToday >= DAILY_GOAL;
 
+    // Ids back to lines, de-duplicated: a matching screen and a situation can
+    // both land on the same item inside one round, and the same line twice in
+    // a list of what you can say reads as a bug.
+    const byId = new Map(items.map((item) => [item.id, item]));
+    const seen = new Set<string>();
+    const won = wonIds.flatMap((id) => {
+      if (seen.has(id)) return [];
+      seen.add(id);
+      const item = byId.get(id);
+      if (!item) return [];
+      const line = wonLine(item);
+      return line.source ? [line] : [];
+    });
+
     return (
       <div className={`round-done${cleared ? " is-cleared" : ""}`}>
         {/* Clearing a stage is the thing the whole path is built around, and it
@@ -387,6 +426,34 @@ export default function TestMode({
               : "Strong round."
             : `${STAGE_CLEAR_SCORE}% clears this stage. One more go?`}
         </p>
+
+        {/* What the round was for, in the only terms that matter to somebody
+            about to get on a plane. A percentage says how you did on a test;
+            this says what you can do at a bar, and it is the same eight
+            questions either way. Shown only on a round that passed, so it
+            never reads as a consolation prize.
+
+            The lines are the ones actually produced, first time, in the order
+            they were won. Nothing here is authored: reading them off the items
+            means the list cannot claim a line the learner did not get. */}
+        {cleared && won.length > 0 && (
+          <div className="can-now">
+            <p className="can-now-head">You can now say</p>
+            <ul className="can-now-list">
+              {won.slice(0, CAN_NOW_SHOWN).map((line, i) => (
+                <li key={i}>
+                  <span className="can-now-source">{line.source}</span>
+                  {line.en && <span className="can-now-en">{line.en}</span>}
+                </li>
+              ))}
+            </ul>
+            {won.length > CAN_NOW_SHOWN && (
+              <p className="can-now-more">
+                and {won.length - CAN_NOW_SHOWN} more from this round
+              </p>
+            )}
+          </div>
+        )}
 
         <div className="round-meta">
           <span>{dayStreak === 1 ? "1 day streak" : `${dayStreak} day streak`}</span>

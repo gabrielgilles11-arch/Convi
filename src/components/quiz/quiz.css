@@ -2152,6 +2152,70 @@
   color: var(--color-success-deep);
 }
 
+/* --- what a passing round earned you --- */
+
+/*
+ * The round summary's one claim about the world outside the app.
+ *
+ * A percentage says how you did on a test. This says what you can say at a
+ * bar, which is the thing being bought. It only appears on a round that
+ * passed, so it is never a consolation prize, and every line in it was
+ * produced correctly first time.
+ */
+.can-now {
+  margin: 1.25rem auto 0;
+  max-width: 26rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-primary-tint-border);
+  border-radius: 16px;
+  background: var(--color-primary-tint);
+  text-align: left;
+}
+
+.can-now-head {
+  margin: 0 0 0.6rem;
+  /* 12px, and only because it is uppercase and tracked. */
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary-dark);
+}
+
+.can-now-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.can-now-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.can-now-source {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.can-now-en {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--color-ink-soft);
+}
+
+.can-now-more {
+  margin: 0.7rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
+}
+
 /* --- the transcript --- */
 
 .convo-transcript {
