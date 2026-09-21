@@ -5,20 +5,41 @@ cold: everything needed to carry on is in here or named here.
 
 ## Where this stands
 
-**Shipped.** The welcome card is gone (`51aa4bd`). A first-time visitor lands
+**Shipped this pass.** Edits 1, 2 and 7 below, per the founder's call on the
+last session's questions.
+
+- *Hero headline kept, traveller said out loud.* "Learn how to speak like a
+  local" stays: it is the founder's line and the promise. Who it is for now has
+  its own full-bleed band under the marquee, at the second-largest type size on
+  the page, because the only place the site said "traveller" was six words of
+  grey text in the eyebrow.
+- *The product is above the fold.* The paper-plane SVG is gone. In its place a
+  Talk Mode exchange from the Spanish edition plays on a loop: the bartender
+  opens, you produce a line, they come back. Built from `content/es-ES.json` at
+  build time (`src/lib/heroDemo.ts`), so no Spanish is retyped into a template
+  and a content edit that breaks a beat fails `npm test` rather than the page.
+- *There is a person on the site.* A founder block above the email capture,
+  signed Gabriel Gilles. The paragraph claims only what the repository can
+  back: one author, the counts read from the content files, no account and no
+  card. **The story of why he started it is his to write** — swap the paragraph
+  for his own words before the send.
+
+**Shipped earlier.** The welcome card is gone (`51aa4bd`). A first-time visitor lands
 on the practice path with the first stone one tap away, verified on a clean
 browser profile. It was written for somebody who had just paid, and nobody
 pays — the paywall has been off for months. Cut with it: the six-question
 taster and its round builder, the intro mode and its flag, the replay button
 on the progress panel, and the second set of scoring rules TestMode ran under.
 
-**Proposed, not built.** The seven edits below. None of the marketing copy has
-been touched: positioning is the founder's, and the numbers are not mine to
-invent.
+**Proposed, not built.** Edits 3, 4, 5 and 6 below.
 
-**Blocked on you.** Which three figures from `/stats` you are willing to
-publish (rounds practised, visitors, countries). With those, edits 1–5 and the
-live proof strip can be implemented in one pass.
+**Blocked on you.** Two things.
+
+1. Which three figures from `/stats` you are willing to publish (rounds
+   practised, visitors, countries). With those, edit 3, the live proof strip,
+   goes in in one pass.
+2. Your own words for the founder paragraph. What is there now is true and
+   flat; it is a placeholder for a sentence only you can write.
 
 ## Measured against
 
@@ -66,15 +87,19 @@ The numbers need reading and three of them need publishing.
 
 ## Edits, ranked
 
-1. **Hero as a declarative sentence.** Current headline is a category promise
-   that Babbel could run tomorrow.
-   - Now: *Learn how to speak like a local.*
-   - Proposed: *Convi teaches travellers the 2,000 lines they'll actually use —
-     and what the barman says back.*
-2. **Product above the fold.** The paper-plane SVG holds the most valuable
-   space on the site. A ten-second loop of a Talk Mode exchange out-argues
-   every sentence on the page, and nobody currently sees the product without
-   two clicks.
+1. **Who it is for, in big letters.** *Done, differently from the proposal.*
+   The proposed replacement headline was declined: the headline stays "Learn
+   how to speak like a local" and the traveller is emphasised in its own band
+   below the marquee instead. Note for the pitch: the proposal said "2,000
+   lines" and the content files say 943. The band reads the real count at build
+   time, so no number on the page can be argued with.
+2. **Product above the fold.** *Done, Spanish edition.* A Talk Mode exchange
+   loops in the hero. Verified in Chromium: the card is the same height on the
+   first frame as the last (no layout shift), it pauses off screen and in a
+   hidden tab, and it renders as a complete, readable conversation with
+   JavaScript off and under `prefers-reduced-motion`. Swedish and German would
+   be the same component with a different locale; one edition was the point,
+   two would be a language picker in a hero.
 3. **Live proof strip under the hero.** Rounds practised, countries, lines.
    Read from the counters above so it cannot go stale.
 4. **Why now.** Missing entirely, and there is a real one: translation made
@@ -87,8 +112,12 @@ The numbers need reading and three of them need publishing.
    buy" three. The Gumroad flow and entitlement checks are built and switched
    off (`PAYWALL_ENABLED` in `src/lib/paywall.ts`). One honest line about the
    intended model beats silence.
-7. **A founder line.** There is nobody on this site. Creandum and Sequoia both
-   weight team heavily, and the ask is to back a person.
+7. **A founder line.** *Done, pending his words.* Creandum and Sequoia both
+   weight team heavily, and the ask is to back a person. The block is on the
+   home page above the email capture; the paragraph in it is placeholder prose
+   that only states what the repository can prove. It should be replaced with
+   the founder's own account of why he started it, which is the part that
+   actually does the work with this reader.
 
 ## The scalable process
 
@@ -108,7 +137,7 @@ between a one-off review and a standard.
 
 - Deploys from `main`; a push there is a production build. See `AGENTS.md`.
 - `npm test && npx astro check && npm run build` before any push to `main`.
-- 222 tests currently pass.
+- 228 tests currently pass.
 - The paywall is off, so every gate and purchase path is dormant, not deleted.
 - Design pass already shipped: WCAG AA contrast across the site, 44px tap
   targets, a 13px type floor (12px for uppercase tracked labels), and focus
