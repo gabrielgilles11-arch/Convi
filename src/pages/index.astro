@@ -350,9 +350,19 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
    */
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    /*
+     * Copy, card, and an empty track that holds the card off the right edge.
+     *
+     * The inset used to be `margin-right` on the card. A margin is not
+     * something the grid knows about, so the card simply slid out of its own
+     * column and, between about 760px and 1024px, fifteen pixels into the
+     * copy's. A third track is the same inset expressed as layout: the grid
+     * subtracts it before it sizes anything, so the card cannot reach the
+     * copy at any width.
+     */
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) clamp(0rem, 5vw, 7rem);
     align-items: center;
-    gap: clamp(2rem, 5vw, 6.5rem);
+    gap: clamp(1.5rem, 3.5vw, 4.5rem);
   }
 
   .hero-copy {
@@ -437,11 +447,11 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     justify-self: end;
     width: 100%;
     max-width: 460px;
-    margin-right: clamp(0rem, 4.8vw, 6rem);
   }
 
   @media (max-width: 720px) {
     .hero-grid {
+      /* One column, so both the card's column and the inset track go with it. */
       grid-template-columns: 1fr;
       gap: 1.25rem;
     }
@@ -461,8 +471,6 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
       order: 1;
       max-width: 420px;
       justify-self: center;
-      /* One column: there is no right edge to sit off. */
-      margin-right: 0;
       margin-top: 0.5rem;
     }
 

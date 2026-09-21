@@ -9,7 +9,14 @@ import {
   type Locale,
   type PhrasebookSubsection,
 } from "../content";
-import { buildRound, normalizeAnswer, tooAlike, type QuizItem } from "../quizTypes";
+import {
+  buildRound,
+  normalizeAnswer,
+  splitNote,
+  tooAlike,
+  wonLine,
+  type QuizItem,
+} from "../quizTypes";
 
 const locales = LOCALES.map((l) => l.locale);
 
@@ -330,4 +337,68 @@ describe("content integrity", () => {
       }
     });
   });
+});
+
+/**
+ * The line a passing round tells you you can now say.
+ *
+ * `wonLine` has to pick the target-language side of an item, and which field
+ * that is flips with the kind. Getting it backwards produces a summary that
+ * lists English back at somebody who just typed Spanish, which would look
+ * fine in code review and wrong on screen.
+ */
+describe("the line an item teaches", () => {
+  for (const locale of locales) {
+    describe(locale, () => {
+      const items = buildQuizItems(locale);
+
+      it("always returns something to show", () => {
+        expect(items.length).toBeGreaterThan(0);
+        for (const item of items) {
+          expect(wonLine(item).source, `${item.id} (${item.kind})`).toBeTruthy();
+        }
+      });
+
+      it("returns the target language, never the English", () => {
+        // The gloss and the line are different strings on every item in every
+        // edition, so if the two were swapped this would catch it on all of
+        // them at once rather than on whichever one happened to be sampled.
+        for (const item of items) {
+          const line = wonLine(item);
+          if (item.kind === "situation") {
+            expect(line.source, item.id).toBe(item.correctAnswer);
+            expect(line.source, item.id).not.toBe(item.front);
+          } else {
+            expect(line.source, item.id).toBe(item.front);
+            expect(line.source, item.id).not.toBe(item.correctAnswer);
+          }
+        }
+      });
+
+      it("shows the meaning without the aside bolted to it", () => {
+        // The content writes the meaning and the note about it in one field:
+        // "A small draft beer, please — how locals order". The summary wants
+        // the first half. What it must not do is invent or truncate anything
+        // else, so the contract is exactly `splitNote`, which is what every
+        // other quiz screen shows.
+        for (const item of items) {
+          const raw = item.kind === "situation" ? item.correctAnswerTranslation : item.correctAnswer;
+          if (!raw) continue;
+          expect(wonLine(item).en, item.id).toBe(splitNote(raw).text);
+          expect(wonLine(item).en!.length, item.id).toBeLessThanOrEqual(raw.length);
+        }
+      });
+
+      it("actually drops an aside where the content has one", () => {
+        // Guards against `splitNote` being swapped for a pass-through: at
+        // least some items in every edition carry an aside, and if none of
+        // them shortened, the stripping is not running.
+        const shortened = items.filter((item) => {
+          const raw = item.kind === "situation" ? item.correctAnswerTranslation : item.correctAnswer;
+          return raw && wonLine(item).en !== raw;
+        });
+        expect(shortened.length).toBeGreaterThan(0);
+      });
+    });
+  }
 });

@@ -56,6 +56,29 @@ export interface QuizItem {
   answerAudioId: string | null;
 }
 
+/**
+ * The line an item teaches, with what it means.
+ *
+ * Which field holds which depends on the kind, and the two are mirror images:
+ * a situation shows the English scene and asks you to produce the line, so the
+ * line is `correctAnswer`; a phrase shows the line and asks what it means, so
+ * the line is `front`. Reading the wrong one gives a round summary that lists
+ * English back at somebody who just typed Spanish.
+ *
+ * The gloss goes through `splitNote`, which is what the quiz screens use: the
+ * content writes "A small draft beer, please — how locals order" in one field,
+ * and the aside is not part of what the line means.
+ */
+export function wonLine(item: QuizItem): { source: string; en: string | null } {
+  if (item.kind === "situation") {
+    return {
+      source: item.correctAnswer,
+      en: item.correctAnswerTranslation ? splitNote(item.correctAnswerTranslation).text : null,
+    };
+  }
+  return { source: item.front, en: splitNote(item.correctAnswer).text || null };
+}
+
 export interface QuizCategory {
   id: string;
   title: string;
