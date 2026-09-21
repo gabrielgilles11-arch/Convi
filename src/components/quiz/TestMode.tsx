@@ -42,18 +42,8 @@ interface Props {
   onBackToPath: () => void;
   /** Lets the parent refresh its own mistake count once a round is scored. */
   onRoundComplete: () => void;
-  /**
-   * Builds the round. Defaults to the usual mix; the taster passes its own
-   * fixed six so it can open on arriving in the country.
-   */
+  /** Builds the round. Defaults to the usual mix. */
   makeRound?: (items: QuizItem[], allItems: QuizItem[]) => Question[];
-  /**
-   * The taster runs the same screens under different rules: nothing is scored,
-   * a miss doesn't come back around, and it ends by handing over to the path.
-   * Somebody who has owned the app for ninety seconds is being shown what it
-   * is, not tested on it.
-   */
-  taster?: boolean;
 }
 
 /**
@@ -143,7 +133,6 @@ export default function TestMode({
   onRoundComplete,
   onBackToPath,
   makeRound = buildRound,
-  taster = false,
 }: Props) {
   const [round, setRound] = useState<Question[]>(() => makeRound(items, allItems));
   /**
@@ -278,7 +267,7 @@ export default function TestMode({
   function settle(correct: boolean, results?: { itemId: string; correct: boolean }[]) {
     setAnswered(true);
     setWasRight(correct);
-    if (!taster) recordAnswer(correct);
+    recordAnswer(correct);
     if (correct) playCorrect();
     else playWrong();
 
@@ -301,14 +290,10 @@ export default function TestMode({
     // shouldn't erase the fact that you missed it.
     if (attempted.includes(position)) return;
     setAttempted((a) => [...a, position]);
-    // The taster leaves no trace: no score, and nothing dropped into the
-    // mistake queue before the learner has met the material.
-    if (!taster) {
-      if (results) {
-        for (const r of results) recordQuestionResult(r.itemId, r.correct);
-      } else {
-        recordQuestionResult(question!.itemId, correct);
-      }
+    if (results) {
+      for (const r of results) recordQuestionResult(r.itemId, r.correct);
+    } else {
+      recordQuestionResult(question!.itemId, correct);
     }
     if (correct) setCorrectCount((c) => c + 1);
   }
@@ -342,10 +327,7 @@ export default function TestMode({
     // the score but is not a reason to rebuild the board. Repeating it would
     // trap anyone who slipped once into redoing all four rows until they
     // managed a clean sweep.
-    // The taster never sends a question back around. Six questions is a look
-    // at the deck, and being made to redo the one you got wrong turns the first
-    // ninety seconds of ownership into a test.
-    const settled = taster || wasRight || question?.form === "match";
+    const settled = wasRight || question?.form === "match";
     const remaining = settled ? queue.slice(1) : [...queue.slice(1), position];
     if (!settled) setRepeats((r) => (r.includes(position) ? r : [...r, position]));
     if (remaining.length > 0) {
@@ -355,34 +337,13 @@ export default function TestMode({
       return;
     }
 
-    if (!taster) {
-      const pct = Math.round((correctCount / round.length) * 100);
-      const progress = recordRoundComplete(scoreKey, pct);
-      setDayStreak(currentDayStreak(progress));
-      setRoundsToday(roundsCompletedToday(progress));
-      setMistakeCount(progress.missedItemIds.length);
-      onRoundComplete();
-    }
+    const pct = Math.round((correctCount / round.length) * 100);
+    const progress = recordRoundComplete(scoreKey, pct);
+    setDayStreak(currentDayStreak(progress));
+    setRoundsToday(roundsCompletedToday(progress));
+    setMistakeCount(progress.missedItemIds.length);
+    onRoundComplete();
     setDone(true);
-  }
-
-  if (done && taster) {
-    return (
-      <div className="round-done">
-        <p className="round-done-score">
-          {correctCount} / {round.length}
-        </p>
-        <p className="round-done-sub taster-done">
-          That's the shape of it. Nothing here was scored. The path is where it
-          counts, one stage at a time, and it starts wherever you like.
-        </p>
-        <div className="controls">
-          <button type="button" className="review-primary" onClick={onBackToPath}>
-            Start practising
-          </button>
-        </div>
-      </div>
-    );
   }
 
   if (done) {

@@ -11,7 +11,6 @@ import {
   type QuizPayload,
   type Stage,
 } from "../../lib/quizTypes";
-import { buildTasterRound } from "../../lib/quizTypes";
 import {
   loadProgress,
   missedItemIds,
@@ -27,7 +26,6 @@ import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
 import TestMode from "./TestMode";
 import ProgressPanel from "./ProgressPanel";
-import Welcome from "./Welcome";
 import EmailPrompt from "./EmailPrompt";
 import StreakBadge from "./StreakBadge";
 import RemindPrompt from "./RemindPrompt";
@@ -37,24 +35,7 @@ import { soundEnabled, setSoundEnabled } from "./sound";
 import { setVoiceEnabled, stopSpeaking, voiceEnabled } from "./speech";
 import "./quiz.css";
 
-type Mode = "intro" | "taster" | "path" | "test" | "progress" | "talk";
-
-/**
- * Set once the welcome and its six questions have been seen. Somebody who has
- * just bought gets the introduction; everybody else goes straight to the path,
- * which is what they opened the app for.
- */
-const INTRO_KEY = "convi:intro:v1";
-
-function introSeen(): boolean {
-  try {
-    return window.localStorage.getItem(INTRO_KEY) === "done";
-  } catch {
-    // No storage: show the path. Repeating the intro every visit would be a
-    // worse failure than never showing it.
-    return true;
-  }
-}
+type Mode = "path" | "test" | "progress" | "talk";
 
 /**
  * Set once the email prompt has been answered either way — registered, or
@@ -80,15 +61,6 @@ function markEmailPrompt(answer: "registered" | "dismissed"): void {
     window.localStorage.setItem(EMAIL_KEY, answer);
   } catch {
     // Nothing to do — it just may come back next session.
-  }
-}
-
-function markIntroSeen(seen: boolean): void {
-  try {
-    if (seen) window.localStorage.setItem(INTRO_KEY, "done");
-    else window.localStorage.removeItem(INTRO_KEY);
-  } catch {
-    // Nothing to do — it just shows again next time.
   }
 }
 
@@ -126,9 +98,6 @@ export default function QuizApp({ locale }: Props) {
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
-    // Same reason the settings are read here: localStorage is a client fact,
-    // so the intro decision cannot be made while rendering on the server.
-    if (!introSeen()) setMode("intro");
   }, []);
 
   // Re-read whenever a round is scored, and on every screen change: the streak
@@ -168,7 +137,7 @@ export default function QuizApp({ locale }: Props) {
    * its own chrome \u2014 see `body[data-focus]` in Layout.astro.
    */
   useEffect(() => {
-    const focused = mode === "test" || mode === "taster" || mode === "talk";
+    const focused = mode === "test" || mode === "talk";
     if (focused) document.body.dataset.focus = "round";
     else delete document.body.dataset.focus;
     return () => {
@@ -319,23 +288,6 @@ export default function QuizApp({ locale }: Props) {
     setMode("test");
   }
 
-  // The intro owns the screen. Path/Progress tabs and a mistakes link on top of
-  // "Welcome to Try Convi" would undercut the one moment the app gets to
-  // introduce itself.
-  if (mode === "intro") {
-    return (
-      <div className="quiz-app">
-        <Welcome
-          onStart={() => setMode("taster")}
-          onSkip={() => {
-            markIntroSeen(true);
-            setMode("path");
-          }}
-        />
-      </div>
-    );
-  }
-
   return (
     <div className="quiz-app">
       <div className="quiz-toolbar">
@@ -346,7 +298,7 @@ export default function QuizApp({ locale }: Props) {
               somebody looking at the path can see it. */}
           <button
             type="button"
-            className={mode === "path" || mode === "test" || mode === "taster" ? "active" : ""}
+            className={mode === "path" || mode === "test" ? "active" : ""}
             onClick={() => setMode("path")}
           >
             Path
@@ -500,35 +452,6 @@ export default function QuizApp({ locale }: Props) {
         </>
       )}
 
-      {mode === "taster" && (
-        <>
-          <p className="stage-line">
-            <span>A taste of what's ahead: six questions, nothing scored</span>
-          </p>
-          <TestMode
-            items={payload.items}
-            allItems={payload.items}
-            locale={locale ?? "es-ES"}
-            setId="__taster__"
-            scoreKey={null}
-            nextStageId={null}
-            nextStageTitle={null}
-            makeRound={(all) => buildTasterRound(all)}
-            taster
-            onChooseStage={startStage}
-            onDrillMistakes={() => startStage(MISTAKES_STAGE_ID)}
-            onRoundComplete={() => {
-              setScoreVersion((v) => v + 1);
-              recordRound(locale ?? "es-ES");
-            }}
-            onBackToPath={() => {
-              markIntroSeen(true);
-              setMode("path");
-            }}
-          />
-        </>
-      )}
-
       {mode === "test" && (
         <>
           <p className="stage-line">
@@ -620,10 +543,6 @@ export default function QuizApp({ locale }: Props) {
           bestScores={bestScores}
           streak={streak}
           roundsToday={roundsToday}
-          onReplayIntro={() => {
-            markIntroSeen(false);
-            setMode("intro");
-          }}
         />
       )}
     </div>
