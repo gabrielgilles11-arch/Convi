@@ -9,7 +9,7 @@ import { useState, type SubmitEvent } from "react";
  * by then they have answered forty-odd questions and know what this is.
  *
  * Just as deliberately easy to refuse. The X is a real target rather than a
- * grey speck in a corner, dismissing it is remembered forever, and nothing
+ * gray speck in a corner, dismissing it is remembered forever, and nothing
  * about the app changes whether it is answered or ignored — there is nothing
  * behind it to unlock.
  */
@@ -69,7 +69,7 @@ export default function EmailPrompt({ onClose, onRegistered }: Props) {
               We'll email you when the app lands. Back to it.
             </p>
             <button type="button" className="email-prompt-submit" onClick={onClose}>
-              Keep practising
+              Keep practicing
             </button>
           </>
         ) : (

@@ -3,7 +3,7 @@ import { groupByCategory, type Conversation } from "../../lib/conversationTypes"
 /**
  * Picking which conversation to have.
  *
- * Grouped by category, because the category is the thing people recognise —
+ * Grouped by category, because the category is the thing people recognize —
  * "Getting around" — while the subsection is the useful unit to walk: you want
  * the taxi, not all of getting around at once. Both are on screen, so the
  * choice is one tap after one scan.

@@ -758,8 +758,8 @@
               "id": "slang-sc-11",
               "teaches": "slang-10",
               "speaker": "them",
-              "situation": { "en": "Someone asks whether the neighbourhood you stayed in was any good." },
-              "question": { "es": "¿Y qué tal el barrio?", "en": "So how was the neighbourhood?" },
+              "situation": { "en": "Someone asks whether the neighborhood you stayed in was any good." },
+              "question": { "es": "¿Y qué tal el barrio?", "en": "So how was the neighborhood?" },
               "answers": [
                 { "es": "Me gustó un montón.", "en": "I liked it a whole lot." }
               ],
@@ -802,7 +802,7 @@
               "teaches": "slang-22",
               "speaker": "them",
               "situation": { "en": "Someone asks whether you're going to take the language thing seriously this trip." },
-              "question": { "es": "¿Vas a practicar español en serio?", "en": "Are you going to properly practise your Spanish?" },
+              "question": { "es": "¿Vas a practicar español en serio?", "en": "Are you going to properly practice your Spanish?" },
               "answers": [
                 { "es": "Voy a saco.", "en": "I'm going all out." }
               ],
@@ -1380,7 +1380,7 @@
                 { "es": "Vete a la mierda.", "en": "Go to hell." }
               ],
               "likelyReply": { "es": "Oye, era broma.", "en": "Hey — I was joking." },
-              "notes": "This ends the conversation and possibly the friendship. Worth recognising more than saying.",
+              "notes": "This ends the conversation and possibly the friendship. Worth recognizing more than saying.",
               "difficulty": "hard",
               "quizQuestions": []
             }
@@ -1438,7 +1438,7 @@
               "id": "cuss-sc-13",
               "teaches": "cuss-20",
               "speaker": "them",
-              "situation": { "en": "You've complained about tourists and realised too late who you're talking to." },
+              "situation": { "en": "You've complained about tourists and realized too late who you're talking to." },
               "question": { "es": "Oye, que yo también soy turista.", "en": "Hey — I'm a tourist too." },
               "answers": [
                 { "es": "No lo decía por ti.", "en": "I didn't mean you." }
@@ -1881,7 +1881,7 @@
               "situation": {
                 "en": "Before getting in, you want to know what a taxi into town costs."
               },
-              "question": { "es": "¿Cuánto cuesta ir al centro?", "en": "How much is it to the centre?" },
+              "question": { "es": "¿Cuánto cuesta ir al centro?", "en": "How much is it to the center?" },
               "answers": [
                 { "es": "Unos 30 euros.", "en": "About 30 euros." },
                 { "es": "Depende del tráfico.", "en": "Depends on the traffic." }
@@ -2073,7 +2073,7 @@
               "id": "taxi-08",
               "speaker": "you",
               "situation": { "en": "You're late and want the quickest route rather than the prettiest." },
-              "question": { "es": "Mejor por el centro, que corre prisa.", "en": "Through the centre if you can — I'm in a hurry." },
+              "question": { "es": "Mejor por el centro, que corre prisa.", "en": "Through the center if you can — I'm in a hurry." },
               "answers": [
                 { "es": "A esta hora mejor por la ronda.", "en": "At this hour the ring road is faster." }
               ],
@@ -2240,7 +2240,7 @@
             {
               "id": "lost-04",
               "speaker": "you",
-              "situation": { "en": "It's late, there are three of you, and you need a taxi to the centre." },
+              "situation": { "en": "It's late, there are three of you, and you need a taxi to the center." },
               "question": { "es": "¿Nos llevas al centro? Somos tres.", "en": "Can you take us to the center? There's three of us." },
               "answers": [],
               "likelyReply": { "es": "Subid, pero de tres como mucho.", "en": "Get in, but three max." },
@@ -2933,8 +2933,8 @@
             {
               "id": "shopping-09",
               "speaker": "you",
-              "situation": { "en": "You like the cut but not the colour." },
-              "question": { "es": "¿Lo tienes en otro color?", "en": "Do you have it in another colour?" },
+              "situation": { "en": "You like the cut but not the color." },
+              "question": { "es": "¿Lo tienes en otro color?", "en": "Do you have it in another color?" },
               "answers": [
                 { "es": "En negro y en beige.", "en": "In black and in beige." }
               ],
@@ -4322,7 +4322,7 @@
                 { "es": "Eso está muy bien.", "en": "That's very sensible." }
               ],
               "likelyReply": null,
-              "notes": "Spain's limit is 0.5, and 0.3 in your first two years of licence. Saying you're driving ends it — nobody insists.",
+              "notes": "Spain's limit is 0.5, and 0.3 in your first two years of license. Saying you're driving ends it — nobody insists.",
               "difficulty": "medium",
               "quizQuestions": []
             },

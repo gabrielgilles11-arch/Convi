@@ -25,7 +25,7 @@ export default function StreakBadge({ streak, roundsToday, variant = "header" }:
 
   return (
     <div className={`streak-badge streak-badge--${variant}${live ? " is-live" : ""}`}>
-      {/* A flame drawn rather than typed: the emoji is a different colour, a
+      {/* A flame drawn rather than typed: the emoji is a different color, a
           different size and a different shape in every font it lands in, and
           this one sits next to a number it has to match. */}
       <svg className="streak-flame" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
