@@ -241,17 +241,24 @@ export function onVoicesReady(listener: () => void): () => void {
 /**
  * Where a line is being spoken from.
  *
- * Only exists to keep an A/B honest: the recorded Swedish voice is on trial,
- * so the scenario pages play the clips and practice stays on the device voice.
- * The same line can then be heard both ways on the same phone, which is the
- * only way to judge whether the recording is actually an improvement.
+ * This existed to keep an A/B honest: the recorded Swedish voice was on trial,
+ * so the scenario pages played the clips while practice stayed on the device
+ * voice, and the same line could be heard both ways on one phone.
  *
- * Temporary. When the voice is settled this goes, and every surface plays
- * whatever clips exist.
+ * That trial is over. German and Swedish are both on one recorded voice now,
+ * so every surface plays whatever clips exist — and it matters most on the two
+ * that were excluded, because Talk Mode speaks a line to you before you have
+ * asked for it. Leaving those on the device voice meant a learner heard the
+ * recorded voice on the scenario page and whatever their phone happened to
+ * ship with everywhere the app actually talks.
+ *
+ * The parameter stays because the next voice trial will want it, and because
+ * every call site already passes it. A surface missing from the list is a
+ * surface on the device voice, which is the knob the whole thing is for.
  */
 export type Surface = "scenarios" | "practice";
 
-const CLIPS_ENABLED_ON: readonly Surface[] = ["scenarios"];
+const CLIPS_ENABLED_ON: readonly Surface[] = ["scenarios", "practice"];
 
 let playing: HTMLAudioElement | null = null;
 
