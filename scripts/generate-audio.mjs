@@ -2,18 +2,24 @@
 /**
  * Generates one audio file per spoken line, once, at author time.
  *
- * The whole catalogue is ~11k characters — about 1% of Google's monthly free
- * tier — so this is a build-time job, not a runtime service. Output is committed
- * and served statically: no API key in production, no per-user cost, no latency.
+ * All three editions together are ~52k characters — Spanish 20k, German 17k,
+ * Swedish 16k — which is a rounding error against a monthly free tier and a
+ * couple of dollars if it ever billed. So this is a build-time job, not a
+ * runtime service: output is committed and served statically, and there is no
+ * API key in production, no per-user cost and no latency.
  *
  * Providers, per the chosen split:
- *   es-ES, de-DE -> Google Cloud Text-to-Speech (needs GOOGLE_TTS_API_KEY)
- *   sv-SE        -> Piper, run locally (needs `piper` and a Swedish voice)
+ *   es-ES        -> Google Cloud Text-to-Speech, Studio (needs GOOGLE_TTS_API_KEY)
+ *   de-DE, sv-SE -> Google Cloud Text-to-Speech, Chirp 3: HD (same key)
+ *
+ * Azure and Piper are still here and still work; they are one flag away
+ * (`--engine azure`, `--engine piper`) rather than the default for any locale.
  *
  * Idempotent: a line whose file already exists is skipped, so re-running after
  * adding content only synthesises the new lines. Pass --force to redo all.
  *
  *   node scripts/generate-audio.mjs [--locale sv-SE] [--force] [--dry-run]
+ *   node scripts/generate-audio.mjs --locale sv-SE --audition   # pick a voice
  */
 import { readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync, rmSync } from "node:fs";
 import { execFileSync } from "node:child_process";
@@ -27,6 +33,9 @@ const only = args.includes("--locale") ? args[args.indexOf("--locale") + 1] : nu
 const force = args.includes("--force");
 const dryRun = args.includes("--dry-run");
 const listOnly = args.includes("--list-voices");
+// Renders a few real lines in every female voice for the locale, so the choice
+// is made by ear rather than by reading names. See `audition` below.
+const auditionOnly = args.includes("--audition");
 // Which synthesiser to use, when it shouldn't be the locale's default. Piper
 // is the one that needs no account, so it is the one a stopgap runs on.
 const engine = args.includes("--engine") ? args[args.indexOf("--engine") + 1] : null;
@@ -51,9 +60,30 @@ const PIPER_VOICES = {
 /** Where download_voices puts them, and where -m looks. Never committed. */
 const VOICE_DIR = process.env.PIPER_VOICE_DIR ?? path.join(ROOT, ".piper-voices");
 
+/**
+ * Azure voices per locale, used when `--engine azure` overrides the default.
+ *
+ * Swedish used to be here by default, on Sofie. Chirp 3: HD took that slot, but
+ * Sofie is still the best second opinion on a Swedish line and Azure's free
+ * tier still covers the whole deck, so the path stays one flag away rather than
+ * deleted: `--engine azure --locale sv-SE --force --sample 6` auditions it.
+ */
+const AZURE_VOICES = {
+  "sv-SE": process.env.AZURE_VOICE_SV ?? "sv-SE-SofieNeural",
+  "de-DE": process.env.AZURE_VOICE_DE ?? "de-DE-KatjaNeural",
+  "es-ES": process.env.AZURE_VOICE_ES ?? "es-ES-ElviraNeural",
+};
+
 function providerFor(locale) {
   const base = PROVIDERS[locale];
-  if (!base || engine !== "piper") return base;
+  if (!base || !engine) return base;
+
+  if (engine === "azure") {
+    const voice = AZURE_VOICES[locale];
+    return voice ? { provider: "azure", voice, languageCode: locale } : base;
+  }
+
+  if (engine !== "piper") return base;
 
   const name = PIPER_VOICES[locale];
   if (!name) return base;
@@ -67,18 +97,32 @@ function providerFor(locale) {
  * Voice choices. Google names are stable; Piper needs a downloaded .onnx.
  *
  * Google keeps several generations of voice live at once and they do not sound
- * alike: Studio and Chirp3-HD are the current recorded-neural tiers, Neural2 is
- * the generation before, and Standard is concatenative and shows it. Which one
- * suits a deck of short spoken lines is a matter of taste, so every voice can
- * be overridden from the environment — generate a few lines with one, listen,
- * keep the one you like:
+ * alike: Chirp3-HD is the current tier, Studio the one before it, then Neural2,
+ * and Standard is concatenative and shows it. Which one suits a deck of short
+ * spoken lines is a matter of taste, so every voice can be overridden from the
+ * environment — generate a few lines with one, listen, keep the one you like:
  *
- *   GOOGLE_VOICE_ES=es-ES-Studio-F node scripts/generate-audio.mjs --locale es-ES --force
+ *   GOOGLE_VOICE_DE=de-DE-Chirp3-HD-Leda node scripts/generate-audio.mjs \
+ *     --locale de-DE --force --sample 6
  *
  * `--force` matters when comparing: without it, lines already on disk are
  * skipped and you would hear the old voice back.
+ *
+ * Chirp 3: HD ships the same base eight in every locale it supports — Aoede,
+ * Charon, Fenrir, Kore, Leda, Orus, Puck and Zephyr, four female and four male
+ * — plus a wider roster since. A name that works for German works for Swedish
+ * with the language code swapped.
+ *
+ * German and Swedish are both set to a female Chirp 3: HD voice. Which female
+ * voice is a question no file can answer by reasoning about it, so this does
+ * not try: `--audition` renders the same few lines in every female voice the
+ * API lists for a locale, and the one that sounds most like a person is the
+ * one to put here. Aoede is only the starting point.
  */
 const PROVIDERS = {
+  // Spanish stays on Studio. It is the voice the hero demo and every existing
+  // Spanish clip were recorded in, and re-cutting a whole edition to match the
+  // other two is a separate decision from adopting Chirp for them.
   "es-ES": {
     provider: "google",
     voice: process.env.GOOGLE_VOICE_ES ?? "es-ES-Studio-F",
@@ -86,18 +130,18 @@ const PROVIDERS = {
   },
   "de-DE": {
     provider: "google",
-    voice: process.env.GOOGLE_VOICE_DE ?? "de-DE-Studio-B",
+    voice: process.env.GOOGLE_VOICE_DE ?? "de-DE-Chirp3-HD-Aoede",
     languageCode: "de-DE",
   },
-  // Swedish goes to Azure. Google's Swedish voice is the one Maps reads
-  // directions in and every Chrome and Android device already falls back to it,
-  // so recording it would buy nothing; Azure's Sofie is a true neural voice and
-  // the best Swedish available anywhere, free tier included. It is also the
-  // voice Edge reads Swedish pages in, so it can be auditioned before a single
-  // clip is generated.
+  // Swedish came off Azure's Sofie for this. Sofie is a good voice, but a
+  // second provider is a second account, a second key and a second free tier to
+  // watch, and Chirp 3: HD is the first Google Swedish worth having — the old
+  // one was the Maps directions voice that every Chrome and Android device
+  // already falls back to, which is exactly what recording clips is meant to
+  // improve on. `--engine azure` still reaches Sofie for a comparison.
   "sv-SE": {
-    provider: "azure",
-    voice: process.env.AZURE_VOICE_SV ?? "sv-SE-SofieNeural",
+    provider: "google",
+    voice: process.env.GOOGLE_VOICE_SV ?? "sv-SE-Chirp3-HD-Aoede",
     languageCode: "sv-SE",
   },
 };
@@ -195,20 +239,65 @@ async function listGoogleVoices(languageCode) {
     .sort((a, b) => a.tier - b.tier || a.name.localeCompare(b.name));
 }
 
+/**
+ * Whether a voice is one of the Chirp tiers, which are paced by the model.
+ *
+ * Chirp 3: HD does not take `speakingRate` or `pitch` — pace control exists
+ * only as an en-US experiment — and sending them is a 400 on every line rather
+ * than a setting quietly ignored. So the 5% slow-down the other tiers get is
+ * dropped here rather than worked around: it was a nudge toward learner pace,
+ * not a requirement, and Chirp reads short lines slowly enough on its own that
+ * buying it back with ffmpeg would cost more than it is worth.
+ */
+const isChirp = (voice) => /chirp/i.test(voice ?? "");
+
+/**
+ * Asking for a delivery rather than just a voice.
+ *
+ * Chirp 3: HD is the most natural-sounding tier Google has, and the thing it
+ * cannot do is be told *how* to say a line — it has no styles, no emotion
+ * parameter and no prosody. The one model family on this same API that does is
+ * Gemini-TTS, which takes a plain-English instruction in `input.prompt` and is
+ * selected with `voice.modelName`. Both fields are real on v1; neither does
+ * anything to a Chirp voice.
+ *
+ * So the switch is two environment variables rather than a second engine:
+ *
+ *   GOOGLE_TTS_MODEL=gemini-2.5-flash-tts \
+ *   GOOGLE_TTS_STYLE="Warm and encouraging, like a friendly local talking to
+ *     someone who is still learning the language." \
+ *   node scripts/generate-audio.mjs --locale sv-SE --force --sample 6
+ *
+ * Audition before committing a whole edition to it. Gemini-TTS is a preview
+ * model, its language list is not Chirp's, and it may not return MP3 for every
+ * locale — which is precisely why the default stays on Chirp and this is an
+ * override rather than the other way round.
+ */
+const GOOGLE_MODEL = process.env.GOOGLE_TTS_MODEL || null;
+const GOOGLE_STYLE = process.env.GOOGLE_TTS_STYLE || null;
+
 async function synthGoogle(text, cfg, outPath) {
   const key = process.env.GOOGLE_TTS_API_KEY;
   if (!key) throw new Error("GOOGLE_TTS_API_KEY is not set");
+
+  const audioConfig = { audioEncoding: "MP3" };
+  if (!isChirp(cfg.voice)) audioConfig.speakingRate = 0.95;
+
+  const voice = { languageCode: cfg.languageCode, name: cfg.voice };
+  if (GOOGLE_MODEL) voice.modelName = GOOGLE_MODEL;
+
+  // Plain text, never SSML. Chirp 3: HD accepts a small set of SSML tags now
+  // and none of them do anything a spoken phrase here needs, and `speakable`
+  // has already turned the slots and slashes into commas.
+  const input = { text };
+  if (GOOGLE_STYLE) input.prompt = GOOGLE_STYLE;
 
   const res = await fetch(
     `https://texttospeech.googleapis.com/v1/text:synthesize?key=${key}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        input: { text },
-        voice: { languageCode: cfg.languageCode, name: cfg.voice },
-        audioConfig: { audioEncoding: "MP3", speakingRate: 0.95 },
-      }),
+      body: JSON.stringify({ input, voice, audioConfig }),
     }
   );
 
@@ -358,9 +447,72 @@ function synthPiper(text, cfg, outPath) {
 }
 
 
+/**
+ * The same few lines, in every female voice Google has for a locale.
+ *
+ * Picking a voice by reading names is guessing. This renders a handful of real
+ * lines from the edition — not "hello world", because what matters is how a
+ * voice handles *these* sentences — once per candidate, into a scratch folder
+ * that is never committed and never served. Play them, pick one, put it in
+ * PROVIDERS or in GOOGLE_VOICE_DE / GOOGLE_VOICE_SV.
+ *
+ * Candidates come from the API rather than a list in this file, so a voice
+ * Google adds next month turns up here without anybody editing anything.
+ */
+async function audition(locale, cfg) {
+  if (cfg.provider !== "google") {
+    console.error(`  --audition is Google-only; ${locale} is on ${cfg.provider}`);
+    return 0;
+  }
+
+  const wanted = auditionTier(cfg.voice);
+  const candidates = (await listGoogleVoices(cfg.languageCode)).filter(
+    (v) => String(v.gender).toUpperCase() === "FEMALE" && wanted.test(v.name)
+  );
+  if (candidates.length === 0) {
+    console.error(`  no female ${wanted} voices for ${cfg.languageCode}`);
+    return 0;
+  }
+
+  const lines = spokenLines(locale).slice(0, sample > 0 ? sample : 3);
+  const dir = path.join(ROOT, ".audio-audition", locale);
+  mkdirSync(dir, { recursive: true });
+  console.log(`  ${candidates.length} female voices x ${lines.length} lines -> .audio-audition/${locale}/`);
+
+  let made = 0;
+  for (const voice of candidates) {
+    for (const [i, line] of lines.entries()) {
+      const out = path.join(dir, `${voice.name}--${i + 1}.mp3`);
+      try {
+        await synthGoogle(speakable(line.text, locale), { ...cfg, voice: voice.name }, out);
+        made++;
+        process.stdout.write(".");
+      } catch (err) {
+        console.error(`\n  ${voice.name}: ${err.message}`);
+        break;
+      }
+    }
+  }
+  return made;
+}
+
+/** Audition like for like: Chirp against Chirp, Studio against Studio. */
+const auditionTier = (voice) => (isChirp(voice) ? /Chirp3-HD/i : /Studio|Neural2/i);
+
 async function run() {
   const locales = only ? [only] : Object.keys(PROVIDERS);
   let made = 0, skipped = 0, failed = 0;
+
+  if (auditionOnly) {
+    for (const locale of locales) {
+      const cfg = providerFor(locale);
+      if (!cfg) continue;
+      console.log(`\n${locale} — auditioning female voices`);
+      made += await audition(locale, cfg);
+    }
+    console.log(`\n\n${made} clips written to .audio-audition/ — listen, then set the voice.`);
+    return;
+  }
 
   if (listOnly) {
     for (const locale of locales) {
@@ -392,6 +544,11 @@ async function run() {
     if (sample > 0) lines = lines.slice(0, sample);
     const chars = lines.reduce((n, l) => n + l.text.length, 0);
     console.log(`\n${locale} via ${cfg.provider}: ${lines.length} lines, ${chars} characters`);
+
+    // Before the preflight, not after: this is about what is already on disk,
+    // it costs no request, and it is the thing worth knowing before a run that
+    // is about to skip every line.
+    warnIfVoiceChanged(locale, cfg);
 
     // Check the voice exists before spending a request per line on it.
     if (cfg.provider === "google" && !dryRun) {
@@ -455,10 +612,73 @@ async function run() {
     }
   }
 
-  if (!dryRun) for (const locale of locales) writeManifest(locale);
+  if (!dryRun) {
+    for (const locale of locales) {
+      writeManifest(locale);
+      writeVoiceRecord(locale, providerFor(locale));
+    }
+  }
 
   console.log(`\n\n${made} generated, ${skipped} already present, ${failed} failed`);
   if (failed) process.exitCode = 1;
+}
+
+/**
+ * Which voice the clips on disk were cut with.
+ *
+ * The one thing this script cannot work out by looking: an MP3 does not say
+ * who read it. Every run skips lines that already exist, which is what makes
+ * re-running after a content edit cheap — and also means that changing a
+ * locale's voice and re-running does nothing at all, silently, leaving a deck
+ * half in one voice and half in another the next time a line is added. That is
+ * exactly what switching Swedish from Azure to Chirp 3 would have done.
+ *
+ * So the voice is written down beside the clips and checked on the way in. The
+ * file is never read by the app — `writeManifest` only picks up .mp3 and .wav,
+ * and `speech.ts` only ever asks for index.json.
+ */
+const voicePath = (locale) => path.join(OUT_ROOT, locale, "voice.json");
+
+function readVoiceRecord(locale) {
+  try {
+    return JSON.parse(readFileSync(voicePath(locale), "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function writeVoiceRecord(locale, cfg) {
+  const dir = path.join(OUT_ROOT, locale);
+  if (!cfg || !existsSync(dir)) return;
+  const voice = cfg.voice ?? cfg.voiceName ?? cfg.model;
+  writeFileSync(voicePath(locale), `${JSON.stringify({ provider: cfg.provider, voice })}\n`);
+}
+
+/** How many clips are already on disk for a locale. */
+function clipsOnDisk(locale) {
+  const dir = path.join(OUT_ROOT, locale);
+  if (!existsSync(dir)) return 0;
+  return readdirSync(dir).filter((f) => /\.(mp3|wav)$/.test(f)).length;
+}
+
+/** Says so, loudly, when the clips on disk were read by somebody else. */
+function warnIfVoiceChanged(locale, cfg) {
+  if (force || dryRun) return;
+  const have = clipsOnDisk(locale);
+  if (have === 0) return;
+
+  const was = readVoiceRecord(locale);
+  const now = cfg.voice ?? cfg.voiceName ?? cfg.model;
+  if (was && was.provider === cfg.provider && was.voice === now) return;
+
+  const which = was
+    ? `were cut with ${was.voice} (${was.provider}), not ${now}`
+    : `predate this record, so nothing here knows what read them`;
+  console.warn(
+    `\n  the ${have} clips already in ${locale} ${which}.\n` +
+      `  Without --force they are kept and only new lines get ${now}, which\n` +
+      `  leaves the edition reading in two voices. Re-run with --force.\n`
+  );
 }
 
 /**

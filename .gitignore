@@ -5,6 +5,11 @@ dist/
 .output/
 .netlify/
 
+# Downloaded TTS voices and voice auditions — both are regenerable, both are
+# tens of megabytes, neither belongs in the repo.
+.piper-voices/
+.audio-audition/
+
 # Dependencies
 node_modules/
 .pnp
