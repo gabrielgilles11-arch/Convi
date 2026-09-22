@@ -112,7 +112,7 @@ from no test at all.
 ## Stack
 
 Astro 7 (SSR + prerendering, `@astrojs/vercel`) · React 19 islands ·
-TypeScript, strict, no `any` · Upstash Redis · Vercel · Piper / Azure / Google
+TypeScript, strict, no `any` · Upstash Redis · Vercel · Edge TTS / Azure / Google / Piper
 TTS · Vitest
 
 ## Built with AI, and not quietly

@@ -8,12 +8,17 @@
  * runtime service: output is committed and served statically, and there is no
  * API key in production, no per-user cost and no latency.
  *
- * Providers, per the chosen split:
- *   es-ES        -> Google Cloud Text-to-Speech, Studio (needs GOOGLE_TTS_API_KEY)
- *   de-DE, sv-SE -> Google Cloud Text-to-Speech, Chirp 3: HD (same key)
+ * Every edition goes through Edge TTS, on a female neural voice. It needs
+ * `pip install edge-tts` and nothing else: no account, no card, no billing
+ * project, no API key. Google Cloud wanted a billing account attached before it
+ * would serve a single character, which is a strange thing to set up for a job
+ * that runs a few times a year and commits its output.
  *
- * Azure and Piper are still here and still work; they are one flag away
- * (`--engine azure`, `--engine piper`) rather than the default for any locale.
+ * Google, Azure and Piper are all still here and still correct, one flag away
+ * (`--engine google`, `--engine azure`, `--engine piper`) rather than the
+ * default for any locale. Edge is a consumer endpoint with no contract behind
+ * it; when that stops being an acceptable trade, the replacement is already
+ * written.
  *
  * Idempotent: a line whose file already exists is skipped, so re-running after
  * adding content only synthesises the new lines. Pass --force to redo all.
@@ -61,12 +66,26 @@ const PIPER_VOICES = {
 const VOICE_DIR = process.env.PIPER_VOICE_DIR ?? path.join(ROOT, ".piper-voices");
 
 /**
+ * Google voices per locale, used when `--engine google` overrides the default.
+ *
+ * Chirp 3: HD is the best-sounding tier any of these providers offer, and it
+ * needs GOOGLE_TTS_API_KEY on a project with a billing account attached —
+ * which is the whole reason it is not the default. If that account ever
+ * exists, this is one flag and one --force away.
+ */
+const GOOGLE_VOICES = {
+  "sv-SE": process.env.GOOGLE_VOICE_SV ?? "sv-SE-Chirp3-HD-Aoede",
+  "de-DE": process.env.GOOGLE_VOICE_DE ?? "de-DE-Chirp3-HD-Aoede",
+  "es-ES": process.env.GOOGLE_VOICE_ES ?? "es-ES-Studio-F",
+};
+
+/**
  * Azure voices per locale, used when `--engine azure` overrides the default.
  *
- * Swedish used to be here by default, on Sofie. Chirp 3: HD took that slot, but
- * Sofie is still the best second opinion on a Swedish line and Azure's free
- * tier still covers the whole deck, so the path stays one flag away rather than
- * deleted: `--engine azure --locale sv-SE --force --sample 6` auditions it.
+ * The same voices Edge reaches, through the front door: a Speech resource on
+ * the free F0 tier, with a key and a region. Worth it only if the consumer
+ * endpoint Edge uses stops being dependable, which is exactly what this is
+ * kept for.
  */
 const AZURE_VOICES = {
   "sv-SE": process.env.AZURE_VOICE_SV ?? "sv-SE-SofieNeural",
@@ -77,6 +96,11 @@ const AZURE_VOICES = {
 function providerFor(locale) {
   const base = PROVIDERS[locale];
   if (!base || !engine) return base;
+
+  if (engine === "google") {
+    const voice = GOOGLE_VOICES[locale];
+    return voice ? { provider: "google", voice, languageCode: locale } : base;
+  }
 
   if (engine === "azure") {
     const voice = AZURE_VOICES[locale];
@@ -94,55 +118,42 @@ function providerFor(locale) {
 }
 
 /**
- * Voice choices. Google names are stable; Piper needs a downloaded .onnx.
+ * Voice choices: one female neural voice per edition, through Edge TTS.
  *
- * Google keeps several generations of voice live at once and they do not sound
- * alike: Chirp3-HD is the current tier, Studio the one before it, then Neural2,
- * and Standard is concatenative and shows it. Which one suits a deck of short
- * spoken lines is a matter of taste, so every voice can be overridden from the
- * environment — generate a few lines with one, listen, keep the one you like:
+ * Katja and Sofie are the German and Swedish voices Azure has shipped for
+ * years and the ones Edge reads those languages in; Elvira is the Spanish.
+ * All three are female, which is the point — a learner hears the same kind of
+ * person in Talk Mode, in practice and on the scenario page, in whichever
+ * edition they are working through.
  *
- *   GOOGLE_VOICE_DE=de-DE-Chirp3-HD-Leda node scripts/generate-audio.mjs \
+ * Every one is overridable from the environment, because this is a matter of
+ * taste and the only way to settle it is to listen:
+ *
+ *   EDGE_VOICE_DE=de-DE-AmalaNeural node scripts/generate-audio.mjs \
  *     --locale de-DE --force --sample 6
  *
  * `--force` matters when comparing: without it, lines already on disk are
- * skipped and you would hear the old voice back.
+ * skipped and you would hear the old voice back. `--audition` does the same
+ * thing across every female voice Edge lists for the locale at once.
  *
- * Chirp 3: HD ships the same base eight in every locale it supports — Aoede,
- * Charon, Fenrir, Kore, Leda, Orus, Puck and Zephyr, four female and four male
- * — plus a wider roster since. A name that works for German works for Swedish
- * with the language code swapped.
- *
- * German and Swedish are both on Aoede, female, and that is the choice rather
- * than a placeholder: one voice across both editions and every surface, so a
- * learner hears the same person in Talk Mode, in practice and on the scenario
- * page. `--audition` is there to change it — it renders the same few lines in
- * every female voice the API lists for a locale — but nothing downstream is
- * waiting on that. Swap the name here and re-run with --force.
+ * What none of these can do is take direction. Style and emotion controls are
+ * an Azure SSML feature that the read-aloud endpoint does not expose, so the
+ * delivery is whatever the voice does naturally, slowed 5% by EDGE_RATE.
  */
 const PROVIDERS = {
-  // Spanish stays on Studio. It is the voice the hero demo and every existing
-  // Spanish clip were recorded in, and re-cutting a whole edition to match the
-  // other two is a separate decision from adopting Chirp for them.
   "es-ES": {
-    provider: "google",
-    voice: process.env.GOOGLE_VOICE_ES ?? "es-ES-Studio-F",
+    provider: "edge",
+    voice: process.env.EDGE_VOICE_ES ?? "es-ES-ElviraNeural",
     languageCode: "es-ES",
   },
   "de-DE": {
-    provider: "google",
-    voice: process.env.GOOGLE_VOICE_DE ?? "de-DE-Chirp3-HD-Aoede",
+    provider: "edge",
+    voice: process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
     languageCode: "de-DE",
   },
-  // Swedish came off Azure's Sofie for this. Sofie is a good voice, but a
-  // second provider is a second account, a second key and a second free tier to
-  // watch, and Chirp 3: HD is the first Google Swedish worth having — the old
-  // one was the Maps directions voice that every Chrome and Android device
-  // already falls back to, which is exactly what recording clips is meant to
-  // improve on. `--engine azure` still reaches Sofie for a comparison.
   "sv-SE": {
-    provider: "google",
-    voice: process.env.GOOGLE_VOICE_SV ?? "sv-SE-Chirp3-HD-Aoede",
+    provider: "edge",
+    voice: process.env.EDGE_VOICE_SV ?? "sv-SE-SofieNeural",
     languageCode: "sv-SE",
   },
 };
@@ -393,6 +404,116 @@ async function synthAzure(text, cfg, outPath) {
 }
 
 /**
+ * Edge TTS: the same neural voices, with nothing to sign up for.
+ *
+ * `edge-tts` drives the read-aloud service Microsoft Edge itself uses. The
+ * voices are the Azure neural catalogue under the same names — Sofie reading
+ * Swedish here is the Sofie the Azure path was pointed at — but there is no
+ * account, no card, no billing project and no key. For a build-time job that
+ * runs once per content change and commits its output, that is the whole
+ * argument: the clips are the deliverable, and the cheapest way to get them is
+ * the one with no invoice attached to it.
+ *
+ * What it is not: an API with a contract. It is a consumer endpoint, it can
+ * change without notice, and it is rate-limited in ways nobody documents. The
+ * Google and Azure paths below stay exactly where they are behind `--engine`
+ * for the day that matters.
+ */
+function edgeAvailable() {
+  try {
+    execFileSync("edge-tts", ["--version"], { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function requireEdge() {
+  if (edgeAvailable()) return;
+  throw new Error(
+    "edge-tts is not on the path. Install it with `pip install edge-tts` " +
+      "(or `pipx install edge-tts`), then run this again."
+  );
+}
+
+/**
+ * The voices Edge will accept for a language, female first.
+ *
+ * Same reasoning as the Google and Azure listings: one call before spending
+ * several hundred, so a renamed voice says so once instead of failing on every
+ * line. `--list-voices` prints names and genders, which is also the only
+ * honest way to pick one.
+ */
+/**
+ * Runs edge-tts and turns a Python traceback into one line.
+ *
+ * Every failure here arrives as forty lines of stack ending in the sentence
+ * that matters, and this script prints one of these per line of content. So
+ * the last line is kept, the rest is dropped, and the two failures anybody
+ * actually hits get named: the endpoint being unreachable, and edge-tts having
+ * fallen behind a change at Microsoft's end.
+ */
+function edgeRun(argv, options = {}) {
+  try {
+    return execFileSync("edge-tts", argv, { stdio: ["ignore", "pipe", "pipe"], ...options });
+  } catch (err) {
+    const stderr = String(err.stderr ?? "").trim();
+    const last = stderr.split("\n").filter(Boolean).pop() ?? err.message;
+    const hint = /SkewAdjustment|ClientConnector|Cannot connect|TimeoutError|NoAudioReceived/i.test(stderr)
+      ? " — the read-aloud endpoint could not be reached, or edge-tts is out of date. " +
+        "Check the network, then `pip install --upgrade edge-tts`."
+      : "";
+    throw new Error(`edge-tts: ${last}${hint}`);
+  }
+}
+
+function listEdgeVoices(languageCode) {
+  requireEdge();
+  const out = edgeRun(["--list-voices"], { encoding: "utf8" });
+
+  const voices = [];
+  let name = null;
+  for (const line of out.split("\n")) {
+    const named = line.match(/^Name:\s*(\S+)/);
+    if (named) name = named[1];
+    const gender = line.match(/^Gender:\s*(\S+)/);
+    if (gender && name) {
+      voices.push({ name, gender: gender[1] });
+      name = null;
+    }
+    // Older builds print a plain table: "sv-SE-SofieNeural  Female  General".
+    const row = line.match(/^(\S+-\S+-\S+Neural\S*)\s+(Female|Male)\b/);
+    if (row) voices.push({ name: row[1], gender: row[2] });
+  }
+
+  const wanted = languageCode.toLowerCase();
+  const seen = new Set();
+  return voices
+    .filter((v) => v.name.toLowerCase().startsWith(`${wanted}-`))
+    .filter((v) => (seen.has(v.name) ? false : seen.add(v.name)))
+    .map((v) => ({ name: v.name, gender: v.gender, tier: /female/i.test(v.gender) ? 0 : 1 }))
+    .sort((a, b) => a.tier - b.tier || a.name.localeCompare(b.name));
+}
+
+/**
+ * One line, spoken.
+ *
+ * `--rate` with an `=` and no space: the value starts with a minus sign, and
+ * argparse reads a bare `-5%` as another flag. The 5% slow-down is the one the
+ * Azure path applied with `<prosody rate="-5%">` and the one Chirp could not
+ * take at all — a nudge toward the pace somebody still learning can follow.
+ *
+ * Edge writes 24kHz mono MP3, which is what the rest of this script and the
+ * manifest already expect. No ffmpeg, no conversion step.
+ */
+function synthEdge(text, cfg, outPath) {
+  edgeRun(["--voice", cfg.voice, "--text", text, "--write-media", outPath, `--rate=${EDGE_RATE}`]);
+}
+
+/** How much slower than native. Overridable, because taste varies. */
+const EDGE_RATE = process.env.EDGE_RATE ?? "-5%";
+
+/**
  * Makes sure the Piper voice is on disk, downloading it if not.
  *
  * Part of the job rather than a step to remember: the model is tens of
@@ -461,17 +582,21 @@ function synthPiper(text, cfg, outPath) {
  * Google adds next month turns up here without anybody editing anything.
  */
 async function audition(locale, cfg) {
-  if (cfg.provider !== "google") {
-    console.error(`  --audition is Google-only; ${locale} is on ${cfg.provider}`);
+  const all = await voicesFor(cfg);
+  if (!all) {
+    console.error(`  --audition has no voice list for ${cfg.provider}`);
     return 0;
   }
 
-  const wanted = auditionTier(cfg.voice);
-  const candidates = (await listGoogleVoices(cfg.languageCode)).filter(
-    (v) => String(v.gender).toUpperCase() === "FEMALE" && wanted.test(v.name)
+  // Google keeps several generations live at once, so an audition there has to
+  // compare like with like. Edge and Azure offer one neural tier and no such
+  // problem.
+  const tier = cfg.provider === "google" ? (isChirp(cfg.voice) ? /Chirp3-HD/i : /Studio|Neural2/i) : /./;
+  const candidates = all.filter(
+    (v) => String(v.gender).toUpperCase() === "FEMALE" && tier.test(v.name)
   );
   if (candidates.length === 0) {
-    console.error(`  no female ${wanted} voices for ${cfg.languageCode}`);
+    console.error(`  no female voices listed for ${cfg.languageCode}`);
     return 0;
   }
 
@@ -485,7 +610,7 @@ async function audition(locale, cfg) {
     for (const [i, line] of lines.entries()) {
       const out = path.join(dir, `${voice.name}--${i + 1}.mp3`);
       try {
-        await synthGoogle(speakable(line.text, locale), { ...cfg, voice: voice.name }, out);
+        await synthOne(speakable(line.text, locale), { ...cfg, voice: voice.name }, out);
         made++;
         process.stdout.write(".");
       } catch (err) {
@@ -497,8 +622,21 @@ async function audition(locale, cfg) {
   return made;
 }
 
-/** Audition like for like: Chirp against Chirp, Studio against Studio. */
-const auditionTier = (voice) => (isChirp(voice) ? /Chirp3-HD/i : /Studio|Neural2/i);
+/** Whatever the provider says it has for this language, or null if it can't say. */
+async function voicesFor(cfg) {
+  if (cfg.provider === "edge") return listEdgeVoices(cfg.languageCode);
+  if (cfg.provider === "google") return await listGoogleVoices(cfg.languageCode);
+  if (cfg.provider === "azure") return await listAzureVoices(cfg.languageCode);
+  return null;
+}
+
+/** One line through whichever synthesiser this locale is configured for. */
+async function synthOne(text, cfg, outPath) {
+  if (cfg.provider === "edge") return synthEdge(text, cfg, outPath);
+  if (cfg.provider === "google") return await synthGoogle(text, cfg, outPath);
+  if (cfg.provider === "azure") return await synthAzure(text, cfg, outPath);
+  return synthPiper(text, cfg, outPath);
+}
 
 async function run() {
   const locales = only ? [only] : Object.keys(PROVIDERS);
@@ -518,12 +656,9 @@ async function run() {
   if (listOnly) {
     for (const locale of locales) {
       const cfg = providerFor(locale);
-      if (cfg?.provider !== "google" && cfg?.provider !== "azure") continue;
-      const voices =
-        cfg.provider === "google"
-          ? await listGoogleVoices(cfg.languageCode)
-          : await listAzureVoices(cfg.languageCode);
-      console.log(`\n${locale} — voices ${cfg.provider} offers, newest tier first:`);
+      const voices = cfg ? await voicesFor(cfg) : null;
+      if (!voices) continue;
+      console.log(`\n${locale} — voices ${cfg.provider} offers, female first:`);
       for (const v of voices) {
         console.log(`  ${v.name.padEnd(30)} ${String(v.gender).toLowerCase()}`);
       }
@@ -551,33 +686,17 @@ async function run() {
     // is about to skip every line.
     warnIfVoiceChanged(locale, cfg);
 
-    // Check the voice exists before spending a request per line on it.
-    if (cfg.provider === "google" && !dryRun) {
-      const available = await listGoogleVoices(cfg.languageCode);
-      if (!available.some((v) => v.name === cfg.voice)) {
-        console.error(`\n  ${cfg.voice} is not a voice Google offers for ${cfg.languageCode}.`);
-        console.error("  Available, newest tier first:");
+    // Check the voice exists before spending a request per line on it. One
+    // listing beats the same failure eight hundred times over, and the list it
+    // prints on a miss is the answer to "so what is it called now".
+    if (cfg.provider !== "piper" && !dryRun) {
+      const available = await voicesFor(cfg);
+      if (available && !available.some((v) => v.name === cfg.voice)) {
+        console.error(`\n  ${cfg.voice} is not a voice ${cfg.provider} offers for ${cfg.languageCode}.`);
+        console.error("  Available, female first:");
         for (const v of available.slice(0, 12)) {
-          console.error(`    ${v.name.padEnd(28)} ${v.gender.toLowerCase()}`);
+          console.error(`    ${v.name.padEnd(32)} ${String(v.gender).toLowerCase()}`);
         }
-        console.error("  Set GOOGLE_VOICE_ES / GOOGLE_VOICE_DE to one of these.");
-        failed++;
-        continue;
-      }
-      console.log(`  voice: ${cfg.voice}`);
-    }
-
-    // Same preflight for Azure: one request, rather than the same failure a
-    // hundred times over.
-    if (cfg.provider === "azure" && !dryRun) {
-      const available = await listAzureVoices(cfg.languageCode);
-      if (!available.some((v) => v.name === cfg.voice)) {
-        console.error(`\n  ${cfg.voice} is not a voice Azure offers for ${cfg.languageCode}.`);
-        console.error("  Available, neural first:");
-        for (const v of available.slice(0, 12)) {
-          console.error(`    ${v.name.padEnd(30)} ${String(v.gender).toLowerCase()}`);
-        }
-        console.error("  Set AZURE_VOICE_SV to one of these.");
         failed++;
         continue;
       }
@@ -596,10 +715,7 @@ async function run() {
       if (dryRun) { made++; continue; }
 
       try {
-        const text = speakable(line.text, locale);
-        if (cfg.provider === "google") await synthGoogle(text, cfg, outPath);
-        else if (cfg.provider === "azure") await synthAzure(text, cfg, outPath);
-        else synthPiper(text, cfg, outPath);
+        await synthOne(speakable(line.text, locale), cfg, outPath);
         made++;
         process.stdout.write(".");
       } catch (err) {
@@ -719,6 +835,9 @@ run().catch((err) => {
   console.error(`\n${err.message}`);
   if (/GOOGLE_TTS_API_KEY/.test(err.message)) {
     console.error("Get one from console.cloud.google.com, with the Text-to-Speech API enabled.");
+  }
+  if (/edge-tts is not on the path/.test(err.message)) {
+    console.error("It is a Python package: `pip install edge-tts`, or `pipx install edge-tts`.");
   }
   if (/AZURE_SPEECH/.test(err.message)) {
     console.error("Create a Speech resource on the free F0 tier at portal.azure.com;");
