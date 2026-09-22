@@ -100,15 +100,22 @@ export interface QuizPayload {
  * shows up at the bottom of the path rather than disappearing.
  */
 export const PRACTICE_PATH = [
-  // Arriving, then the slang that makes the rest of it make sense, then the
-  // bar. Slang sits second because it is the most interesting thing here and
-  // the reason somebody picked this over a textbook — burying it at stage
-  // seven meant most people would never reach it.
+  // Arriving, then being able to say who you are, then the slang that makes
+  // the rest of it make sense, then the bar.
+  //
+  // `starting-convo` sits second because it is the floor everything else
+  // stands on: a learner who can order a beer but cannot say their own name
+  // has been taught the trip out of order. It used to sit fifth, behind slang
+  // and the bar, which put "¿cómo te llamas?" after "¿me pones otra?".
+  //
+  // Slang stays high for its own reason: it is the most interesting thing here
+  // and the reason somebody picked this over a textbook, and burying it at
+  // stage seven meant most people would never reach it.
   "getting-around",
+  "starting-convo",
   "slang",
   "beer-food",
   "hotel",
-  "starting-convo",
   "restaurant",
   "shopping",
   "bayern-slang",
