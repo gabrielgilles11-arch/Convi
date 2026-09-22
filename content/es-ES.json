@@ -103,20 +103,6 @@
               "quizQuestions": []
             },
             {
-              "id": "beer-food-07",
-              "speaker": "them",
-              "situation": { "en": "It's time to pay and they ask how you're paying." },
-              "question": { "es": "¿Cómo quieres pagar?", "en": "How do you want to pay?" },
-              "answers": [
-                { "es": "Con tarjeta.", "en": "By card." },
-                { "es": "En efectivo.", "en": "In cash." }
-              ],
-              "likelyReply": { "es": "Acércala aquí.", "en": "Tap it here." },
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "beer-food-08",
               "speaker": "them",
               "situation": { "en": "The waiter comes over and offers you the check." },
@@ -130,6 +116,20 @@
               "likelyReply": { "es": "Ahora mismo.", "en": "Right away." },
               "notes": "",
               "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "beer-food-07",
+              "speaker": "them",
+              "situation": { "en": "It's time to pay and they ask how you're paying." },
+              "question": { "es": "¿Cómo quieres pagar?", "en": "How do you want to pay?" },
+              "answers": [
+                { "es": "Con tarjeta.", "en": "By card." },
+                { "es": "En efectivo.", "en": "In cash." }
+              ],
+              "likelyReply": { "es": "Acércala aquí.", "en": "Tap it here." },
+              "notes": "",
+              "difficulty": "medium",
               "quizQuestions": []
             }
           ]
@@ -182,17 +182,6 @@
               "quizQuestions": []
             },
             {
-              "id": "beer-food-coffee-03",
-              "speaker": "you",
-              "situation": { "en": "It's morning at a café and you want to know what they do for breakfast." },
-              "question": { "es": "¿Tenéis algo para desayunar?", "en": "Do you have anything for breakfast?" },
-              "answers": [],
-              "likelyReply": { "es": "Tostada con tomate o con mantequilla.", "en": "Toast with tomato or with butter." },
-              "notes": "\"Tostada con tomate\" is the classic Spanish breakfast.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
               "id": "beer-food-coffee-04",
               "speaker": "them",
               "situation": { "en": "You've asked for a coffee and they want to know how you take it." },
@@ -230,6 +219,17 @@
               "likelyReply": null,
               "notes": "It arrives as a hot espresso and a separate glass of ice. You pour it over yourself — that is the correct way.",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "beer-food-coffee-03",
+              "speaker": "you",
+              "situation": { "en": "It's morning at a café and you want to know what they do for breakfast." },
+              "question": { "es": "¿Tenéis algo para desayunar?", "en": "Do you have anything for breakfast?" },
+              "answers": [],
+              "likelyReply": { "es": "Tostada con tomate o con mantequilla.", "en": "Toast with tomato or with butter." },
+              "notes": "\"Tostada con tomate\" is the classic Spanish breakfast.",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -272,7 +272,7 @@
       "subsections": [
         {
           "id": "starting-convo-main",
-          "title": null,
+          "title": "Hello, and getting unstuck",
           "exchanges": [
             {
               "id": "starting-convo-01",
@@ -282,19 +282,6 @@
               "answers": [],
               "likelyReply": { "es": "Dime. / ¿Sí?", "en": "Tell me. / Yes?" },
               "notes": "Used to get someone's attention.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "starting-convo-02",
-              "speaker": "them",
-              "situation": { "en": "Someone you've just met asks where you're from." },
-              "question": { "es": "¿De dónde eres?", "en": "Where are you from?" },
-              "answers": [
-                { "es": "Soy de Estados Unidos.", "en": "I'm from the US." }
-              ],
-              "likelyReply": { "es": "¿Y tú?", "en": "And you?" },
-              "notes": "\"Y tú?\" is your natural follow-up here, not their reply.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -313,20 +300,6 @@
               "quizQuestions": []
             },
             {
-              "id": "starting-convo-04",
-              "speaker": "them",
-              "situation": { "en": "Someone asks how long you've been in the country." },
-              "question": { "es": "¿Cuánto tiempo llevas aquí?", "en": "How long have you been here?" },
-              "answers": [
-                { "es": "Llevo __ días/semanas.", "en": "I've been here __ days/weeks." },
-                { "es": "Acabo de llegar.", "en": "I just arrived." }
-              ],
-              "likelyReply": { "es": "¿Y qué te parece?", "en": "What do you think of it?" },
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "starting-convo-05",
               "speaker": "you",
               "situation": { "en": "Someone says something and you don't catch it." },
@@ -337,6 +310,19 @@
               ],
               "likelyReply": { "es": "¿Ahora mejor?", "en": "Better now?" },
               "notes": "\"No te he entendido\" blames the moment rather than your Spanish — softer than \"no entiendo\".",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-12",
+              "speaker": "you",
+              "situation": { "en": "Someone answered too fast and you got none of it." },
+              "question": { "es": "Perdona, ¿me lo repites?", "en": "Sorry, could you say that again?" },
+              "answers": [
+                { "es": "Claro, más despacio.", "en": "Of course — more slowly." }
+              ],
+              "likelyReply": null,
+              "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -361,19 +347,6 @@
               "answers": [],
               "likelyReply": null,
               "notes": "Closing line to end the conversation.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "starting-convo-12",
-              "speaker": "you",
-              "situation": { "en": "Someone answered too fast and you got none of it." },
-              "question": { "es": "Perdona, ¿me lo repites?", "en": "Sorry, could you say that again?" },
-              "answers": [
-                { "es": "Claro, más despacio.", "en": "Of course — more slowly." }
-              ],
-              "likelyReply": null,
-              "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
             }
@@ -406,19 +379,6 @@
               "quizQuestions": []
             },
             {
-              "id": "convo-sc-03",
-              "speaker": "them",
-              "situation": { "en": "You've been talking to someone for ten minutes and neither of you has said your name." },
-              "question": { "es": "Por cierto, ¿cómo te llamas?", "en": "By the way, what's your name?" },
-              "answers": [
-                { "es": "Me llamo [NOMBRE]. ¿Y tú?", "en": "My name is [NAME]. And you?" }
-              ],
-              "likelyReply": { "es": "Encantado de conocerte.", "en": "Nice to meet you." },
-              "notes": "Me llamo is literally I call myself, and it is the normal answer. Soy [NOMBRE] works too and is a shade more casual.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
               "id": "convo-sc-04",
               "speaker": "them",
               "situation": { "en": "You're introduced to a friend's mother, who greets you properly." },
@@ -434,9 +394,139 @@
           ]
         },
         {
+          "id": "starting-convo-basics",
+          "title": "The first five questions",
+          "exchanges": [
+            {
+              "id": "convo-sc-03",
+              "speaker": "them",
+              "situation": { "en": "You've been talking to someone for ten minutes and neither of you has said your name." },
+              "question": { "es": "Por cierto, ¿cómo te llamas?", "en": "By the way, what's your name?" },
+              "answers": [
+                { "es": "Me llamo [NOMBRE].", "en": "My name is [NAME]." },
+                { "es": "Me llamo [NOMBRE]. ¿Y tú?", "en": "My name is [NAME]. And you?" }
+              ],
+              "likelyReply": { "es": "Encantado de conocerte.", "en": "Nice to meet you." },
+              "notes": "Me llamo is literally I call myself, and it is the normal answer. Soy [NOMBRE] works too and is a shade more casual. Tacking ¿y tú? on the end is what turns an answer back into a conversation.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-02",
+              "speaker": "them",
+              "situation": { "en": "Someone you've just met asks where you're from." },
+              "question": { "es": "¿De dónde eres?", "en": "Where are you from?" },
+              "answers": [
+                { "es": "Soy de Estados Unidos.", "en": "I'm from the US." }
+              ],
+              "likelyReply": { "es": "¿Y tú?", "en": "And you?" },
+              "notes": "\"Y tú?\" is your natural follow-up here, not their reply.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-basics-01",
+              "speaker": "them",
+              "situation": { "en": "They have heard your accent and ask straight out how much Spanish you have." },
+              "question": { "es": "¿Hablas español?", "en": "Do you speak Spanish?" },
+              "answers": [
+                { "es": "No hablo español.", "en": "I don't speak Spanish." },
+                { "es": "Hablo un poco de español.", "en": "I speak a little Spanish." }
+              ],
+              "likelyReply": { "es": "Tranquilo, hablamos despacio.", "en": "Relax, we'll talk slowly." },
+              "notes": "\"No hablo español\" is a whole sentence and it ends the attempt. \"Hablo un poco\" keeps the conversation in Spanish, which is the one you want if you came here to use it.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-basics-02",
+              "speaker": "them",
+              "situation": { "en": "Somebody at the bar wants to know why you're in the country at all." },
+              "question": { "es": "¿Qué te trae por aquí?", "en": "What brings you here?" },
+              "answers": [
+                { "es": "Estoy de vacaciones.", "en": "I'm on vacation." },
+                { "es": "He venido por trabajo.", "en": "I came for work." }
+              ],
+              "likelyReply": { "es": "Pues has elegido bien.", "en": "Well, you picked the right place." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-04",
+              "speaker": "them",
+              "situation": { "en": "Someone asks how long you've been in the country." },
+              "question": { "es": "¿Cuánto tiempo llevas aquí?", "en": "How long have you been here?" },
+              "answers": [
+                { "es": "Llevo __ días/semanas.", "en": "I've been here __ days/weeks." },
+                { "es": "Acabo de llegar.", "en": "I just arrived." }
+              ],
+              "likelyReply": { "es": "¿Y qué te parece?", "en": "What do you think of it?" },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-basics-03",
+              "speaker": "them",
+              "situation": { "en": "You're out with people your own age and somebody asks how old you are." },
+              "question": { "es": "¿Cuántos años tienes?", "en": "How old are you?" },
+              "answers": [
+                { "es": "Tengo __ años.", "en": "I'm __ years old." },
+                { "es": "Adivina.", "en": "Guess." }
+              ],
+              "likelyReply": { "es": "Anda, igual que yo.", "en": "Oh, same as me." },
+              "notes": "Spanish has years rather than being them: tener, never ser. \"Tengo treinta años\", and \"soy treinta\" is not a sentence.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-basics-04",
+              "speaker": "them",
+              "situation": { "en": "The conversation turns to what you do for a living." },
+              "question": { "es": "¿A qué te dedicas?", "en": "What do you do for a living?" },
+              "answers": [
+                { "es": "Soy profesor.", "en": "I'm a teacher." },
+                { "es": "Trabajo en una oficina.", "en": "I work in an office." }
+              ],
+              "likelyReply": { "es": "Ah, mira qué bien.", "en": "Ah, nice." },
+              "notes": "\"¿A qué te dedicas?\" is the everyday one and \"¿En qué trabajas?\" means the same. Spanish drops the article on a job: \"soy profesor\", never \"soy un profesor\".",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "convo-basics-05",
+              "speaker": "you",
+              "situation": { "en": "They've asked you everything and you want to turn it around." },
+              "question": { "es": "¿Y tú? ¿A qué te dedicas?", "en": "And you? What do you do?" },
+              "answers": [
+                { "es": "Trabajo en un bar, aquí al lado.", "en": "I work in a bar, just next door." }
+              ],
+              "likelyReply": null,
+              "notes": "Asking back is most of Spanish small talk. A question answered and not returned reads as you being finished talking.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
           "id": "starting-convo-bond",
           "title": "Bonding over fútbol & bailing gracefully",
           "exchanges": [
+            {
+              "id": "starting-convo-13",
+              "speaker": "them",
+              "situation": { "en": "You've walked into a bar with the match on and someone turns to you." },
+              "question": { "es": "¿Quién va ganando?", "en": "Who's winning?" },
+              "answers": [
+                { "es": "Van empatados.", "en": "They're level." },
+                { "es": "Ni idea, acabo de llegar.", "en": "No idea, I've just got here." }
+              ],
+              "likelyReply": { "es": "El árbitro está fatal.", "en": "The referee's having a shocker." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
             {
               "id": "starting-convo-08",
               "speaker": "them",
@@ -452,6 +542,19 @@
               "quizQuestions": []
             },
             {
+              "id": "starting-convo-15",
+              "speaker": "you",
+              "situation": { "en": "They're talking football and you have nothing to contribute." },
+              "question": { "es": "Yo del fútbol no entiendo, pero me apunto.", "en": "I know nothing about football, but I'm in." },
+              "answers": [
+                { "es": "Da igual, tú anima.", "en": "Doesn't matter — just cheer." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "starting-convo-09",
               "speaker": "them",
               "situation": { "en": "Someone asks whether you watched last night's game." },
@@ -460,6 +563,33 @@
                 { "es": "No, ¿cómo quedó?", "en": "No, how'd it end?" }
               ],
               "likelyReply": { "es": "Ganamos dos a cero.", "en": "We won two-nil." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-14",
+              "speaker": "you",
+              "situation": { "en": "A decision has gone against the home side and the bar erupts." },
+              "question": { "es": "Menudo robo.", "en": "What a robbery — that was never a foul." },
+              "answers": [
+                { "es": "¡Eso digo yo!", "en": "That's what I said!" }
+              ],
+              "likelyReply": null,
+              "notes": "The all-purpose Spanish complaint about a referee. Said out loud in a bar, it buys you agreement from strangers.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-16",
+              "speaker": "them",
+              "situation": { "en": "It's late and someone proposes one final drink." },
+              "question": { "es": "¿Nos tomamos la última?", "en": "Shall we have one last one?" },
+              "answers": [
+                { "es": "Venga, la última.", "en": "Go on then — the last one." },
+                { "es": "Yo lo dejo ya.", "en": "I'm going to call it there." }
+              ],
+              "likelyReply": { "es": "La última siempre es mentira.", "en": "The last one is always a lie." },
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -483,60 +613,6 @@
               "answers": [],
               "likelyReply": { "es": "¡Claro! Cuídate.", "en": "Of course! Take care." },
               "notes": "\"Otro día\" is a soft, polite way to bail.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "starting-convo-13",
-              "speaker": "them",
-              "situation": { "en": "You've walked into a bar with the match on and someone turns to you." },
-              "question": { "es": "¿Quién va ganando?", "en": "Who's winning?" },
-              "answers": [
-                { "es": "Van empatados.", "en": "They're level." },
-                { "es": "Ni idea, acabo de llegar.", "en": "No idea, I've just got here." }
-              ],
-              "likelyReply": { "es": "El árbitro está fatal.", "en": "The referee's having a shocker." },
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "starting-convo-14",
-              "speaker": "you",
-              "situation": { "en": "A decision has gone against the home side and the bar erupts." },
-              "question": { "es": "Menudo robo.", "en": "What a robbery — that was never a foul." },
-              "answers": [
-                { "es": "¡Eso digo yo!", "en": "That's what I said!" }
-              ],
-              "likelyReply": null,
-              "notes": "The all-purpose Spanish complaint about a referee. Said out loud in a bar, it buys you agreement from strangers.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "starting-convo-15",
-              "speaker": "you",
-              "situation": { "en": "They're talking football and you have nothing to contribute." },
-              "question": { "es": "Yo del fútbol no entiendo, pero me apunto.", "en": "I know nothing about football, but I'm in." },
-              "answers": [
-                { "es": "Da igual, tú anima.", "en": "Doesn't matter — just cheer." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "starting-convo-16",
-              "speaker": "them",
-              "situation": { "en": "It's late and someone proposes one final drink." },
-              "question": { "es": "¿Nos tomamos la última?", "en": "Shall we have one last one?" },
-              "answers": [
-                { "es": "Venga, la última.", "en": "Go on then — the last one." },
-                { "es": "Yo lo dejo ya.", "en": "I'm going to call it there." }
-              ],
-              "likelyReply": { "es": "La última siempre es mentira.", "en": "The last one is always a lie." },
-              "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
             }
@@ -1861,50 +1937,6 @@
           "title": "Landing / airport (Spain)",
           "exchanges": [
             {
-              "id": "airport-01",
-              "speaker": "you",
-              "situation": {
-                "en": "You've landed and you're looking for where the taxis are."
-              },
-              "question": { "es": "Perdona, ¿dónde está la parada de taxis?", "en": "Excuse me, where's the taxi rank?" },
-              "answers": [
-                { "es": "Saliendo, a la derecha.", "en": "Out the doors, on the right." }
-              ],
-              "likelyReply": { "es": "Sigue los carteles.", "en": "Follow the signs." },
-              "notes": "Swap taxis for autobús or tren and the question still works.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "airport-02",
-              "speaker": "you",
-              "situation": {
-                "en": "Before getting in, you want to know what a taxi into town costs."
-              },
-              "question": { "es": "¿Cuánto cuesta ir al centro?", "en": "How much is it to the center?" },
-              "answers": [
-                { "es": "Unos 30 euros.", "en": "About 30 euros." },
-                { "es": "Depende del tráfico.", "en": "Depends on the traffic." }
-              ],
-              "likelyReply": { "es": "Sube, que te llevo.", "en": "Hop in, I'll take you." },
-              "notes": "Ask before the bags go in the boot, not after.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "airport-03",
-              "speaker": "you",
-              "situation": { "en": "You've landed and want the metro rather than a taxi." },
-              "question": { "es": "¿Dónde se coge el metro al centro?", "en": "Where do I get the metro into town?" },
-              "answers": [
-                { "es": "Bajando, planta cero.", "en": "Downstairs, level zero." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "airport-04",
               "speaker": "them",
               "situation": { "en": "The officer at passport control puts a hand out." },
@@ -1926,6 +1958,19 @@
                 { "es": "Cinta cuatro, al fondo.", "en": "Belt four, right at the end." }
               ],
               "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "airport-08",
+              "speaker": "them",
+              "situation": { "en": "Customs stops you on the way out." },
+              "question": { "es": "¿Algo que declarar?", "en": "Anything to declare?" },
+              "answers": [
+                { "es": "No, nada.", "en": "No, nothing." }
+              ],
+              "likelyReply": { "es": "Puede seguir.", "en": "You can go on." },
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -1958,16 +2003,47 @@
               "quizQuestions": []
             },
             {
-              "id": "airport-08",
-              "speaker": "them",
-              "situation": { "en": "Customs stops you on the way out." },
-              "question": { "es": "¿Algo que declarar?", "en": "Anything to declare?" },
+              "id": "airport-03",
+              "speaker": "you",
+              "situation": { "en": "You've landed and want the metro rather than a taxi." },
+              "question": { "es": "¿Dónde se coge el metro al centro?", "en": "Where do I get the metro into town?" },
               "answers": [
-                { "es": "No, nada.", "en": "No, nothing." }
+                { "es": "Bajando, planta cero.", "en": "Downstairs, level zero." }
               ],
-              "likelyReply": { "es": "Puede seguir.", "en": "You can go on." },
+              "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "airport-01",
+              "speaker": "you",
+              "situation": {
+                "en": "You've landed and you're looking for where the taxis are."
+              },
+              "question": { "es": "Perdona, ¿dónde está la parada de taxis?", "en": "Excuse me, where's the taxi rank?" },
+              "answers": [
+                { "es": "Saliendo, a la derecha.", "en": "Out the doors, on the right." }
+              ],
+              "likelyReply": { "es": "Sigue los carteles.", "en": "Follow the signs." },
+              "notes": "Swap taxis for autobús or tren and the question still works.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "airport-02",
+              "speaker": "you",
+              "situation": {
+                "en": "Before getting in, you want to know what a taxi into town costs."
+              },
+              "question": { "es": "¿Cuánto cuesta ir al centro?", "en": "How much is it to the center?" },
+              "answers": [
+                { "es": "Unos 30 euros.", "en": "About 30 euros." },
+                { "es": "Depende del tráfico.", "en": "Depends on the traffic." }
+              ],
+              "likelyReply": { "es": "Sube, que te llevo.", "en": "Hop in, I'll take you." },
+              "notes": "Ask before the bags go in the boot, not after.",
+              "difficulty": "easy",
               "quizQuestions": []
             }
           ]
@@ -1976,6 +2052,19 @@
           "id": "taxi",
           "title": "Taxi / rideshare (Spain)",
           "exchanges": [
+            {
+              "id": "taxi-07",
+              "speaker": "you",
+              "situation": { "en": "You're at the car with a heavy case and the boot is shut." },
+              "question": { "es": "¿Me abres el maletero?", "en": "Can you open the boot?" },
+              "answers": [
+                { "es": "Voy.", "en": "On it." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
             {
               "id": "taxi-01",
               "speaker": "them",
@@ -1988,20 +2077,6 @@
               "likelyReply": { "es": "Vale. / ¿Por dónde?", "en": "Okay. / Which way?" },
               "notes": "",
               "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "taxi-02",
-              "speaker": "them",
-              "situation": { "en": "The driver suggests a route and checks it's fine with you." },
-              "question": { "es": "¿Te viene bien por aquí?", "en": "Is this route OK?" },
-              "answers": [
-                { "es": "Sí, perfecto.", "en": "Yes, perfect." },
-                { "es": "Prefiero por __, si puede ser.", "en": "I'd rather go via __ if possible." }
-              ],
-              "likelyReply": { "es": "Hecho.", "en": "Done." },
-              "notes": "",
-              "difficulty": "medium",
               "quizQuestions": []
             },
             {
@@ -2019,52 +2094,15 @@
               "quizQuestions": []
             },
             {
-              "id": "taxi-04",
-              "speaker": "you",
-              "situation": { "en": "You're paying the taxi driver and have no cash on you." },
-              "question": { "es": "¿Aceptas tarjeta?", "en": "Do you take card?" },
+              "id": "taxi-02",
+              "speaker": "them",
+              "situation": { "en": "The driver suggests a route and checks it's fine with you." },
+              "question": { "es": "¿Te viene bien por aquí?", "en": "Is this route OK?" },
               "answers": [
-                { "es": "Sí.", "en": "Yes." },
-                { "es": "Solo efectivo.", "en": "Cash only." }
+                { "es": "Sí, perfecto.", "en": "Yes, perfect." },
+                { "es": "Prefiero por __, si puede ser.", "en": "I'd rather go via __ if possible." }
               ],
-              "likelyReply": { "es": "Al llegar te cobro.", "en": "I'll charge you when we arrive." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "taxi-05",
-              "speaker": "you",
-              "situation": { "en": "You've arrived and want the driver to stop here." },
-              "question": { "es": "Aquí está bien, gracias.", "en": "Here is fine, thanks." },
-              "answers": [],
-              "likelyReply": { "es": "Son __ euros.", "en": "It's __ euros." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "taxi-06",
-              "speaker": "you",
-              "situation": { "en": "You need a receipt for the ride." },
-              "question": { "es": "¿Me das un recibo?", "en": "Can I get a receipt?" },
-              "answers": [
-                { "es": "Sí, un momento.", "en": "Yes, one moment." }
-              ],
-              "likelyReply": { "es": "Toma.", "en": "Here you go." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "taxi-07",
-              "speaker": "you",
-              "situation": { "en": "You're at the car with a heavy case and the boot is shut." },
-              "question": { "es": "¿Me abres el maletero?", "en": "Can you open the boot?" },
-              "answers": [
-                { "es": "Voy.", "en": "On it." }
-              ],
-              "likelyReply": null,
+              "likelyReply": { "es": "Hecho.", "en": "Done." },
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -2080,6 +2118,44 @@
               "likelyReply": null,
               "notes": "",
               "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "taxi-05",
+              "speaker": "you",
+              "situation": { "en": "You've arrived and want the driver to stop here." },
+              "question": { "es": "Aquí está bien, gracias.", "en": "Here is fine, thanks." },
+              "answers": [],
+              "likelyReply": { "es": "Son __ euros.", "en": "It's __ euros." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "taxi-04",
+              "speaker": "you",
+              "situation": { "en": "You're paying the taxi driver and have no cash on you." },
+              "question": { "es": "¿Aceptas tarjeta?", "en": "Do you take card?" },
+              "answers": [
+                { "es": "Sí.", "en": "Yes." },
+                { "es": "Solo efectivo.", "en": "Cash only." }
+              ],
+              "likelyReply": { "es": "Al llegar te cobro.", "en": "I'll charge you when we arrive." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "taxi-06",
+              "speaker": "you",
+              "situation": { "en": "You need a receipt for the ride." },
+              "question": { "es": "¿Me das un recibo?", "en": "Can I get a receipt?" },
+              "answers": [
+                { "es": "Sí, un momento.", "en": "Yes, one moment." }
+              ],
+              "likelyReply": { "es": "Toma.", "en": "Here you go." },
+              "notes": "",
+              "difficulty": "easy",
               "quizQuestions": []
             }
           ]
@@ -2111,6 +2187,20 @@
                 { "es": "La línea __, dirección __.", "en": "Line __, direction __." }
               ],
               "likelyReply": { "es": "Tienes que hacer transbordo en __.", "en": "You need to transfer at __." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "metro-08",
+              "speaker": "you",
+              "situation": { "en": "You're on a platform and want someone to confirm you're on the right side." },
+              "question": { "es": "¿Esta es la dirección correcta?", "en": "Is this the right direction?" },
+              "answers": [
+                { "es": "Sí, vas bien.", "en": "Yes, you're fine." },
+                { "es": "No, es el andén de enfrente.", "en": "No, it's the platform opposite." }
+              ],
+              "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -2183,20 +2273,6 @@
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
-            },
-            {
-              "id": "metro-08",
-              "speaker": "you",
-              "situation": { "en": "You're on a platform and want someone to confirm you're on the right side." },
-              "question": { "es": "¿Esta es la dirección correcta?", "en": "Is this the right direction?" },
-              "answers": [
-                { "es": "Sí, vas bien.", "en": "Yes, you're fine." },
-                { "es": "No, es el andén de enfrente.", "en": "No, it's the platform opposite." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
             }
           ]
         },
@@ -2204,6 +2280,17 @@
           "id": "getting-around-lost",
           "title": "Late night & hopelessly lost (Spain)",
           "exchanges": [
+            {
+              "id": "lost-03",
+              "speaker": "you",
+              "situation": { "en": "You have no idea where you are and need help." },
+              "question": { "es": "Creo que me he perdido.", "en": "I think I'm lost." },
+              "answers": [],
+              "likelyReply": { "es": "¿A dónde quieres ir?", "en": "Where do you want to go?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
             {
               "id": "lost-01",
               "speaker": "you",
@@ -2227,14 +2314,42 @@
               "quizQuestions": []
             },
             {
-              "id": "lost-03",
+              "id": "lost-06",
               "speaker": "you",
-              "situation": { "en": "You have no idea where you are and need help." },
-              "question": { "es": "Creo que me he perdido.", "en": "I think I'm lost." },
-              "answers": [],
-              "likelyReply": { "es": "¿A dónde quieres ir?", "en": "Where do you want to go?" },
+              "situation": { "en": "Directions in Spanish are coming too fast for you." },
+              "question": { "es": "¿Me lo señalas en el mapa?", "en": "Can you point it out on the map?" },
+              "answers": [
+                { "es": "Estamos aquí, tú vas ahí.", "en": "We're here — you want to be there." }
+              ],
+              "likelyReply": null,
               "notes": "",
-              "difficulty": "easy",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "lost-08",
+              "speaker": "you",
+              "situation": { "en": "The street you've been sent down is dark and empty." },
+              "question": { "es": "¿Hay alguna calle más iluminada?", "en": "Is there a better-lit street?" },
+              "answers": [
+                { "es": "Sube por Gran Vía, mejor.", "en": "Go up Gran Vía instead." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "lost-07",
+              "speaker": "you",
+              "situation": { "en": "The metro has shut and you're a long way from your bed." },
+              "question": { "es": "¿Pasa algún búho por aquí?", "en": "Does a night bus come through here?" },
+              "answers": [
+                { "es": "El N1, cada veinte minutos.", "en": "The N1, every twenty minutes." }
+              ],
+              "likelyReply": null,
+              "notes": "Night buses are búhos — owls. Every big Spanish city runs them once the metro shuts, and they all leave from one central square.",
+              "difficulty": "hard",
               "quizQuestions": []
             },
             {
@@ -2258,45 +2373,6 @@
               "likelyReply": { "es": "Son ocho euros.", "en": "That's eight euros." },
               "notes": "",
               "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "lost-06",
-              "speaker": "you",
-              "situation": { "en": "Directions in Spanish are coming too fast for you." },
-              "question": { "es": "¿Me lo señalas en el mapa?", "en": "Can you point it out on the map?" },
-              "answers": [
-                { "es": "Estamos aquí, tú vas ahí.", "en": "We're here — you want to be there." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "lost-07",
-              "speaker": "you",
-              "situation": { "en": "The metro has shut and you're a long way from your bed." },
-              "question": { "es": "¿Pasa algún búho por aquí?", "en": "Does a night bus come through here?" },
-              "answers": [
-                { "es": "El N1, cada veinte minutos.", "en": "The N1, every twenty minutes." }
-              ],
-              "likelyReply": null,
-              "notes": "Night buses are búhos — owls. Every big Spanish city runs them once the metro shuts, and they all leave from one central square.",
-              "difficulty": "hard",
-              "quizQuestions": []
-            },
-            {
-              "id": "lost-08",
-              "speaker": "you",
-              "situation": { "en": "The street you've been sent down is dark and empty." },
-              "question": { "es": "¿Hay alguna calle más iluminada?", "en": "Is there a better-lit street?" },
-              "answers": [
-                { "es": "Sube por Gran Vía, mejor.", "en": "Go up Gran Vía instead." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
               "quizQuestions": []
             }
           ]
@@ -2372,16 +2448,16 @@
               "quizQuestions": []
             },
             {
-              "id": "restaurant-15",
+              "id": "restaurant-17",
               "speaker": "you",
-              "situation": { "en": "The terrace looks better than the dining room." },
-              "question": { "es": "¿Se puede comer en la terraza?", "en": "Can we eat out on the terrace?" },
+              "situation": { "en": "There's a queue and you want to know whether to bother." },
+              "question": { "es": "¿Cuánto hay que esperar?", "en": "How long is the wait?" },
               "answers": [
-                { "es": "Sí, si encontráis sitio.", "en": "Yes, if you can find a spot." }
+                { "es": "Veinte minutos.", "en": "Twenty minutes." }
               ],
               "likelyReply": null,
-              "notes": "Terrace tables often cost more than the same food inside. It is legal, and it is on the menu in small print.",
-              "difficulty": "medium",
+              "notes": "",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -2399,16 +2475,16 @@
               "quizQuestions": []
             },
             {
-              "id": "restaurant-17",
+              "id": "restaurant-15",
               "speaker": "you",
-              "situation": { "en": "There's a queue and you want to know whether to bother." },
-              "question": { "es": "¿Cuánto hay que esperar?", "en": "How long is the wait?" },
+              "situation": { "en": "The terrace looks better than the dining room." },
+              "question": { "es": "¿Se puede comer en la terraza?", "en": "Can we eat out on the terrace?" },
               "answers": [
-                { "es": "Veinte minutos.", "en": "Twenty minutes." }
+                { "es": "Sí, si encontráis sitio.", "en": "Yes, if you can find a spot." }
               ],
               "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
+              "notes": "Terrace tables often cost more than the same food inside. It is legal, and it is on the menu in small print.",
+              "difficulty": "medium",
               "quizQuestions": []
             },
             {
@@ -2445,6 +2521,19 @@
               "quizQuestions": []
             },
             {
+              "id": "restaurant-21",
+              "speaker": "you",
+              "situation": { "en": "It's a weekday lunchtime and you want the good-value option." },
+              "question": { "es": "¿Hay menú del día?", "en": "Is there a set lunch menu?" },
+              "answers": [
+                { "es": "Sí, trece euros con bebida.", "en": "Yes, thirteen euros with a drink." }
+              ],
+              "likelyReply": null,
+              "notes": "Menú del día is the weekday lunch deal: starter, main, bread, a drink and dessert or coffee. Always the best value on the menu.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "restaurant-06",
               "speaker": "you",
               "situation": { "en": "You want the waiter to recommend something local." },
@@ -2454,34 +2543,6 @@
               ],
               "likelyReply": { "es": "Está muy bueno. / Es lo que más sale.", "en": "It's really good / it's what people order most." },
               "notes": "The staff answers this one — you're asking for a recommendation.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "restaurant-07",
-              "speaker": "them",
-              "situation": { "en": "The waiter asks whether you want bread." },
-              "question": { "es": "¿Queréis pan?", "en": "Do you want bread?" },
-              "answers": [
-                { "es": "Sí, por favor.", "en": "Yes, please." },
-                { "es": "No, gracias.", "en": "No, thanks." }
-              ],
-              "likelyReply": { "es": "Perfecto.", "en": "Perfect." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "restaurant-08",
-              "speaker": "you",
-              "situation": { "en": "You want a dish made without one of its ingredients." },
-              "question": { "es": "¿Me lo pones sin __?", "en": "Can you make it without __?" },
-              "answers": [
-                { "es": "Sí, sin problema.", "en": "Yes, no problem." },
-                { "es": "No se puede.", "en": "Can't be done." }
-              ],
-              "likelyReply": { "es": "¿Alguna alergia?", "en": "Any allergies?" },
-              "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -2512,16 +2573,31 @@
               "quizQuestions": []
             },
             {
-              "id": "restaurant-21",
+              "id": "restaurant-08",
               "speaker": "you",
-              "situation": { "en": "It's a weekday lunchtime and you want the good-value option." },
-              "question": { "es": "¿Hay menú del día?", "en": "Is there a set lunch menu?" },
+              "situation": { "en": "You want a dish made without one of its ingredients." },
+              "question": { "es": "¿Me lo pones sin __?", "en": "Can you make it without __?" },
               "answers": [
-                { "es": "Sí, trece euros con bebida.", "en": "Yes, thirteen euros with a drink." }
+                { "es": "Sí, sin problema.", "en": "Yes, no problem." },
+                { "es": "No se puede.", "en": "Can't be done." }
               ],
-              "likelyReply": null,
-              "notes": "Menú del día is the weekday lunch deal: starter, main, bread, a drink and dessert or coffee. Always the best value on the menu.",
+              "likelyReply": { "es": "¿Alguna alergia?", "en": "Any allergies?" },
+              "notes": "",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "restaurant-07",
+              "speaker": "them",
+              "situation": { "en": "The waiter asks whether you want bread." },
+              "question": { "es": "¿Queréis pan?", "en": "Do you want bread?" },
+              "answers": [
+                { "es": "Sí, por favor.", "en": "Yes, please." },
+                { "es": "No, gracias.", "en": "No, thanks." }
+              ],
+              "likelyReply": { "es": "Perfecto.", "en": "Perfect." },
+              "notes": "",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -2544,6 +2620,19 @@
           "title": "Fixing small problems (politely)",
           "exchanges": [
             {
+              "id": "restaurant-23",
+              "speaker": "you",
+              "situation": { "en": "The table beside you was served before you and you got there first." },
+              "question": { "es": "Seguimos esperando la comida.", "en": "We're still waiting for our food." },
+              "answers": [
+                { "es": "Sale enseguida.", "en": "It's coming right out." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "restaurant-09",
               "speaker": "you",
               "situation": { "en": "A dish arrives that you didn't order." },
@@ -2554,30 +2643,6 @@
               "likelyReply": { "es": "¿Qué habías pedido?", "en": "What did you order?" },
               "notes": "",
               "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "restaurant-10",
-              "speaker": "you",
-              "situation": { "en": "Something's wrong with your dish and you want it swapped." },
-              "question": { "es": "¿Me lo cambias, por favor?", "en": "Can you change it?" },
-              "answers": [
-                { "es": "Sí, claro.", "en": "Yes, of course." }
-              ],
-              "likelyReply": { "es": "Un momento.", "en": "One moment." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "restaurant-13",
-              "speaker": "you",
-              "situation": { "en": "Your food has arrived cold." },
-              "question": { "es": "Perdona, esto está frío.", "en": "Sorry, this is cold." },
-              "answers": [],
-              "likelyReply": { "es": "Cuánto lo siento, te lo caliento.", "en": "So sorry, I'll heat it up for you." },
-              "notes": "",
-              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -2592,16 +2657,27 @@
               "quizQuestions": []
             },
             {
-              "id": "restaurant-23",
+              "id": "restaurant-13",
               "speaker": "you",
-              "situation": { "en": "The table beside you was served before you and you got there first." },
-              "question": { "es": "Seguimos esperando la comida.", "en": "We're still waiting for our food." },
-              "answers": [
-                { "es": "Sale enseguida.", "en": "It's coming right out." }
-              ],
-              "likelyReply": null,
+              "situation": { "en": "Your food has arrived cold." },
+              "question": { "es": "Perdona, esto está frío.", "en": "Sorry, this is cold." },
+              "answers": [],
+              "likelyReply": { "es": "Cuánto lo siento, te lo caliento.", "en": "So sorry, I'll heat it up for you." },
               "notes": "",
-              "difficulty": "medium",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "restaurant-10",
+              "speaker": "you",
+              "situation": { "en": "Something's wrong with your dish and you want it swapped." },
+              "question": { "es": "¿Me lo cambias, por favor?", "en": "Can you change it?" },
+              "answers": [
+                { "es": "Sí, claro.", "en": "Yes, of course." }
+              ],
+              "likelyReply": { "es": "Un momento.", "en": "One moment." },
+              "notes": "",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -2663,6 +2739,19 @@
               "quizQuestions": []
             },
             {
+              "id": "restaurant-28",
+              "speaker": "you",
+              "situation": { "en": "There's a line on the bill nobody at the table ordered." },
+              "question": { "es": "Creo que hay un error en la cuenta.", "en": "I think there's a mistake on the bill." },
+              "answers": [
+                { "es": "Déjame que lo mire.", "en": "Let me have a look." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "restaurant-12",
               "speaker": "you",
               "situation": { "en": "You're paying with others and want to split the bill." },
@@ -2672,6 +2761,19 @@
                 { "es": "Mejor juntos.", "en": "Better together." }
               ],
               "likelyReply": { "es": "Dime cuánto va cada uno.", "en": "Tell me how much each person pays." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "restaurant-30",
+              "speaker": "you",
+              "situation": { "en": "You want to get the whole table's bill." },
+              "question": { "es": "Cóbrame a mí todo.", "en": "Put it all on me." },
+              "answers": [
+                { "es": "Muy amable.", "en": "Very kind of you." }
+              ],
+              "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -2690,19 +2792,6 @@
               "quizQuestions": []
             },
             {
-              "id": "restaurant-28",
-              "speaker": "you",
-              "situation": { "en": "There's a line on the bill nobody at the table ordered." },
-              "question": { "es": "Creo que hay un error en la cuenta.", "en": "I think there's a mistake on the bill." },
-              "answers": [
-                { "es": "Déjame que lo mire.", "en": "Let me have a look." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "restaurant-29",
               "speaker": "you",
               "situation": { "en": "You've got no card on you but your phone is in your hand." },
@@ -2713,19 +2802,6 @@
               "likelyReply": null,
               "notes": "",
               "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "restaurant-30",
-              "speaker": "you",
-              "situation": { "en": "You want to get the whole table's bill." },
-              "question": { "es": "Cóbrame a mí todo.", "en": "Put it all on me." },
-              "answers": [
-                { "es": "Muy amable.", "en": "Very kind of you." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
               "quizQuestions": []
             },
             {
@@ -2797,28 +2873,6 @@
               "quizQuestions": []
             },
             {
-              "id": "hotel-03",
-              "speaker": "you",
-              "situation": { "en": "You want to know when you have to be out of the room." },
-              "question": { "es": "¿A qué hora es la salida?", "en": "What time is checkout?" },
-              "answers": [],
-              "likelyReply": { "es": "A las doce del mediodía.", "en": "At noon." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "hotel-04",
-              "speaker": "you",
-              "situation": { "en": "The air conditioning in your room has stopped working." },
-              "question": { "es": "El aire acondicionado no funciona.", "en": "The AC isn't working." },
-              "answers": [],
-              "likelyReply": { "es": "Perdona, mando a alguien enseguida.", "en": "Sorry, I'll send someone right away." },
-              "notes": "Swap in \"la ducha\" (shower), \"la tele\" (TV), \"la calefacción\" (heating).",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "hotel-05",
               "speaker": "you",
               "situation": { "en": "You want to know whether breakfast comes with the room." },
@@ -2841,17 +2895,6 @@
               "quizQuestions": []
             },
             {
-              "id": "hotel-07",
-              "speaker": "you",
-              "situation": { "en": "Your flight is late in the day and you want to stay longer." },
-              "question": { "es": "¿Se puede hacer late checkout?", "en": "Can I do a late checkout?" },
-              "answers": [],
-              "likelyReply": { "es": "Hasta las dos, sin coste. / Son diez euros más.", "en": "Until two, no charge. / It's ten euros more." },
-              "notes": "\"Late checkout\" is used as-is in Spain; \"salida tardía\" also works.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "hotel-08",
               "speaker": "you",
               "situation": { "en": "You'd rather not carry your passport around all day." },
@@ -2861,6 +2904,39 @@
               ],
               "likelyReply": null,
               "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-03",
+              "speaker": "you",
+              "situation": { "en": "You want to know when you have to be out of the room." },
+              "question": { "es": "¿A qué hora es la salida?", "en": "What time is checkout?" },
+              "answers": [],
+              "likelyReply": { "es": "A las doce del mediodía.", "en": "At noon." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-04",
+              "speaker": "you",
+              "situation": { "en": "The air conditioning in your room has stopped working." },
+              "question": { "es": "El aire acondicionado no funciona.", "en": "The AC isn't working." },
+              "answers": [],
+              "likelyReply": { "es": "Perdona, mando a alguien enseguida.", "en": "Sorry, I'll send someone right away." },
+              "notes": "Swap in \"la ducha\" (shower), \"la tele\" (TV), \"la calefacción\" (heating).",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "hotel-07",
+              "speaker": "you",
+              "situation": { "en": "Your flight is late in the day and you want to stay longer." },
+              "question": { "es": "¿Se puede hacer late checkout?", "en": "Can I do a late checkout?" },
+              "answers": [],
+              "likelyReply": { "es": "Hasta las dos, sin coste. / Son diez euros más.", "en": "Until two, no charge. / It's ten euros more." },
+              "notes": "\"Late checkout\" is used as-is in Spain; \"salida tardía\" also works.",
               "difficulty": "medium",
               "quizQuestions": []
             }
@@ -2920,17 +2996,6 @@
               "quizQuestions": []
             },
             {
-              "id": "shopping-04",
-              "speaker": "you",
-              "situation": { "en": "You're at a shop till and want to check the shop takes cards." },
-              "question": { "es": "¿Aceptáis tarjeta?", "en": "Do you accept card?" },
-              "answers": [],
-              "likelyReply": { "es": "Sí, a partir de cinco euros.", "en": "Yes, from five euros up." },
-              "notes": "Some small shops have a card minimum.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
               "id": "shopping-09",
               "speaker": "you",
               "situation": { "en": "You like the cut but not the color." },
@@ -2941,6 +3006,19 @@
               "likelyReply": null,
               "notes": "",
               "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "shopping-11",
+              "speaker": "them",
+              "situation": { "en": "An assistant comes over while you're browsing." },
+              "question": { "es": "¿Buscas algo en concreto?", "en": "Are you looking for anything in particular?" },
+              "answers": [
+                { "es": "Gracias, ya miro yo.", "en": "Thanks, I'll have a look myself." }
+              ],
+              "likelyReply": { "es": "Cualquier cosa me dices.", "en": "Just say if you need anything." },
+              "notes": "",
+              "difficulty": "medium",
               "quizQuestions": []
             },
             {
@@ -2957,16 +3035,14 @@
               "quizQuestions": []
             },
             {
-              "id": "shopping-11",
-              "speaker": "them",
-              "situation": { "en": "An assistant comes over while you're browsing." },
-              "question": { "es": "¿Buscas algo en concreto?", "en": "Are you looking for anything in particular?" },
-              "answers": [
-                { "es": "Gracias, ya miro yo.", "en": "Thanks, I'll have a look myself." }
-              ],
-              "likelyReply": { "es": "Cualquier cosa me dices.", "en": "Just say if you need anything." },
-              "notes": "",
-              "difficulty": "medium",
+              "id": "shopping-04",
+              "speaker": "you",
+              "situation": { "en": "You're at a shop till and want to check the shop takes cards." },
+              "question": { "es": "¿Aceptáis tarjeta?", "en": "Do you accept card?" },
+              "answers": [],
+              "likelyReply": { "es": "Sí, a partir de cinco euros.", "en": "Yes, from five euros up." },
+              "notes": "Some small shops have a card minimum.",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -3104,6 +3180,20 @@
           "title": "At the pharmacy / feeling awful (Spain)",
           "exchanges": [
             {
+              "id": "resacon-05",
+              "speaker": "them",
+              "situation": { "en": "A friend asks how your hangover is." },
+              "question": { "es": "¿Qué tal la resaca?", "en": "How's the hangover?" },
+              "answers": [
+                { "es": "Fatal, no vuelvo a beber.", "en": "Awful, I'm never drinking again." },
+                { "es": "Necesito un café y agua.", "en": "I need a coffee and water." }
+              ],
+              "likelyReply": { "es": "Eso lo dices siempre.", "en": "You say that every time." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
               "id": "resacon-01",
               "speaker": "you",
               "situation": { "en": "You wake up with a splitting headache and go to a pharmacy." },
@@ -3137,26 +3227,25 @@
               "quizQuestions": []
             },
             {
+              "id": "resacon-07",
+              "speaker": "you",
+              "situation": { "en": "You're badly dehydrated and water alone isn't working." },
+              "question": { "es": "¿Tenéis suero oral?", "en": "Do you have rehydration salts?" },
+              "answers": [
+                { "es": "Sí, en sobres.", "en": "Yes, in sachets." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
               "id": "resacon-04",
               "speaker": "you",
               "situation": { "en": "You've caught the sun badly and need something for it." },
               "question": { "es": "Me he quemado con el sol. ¿Tienes algo?", "en": "I got sunburned. Do you have something?" },
               "answers": [],
               "likelyReply": { "es": "Con esta crema, un par de veces al día.", "en": "This cream, a couple of times a day." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "resacon-05",
-              "speaker": "them",
-              "situation": { "en": "A friend asks how your hangover is." },
-              "question": { "es": "¿Qué tal la resaca?", "en": "How's the hangover?" },
-              "answers": [
-                { "es": "Fatal, no vuelvo a beber.", "en": "Awful, I'm never drinking again." },
-                { "es": "Necesito un café y agua.", "en": "I need a coffee and water." }
-              ],
-              "likelyReply": { "es": "Eso lo dices siempre.", "en": "You say that every time." },
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
@@ -3172,19 +3261,6 @@
               "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "resacon-07",
-              "speaker": "you",
-              "situation": { "en": "You're badly dehydrated and water alone isn't working." },
-              "question": { "es": "¿Tenéis suero oral?", "en": "Do you have rehydration salts?" },
-              "answers": [
-                { "es": "Sí, en sobres.", "en": "Yes, in sachets." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "hard",
               "quizQuestions": []
             },
             {
@@ -3336,6 +3412,45 @@
               "quizQuestions": []
             },
             {
+              "id": "emergencies-21",
+              "speaker": "them",
+              "situation": { "en": "The officer taking your report asks what you saw." },
+              "question": { "es": "¿Le ha visto la cara?", "en": "Did you see his face?" },
+              "answers": [
+                { "es": "Solo de espaldas.", "en": "Only from behind." }
+              ],
+              "likelyReply": { "es": "Miraremos las cámaras.", "en": "We'll check the cameras." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-20",
+              "speaker": "you",
+              "situation": { "en": "Your insurer won't pay out without a crime number." },
+              "question": { "es": "Quiero poner una denuncia.", "en": "I want to file a report." },
+              "answers": [
+                { "es": "Pasa, que te tomo los datos.", "en": "Come through, I'll take your details." }
+              ],
+              "likelyReply": null,
+              "notes": "The denuncia is what your insurer will ask for. You can file it online or by phone as well as at the station.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-22",
+              "speaker": "you",
+              "situation": { "en": "Your passport is gone and you fly in two days." },
+              "question": { "es": "Necesito llamar a mi embajada.", "en": "I need to call my embassy." },
+              "answers": [
+                { "es": "Te doy el número.", "en": "I'll give you the number." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "emergencies-04",
               "speaker": "you",
               "situation": { "en": "You've been separated from the people you're with." },
@@ -3354,45 +3469,6 @@
               "answers": [],
               "likelyReply": { "es": "Ahora mismo llamo al 112.", "en": "I'll call 112 right now." },
               "notes": "112 is the EU-wide emergency number, free from any phone.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "emergencies-20",
-              "speaker": "you",
-              "situation": { "en": "Your insurer won't pay out without a crime number." },
-              "question": { "es": "Quiero poner una denuncia.", "en": "I want to file a report." },
-              "answers": [
-                { "es": "Pasa, que te tomo los datos.", "en": "Come through, I'll take your details." }
-              ],
-              "likelyReply": null,
-              "notes": "The denuncia is what your insurer will ask for. You can file it online or by phone as well as at the station.",
-              "difficulty": "hard",
-              "quizQuestions": []
-            },
-            {
-              "id": "emergencies-21",
-              "speaker": "them",
-              "situation": { "en": "The officer taking your report asks what you saw." },
-              "question": { "es": "¿Le ha visto la cara?", "en": "Did you see his face?" },
-              "answers": [
-                { "es": "Solo de espaldas.", "en": "Only from behind." }
-              ],
-              "likelyReply": { "es": "Miraremos las cámaras.", "en": "We'll check the cameras." },
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "emergencies-22",
-              "speaker": "you",
-              "situation": { "en": "Your passport is gone and you fly in two days." },
-              "question": { "es": "Necesito llamar a mi embajada.", "en": "I need to call my embassy." },
-              "answers": [
-                { "es": "Te doy el número.", "en": "I'll give you the number." }
-              ],
-              "likelyReply": null,
-              "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
             }
@@ -3451,25 +3527,12 @@
               "quizQuestions": []
             },
             {
-              "id": "emergencies-25",
+              "id": "emergencies-28",
               "speaker": "you",
-              "situation": { "en": "Roaming is costing a fortune and you want a local number." },
-              "question": { "es": "¿Dónde puedo comprar una tarjeta SIM?", "en": "Where can I buy a SIM card?" },
+              "situation": { "en": "You're inside somewhere crowded and can't see a way out." },
+              "question": { "es": "¿Por dónde salgo de aquí?", "en": "Which way do I get out of here?" },
               "answers": [
-                { "es": "En el estanco de la esquina.", "en": "At the tobacconist on the corner." }
-              ],
-              "likelyReply": null,
-              "notes": "Estancos sell SIMs, transport passes and stamps. They are the most useful shop in Spain and nobody tells visitors they exist.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "emergencies-26",
-              "speaker": "you",
-              "situation": { "en": "The bar is cash-only and your pockets are empty." },
-              "question": { "es": "Me he quedado sin dinero.", "en": "I've run out of money." },
-              "answers": [
-                { "es": "Hay un cajero enfrente.", "en": "There's a cash machine opposite." }
+                { "es": "Por esa puerta, al fondo.", "en": "Through that door, at the back." }
               ],
               "likelyReply": null,
               "notes": "",
@@ -3490,15 +3553,28 @@
               "quizQuestions": []
             },
             {
-              "id": "emergencies-28",
+              "id": "emergencies-26",
               "speaker": "you",
-              "situation": { "en": "You're inside somewhere crowded and can't see a way out." },
-              "question": { "es": "¿Por dónde salgo de aquí?", "en": "Which way do I get out of here?" },
+              "situation": { "en": "The bar is cash-only and your pockets are empty." },
+              "question": { "es": "Me he quedado sin dinero.", "en": "I've run out of money." },
               "answers": [
-                { "es": "Por esa puerta, al fondo.", "en": "Through that door, at the back." }
+                { "es": "Hay un cajero enfrente.", "en": "There's a cash machine opposite." }
               ],
               "likelyReply": null,
               "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "emergencies-25",
+              "speaker": "you",
+              "situation": { "en": "Roaming is costing a fortune and you want a local number." },
+              "question": { "es": "¿Dónde puedo comprar una tarjeta SIM?", "en": "Where can I buy a SIM card?" },
+              "answers": [
+                { "es": "En el estanco de la esquina.", "en": "At the tobacconist on the corner." }
+              ],
+              "likelyReply": null,
+              "notes": "Estancos sell SIMs, transport passes and stamps. They are the most useful shop in Spain and nobody tells visitors they exist.",
               "difficulty": "medium",
               "quizQuestions": []
             }
@@ -3750,28 +3826,6 @@
               "quizQuestions": []
             },
             {
-              "id": "nightlife-02",
-              "speaker": "you",
-              "situation": { "en": "You want to know whether there's an entry fee." },
-              "question": { "es": "¿Hay que pagar entrada?", "en": "Is there a cover charge?" },
-              "answers": [],
-              "likelyReply": { "es": "Diez euros con consumición.", "en": "Ten euros with a drink included." },
-              "notes": "\"Con consumición\" = the price includes one drink.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "nightlife-03",
-              "speaker": "you",
-              "situation": { "en": "You want to know how late the place stays open." },
-              "question": { "es": "¿Hasta qué hora estáis abiertos?", "en": "How late are you open?" },
-              "answers": [],
-              "likelyReply": { "es": "Hasta las seis.", "en": "Until six (a.m.)." },
-              "notes": "Spanish clubs go very late — 6am is normal.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
               "id": "nightlife-04",
               "speaker": "them",
               "situation": { "en": "The bouncer asks whether you're on a list or have tickets." },
@@ -3795,6 +3849,41 @@
               "likelyReply": { "es": "Pasad.", "en": "In you go." },
               "notes": "",
               "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-02",
+              "speaker": "you",
+              "situation": { "en": "You want to know whether there's an entry fee." },
+              "question": { "es": "¿Hay que pagar entrada?", "en": "Is there a cover charge?" },
+              "answers": [],
+              "likelyReply": { "es": "Diez euros con consumición.", "en": "Ten euros with a drink included." },
+              "notes": "\"Con consumición\" = the price includes one drink.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-03",
+              "speaker": "you",
+              "situation": { "en": "You want to know how late the place stays open." },
+              "question": { "es": "¿Hasta qué hora estáis abiertos?", "en": "How late are you open?" },
+              "answers": [],
+              "likelyReply": { "es": "Hasta las seis.", "en": "Until six (a.m.)." },
+              "notes": "Spanish clubs go very late — 6am is normal.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-13",
+              "speaker": "you",
+              "situation": { "en": "You're carrying a coat you don't want to dance with." },
+              "question": { "es": "¿Hay guardarropa?", "en": "Is there a cloakroom?" },
+              "answers": [
+                { "es": "Sí, tres euros.", "en": "Yes, three euros." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
               "quizQuestions": []
             },
             {
@@ -3822,19 +3911,6 @@
               "notes": "Spanish doors are gentler than Berlin's, but arguing still ends it. Walk on and try the next place.",
               "difficulty": "medium",
               "quizQuestions": []
-            },
-            {
-              "id": "nightlife-13",
-              "speaker": "you",
-              "situation": { "en": "You're carrying a coat you don't want to dance with." },
-              "question": { "es": "¿Hay guardarropa?", "en": "Is there a cloakroom?" },
-              "answers": [
-                { "es": "Sí, tres euros.", "en": "Yes, three euros." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
             }
           ]
         },
@@ -3842,80 +3918,6 @@
           "id": "nightlife-friends",
           "title": "Making friends & going out",
           "exchanges": [
-            {
-              "id": "nightlife-05",
-              "speaker": "them",
-              "situation": { "en": "Someone at the bar asks where your group is from." },
-              "question": { "es": "¿De dónde sois?", "en": "Where are you (all) from?" },
-              "answers": [
-                { "es": "Somos de Estados Unidos, ¿y vosotros?", "en": "We're from the US, and you?" }
-              ],
-              "likelyReply": { "es": "¡Bienvenidos! ¿Primera vez aquí?", "en": "Welcome! First time here?" },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "nightlife-06",
-              "speaker": "you",
-              "situation": { "en": "You've been chatting to someone and want to invite them for a drink." },
-              "question": { "es": "¿Os venís a tomar algo?", "en": "Wanna come grab a drink?" },
-              "answers": [],
-              "likelyReply": { "es": "¡Venga, vamos!", "en": "Come on, let's go!" },
-              "notes": "\"¿Os venís?\" = are you (plural) coming along?",
-              "difficulty": "medium",
-              "young": true,
-              "quizQuestions": []
-            },
-            {
-              "id": "nightlife-07",
-              "speaker": "you",
-              "situation": { "en": "You want to know what everyone's doing tonight." },
-              "question": { "es": "¿Qué planes hay esta noche?", "en": "What's the plan tonight?" },
-              "answers": [],
-              "likelyReply": { "es": "Vamos de after, ¿te apuntas?", "en": "We're going to an afterparty, you in?" },
-              "notes": "\"After\" = afterparty; \"¿te apuntas?\" = are you in?",
-              "difficulty": "medium",
-              "young": true,
-              "quizQuestions": []
-            },
-            {
-              "id": "nightlife-08",
-              "speaker": "you",
-              "situation": { "en": "You want to ask someone out for a night out." },
-              "question": { "es": "¿Salimos de marcha?", "en": "Wanna go out partying?" },
-              "answers": [],
-              "likelyReply": { "es": "¡Claro! ¿Dónde quedamos?", "en": "For sure! Where should we meet?" },
-              "notes": "\"Salir de marcha\" = go out partying (nightlife = \"la marcha\").",
-              "difficulty": "medium",
-              "young": true,
-              "quizQuestions": []
-            },
-            {
-              "id": "nightlife-09",
-              "speaker": "you",
-              "situation": { "en": "You're exhausted and want to head home." },
-              "question": { "es": "Me piro, que estoy muerto/a.", "en": "I'm off, I'm dead tired." },
-              "answers": [],
-              "likelyReply": { "es": "¡Vale, escríbeme! / Nos vemos.", "en": "Okay, text me! / See you." },
-              "notes": "\"Me piro\" = I'm out of here (casual).",
-              "difficulty": "medium",
-              "young": true,
-              "quizQuestions": []
-            },
-            {
-              "id": "nightlife-14",
-              "speaker": "you",
-              "situation": { "en": "This bar has died and you'd rather keep the night going." },
-              "question": { "es": "¿Nos vamos a otro garito?", "en": "Shall we move on to another bar?" },
-              "answers": [
-                { "es": "Venga, conozco uno.", "en": "Come on — I know one." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
             {
               "id": "nightlife-15",
               "speaker": "them",
@@ -3937,6 +3939,68 @@
               "quizQuestions": []
             },
             {
+              "id": "nightlife-05",
+              "speaker": "them",
+              "situation": { "en": "Someone at the bar asks where your group is from." },
+              "question": { "es": "¿De dónde sois?", "en": "Where are you (all) from?" },
+              "answers": [
+                { "es": "Somos de Estados Unidos, ¿y vosotros?", "en": "We're from the US, and you?" }
+              ],
+              "likelyReply": { "es": "¡Bienvenidos! ¿Primera vez aquí?", "en": "Welcome! First time here?" },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-07",
+              "speaker": "you",
+              "situation": { "en": "You want to know what everyone's doing tonight." },
+              "question": { "es": "¿Qué planes hay esta noche?", "en": "What's the plan tonight?" },
+              "answers": [],
+              "likelyReply": { "es": "Vamos de after, ¿te apuntas?", "en": "We're going to an afterparty, you in?" },
+              "notes": "\"After\" = afterparty; \"¿te apuntas?\" = are you in?",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-06",
+              "speaker": "you",
+              "situation": { "en": "You've been chatting to someone and want to invite them for a drink." },
+              "question": { "es": "¿Os venís a tomar algo?", "en": "Wanna come grab a drink?" },
+              "answers": [],
+              "likelyReply": { "es": "¡Venga, vamos!", "en": "Come on, let's go!" },
+              "notes": "\"¿Os venís?\" = are you (plural) coming along?",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-08",
+              "speaker": "you",
+              "situation": { "en": "You want to ask someone out for a night out." },
+              "question": { "es": "¿Salimos de marcha?", "en": "Wanna go out partying?" },
+              "answers": [],
+              "likelyReply": { "es": "¡Claro! ¿Dónde quedamos?", "en": "For sure! Where should we meet?" },
+              "notes": "\"Salir de marcha\" = go out partying (nightlife = \"la marcha\").",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-14",
+              "speaker": "you",
+              "situation": { "en": "This bar has died and you'd rather keep the night going." },
+              "question": { "es": "¿Nos vamos a otro garito?", "en": "Shall we move on to another bar?" },
+              "answers": [
+                { "es": "Venga, conozco uno.", "en": "Come on — I know one." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "nightlife-16",
               "speaker": "you",
               "situation": { "en": "It's three in the morning and you have a train at eight." },
@@ -3947,6 +4011,18 @@
               "likelyReply": { "es": "Nos vemos, ¡cuídate!", "en": "See you — take care!" },
               "notes": "",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "nightlife-09",
+              "speaker": "you",
+              "situation": { "en": "You're exhausted and want to head home." },
+              "question": { "es": "Me piro, que estoy muerto/a.", "en": "I'm off, I'm dead tired." },
+              "answers": [],
+              "likelyReply": { "es": "¡Vale, escríbeme! / Nos vemos.", "en": "Okay, text me! / See you." },
+              "notes": "\"Me piro\" = I'm out of here (casual).",
+              "difficulty": "medium",
+              "young": true,
               "quizQuestions": []
             }
           ]
