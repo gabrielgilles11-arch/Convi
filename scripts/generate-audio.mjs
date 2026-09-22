@@ -8,11 +8,15 @@
  * runtime service: output is committed and served statically, and there is no
  * API key in production, no per-user cost and no latency.
  *
- * Every edition goes through Edge TTS, on a female neural voice. It needs
- * `pip install edge-tts` and nothing else: no account, no card, no billing
- * project, no API key. Google Cloud wanted a billing account attached before it
- * would serve a single character, which is a strange thing to set up for a job
- * that runs a few times a year and commits its output.
+ * Providers, per the chosen split:
+ *   de-DE, sv-SE -> Edge TTS, female neural voice (needs `pip install edge-tts`)
+ *   es-ES        -> Google Cloud Text-to-Speech, Studio (needs GOOGLE_TTS_API_KEY)
+ *
+ * German and Swedish go through Edge TTS because it needs nothing else: no
+ * account, no card, no billing project, no API key. Google Cloud wanted a
+ * billing account attached before it would serve a single character, which is
+ * a strange thing to set up for a job that runs a few times a year and commits
+ * its output. Spanish stays on Studio, unmoved and so far unrecorded.
  *
  * Google, Azure and Piper are all still here and still correct, one flag away
  * (`--engine google`, `--engine azure`, `--engine piper`) rather than the
@@ -118,13 +122,12 @@ function providerFor(locale) {
 }
 
 /**
- * Voice choices: one female neural voice per edition, through Edge TTS.
+ * Voice choices: a female neural voice for German and Swedish, through Edge TTS.
  *
  * Katja and Sofie are the German and Swedish voices Azure has shipped for
- * years and the ones Edge reads those languages in; Elvira is the Spanish.
- * All three are female, which is the point — a learner hears the same kind of
- * person in Talk Mode, in practice and on the scenario page, in whichever
- * edition they are working through.
+ * years and the ones Edge reads those languages in. Both are female, which is
+ * the point: a learner hears the same kind of person in Talk Mode, in practice
+ * and on the scenario page.
  *
  * Every one is overridable from the environment, because this is a matter of
  * taste and the only way to settle it is to listen:
@@ -141,9 +144,13 @@ function providerFor(locale) {
  * delivery is whatever the voice does naturally, slowed 5% by EDGE_RATE.
  */
 const PROVIDERS = {
+  // Spanish is deliberately left where it was. It has no clips yet either, but
+  // moving it is a separate decision from getting German and Swedish spoken,
+  // and Studio is the tier its voice was chosen on. `--engine edge` reaches
+  // Elvira the day that decision gets made.
   "es-ES": {
-    provider: "edge",
-    voice: process.env.EDGE_VOICE_ES ?? "es-ES-ElviraNeural",
+    provider: "google",
+    voice: process.env.GOOGLE_VOICE_ES ?? "es-ES-Studio-F",
     languageCode: "es-ES",
   },
   "de-DE": {
