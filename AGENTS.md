@@ -45,6 +45,22 @@ Never `es` or `term` — those hold the Spanish, Swedish or German line itself,
 and `es` is the key the schema uses for the target language in all three
 editions, not just the Spanish one.
 
+**Never write a phrase in the target language yourself.** Not a translation,
+not a conjugation, not a "small fix" to one that is already there. Every line
+of Spanish, Swedish or German in `content/*.json` has to come from a published
+phrasebook, a language blog, a course site or another real source, and the
+source has to be recorded: cite the URL in the commit that adds the line, and
+list it in `content/SOURCES.md` beside the exchange ids it covers.
+
+The reason is not style. A line that reads as plausible target language and is
+subtly wrong is the one failure this product cannot survive: somebody says it
+at a bar and it lands badly, and nothing in the test suite can catch it,
+because the tests check structure and never meaning. A cited line can be
+checked by a human. An invented one cannot be checked by anybody.
+
+If a phrase is needed and no source can be found, say so and leave it out.
+An incomplete section is recoverable; a wrong line in a shipped section is not.
+
 **No em dashes in user-facing copy.** A colon, a comma or a full stop instead.
 They are fine in code comments.
 
