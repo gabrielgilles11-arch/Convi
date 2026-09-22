@@ -113,11 +113,12 @@ function providerFor(locale) {
  * — plus a wider roster since. A name that works for German works for Swedish
  * with the language code swapped.
  *
- * German and Swedish are both set to a female Chirp 3: HD voice. Which female
- * voice is a question no file can answer by reasoning about it, so this does
- * not try: `--audition` renders the same few lines in every female voice the
- * API lists for a locale, and the one that sounds most like a person is the
- * one to put here. Aoede is only the starting point.
+ * German and Swedish are both on Aoede, female, and that is the choice rather
+ * than a placeholder: one voice across both editions and every surface, so a
+ * learner hears the same person in Talk Mode, in practice and on the scenario
+ * page. `--audition` is there to change it — it renders the same few lines in
+ * every female voice the API lists for a locale — but nothing downstream is
+ * waiting on that. Swap the name here and re-run with --force.
  */
 const PROVIDERS = {
   // Spanish stays on Studio. It is the voice the hero demo and every existing
