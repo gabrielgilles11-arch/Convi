@@ -19,6 +19,47 @@
           "title": null,
           "exchanges": [
             {
+              "id": "sv-beer-food-06",
+              "speaker": "them",
+              "situation": { "en": "The bartender wants to see ID before serving you." },
+              "question": { "es": "Har du leg?", "en": "Got ID?" },
+              "answers": [
+                { "es": "Ja, här.", "en": "Yes, here." },
+                { "es": "Jag har bara pass.", "en": "I've only got my passport." }
+              ],
+              "likelyReply": { "es": "Det går bra.", "en": "That works." },
+              "notes": "Sweden IDs hard: 18 to drink in a bar, 20 to buy at Systembolaget. \"Leg\" is short for legitimation.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-07",
+              "speaker": "you",
+              "situation": { "en": "You walk in with friends and can't tell if you seat yourselves." },
+              "question": { "es": "Kan vi sitta var som helst?", "en": "Can we sit anywhere?" },
+              "answers": [
+                { "es": "Ja, välj själva.", "en": "Yes, take your pick." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-05",
+              "speaker": "you",
+              "situation": { "en": "You want to know what's on draft before you commit to an order." },
+              "question": { "es": "Vad har ni på fat?", "en": "What have you got on tap?" },
+              "answers": [
+                { "es": "Vi har tre olika.", "en": "We've got three different ones." },
+                { "es": "Bara lager.", "en": "Just lager." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-beer-food-01",
               "speaker": "them",
               "situation": { "en": "You're at a Swedish bar and the bartender asks what you want." },
@@ -97,6 +138,20 @@
               "quizQuestions": []
             },
             {
+              "id": "sv-beer-food-08",
+              "speaker": "them",
+              "situation": { "en": "You're paying and they ask how." },
+              "question": { "es": "Kort eller Swish?", "en": "Card or Swish?" },
+              "answers": [
+                { "es": "Kort, tack.", "en": "Card, please." },
+                { "es": "Har ni Swish?", "en": "Do you take Swish?" }
+              ],
+              "likelyReply": { "es": "Vi tar bara kort.", "en": "We only take card." },
+              "notes": "Cash is genuinely rare and plenty of Swedish bars refuse it outright. Swish is the local phone-to-phone app and needs a Swedish bank.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-beer-food-04",
               "speaker": "them",
               "situation": { "en": "You've paid and they ask whether you want a receipt." },
@@ -119,61 +174,6 @@
                 "en": "Take care!"
               },
               "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-beer-food-05",
-              "speaker": "you",
-              "situation": { "en": "You want to know what's on draft before you commit to an order." },
-              "question": { "es": "Vad har ni på fat?", "en": "What have you got on tap?" },
-              "answers": [
-                { "es": "Vi har tre olika.", "en": "We've got three different ones." },
-                { "es": "Bara lager.", "en": "Just lager." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-beer-food-06",
-              "speaker": "them",
-              "situation": { "en": "The bartender wants to see ID before serving you." },
-              "question": { "es": "Har du leg?", "en": "Got ID?" },
-              "answers": [
-                { "es": "Ja, här.", "en": "Yes, here." },
-                { "es": "Jag har bara pass.", "en": "I've only got my passport." }
-              ],
-              "likelyReply": { "es": "Det går bra.", "en": "That works." },
-              "notes": "Sweden IDs hard: 18 to drink in a bar, 20 to buy at Systembolaget. \"Leg\" is short for legitimation.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-beer-food-07",
-              "speaker": "you",
-              "situation": { "en": "You walk in with friends and can't tell if you seat yourselves." },
-              "question": { "es": "Kan vi sitta var som helst?", "en": "Can we sit anywhere?" },
-              "answers": [
-                { "es": "Ja, välj själva.", "en": "Yes, take your pick." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-beer-food-08",
-              "speaker": "them",
-              "situation": { "en": "You're paying and they ask how." },
-              "question": { "es": "Kort eller Swish?", "en": "Card or Swish?" },
-              "answers": [
-                { "es": "Kort, tack.", "en": "Card, please." },
-                { "es": "Har ni Swish?", "en": "Do you take Swish?" }
-              ],
-              "likelyReply": { "es": "Vi tar bara kort.", "en": "We only take card." },
-              "notes": "Cash is genuinely rare and plenty of Swedish bars refuse it outright. Swish is the local phone-to-phone app and needs a Swedish bank.",
               "difficulty": "easy",
               "quizQuestions": []
             }
@@ -222,46 +222,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-fika-02",
-              "speaker": "you",
-              "situation": { "en": "You're at the counter of a café and know what you want." },
-              "question": { "es": "En kaffe och en kanelbulle, tack.", "en": "A coffee and a cinnamon bun, please." },
-              "answers": [
-                { "es": "Ska du ha den värmd?", "en": "Would you like it warmed up?" }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-fika-03",
-              "speaker": "them",
-              "situation": { "en": "Your cup is empty and someone comes round with the pot." },
-              "question": { "es": "Vill du ha påtår?", "en": "Would you like a refill?" },
-              "answers": [
-                { "es": "Ja tack, gärna.", "en": "Yes please, I would." },
-                { "es": "Nej tack, jag är nöjd.", "en": "No thanks, I'm good." }
-              ],
-              "likelyReply": { "es": "Det ingår.", "en": "It's included." },
-              "notes": "Påtår is the free second cup and it really is free. A third one is a tretår.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-fika-04",
-              "speaker": "you",
-              "situation": { "en": "You want to check the refill won't appear on the bill." },
-              "question": { "es": "Ingår påtår?", "en": "Is the refill included?" },
-              "answers": [
-                { "es": "Ja, så mycket du vill.", "en": "Yes, as much as you like." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-fika-05",
               "speaker": "you",
               "situation": { "en": "The buns behind the glass aren't labelled." },
@@ -272,6 +232,32 @@
               "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-fika-08",
+              "speaker": "you",
+              "situation": { "en": "Everything in the counter is sweet and you'd rather have something else." },
+              "question": { "es": "Har ni något utan socker?", "en": "Do you have anything without sugar?" },
+              "answers": [
+                { "es": "Vi har smörgåsar.", "en": "We've got sandwiches." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-fika-02",
+              "speaker": "you",
+              "situation": { "en": "You're at the counter of a café and know what you want." },
+              "question": { "es": "En kaffe och en kanelbulle, tack.", "en": "A coffee and a cinnamon bun, please." },
+              "answers": [
+                { "es": "Varsågod.", "en": "Here you go." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -289,6 +275,33 @@
               "quizQuestions": []
             },
             {
+              "id": "sv-fika-04",
+              "speaker": "you",
+              "situation": { "en": "You want to check the refill won't appear on the bill." },
+              "question": { "es": "Ingår påtår?", "en": "Is the refill included?" },
+              "answers": [
+                { "es": "Ja, så mycket du vill.", "en": "Yes, as much as you like." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-fika-03",
+              "speaker": "them",
+              "situation": { "en": "Your cup is empty and someone comes round with the pot." },
+              "question": { "es": "Vill du ha påtår?", "en": "Would you like a refill?" },
+              "answers": [
+                { "es": "Ja tack, gärna.", "en": "Yes please, I would." },
+                { "es": "Nej tack, jag är nöjd.", "en": "No thanks, I'm good." }
+              ],
+              "likelyReply": { "es": "Det ingår.", "en": "It's included." },
+              "notes": "Påtår is the free second cup and it really is free. A third one is a tretår.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-fika-07",
               "speaker": "you",
               "situation": { "en": "You're getting up from the table you shared with someone." },
@@ -299,19 +312,6 @@
               "likelyReply": null,
               "notes": "Said to whoever you sat with, every time. Leaving without it reads as cold.",
               "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-fika-08",
-              "speaker": "you",
-              "situation": { "en": "Everything in the counter is sweet and you'd rather have something else." },
-              "question": { "es": "Har ni något utan socker?", "en": "Do you have anything without sugar?" },
-              "answers": [
-                { "es": "Vi har smörgåsar.", "en": "We've got sandwiches." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
               "quizQuestions": []
             }
           ]
@@ -328,7 +328,7 @@
       "subsections": [
         {
           "id": "sv-starting-convo-main",
-          "title": null,
+          "title": "Hello, and getting unstuck",
           "exchanges": [
             {
               "id": "sv-starting-convo-01",
@@ -419,6 +419,19 @@
               "quizQuestions": []
             },
             {
+              "id": "sv-starting-convo-17",
+              "speaker": "you",
+              "situation": { "en": "They answered at full Swedish speed and you need it slower." },
+              "question": { "es": "Kan du prata lite långsammare?", "en": "Could you speak a little more slowly?" },
+              "answers": [
+                { "es": "Ja, självklart.", "en": "Yes, of course." }
+              ],
+              "likelyReply": null,
+              "notes": "Swedes switch to English the moment they hear you struggle. This is the sentence that keeps them in Swedish.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-starting-convo-05",
               "speaker": "you",
               "situation": { "en": "You don't know a word and want to ask what it is." },
@@ -474,17 +487,121 @@
               "notes": "Usually means nothing will happen. Say it back, mean it as much as they did, and take no offence.",
               "difficulty": "easy",
               "quizQuestions": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "sv-starting-convo-basics",
+          "title": "The first five questions",
+          "exchanges": [
             {
               "id": "sv-starting-convo-08",
-              "speaker": "you",
-              "situation": { "en": "You've been talking a while and never got their name." },
+              "speaker": "them",
+              "situation": { "en": "Somebody you've just met asks what you're called." },
               "question": { "es": "Vad heter du?", "en": "What's your name?" },
               "answers": [
+                { "es": "Jag heter [NAMN].", "en": "My name is [NAME]." },
                 { "es": "[NAMN]. Och du?", "en": "[NAME]. And you?" }
               ],
               "likelyReply": { "es": "Trevligt att träffas.", "en": "Nice to meet you." },
+              "notes": "Heter is the verb for being called, so it is jag heter, never jag är for a name.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-01",
+              "speaker": "them",
+              "situation": { "en": "Two lines in, they want to know where you've come from." },
+              "question": { "es": "Var kommer du ifrån?", "en": "Where are you from?" },
+              "answers": [
+                { "es": "Jag kommer ifrån USA.", "en": "I'm from the US." },
+                { "es": "Jag kommer ifrån England.", "en": "I'm from England." }
+              ],
+              "likelyReply": { "es": "Vad kul, välkommen hit.", "en": "How nice. Welcome here!" },
+              "notes": "Var kommer du ifrån? and varifrån kommer du? are the same question. Answer with ifrån and you sound like you have said it before.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-02",
+              "speaker": "them",
+              "situation": { "en": "They have switched into Swedish and you have to say how little you have." },
+              "question": { "es": "Pratar du svenska?", "en": "Do you speak Swedish?" },
+              "answers": [
+                { "es": "Jag pratar inte svenska.", "en": "I don't speak Swedish." },
+                { "es": "Bara lite.", "en": "Only a little." }
+              ],
+              "likelyReply": { "es": "Ingen fara, vi tar det på engelska.", "en": "No problem, we'll do it in English." },
+              "notes": "Swedes switch to English the second they hear you struggle. Jag pratar inte svenska is the honest version; jag lär mig svenska keeps them in Swedish a little longer.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-03",
+              "speaker": "them",
+              "situation": { "en": "Somebody wants to know what you're doing in the country." },
+              "question": { "es": "Är du här på semester?", "en": "Are you here on vacation?" },
+              "answers": [
+                { "es": "Ja, jag är här på semester.", "en": "Yes, I'm here on vacation." },
+                { "es": "Nej, jag jobbar här.", "en": "No, I'm working here." }
+              ],
+              "likelyReply": { "es": "Då har du tur med vädret.", "en": "You're lucky with the weather, then." },
               "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-04",
+              "speaker": "them",
+              "situation": { "en": "They ask how much of the trip you have left." },
+              "question": { "es": "Hur länge stannar du?", "en": "How long are you staying?" },
+              "answers": [
+                { "es": "Jag stannar en vecka.", "en": "I'm staying a week." },
+                { "es": "Bara några dagar.", "en": "Just a few days." }
+              ],
+              "likelyReply": { "es": "Då hinner du med Gamla stan.", "en": "You'll have time for Gamla stan, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-05",
+              "speaker": "them",
+              "situation": { "en": "The talk turns to what you do for a living." },
+              "question": { "es": "Vad jobbar du med?", "en": "What do you do for work?" },
+              "answers": [
+                { "es": "Jag jobbar som lärare.", "en": "I work as a teacher." },
+                { "es": "Jag pluggar fortfarande.", "en": "I'm still studying." }
+              ],
+              "likelyReply": { "es": "Spännande.", "en": "Interesting." },
+              "notes": "Vad jobbar du med? is what a Swede actually asks, and it comes later in the evening than it would at home: work is not the opening question here.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-06",
+              "speaker": "them",
+              "situation": { "en": "Somebody at the table asks your age straight out." },
+              "question": { "es": "Hur gammal är du?", "en": "How old are you?" },
+              "answers": [
+                { "es": "Jag är trettio.", "en": "I'm thirty." },
+                { "es": "Jag är trettio år gammal.", "en": "I'm thirty years old." }
+              ],
+              "likelyReply": { "es": "Samma här.", "en": "Same here." },
+              "notes": "Jag är trettio år gammal is correct and almost nobody says all of it. Drop år gammal and give the number.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-07",
+              "speaker": "you",
+              "situation": { "en": "You've answered six questions in a row and want to ask one." },
+              "question": { "es": "Och du då? Vad gör du?", "en": "And you? What do you do?" },
+              "answers": [
+                { "es": "Jag jobbar på ett kafé.", "en": "I work at a café." }
+              ],
+              "likelyReply": null,
+              "notes": "Och du då? is the standard turn-it-around. A question answered and not returned reads as you being finished talking.",
               "difficulty": "easy",
               "quizQuestions": []
             }
@@ -2096,63 +2213,6 @@
           "title": "Landing / airport",
           "exchanges": [
             {
-              "id": "sv-getting-around-05",
-              "speaker": "you",
-              "situation": {
-                "en": "You've landed and you're looking for where the taxis are."
-              },
-              "question": { "es": "Ursäkta, var finns taxi?", "en": "Excuse me, where are the taxis?" },
-              "answers": [
-                { "es": "Utanför, till höger.", "en": "Outside, to the right." }
-              ],
-              "likelyReply": { "es": "Följ skyltarna.", "en": "Follow the signs." },
-              "notes": "Arlanda Express runs from the same arrivals hall — swap taxi for tåget.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-06",
-              "speaker": "you",
-              "situation": {
-                "en": "Before getting in, you want to know what a taxi into town costs."
-              },
-              "question": { "es": "Vad kostar det till centrum?", "en": "What does it cost to the center?" },
-              "answers": [
-                { "es": "Runt 500 kronor.", "en": "Around 500 kronor." },
-                { "es": "Beror på trafiken.", "en": "Depends on the traffic." }
-              ],
-              "likelyReply": { "es": "Hoppa in.", "en": "Hop in." },
-              "notes": "Swedish taxis set their own prices — the comparison price is posted on the window, and asking first is normal.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-07",
-              "speaker": "you",
-              "situation": { "en": "You've landed at Arlanda and want the fast train rather than a taxi." },
-              "question": { "es": "Var är Arlanda Express?", "en": "Where's the Arlanda Express?" },
-              "answers": [
-                { "es": "En trappa ner.", "en": "One floor down." }
-              ],
-              "likelyReply": { "es": "Den går var kvart.", "en": "It runs every fifteen minutes." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-08",
-              "speaker": "you",
-              "situation": { "en": "The express train costs more than you want to pay." },
-              "question": { "es": "Går det någon buss till stan?", "en": "Is there a bus into town?" },
-              "answers": [
-                { "es": "Flygbussarna, utanför terminalen.", "en": "The airport coaches, just outside the terminal." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-getting-around-09",
               "speaker": "them",
               "situation": { "en": "The officer at passport control wants your documents." },
@@ -2203,6 +2263,63 @@
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-07",
+              "speaker": "you",
+              "situation": { "en": "You've landed at Arlanda and want the fast train rather than a taxi." },
+              "question": { "es": "Var är Arlanda Express?", "en": "Where's the Arlanda Express?" },
+              "answers": [
+                { "es": "En trappa ner.", "en": "One floor down." }
+              ],
+              "likelyReply": { "es": "Den går var kvart.", "en": "It runs every fifteen minutes." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-08",
+              "speaker": "you",
+              "situation": { "en": "The express train costs more than you want to pay." },
+              "question": { "es": "Går det någon buss till stan?", "en": "Is there a bus into town?" },
+              "answers": [
+                { "es": "Flygbussarna, utanför terminalen.", "en": "The airport coaches, just outside the terminal." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-05",
+              "speaker": "you",
+              "situation": {
+                "en": "You've landed and you're looking for where the taxis are."
+              },
+              "question": { "es": "Ursäkta, var finns taxi?", "en": "Excuse me, where are the taxis?" },
+              "answers": [
+                { "es": "Utanför, till höger.", "en": "Outside, to the right." }
+              ],
+              "likelyReply": { "es": "Följ skyltarna.", "en": "Follow the signs." },
+              "notes": "Arlanda Express runs from the same arrivals hall — swap taxi for tåget.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Before getting in, you want to know what a taxi into town costs."
+              },
+              "question": { "es": "Vad kostar det till centrum?", "en": "What does it cost to the center?" },
+              "answers": [
+                { "es": "Runt 500 kronor.", "en": "Around 500 kronor." },
+                { "es": "Beror på trafiken.", "en": "Depends on the traffic." }
+              ],
+              "likelyReply": { "es": "Hoppa in.", "en": "Hop in." },
+              "notes": "Swedish taxis set their own prices — the comparison price is posted on the window, and asking first is normal.",
+              "difficulty": "easy",
+              "quizQuestions": []
             }
           ]
         },
@@ -2210,6 +2327,32 @@
           "id": "sv-getting-around-taxi",
           "title": "Taxi",
           "exchanges": [
+            {
+              "id": "sv-getting-around-13",
+              "speaker": "you",
+              "situation": { "en": "You're about to get in and want the price settled first." },
+              "question": { "es": "Vad kostar det ungefär?", "en": "Roughly what will it cost?" },
+              "answers": [
+                { "es": "Runt 300.", "en": "Around 300." }
+              ],
+              "likelyReply": null,
+              "notes": "Swedish taxis set their own fares and the unbooked ones at ranks can be eye-watering. Agree a fast pris, or check the yellow price sticker on the window.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-15",
+              "speaker": "you",
+              "situation": { "en": "You're at the car with a suitcase and the boot is shut." },
+              "question": { "es": "Kan du öppna bakluckan?", "en": "Can you open the boot?" },
+              "answers": [
+                { "es": "Javisst.", "en": "Certainly." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
             {
               "id": "sv-getting-around-01",
               "speaker": "them",
@@ -2228,6 +2371,46 @@
                 "es": "Okej. / Kreditkort?",
                 "en": "Okay. / Credit card?"
               },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-18",
+              "speaker": "them",
+              "situation": { "en": "The driver reads the address back before pulling away." },
+              "question": { "es": "Är det rätt adress?", "en": "Is this the right address?" },
+              "answers": [
+                { "es": "Ja, precis.", "en": "Yes, exactly." },
+                { "es": "Nej, ett kvarter till.", "en": "No, one block further." }
+              ],
+              "likelyReply": { "es": "Då kör vi.", "en": "Off we go, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-16",
+              "speaker": "you",
+              "situation": { "en": "You're cutting it fine for a train and want to know the journey time." },
+              "question": { "es": "Hur lång tid tar det?", "en": "How long will it take?" },
+              "answers": [
+                { "es": "Tjugo minuter, ungefär.", "en": "Twenty minutes or so." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-14",
+              "speaker": "you",
+              "situation": { "en": "You've got no cash and want to check before setting off." },
+              "question": { "es": "Kan jag betala med kort?", "en": "Can I pay by card?" },
+              "answers": [
+                { "es": "Klart det går.", "en": "Of course you can." }
+              ],
+              "likelyReply": null,
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
@@ -2255,58 +2438,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-getting-around-13",
-              "speaker": "you",
-              "situation": { "en": "You're about to get in and want the price settled first." },
-              "question": { "es": "Vad kostar det ungefär?", "en": "Roughly what will it cost?" },
-              "answers": [
-                { "es": "Runt 300.", "en": "Around 300." }
-              ],
-              "likelyReply": null,
-              "notes": "Swedish taxis set their own fares and the unbooked ones at ranks can be eye-watering. Agree a fast pris, or check the yellow price sticker on the window.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-14",
-              "speaker": "you",
-              "situation": { "en": "You've got no cash and want to check before setting off." },
-              "question": { "es": "Kan jag betala med kort?", "en": "Can I pay by card?" },
-              "answers": [
-                { "es": "Klart det går.", "en": "Of course you can." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-15",
-              "speaker": "you",
-              "situation": { "en": "You're at the car with a suitcase and the boot is shut." },
-              "question": { "es": "Kan du öppna bakluckan?", "en": "Can you open the boot?" },
-              "answers": [
-                { "es": "Javisst.", "en": "Certainly." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-16",
-              "speaker": "you",
-              "situation": { "en": "You're cutting it fine for a train and want to know the journey time." },
-              "question": { "es": "Hur lång tid tar det?", "en": "How long will it take?" },
-              "answers": [
-                { "es": "Tjugo minuter, ungefär.", "en": "Twenty minutes or so." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-getting-around-17",
               "speaker": "you",
               "situation": { "en": "You need the fare receipted for work." },
@@ -2320,20 +2451,6 @@
               "likelyReply": null,
               "notes": "",
               "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-18",
-              "speaker": "them",
-              "situation": { "en": "The driver reads the address back before pulling away." },
-              "question": { "es": "Är det rätt adress?", "en": "Is this the right address?" },
-              "answers": [
-                { "es": "Ja, precis.", "en": "Yes, exactly." },
-                { "es": "Nej, ett kvarter till.", "en": "No, one block further." }
-              ],
-              "likelyReply": { "es": "Då kör vi.", "en": "Off we go, then." },
-              "notes": "",
-              "difficulty": "medium",
               "quizQuestions": []
             }
           ]
@@ -2386,6 +2503,33 @@
               "quizQuestions": []
             },
             {
+              "id": "sv-getting-around-23",
+              "speaker": "you",
+              "situation": { "en": "Two platforms serve the same line and you don't know which you want." },
+              "question": { "es": "Vilken riktning?", "en": "Which direction?" },
+              "answers": [
+                { "es": "Mot Ropsten.", "en": "Toward Ropsten." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-24",
+              "speaker": "you",
+              "situation": { "en": "You're on a platform and want someone to confirm you're on the right side." },
+              "question": { "es": "Är det rätt perrong?", "en": "Is this the right platform?" },
+              "answers": [
+                { "es": "Ja, det stämmer.", "en": "Yes, that's right." },
+                { "es": "Nej, andra sidan.", "en": "No, the other side." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-getting-around-19",
               "speaker": "you",
               "situation": { "en": "You want to know whether the line takes you there directly." },
@@ -2413,20 +2557,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-getting-around-21",
-              "speaker": "you",
-              "situation": { "en": "It's past midnight and you don't know if the metro is still going." },
-              "question": { "es": "Går den fortfarande?", "en": "Is it still running?" },
-              "answers": [
-                { "es": "Ja, till ett.", "en": "Yes, until one." },
-                { "es": "Nej, ta nattbussen.", "en": "No, take the night bus." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-getting-around-22",
               "speaker": "them",
               "situation": { "en": "An inspector in plain clothes asks for your ticket mid-journey." },
@@ -2440,26 +2570,13 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-getting-around-23",
+              "id": "sv-getting-around-21",
               "speaker": "you",
-              "situation": { "en": "Two platforms serve the same line and you don't know which you want." },
-              "question": { "es": "Vilken riktning?", "en": "Which direction?" },
+              "situation": { "en": "It's past midnight and you don't know if the metro is still going." },
+              "question": { "es": "Går den fortfarande?", "en": "Is it still running?" },
               "answers": [
-                { "es": "Mot Ropsten.", "en": "Toward Ropsten." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-24",
-              "speaker": "you",
-              "situation": { "en": "You're on a platform and want someone to confirm you're on the right side." },
-              "question": { "es": "Är det rätt perrong?", "en": "Is this the right platform?" },
-              "answers": [
-                { "es": "Ja, det stämmer.", "en": "Yes, that's right." },
-                { "es": "Nej, andra sidan.", "en": "No, the other side." }
+                { "es": "Ja, till ett.", "en": "Yes, until one." },
+                { "es": "Nej, ta nattbussen.", "en": "No, take the night bus." }
               ],
               "likelyReply": null,
               "notes": "",
@@ -2486,6 +2603,19 @@
               "quizQuestions": []
             },
             {
+              "id": "sv-getting-around-30",
+              "speaker": "them",
+              "situation": { "en": "You've been staring at your phone on a corner and someone stops." },
+              "question": { "es": "Behöver du hjälp?", "en": "Do you need help?" },
+              "answers": [
+                { "es": "Ja, tack — jag hittar inte.", "en": "Yes, please — I can't find it." }
+              ],
+              "likelyReply": { "es": "Jag följer med en bit.", "en": "I'll walk with you part of the way." },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-getting-around-26",
               "speaker": "you",
               "situation": { "en": "Someone has pointed the way and you want to know if it's walkable." },
@@ -2500,19 +2630,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-getting-around-27",
-              "speaker": "you",
-              "situation": { "en": "You're at a stop with four bus numbers on the sign." },
-              "question": { "es": "Vilken buss går till centrum?", "en": "Which bus goes to the center?" },
-              "answers": [
-                { "es": "Fyran, från andra sidan.", "en": "The number four, from the other side." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-getting-around-28",
               "speaker": "you",
               "situation": { "en": "Directions in Swedish are going too fast for you." },
@@ -2523,32 +2640,6 @@
               "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-29",
-              "speaker": "you",
-              "situation": { "en": "The metro has stopped for the night and you're still out." },
-              "question": { "es": "Går nattbussen härifrån?", "en": "Does the night bus go from here?" },
-              "answers": [
-                { "es": "Ja, var tjugonde minut.", "en": "Yes, every twenty minutes." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-getting-around-30",
-              "speaker": "them",
-              "situation": { "en": "You've been staring at your phone on a corner and someone stops." },
-              "question": { "es": "Behöver du hjälp?", "en": "Do you need help?" },
-              "answers": [
-                { "es": "Ja, tack — jag hittar inte.", "en": "Yes, please — I can't find it." }
-              ],
-              "likelyReply": { "es": "Jag följer med en bit.", "en": "I'll walk with you part of the way." },
-              "notes": "",
-              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -2576,6 +2667,32 @@
               "notes": "",
               "difficulty": "medium",
               "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-27",
+              "speaker": "you",
+              "situation": { "en": "You're at a stop with four bus numbers on the sign." },
+              "question": { "es": "Vilken buss går till centrum?", "en": "Which bus goes to the center?" },
+              "answers": [
+                { "es": "Fyran, från andra sidan.", "en": "The number four, from the other side." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-getting-around-29",
+              "speaker": "you",
+              "situation": { "en": "The metro has stopped for the night and you're still out." },
+              "question": { "es": "Går nattbussen härifrån?", "en": "Does the night bus go from here?" },
+              "answers": [
+                { "es": "Ja, var tjugonde minut.", "en": "Yes, every twenty minutes." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
               "quizQuestions": []
             }
           ]
@@ -2621,23 +2738,15 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-restaurant-02",
-              "speaker": "you",
-              "situation": { "en": "You've finished eating and want to pay." },
-              "question": {
-                "es": "Kan vi få notan, tack?",
-                "en": "Can we get the bill, please?"
-              },
+              "id": "sv-restaurant-04",
+              "speaker": "them",
+              "situation": { "en": "The server comes over once you've had a look at the menu." },
+              "question": { "es": "Är ni redo att beställa?", "en": "Are you ready to order?" },
               "answers": [
-                {
-                  "es": "Absolut.",
-                  "en": "Absolutely."
-                }
+                { "es": "Ja, vi är redo.", "en": "Yes, we're ready." },
+                { "es": "Fem minuter till, tack.", "en": "Five more minutes, please." }
               ],
-              "likelyReply": {
-                "es": "Vill ni betala tillsammans eller separat?",
-                "en": "Do you want to pay together or separately?"
-              },
+              "likelyReply": { "es": "Jag kommer strax.", "en": "I'll be right back." },
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
@@ -2669,20 +2778,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-restaurant-04",
-              "speaker": "them",
-              "situation": { "en": "The server comes over once you've had a look at the menu." },
-              "question": { "es": "Är ni redo att beställa?", "en": "Are you ready to order?" },
-              "answers": [
-                { "es": "Ja, vi är redo.", "en": "Yes, we're ready." },
-                { "es": "Fem minuter till, tack.", "en": "Five more minutes, please." }
-              ],
-              "likelyReply": { "es": "Jag kommer strax.", "en": "I'll be right back." },
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-restaurant-05",
               "speaker": "you",
               "situation": { "en": "It's lunchtime and you'd rather be told what's good than read the menu." },
@@ -2692,6 +2787,19 @@
               ],
               "likelyReply": null,
               "notes": "Dagens is the weekday lunch deal — a main, salad, bread and coffee for one fixed price. It is always the best value on the menu.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-restaurant-07",
+              "speaker": "you",
+              "situation": { "en": "You need to flag a food allergy before you order." },
+              "question": { "es": "Jag har en allergi.", "en": "I have an allergy." },
+              "answers": [
+                { "es": "Vad är du allergisk mot?", "en": "What are you allergic to?" }
+              ],
+              "likelyReply": null,
+              "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -2709,19 +2817,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-restaurant-07",
-              "speaker": "you",
-              "situation": { "en": "You need to flag a food allergy before you order." },
-              "question": { "es": "Jag har en allergi.", "en": "I have an allergy." },
-              "answers": [
-                { "es": "Vad är du allergisk mot?", "en": "What are you allergic to?" }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-restaurant-08",
               "speaker": "them",
               "situation": { "en": "They clear your plate and ask how it was." },
@@ -2734,6 +2829,28 @@
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "sv-restaurant-02",
+              "speaker": "you",
+              "situation": { "en": "You've finished eating and want to pay." },
+              "question": {
+                "es": "Kan vi få notan, tack?",
+                "en": "Can we get the bill, please?"
+              },
+              "answers": [
+                {
+                  "es": "Absolut.",
+                  "en": "Absolutely."
+                }
+              ],
+              "likelyReply": {
+                "es": "Vill ni betala tillsammans eller separat?",
+                "en": "Do you want to pay together or separately?"
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
             }
           ]
         },
@@ -2741,6 +2858,19 @@
           "id": "sv-restaurant-problems",
           "title": "Fixing small problems (politely)",
           "exchanges": [
+            {
+              "id": "sv-restaurant-12",
+              "speaker": "you",
+              "situation": { "en": "Everyone else has been served and you haven't." },
+              "question": { "es": "Vi väntar fortfarande på maten.", "en": "We're still waiting for our food." },
+              "answers": [
+                { "es": "Den kommer nu.", "en": "It's on its way now." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
             {
               "id": "sv-restaurant-09",
               "speaker": "you",
@@ -2781,16 +2911,16 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-restaurant-12",
+              "id": "sv-restaurant-14",
               "speaker": "you",
-              "situation": { "en": "Everyone else has been served and you haven't." },
-              "question": { "es": "Vi väntar fortfarande på maten.", "en": "We're still waiting for our food." },
+              "situation": { "en": "You need the toilet and can't see a sign." },
+              "question": { "es": "Var är toaletten?", "en": "Where's the toilet?" },
               "answers": [
-                { "es": "Den kommer nu.", "en": "It's on its way now." }
+                { "es": "Längst in till vänster.", "en": "Right at the back on the left." }
               ],
               "likelyReply": null,
               "notes": "",
-              "difficulty": "medium",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -2800,19 +2930,6 @@
               "question": { "es": "Kan jag få en till?", "en": "Could I get another one?" },
               "answers": [
                 { "es": "Samma igen?", "en": "Same again?" }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-restaurant-14",
-              "speaker": "you",
-              "situation": { "en": "You need the toilet and can't see a sign." },
-              "question": { "es": "Var är toaletten?", "en": "Where's the toilet?" },
-              "answers": [
-                { "es": "Längst in till vänster.", "en": "Right at the back on the left." }
               ],
               "likelyReply": null,
               "notes": "",
@@ -2903,32 +3020,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-hotel-04",
-              "speaker": "you",
-              "situation": { "en": "You're planning the last morning of the trip." },
-              "question": { "es": "När måste vi checka ut?", "en": "When do we have to check out?" },
-              "answers": [
-                { "es": "Klockan elva.", "en": "At eleven." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-hotel-05",
-              "speaker": "you",
-              "situation": { "en": "Your flight is tonight but the room goes at eleven." },
-              "question": { "es": "Kan vi lämna väskorna här?", "en": "Can we leave our bags here?" },
-              "answers": [
-                { "es": "Javisst, i förrådet.", "en": "Certainly — in the storeroom." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-hotel-06",
               "speaker": "you",
               "situation": { "en": "You're in the room and want to get online." },
@@ -2952,6 +3043,32 @@
               ],
               "likelyReply": null,
               "notes": "Most Swedish hotels have one. Ask about towel and swimwear rules before you go down — they vary and nobody will warn you.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-hotel-04",
+              "speaker": "you",
+              "situation": { "en": "You're planning the last morning of the trip." },
+              "question": { "es": "När måste vi checka ut?", "en": "When do we have to check out?" },
+              "answers": [
+                { "es": "Klockan elva.", "en": "At eleven." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-hotel-05",
+              "speaker": "you",
+              "situation": { "en": "Your flight is tonight but the room goes at eleven." },
+              "question": { "es": "Kan vi lämna väskorna här?", "en": "Can we leave our bags here?" },
+              "answers": [
+                { "es": "Javisst, i förrådet.", "en": "Certainly — in the storeroom." }
+              ],
+              "likelyReply": null,
+              "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -3000,6 +3117,19 @@
               "quizQuestions": []
             },
             {
+              "id": "sv-shopping-04",
+              "speaker": "you",
+              "situation": { "en": "There's no price on the thing you're holding." },
+              "question": { "es": "Vad kostar den?", "en": "How much is it?" },
+              "answers": [
+                { "es": "Tvåhundranittionio.", "en": "Two hundred and ninety-nine." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-shopping-02",
               "speaker": "you",
               "situation": { "en": "The only one left on the rail is too small." },
@@ -3026,28 +3156,15 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-shopping-04",
+              "id": "sv-shopping-07",
               "speaker": "you",
-              "situation": { "en": "There's no price on the thing you're holding." },
-              "question": { "es": "Vad kostar den?", "en": "How much is it?" },
+              "situation": { "en": "You've got notes in your pocket and want to know if they're any use." },
+              "question": { "es": "Tar ni kontanter?", "en": "Do you take cash?" },
               "answers": [
-                { "es": "Tvåhundranittionio.", "en": "Two hundred and ninety-nine." }
+                { "es": "Nej, bara kort.", "en": "No — card only." }
               ],
               "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-shopping-05",
-              "speaker": "you",
-              "situation": { "en": "Yesterday's purchase doesn't fit and you've kept the receipt." },
-              "question": { "es": "Kan jag byta den här?", "en": "Can I exchange this?" },
-              "answers": [
-                { "es": "Med kvitto, ja.", "en": "With a receipt, yes." }
-              ],
-              "likelyReply": null,
-              "notes": "",
+              "notes": "Sweden is as close to cashless as anywhere. Plenty of shops, cafés and every city bus have not handled a note in years.",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -3066,19 +3183,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-shopping-07",
-              "speaker": "you",
-              "situation": { "en": "You've got notes in your pocket and want to know if they're any use." },
-              "question": { "es": "Tar ni kontanter?", "en": "Do you take cash?" },
-              "answers": [
-                { "es": "Nej, bara kort.", "en": "No — card only." }
-              ],
-              "likelyReply": null,
-              "notes": "Sweden is as close to cashless as anywhere. Plenty of shops, cafés and every city bus have not handled a note in years.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-shopping-08",
               "speaker": "you",
               "situation": { "en": "It's late afternoon and you may need to come back." },
@@ -3090,6 +3194,19 @@
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "sv-shopping-05",
+              "speaker": "you",
+              "situation": { "en": "Yesterday's purchase doesn't fit and you've kept the receipt." },
+              "question": { "es": "Kan jag byta den här?", "en": "Can I exchange this?" },
+              "answers": [
+                { "es": "Med kvitto, ja.", "en": "With a receipt, yes." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
             }
           ]
         },
@@ -3097,32 +3214,6 @@
           "id": "sv-shopping-systembolaget",
           "title": "Systembolaget — the one shop that matters",
           "exchanges": [
-            {
-              "id": "sv-shopping-09",
-              "speaker": "you",
-              "situation": { "en": "You want wine for dinner and the supermarket had nothing but weak beer." },
-              "question": { "es": "Var ligger närmaste Systembolaget?", "en": "Where's the nearest Systembolaget?" },
-              "answers": [
-                { "es": "Två kvarter bort.", "en": "Two blocks away." }
-              ],
-              "likelyReply": null,
-              "notes": "The only place in the country selling anything above 3.5%. Nowhere else, at any price, at any hour.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-shopping-10",
-              "speaker": "them",
-              "situation": { "en": "You put a bottle on the counter and they look up at you." },
-              "question": { "es": "Har du legitimation?", "en": "Do you have ID?" },
-              "answers": [
-                { "es": "Ja, här är mitt pass.", "en": "Yes — here's my passport." }
-              ],
-              "likelyReply": { "es": "Tack så mycket.", "en": "Thanks very much." },
-              "notes": "The limit here is 20, not the 18 that gets you served in a bar, and they ask anyone who looks under 25.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
             {
               "id": "sv-shopping-11",
               "speaker": "you",
@@ -3133,6 +3224,19 @@
               ],
               "likelyReply": null,
               "notes": "This catches out every visitor exactly once. Shut all day Sunday, and the shutters come down at 15:00 on Saturday.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-shopping-09",
+              "speaker": "you",
+              "situation": { "en": "You want wine for dinner and the supermarket had nothing but weak beer." },
+              "question": { "es": "Var ligger närmaste Systembolaget?", "en": "Where's the nearest Systembolaget?" },
+              "answers": [
+                { "es": "Två kvarter bort.", "en": "Two blocks away." }
+              ],
+              "likelyReply": null,
+              "notes": "The only place in the country selling anything above 3.5%. Nowhere else, at any price, at any hour.",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -3189,6 +3293,19 @@
               "quizQuestions": []
             },
             {
+              "id": "sv-shopping-10",
+              "speaker": "them",
+              "situation": { "en": "You put a bottle on the counter and they look up at you." },
+              "question": { "es": "Har du legitimation?", "en": "Do you have ID?" },
+              "answers": [
+                { "es": "Ja, här är mitt pass.", "en": "Yes — here's my passport." }
+              ],
+              "likelyReply": { "es": "Tack så mycket.", "en": "Thanks very much." },
+              "notes": "The limit here is 20, not the 18 that gets you served in a bar, and they ask anyone who looks under 25.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-shopping-16",
               "speaker": "you",
               "situation": { "en": "It's a warm evening and everyone in the park seems to have a can." },
@@ -3218,6 +3335,32 @@
           "title": "At the door (Stockholm)",
           "exchanges": [
             {
+              "id": "sv-nightlife-06",
+              "speaker": "you",
+              "situation": { "en": "Someone in your group is nineteen and you want to check before queueing." },
+              "question": { "es": "Är det åldersgräns?", "en": "Is there an age limit?" },
+              "answers": [
+                { "es": "Tjugo år ikväll.", "en": "Twenty tonight." }
+              ],
+              "likelyReply": null,
+              "notes": "Clubs set their own limit and it is often 20, 23 or higher — well above the legal 18. It is usually on the door.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-nightlife-08",
+              "speaker": "you",
+              "situation": { "en": "You can hear something through the door and want to know what you're walking into." },
+              "question": { "es": "Spelar de house ikväll?", "en": "Are they playing house tonight?" },
+              "answers": [
+                { "es": "Techno, hela natten.", "en": "Techno, all night." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-nightlife-01",
               "speaker": "them",
               "situation": { "en": "You reach the front of the queue and the doorman counts your group." },
@@ -3229,6 +3372,20 @@
               "notes": "",
               "difficulty": "easy",
               "region": "stockholm",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-nightlife-05",
+              "speaker": "them",
+              "situation": { "en": "A friend said they'd put your name down." },
+              "question": { "es": "Står ni på listan?", "en": "Are you on the list?" },
+              "answers": [
+                { "es": "Ja, på [NAMN].", "en": "Yes, under [NAME]." },
+                { "es": "Nej, går det ändå?", "en": "No — can we get in anyway?" }
+              ],
+              "likelyReply": { "es": "Det löser sig.", "en": "We'll sort it out." },
+              "notes": "",
+              "difficulty": "medium",
               "quizQuestions": []
             },
             {
@@ -3274,33 +3431,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-nightlife-05",
-              "speaker": "them",
-              "situation": { "en": "A friend said they'd put your name down." },
-              "question": { "es": "Står ni på listan?", "en": "Are you on the list?" },
-              "answers": [
-                { "es": "Ja, på [NAMN].", "en": "Yes, under [NAME]." },
-                { "es": "Nej, går det ändå?", "en": "No — can we get in anyway?" }
-              ],
-              "likelyReply": { "es": "Det löser sig.", "en": "We'll sort it out." },
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-nightlife-06",
-              "speaker": "you",
-              "situation": { "en": "Someone in your group is nineteen and you want to check before queueing." },
-              "question": { "es": "Är det åldersgräns?", "en": "Is there an age limit?" },
-              "answers": [
-                { "es": "Tjugo år ikväll.", "en": "Twenty tonight." }
-              ],
-              "likelyReply": null,
-              "notes": "Clubs set their own limit and it is often 20, 23 or higher — well above the legal 18. It is usually on the door.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-nightlife-07",
               "speaker": "them",
               "situation": { "en": "The doorman looks past you and shakes his head." },
@@ -3312,19 +3442,6 @@
               "notes": "Arguing with a Swedish doorman is the one reliable way to make the refusal permanent.",
               "difficulty": "medium",
               "quizQuestions": []
-            },
-            {
-              "id": "sv-nightlife-08",
-              "speaker": "you",
-              "situation": { "en": "You can hear something through the door and want to know what you're walking into." },
-              "question": { "es": "Spelar de house ikväll?", "en": "Are they playing house tonight?" },
-              "answers": [
-                { "es": "Techno, hela natten.", "en": "Techno, all night." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
             }
           ]
         },
@@ -3332,32 +3449,6 @@
           "id": "sv-nightlife-friends",
           "title": "Making friends & moving on",
           "exchanges": [
-            {
-              "id": "sv-nightlife-09",
-              "speaker": "you",
-              "situation": { "en": "You've started talking to a group at the bar." },
-              "question": { "es": "Är ni härifrån?", "en": "Are you from here?" },
-              "answers": [
-                { "es": "Ja, vi bor i Söder.", "en": "Yes, we live in Söder." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-nightlife-10",
-              "speaker": "you",
-              "situation": { "en": "This bar has emptied out and you'd rather not end the night here." },
-              "question": { "es": "Ska vi gå vidare någonstans?", "en": "Shall we move on somewhere?" },
-              "answers": [
-                { "es": "Gärna, vart då?", "en": "Yes — where to?" }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
             {
               "id": "sv-nightlife-11",
               "speaker": "them",
@@ -3373,16 +3464,16 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-nightlife-12",
+              "id": "sv-nightlife-09",
               "speaker": "you",
-              "situation": { "en": "The group you've joined is putting coats on." },
-              "question": { "es": "Vart ska ni sen?", "en": "Where are you off to after this?" },
+              "situation": { "en": "You've started talking to a group at the bar." },
+              "question": { "es": "Är ni härifrån?", "en": "Are you from here?" },
               "answers": [
-                { "es": "Hem till en kompis.", "en": "Back to a friend's place." }
+                { "es": "Ja, vi bor i Söder.", "en": "Yes, we live in Söder." }
               ],
               "likelyReply": null,
               "notes": "",
-              "difficulty": "medium",
+              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -3413,14 +3504,27 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-nightlife-15",
+              "id": "sv-nightlife-10",
               "speaker": "you",
-              "situation": { "en": "You're done for the night and want to leave without a fuss." },
-              "question": { "es": "Jag måste dra.", "en": "I've got to head off." },
+              "situation": { "en": "This bar has emptied out and you'd rather not end the night here." },
+              "question": { "es": "Ska vi gå vidare någonstans?", "en": "Shall we move on somewhere?" },
               "answers": [
-                { "es": "Redan? Stanna lite till!", "en": "Already? Stay a bit longer!" }
+                { "es": "Gärna, vart då?", "en": "Yes — where to?" }
               ],
-              "likelyReply": { "es": "Vi ses!", "en": "See you!" },
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-nightlife-12",
+              "speaker": "you",
+              "situation": { "en": "The group you've joined is putting coats on." },
+              "question": { "es": "Vart ska ni sen?", "en": "Where are you off to after this?" },
+              "answers": [
+                { "es": "Hem till en kompis.", "en": "Back to a friend's place." }
+              ],
+              "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -3434,6 +3538,19 @@
                 { "es": "Ja, vi bor åt samma håll.", "en": "Yes — we're going the same way." }
               ],
               "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-nightlife-15",
+              "speaker": "you",
+              "situation": { "en": "You're done for the night and want to leave without a fuss." },
+              "question": { "es": "Jag måste dra.", "en": "I've got to head off." },
+              "answers": [
+                { "es": "Redan? Stanna lite till!", "en": "Already? Stay a bit longer!" }
+              ],
+              "likelyReply": { "es": "Vi ses!", "en": "See you!" },
               "notes": "",
               "difficulty": "medium",
               "quizQuestions": []
@@ -3875,6 +3992,19 @@
           "title": "At the apotek",
           "exchanges": [
             {
+              "id": "sv-resacon-06",
+              "speaker": "you",
+              "situation": { "en": "You need a pharmacy and don't know the area." },
+              "question": { "es": "Var finns närmaste apotek?", "en": "Where's the nearest pharmacy?" },
+              "answers": [
+                { "es": "Vid tunnelbanan.", "en": "By the metro." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
               "id": "sv-resacon-01",
               "speaker": "you",
               "situation": { "en": "Your head is splitting and you need something for it." },
@@ -3902,19 +4032,6 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-resacon-03",
-              "speaker": "you",
-              "situation": { "en": "You want to know whether you need a doctor first." },
-              "question": { "es": "Behöver jag recept?", "en": "Do I need a prescription?" },
-              "answers": [
-                { "es": "Nej, det är receptfritt.", "en": "No, it's over the counter." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
               "id": "sv-resacon-04",
               "speaker": "you",
               "situation": { "en": "You're badly dehydrated and water alone isn't touching it." },
@@ -3928,29 +4045,16 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-resacon-05",
+              "id": "sv-resacon-08",
               "speaker": "you",
-              "situation": { "en": "You've got the box and don't want to overdo it." },
-              "question": { "es": "Hur ofta ska jag ta det?", "en": "How often should I take it?" },
+              "situation": { "en": "A long Nordic summer day has caught you out." },
+              "question": { "es": "Jag har bränt mig i solen.", "en": "I've got sunburn." },
               "answers": [
-                { "es": "Högst tre gånger om dagen.", "en": "Three times a day at most." }
+                { "es": "Prova den här salvan.", "en": "Try this cream." }
               ],
               "likelyReply": null,
               "notes": "",
               "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-resacon-06",
-              "speaker": "you",
-              "situation": { "en": "You need a pharmacy and don't know the area." },
-              "question": { "es": "Var finns närmaste apotek?", "en": "Where's the nearest pharmacy?" },
-              "answers": [
-                { "es": "Vid tunnelbanan.", "en": "By the metro." }
-              ],
-              "likelyReply": null,
-              "notes": "",
-              "difficulty": "easy",
               "quizQuestions": []
             },
             {
@@ -3967,12 +4071,25 @@
               "quizQuestions": []
             },
             {
-              "id": "sv-resacon-08",
+              "id": "sv-resacon-03",
               "speaker": "you",
-              "situation": { "en": "A long Nordic summer day has caught you out." },
-              "question": { "es": "Jag har bränt mig i solen.", "en": "I've got sunburn." },
+              "situation": { "en": "You want to know whether you need a doctor first." },
+              "question": { "es": "Behöver jag recept?", "en": "Do I need a prescription?" },
               "answers": [
-                { "es": "Prova den här salvan.", "en": "Try this cream." }
+                { "es": "Nej, det är receptfritt.", "en": "No, it's over the counter." }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-resacon-05",
+              "speaker": "you",
+              "situation": { "en": "You've got the box and don't want to overdo it." },
+              "question": { "es": "Hur ofta ska jag ta det?", "en": "How often should I take it?" },
+              "answers": [
+                { "es": "Högst tre gånger om dagen.", "en": "Three times a day at most." }
               ],
               "likelyReply": null,
               "notes": "",
