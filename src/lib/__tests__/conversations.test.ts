@@ -479,10 +479,11 @@ describe("nextBeat", () => {
 /**
  * Two questions in a row, with no turn of yours in between.
  *
- * The bug this locks out, reported from a Swedish café: they asked "Ska du ha
- * den värmd?" and then, without waiting, "Vill du ha påtår?". Both were
- * authored — the first as a scenario page's closing hook, the second as the
- * next exchange's opener — and chaining them dropped the first question on the
+ * The bug this locks out, reported from a Swedish café: a beat came back at you
+ * with a question and the next beat opened with one of its own, so the screen
+ * asked two things with no turn of yours in between. Both lines were authored —
+ * the first as a scenario page's closing hook, the second as the next
+ * exchange's opener — and chaining them dropped the first question on the
  * floor. Forty-six beats across the three editions read that way.
  */
 describe.each(locales)("the walk-through reads as one conversation: %s", (locale: Locale) => {
