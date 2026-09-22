@@ -2152,6 +2152,39 @@
   color: var(--color-success-deep);
 }
 
+/* --- formal / informal tags --- */
+
+/*
+ * A small tag beside a line that chose how to address somebody.
+ *
+ * Only German and Spanish get one, and only on the lines whose pronoun says
+ * so. Swedish never does: the du-reform made `du` universal, and marking it
+ * would teach a distinction the language stopped making in the 1960s.
+ */
+.tone {
+  display: inline-block;
+  margin-left: 0.4rem;
+  vertical-align: 0.1em;
+  /* 12px, and only because it is uppercase and tracked. */
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.tone--formal {
+  color: #24567f;
+  background: #dfeaf5;
+}
+
+.tone--informal {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-tint);
+}
+
 /* --- what a passing round earned you --- */
 
 /*

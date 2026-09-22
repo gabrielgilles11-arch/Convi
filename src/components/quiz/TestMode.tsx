@@ -20,6 +20,7 @@ import {
   roundsCompletedToday,
   DAILY_GOAL,
 } from "../../lib/progress";
+import { registerOf, REGISTER_LABEL } from "../../lib/register";
 
 /**
  * Lines listed on the round summary before it turns into a wall.
@@ -488,6 +489,7 @@ export default function TestMode({
 
   const q = question!;
   const spoken = spokenLine(q);
+  const answerTone = registerOf(locale, q.answer);
   // The generator names a reply clip after its exchange, which is the item id.
   const replyAudioId = q.reply ? `${q.itemId}-r` : null;
   // Tiles are tracked as `word\u0000index` so a repeated word stays distinct.
@@ -700,7 +702,13 @@ export default function TestMode({
                 Tap either line to hear it again. */}
             {q.form !== "match" && (q.saidByYou || !wasRight) && (
               <div className={`drawer-line${q.saidByYou ? " is-yours" : ""}`}>
-                <p className="drawer-line-label">{q.saidByYou ? "You said" : "The answer"}</p>
+                <p className="drawer-line-label">
+                  {q.saidByYou ? "You said" : "The answer"}
+                  {/* Only where the line itself chose an address pronoun. It
+                      is the one thing about a line a learner cannot see from
+                      the translation underneath it. */}
+                  {answerTone && <span className={`tone tone--${answerTone}`}>{REGISTER_LABEL[answerTone]}</span>}
+                </p>
                 <div className="drawer-line-row">
                   <button
                     type="button"

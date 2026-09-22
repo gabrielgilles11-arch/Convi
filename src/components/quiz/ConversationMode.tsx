@@ -11,6 +11,7 @@ import {
 import { normalizeAnswer } from "../../lib/quizTypes";
 import AudioButton from "./AudioButton";
 import { speak, speakInTurn, stopSpeaking } from "./speech";
+import { registerOf, REGISTER_LABEL } from "../../lib/register";
 
 /**
  * Talk Mode: a conversation held in the target language.
@@ -101,6 +102,7 @@ function Bubble({
 }) {
   const open = openKey === popKey;
   const canPop = Boolean(line.en);
+  const tone = registerOf(locale, line.source);
 
   return (
     <div className={`convo-bubble convo-bubble--${side}${open ? " is-open" : ""}`}>
@@ -116,6 +118,10 @@ function Bubble({
           {line.source}
         </button>
         <AudioButton locale={locale} audioId={line.audioId} text={line.source} surface="practice" />
+        {/* Read off the address pronoun already in the line. Most lines carry
+            none and get no tag, which is the point: it marks the sentences
+            where the choice was made, not every sentence. */}
+        {tone && <span className={`tone tone--${tone}`}>{REGISTER_LABEL[tone]}</span>}
       </p>
       {open && line.en && (
         <p className="convo-pop" role="note">
