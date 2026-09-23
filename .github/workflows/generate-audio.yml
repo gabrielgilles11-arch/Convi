@@ -1,35 +1,58 @@
-# Records the spoken lines and commits them.
+# Records the spoken lines on a GitHub runner and commits them.
 #
-# It exists because the voice models live on Hugging Face and the machines that
-# would otherwise run this can't always reach it — a runner can. Piper needs no
-# key and no account, which is the whole point: this path works when nobody has
-# signed up for anything.
+# Nobody should need Python, edge-tts or a voice model on their own machine to
+# change how an edition sounds, and some machines cannot reach the endpoints at
+# all. A runner can. So this is the one place audio gets made.
 #
-# Run it from the Actions tab. Generating a handful of lines first is worth the
-# extra minute — a voice you haven't heard is a voice you don't want 109 of.
+# Two steps, run from the Actions tab, in this order:
+#
+#   1. mode: audition. Renders a few real lines from the edition in every
+#      female voice the engine has for it, and attaches them to the run as a
+#      zip. Nothing is committed. Download it, listen, pick one.
+#   2. mode: record, with that voice name in `voice`. Re-records the whole
+#      edition in it, removes clips left over from the old voice or from lines
+#      since deleted, and commits the result to `branch`.
+#
+# Edge TTS is the default because it needs no account and no key. Azure and
+# Google are here for the day it stops working, and read their keys from
+# repository secrets (AZURE_SPEECH_KEY + AZURE_SPEECH_REGION, GOOGLE_TTS_API_KEY).
 name: Generate audio
 
 on:
   workflow_dispatch:
     inputs:
       locale:
-        description: "Edition to record"
+        description: "Edition"
         type: choice
-        options: [sv-SE, es-ES, de-DE]
+        options: [sv-SE, de-DE, es-ES]
         default: sv-SE
+      mode:
+        description: "audition: samples of every voice, nothing committed. record: the whole edition, committed."
+        type: choice
+        options: [audition, record]
+        default: audition
+      engine:
+        description: "Synthesizer"
+        type: choice
+        options: [edge, azure, google, piper]
+        default: edge
       voice:
-        description: "Piper voice (see huggingface.co/rhasspy/piper-voices)"
-        default: sv_SE-nst-medium
-      sample:
-        description: "Lines to record, or 0 for the whole edition"
-        default: "6"
+        description: "Voice to record in, e.g. de-DE-SeraphinaMultilingualNeural. Blank keeps the script's default."
+        required: false
+        default: ""
       branch:
-        description: "Branch to commit the clips to"
-        default: claude/german-beer-ordering-ux-wkmk7s
+        description: "Branch to commit a recording to (main deploys the site)"
+        default: main
+
+# Two recordings of one edition at once would race each other to the push.
+concurrency:
+  group: audio-${{ inputs.locale }}
+  cancel-in-progress: false
 
 jobs:
-  record:
+  audio:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     permissions:
       contents: write
 
@@ -43,55 +66,92 @@ jobs:
           node-version: "22"
 
       - uses: actions/setup-python@v5
+        if: inputs.engine == 'edge' || inputs.engine == 'piper'
         with:
-          python-version: "3.11"
+          python-version: "3.12"
+
+      - name: Install Edge TTS
+        if: inputs.engine == 'edge'
+        # Unpinned on purpose. edge-tts tracks changes at Microsoft's end, and
+        # an old release is the usual reason it stops producing audio.
+        run: pip install --quiet --upgrade edge-tts
 
       - name: Install Piper and an encoder
-        # ffmpeg is what turns Piper's WAV into MP3 — a fifth of the bytes for a
-        # line nobody can tell apart. The runner image no longer ships it, and
-        # the generator silently keeps the WAV when it is missing, which is how
-        # the first run produced 67KB clips.
+        if: inputs.engine == 'piper'
         run: |
           pip install --quiet piper-tts
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
 
-      - name: Record
+      - name: Generate
         env:
           LOCALE: ${{ inputs.locale }}
+          MODE: ${{ inputs.mode }}
+          ENGINE: ${{ inputs.engine }}
           # Read from the environment rather than interpolated into the command,
           # so a voice name can never become part of the shell line.
-          PIPER_SV_MODEL: ${{ inputs.voice }}
-          PIPER_ES_MODEL: ${{ inputs.voice }}
-          PIPER_DE_MODEL: ${{ inputs.voice }}
-          SAMPLE: ${{ inputs.sample }}
+          VOICE: ${{ inputs.voice }}
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+          GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
         run: |
           set -euo pipefail
-          ARGS=(--locale "$LOCALE" --engine piper --force)
-          if [ "$SAMPLE" != "0" ]; then ARGS+=(--sample "$SAMPLE"); fi
+          # Only when one was given: the script reads these with `??`, so an
+          # empty string would be taken as a voice called "".
+          if [ -n "$VOICE" ]; then
+            for name in EDGE_VOICE AZURE_VOICE GOOGLE_VOICE; do
+              export "${name}_SV=$VOICE" "${name}_DE=$VOICE" "${name}_ES=$VOICE"
+            done
+            export PIPER_SV_MODEL="$VOICE" PIPER_DE_MODEL="$VOICE" PIPER_ES_MODEL="$VOICE"
+          fi
+
+          ARGS=(--locale "$LOCALE" --engine "$ENGINE")
+          if [ "$MODE" = "audition" ]; then
+            ARGS+=(--audition --sample 5)
+          else
+            ARGS+=(--force)
+          fi
           node scripts/generate-audio.mjs "${ARGS[@]}"
 
+      - name: Attach the audition
+        if: inputs.mode == 'audition'
+        uses: actions/upload-artifact@v4
+        with:
+          name: audition-${{ inputs.locale }}-${{ inputs.engine }}
+          path: .audio-audition/${{ inputs.locale }}
+          retention-days: 14
+          if-no-files-found: error
+
       - name: What came out
+        if: inputs.mode == 'record'
         run: |
-          ls -la "public/audio/${{ inputs.locale }}" | head -20
+          cat "public/audio/${{ inputs.locale }}/voice.json"
+          ls "public/audio/${{ inputs.locale }}" | wc -l
           du -sh "public/audio/${{ inputs.locale }}"
 
       - name: Commit
+        if: inputs.mode == 'record'
         env:
           LOCALE: ${{ inputs.locale }}
-          VOICE: ${{ inputs.voice }}
+          BRANCH: ${{ inputs.branch }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/audio
-          # Nothing to say when the run changed nothing — a re-record with the
-          # same voice produces byte-identical files.
+          git add -A public/audio
+          # Nothing to say when the run changed nothing: a re-record in the same
+          # voice produces byte-identical files.
           if git diff --cached --quiet; then
             echo "no change"
             exit 0
           fi
-          git commit -m "Record $LOCALE with Piper $VOICE
-
-          Generated by .github/workflows/generate-audio.yml."
-          git push origin HEAD:"${{ inputs.branch }}"
+          VOICE_USED=$(node -p "require('./public/audio/$LOCALE/voice.json').voice")
+          git commit -m "Record $LOCALE in $VOICE_USED" \
+            -m "Generated by .github/workflows/generate-audio.yml."
+          # Somebody may have pushed while this ran. Clips never conflict with
+          # code, so taking their work first and putting these on top is safe.
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$BRANCH" && git push origin HEAD:"$BRANCH" && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1

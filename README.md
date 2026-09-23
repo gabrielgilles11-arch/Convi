@@ -45,10 +45,11 @@ in a revert of forty commits.
 
 **Speech that survives a network that cannot reach the model host.**
 Lines are spoken from generated clips where they exist and the device's own
-voice where they do not. Generating them needs Hugging Face, which the
-development sandbox cannot reach — so [a GitHub Actions
-workflow](.github/workflows/generate-audio.yml) does it on a runner and commits
-the result back. The voice picker is scored by name, after discovering that
+voice where they do not. Generating them means reaching a speech endpoint
+(Edge TTS by default), which the development sandbox cannot do — so [a GitHub
+Actions workflow](.github/workflows/generate-audio.yml) does it on a runner:
+`audition` attaches samples of every candidate voice to the run, and `record`
+re-records a whole edition in the one you pick and commits it. The voice picker is scored by name, after discovering that
 preferring `localService` voices reliably selected the *worst* voice on the
 machine: on every desktop platform the local voices are the old ones.
 
