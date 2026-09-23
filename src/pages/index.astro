@@ -369,6 +369,37 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    /*
+     * The same inch the card is held off the right edge by, on the left.
+     *
+     * The copy used to start hard against the container's gutter while the
+     * card sat inset from its own edge, so the band was lopsided: one side
+     * breathing, the other flush.
+     *
+     * Offset rather than margin, and that is the whole of it. A margin is
+     * layout: the grid area contains the item's margin box, so an inch on the
+     * left is an inch off the measure, and "Learn how to speak like a local."
+     * went from two lines to three at every width worth looking at. The copy
+     * does not need to be narrower, it needs to start further in — so it keeps
+     * its column and is painted an inch to the right of it. Nothing reflows.
+     *
+     * Where that inch comes from: the card is capped at 460px and sits at the
+     * end of a column wider than that, so there is dead space to its left. The
+     * offset moves the copy into that space and nowhere near the card. Below
+     * about 1280px the column is no wider than the card and the space is not
+     * there, which is what the lower bound of the clamp is for — it stays at
+     * zero until there is room, then reaches the full inch by ~1760px.
+     *
+     * `inset-inline-start`, not `transform`: .hero-copy carries `reveal`,
+     * which animates a transform of its own, and two of them on one element is
+     * the entrance fighting itself.
+     *
+     * The header is untouched by any of this. It is outside .hero entirely and
+     * keeps the wordmark at the window's edge, which is the arrangement
+     * --shell-pad exists to hold.
+     */
+    position: relative;
+    inset-inline-start: clamp(0rem, 12vw - 7.5rem, 6rem);
   }
 
   .eyebrow {
@@ -477,6 +508,13 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     .hero-grid {
       /* One column, so there is no right edge to end against. */
       justify-items: stretch;
+    }
+
+    /* One column, so there is no card to balance against either. The clamp is
+       already at zero this far down; this says so out loud, so a later change
+       to its lower bound cannot indent a phone by accident. */
+    .hero-copy {
+      inset-inline-start: 0;
     }
 
     /* Headline, then the button, then the pitch. The paragraph explaining what
