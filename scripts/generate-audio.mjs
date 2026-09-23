@@ -488,9 +488,10 @@ function requireEdge() {
  * actually hits get named: the endpoint being unreachable, and edge-tts having
  * fallen behind a change at Microsoft's end.
  */
-function edgeRun(argv, options = {}) {
+function edgeRun(argv, options = {}, command = ["edge-tts"]) {
+  const [bin, ...pre] = command;
   try {
-    return execFileSync("edge-tts", argv, { stdio: ["ignore", "pipe", "pipe"], ...options });
+    return execFileSync(bin, [...pre, ...argv], { stdio: ["ignore", "pipe", "pipe"], ...options });
   } catch (err) {
     const stderr = String(err.stderr ?? "").trim();
     const last = stderr.split("\n").filter(Boolean).pop() ?? err.message;
@@ -549,7 +550,13 @@ async function synthEdge(text, cfg, outPath) {
   // every time, so it is not retried.
   for (let attempt = 1; ; attempt++) {
     try {
-      edgeRun(["--voice", cfg.voice, "--text", text, "--write-media", outPath, `--rate=${EDGE_RATE}`]);
+      // Through scripts/edge_say.py rather than the edge-tts command, which
+      // labels every line en-US; see that file for what that did to German.
+      edgeRun(
+        ["--voice", cfg.voice, "--locale", cfg.languageCode, "--text", text, "--out", outPath, `--rate=${EDGE_RATE}`],
+        {},
+        ["python3", EDGE_SAY]
+      );
       return;
     } catch (err) {
       const transient = /NoAudioReceived|WebSocket|ServerDisconnected|Timeout|Cannot connect|ClientConnector|reset by peer/i.test(
@@ -560,6 +567,8 @@ async function synthEdge(text, cfg, outPath) {
     }
   }
 }
+
+const EDGE_SAY = path.join(ROOT, "scripts", "edge_say.py");
 
 /** Tries per line before a transient Edge failure counts as a failure. */
 const EDGE_ATTEMPTS = 4;
@@ -694,6 +703,17 @@ async function synthOne(text, cfg, outPath) {
 
 async function run() {
   const locales = only ? [only] : Object.keys(PROVIDERS);
+
+  // What each clip was recorded from, exactly as sent, for scripts/check_audio.py
+  // to compare what it hears against.
+  if (args.includes("--print-lines")) {
+    const out = {};
+    for (const locale of locales) {
+      out[locale] = spokenLines(locale).map((line) => ({ id: line.id, text: speakable(line.text, locale) }));
+    }
+    process.stdout.write(JSON.stringify(out));
+    return;
+  }
   let made = 0, skipped = 0, failed = 0;
 
   if (auditionOnly) {
