@@ -71,6 +71,7 @@ def main() -> None:
     except FileNotFoundError:
         pass
 
+    multilingual = "multilingual" in voice.lower()
     model = WhisperModel(args.model, device="cpu", compute_type="int8")
 
     missing, wrong_language, wrong_words = [], [], []
@@ -80,7 +81,14 @@ def main() -> None:
             missing.append(line)
             continue
         path = os.path.join(clip_dir, f"{line['id']}.{ext}")
-        segments, info = model.transcribe(path, beam_size=1, vad_filter=False)
+        # A single-language voice cannot drift into another language, so the
+        # recognizer is told which one it is hearing. Left to guess, it guessed
+        # wrong on short clips and dialect, and "Ein Bier, bitte" from a
+        # German-only voice came back as "and beer bitter". Only a multilingual
+        # voice needs the language question asked at all.
+        segments, info = model.transcribe(
+            path, beam_size=1, vad_filter=False, language=None if multilingual else language
+        )
         heard = " ".join(s.text.strip() for s in segments).strip()
 
         want = normalize(line["text"])
@@ -92,7 +100,7 @@ def main() -> None:
         probs = dict(info.all_language_probs or [])
         share = probs.get(language, 1.0 if info.language == language else 0.0)
         english = probs.get("en", 0.0)
-        if language != "en" and len(want) >= 2 and english > share:
+        if multilingual and language != "en" and len(want) >= 2 and english > share:
             wrong_language.append({**line, "heard": heard, "detected": info.language, "share": share})
 
         if len(want) >= MIN_WORDS_FOR_TEXT_CHECK:
