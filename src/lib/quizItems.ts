@@ -36,6 +36,8 @@ function situationFrom(
   const theirs = theirTurn
     ? exchange.likelyReply
     : (exchange.answers[0] ?? exchange.likelyReply);
+  // The clip for whichever line `theirs` turned out to be.
+  const theirsAudio = theirTurn || !exchange.answers[0] ? `${exchange.id}-r` : `${exchange.id}-a0`;
 
   if (!mine?.es || !exchange.situation?.en) return null;
 
@@ -64,6 +66,7 @@ function situationFrom(
     // Shown after the answer settles, never before — it is the payoff,
     // not part of the question.
     reply: theirs?.es ? { source: theirs.es, en: theirs.en } : null,
+    replyAudioId: theirs?.es ? theirsAudio : null,
     frontAudioId: null,
     answerAudioId: theirTurn ? `${exchange.id}-a0` : `${exchange.id}-q`,
   };
