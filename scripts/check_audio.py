@@ -7,8 +7,8 @@ failures that matter are easy to miss one at a time: a German line read in an
 English accent, a word swallowed or swapped. So a speech recognizer listens
 instead, with two questions per clip:
 
-  language  Does it hear the edition's language? A multilingual voice that
-            drifted into English is heard as English.
+  language  Does it sound more like English than the edition's language? A
+            multilingual voice that drifted into English does.
   words     Does what it hears match the line the clip was recorded from?
 
 It is a smoke alarm, not a judge. Recognition of a one-word clip ("Ja.",
@@ -33,8 +33,6 @@ from faster_whisper import WhisperModel
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Below this share for the edition's language, a clip is flagged.
-LANGUAGE_FLOOR = 0.5
 # Below this word-level similarity to the recorded text, a clip is flagged.
 WORDS_FLOOR = 0.6
 MIN_WORDS_FOR_TEXT_CHECK = 3
@@ -85,12 +83,18 @@ def main() -> None:
         segments, info = model.transcribe(path, beam_size=1, vad_filter=False)
         heard = " ".join(s.text.strip() for s in segments).strip()
 
+        want = normalize(line["text"])
+
+        # The question worth asking is not "is it confidently German" (a
+        # two-word clip rarely is, to a recognizer) but "does it sound more like
+        # English than German", which is what a voice drifting into English
+        # sounds like. One-word clips are left out: there the recognizer guesses.
         probs = dict(info.all_language_probs or [])
         share = probs.get(language, 1.0 if info.language == language else 0.0)
-        if share < LANGUAGE_FLOOR:
+        english = probs.get("en", 0.0)
+        if language != "en" and len(want) >= 2 and english > share:
             wrong_language.append({**line, "heard": heard, "detected": info.language, "share": share})
 
-        want = normalize(line["text"])
         if len(want) >= MIN_WORDS_FOR_TEXT_CHECK:
             ratio = difflib.SequenceMatcher(a=want, b=normalize(heard)).ratio()
             if ratio < WORDS_FLOOR:
@@ -103,14 +107,14 @@ def main() -> None:
         f"# Audio check: {locale} ({voice})",
         "",
         f"{len(lines)} lines, {len(missing)} without a clip, "
-        f"{len(wrong_language)} not heard as `{language}`, "
+        f"{len(wrong_language)} heard as English rather than `{language}`, "
         f"{len(wrong_words)} whose words do not match.",
         "",
     ]
     if missing:
         out += ["## No clip", ""] + [f"- `{l['id']}` {l['text']}" for l in missing] + [""]
     if wrong_language:
-        out += ["## Not heard as the edition's language", "", "| clip | line | heard as | share | heard |", "|---|---|---|---|---|"]
+        out += ["## Heard as English rather than the edition's language", "", "| clip | line | heard as | share | heard |", "|---|---|---|---|---|"]
         for r in sorted(wrong_language, key=lambda r: r["share"]):
             out.append(f"| `{r['id']}` | {r['text']} | {r['detected']} | {r['share']:.2f} | {r['heard']} |")
         out.append("")
@@ -127,7 +131,9 @@ def main() -> None:
     if summary:
         with open(summary, "a") as f:
             f.write(report + "\n")
-    print(out[2])
+    # The whole report in the log as well, where it can be read without
+    # downloading anything.
+    print(report)
 
 
 if __name__ == "__main__":
