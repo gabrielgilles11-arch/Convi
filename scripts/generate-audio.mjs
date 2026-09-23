@@ -97,9 +97,25 @@ const AZURE_VOICES = {
   "es-ES": process.env.AZURE_VOICE_ES ?? "es-ES-ElviraNeural",
 };
 
+/**
+ * Edge voices per locale, used when `--engine edge` overrides the default. Only
+ * Spanish needs it, since German and Swedish are on Edge already; it used to be
+ * promised in a comment and silently ignored, leaving Spanish on Google.
+ */
+const EDGE_VOICES = {
+  "sv-SE": process.env.EDGE_VOICE_SV ?? "sv-SE-SofieNeural",
+  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
+  "es-ES": process.env.EDGE_VOICE_ES ?? "es-ES-ElviraNeural",
+};
+
 function providerFor(locale) {
   const base = PROVIDERS[locale];
   if (!base || !engine) return base;
+
+  if (engine === "edge") {
+    const voice = EDGE_VOICES[locale];
+    return voice ? { provider: "edge", voice, languageCode: locale } : base;
+  }
 
   if (engine === "google") {
     const voice = GOOGLE_VOICES[locale];
@@ -513,9 +529,28 @@ function listEdgeVoices(languageCode) {
  * Edge writes 24kHz mono MP3, which is what the rest of this script and the
  * manifest already expect. No ffmpeg, no conversion step.
  */
-function synthEdge(text, cfg, outPath) {
-  edgeRun(["--voice", cfg.voice, "--text", text, "--write-media", outPath, `--rate=${EDGE_RATE}`]);
+async function synthEdge(text, cfg, outPath) {
+  // The read-aloud endpoint drops the odd request when it is asked for eight
+  // hundred lines back to back: a closed socket, or "no audio received". Those
+  // are worth a second try after a pause. Anything else, a voice that does not
+  // exist or edge-tts behind a change at Microsoft's end, fails the same way
+  // every time, so it is not retried.
+  for (let attempt = 1; ; attempt++) {
+    try {
+      edgeRun(["--voice", cfg.voice, "--text", text, "--write-media", outPath, `--rate=${EDGE_RATE}`]);
+      return;
+    } catch (err) {
+      const transient = /NoAudioReceived|WebSocket|ServerDisconnected|Timeout|Cannot connect|ClientConnector|reset by peer/i.test(
+        err.message
+      );
+      if (!transient || attempt >= EDGE_ATTEMPTS) throw err;
+      await new Promise((resolve) => setTimeout(resolve, 1500 * 2 ** (attempt - 1)));
+    }
+  }
 }
+
+/** Tries per line before a transient Edge failure counts as a failure. */
+const EDGE_ATTEMPTS = 4;
 
 /** How much slower than native. Overridable, because taste varies. */
 const EDGE_RATE = process.env.EDGE_RATE ?? "-5%";
@@ -738,6 +773,10 @@ async function run() {
 
   if (!dryRun) {
     for (const locale of locales) {
+      // Only after a complete, forced run with nothing failed: that is the one
+      // case where everything on disk that is not a current line is known to be
+      // left over, from a line since edited away or from the voice before.
+      if (force && sample === 0 && failed === 0) pruneStale(locale);
       writeManifest(locale);
       writeVoiceRecord(locale, providerFor(locale));
     }
@@ -803,6 +842,30 @@ function warnIfVoiceChanged(locale, cfg) {
       `  Without --force they are kept and only new lines get ${now}, which\n` +
       `  leaves the edition reading in two voices. Re-run with --force.\n`
   );
+}
+
+/**
+ * Deletes clips that no current line is read from.
+ *
+ * `--force` rewrites every line that exists and leaves everything else where it
+ * was, so a clip for a line since deleted from the content kept being listed in
+ * the manifest, still in the voice being replaced. Nothing plays a clip whose
+ * id no line carries, so the cost was bytes rather than sound, but a re-record
+ * is exactly when an edition should end up in one voice and nothing else.
+ */
+function pruneStale(locale) {
+  const dir = path.join(OUT_ROOT, locale);
+  if (!existsSync(dir)) return;
+  const current = new Set(spokenLines(locale).map((line) => line.id));
+  let removed = 0;
+  for (const file of readdirSync(dir)) {
+    const match = file.match(/^(.+)\.(mp3|wav)$/);
+    if (match && !current.has(match[1])) {
+      rmSync(path.join(dir, file));
+      removed++;
+    }
+  }
+  if (removed) console.log(`\n${locale}: removed ${removed} clips no line uses any more`);
 }
 
 /**
