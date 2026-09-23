@@ -33,6 +33,8 @@
 import { readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync, rmSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { endsOnQuestion, leadAudioId, statementPartOf } from "../src/lib/replyLead.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const OUT_ROOT = path.join(ROOT, "public", "audio");
@@ -104,7 +106,7 @@ const AZURE_VOICES = {
  */
 const EDGE_VOICES = {
   "sv-SE": process.env.EDGE_VOICE_SV ?? "sv-SE-SofieNeural",
-  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
+  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-SeraphinaMultilingualNeural",
   "es-ES": process.env.EDGE_VOICE_ES ?? "es-ES-ElviraNeural",
 };
 
@@ -140,10 +142,11 @@ function providerFor(locale) {
 /**
  * Voice choices: a female neural voice for German and Swedish, through Edge TTS.
  *
- * Katja and Sofie are the German and Swedish voices Azure has shipped for
- * years and the ones Edge reads those languages in. Both are female, which is
- * the point: a learner hears the same kind of person in Talk Mode, in practice
- * and on the scenario page.
+ * Chosen by ear from the audition runs: Seraphina for German, the newer
+ * multilingual generation, which reads far less flatly than Katja; and Sofie
+ * for Swedish, the better of the two Swedish voices Edge has. Both are female,
+ * which is the point: a learner hears the same kind of person in Talk Mode, in
+ * practice and on the scenario page.
  *
  * Every one is overridable from the environment, because this is a matter of
  * taste and the only way to settle it is to listen:
@@ -171,7 +174,7 @@ const PROVIDERS = {
   },
   "de-DE": {
     provider: "edge",
-    voice: process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
+    voice: process.env.EDGE_VOICE_DE ?? "de-DE-SeraphinaMultilingualNeural",
     languageCode: "de-DE",
   },
   "sv-SE": {
@@ -186,7 +189,7 @@ const PROVIDERS = {
  * content, not missing text, so they are spoken as a short pause rather than
  * read out as "underscore" or "BELOPP".
  */
-function spokenLines(locale) {
+export function spokenLines(locale) {
   const data = JSON.parse(readFileSync(path.join(ROOT, "content", `${locale}.json`), "utf8"));
   const lines = [];
   const push = (id, text) => {
@@ -201,6 +204,15 @@ function spokenLines(locale) {
         push(`${ex.id}-q`, ex.question?.es);
         push(`${ex.id}-r`, ex.likelyReply?.es);
         (ex.answers ?? []).forEach((a, i) => push(`${ex.id}-a${i}`, a.es));
+      }
+      // Talk Mode's comebacks with the trailing question taken off, which is
+      // the line it shows and says mid-conversation (see replyLead.mjs). Both
+      // lines that can be a comeback, since which one is depends on who spoke
+      // first; one that is never trimmed costs a clip nobody plays, not a gap.
+      for (const ex of sub.exchanges ?? []) {
+        for (const [id, text] of [[`${ex.id}-r`, ex.likelyReply?.es], [`${ex.id}-a0`, ex.answers?.[0]?.es]]) {
+          if (text && endsOnQuestion(text)) push(leadAudioId(id), statementPartOf(text));
+        }
       }
       for (const p of sub.phrases ?? []) push(p.id, p.es);
       (sub.items ?? []).forEach((t, i) => push(`${sub.id}-tip${i}`, t.es));
@@ -898,7 +910,11 @@ function writeManifest(locale) {
   console.log(`\n${locale}: manifest lists ${count} clips`);
 }
 
-run().catch((err) => {
+// Run only when invoked as a script, so the tests can import `spokenLines` and
+// check it against every clip id the site asks for.
+const invokedDirectly = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (invokedDirectly) run().catch((err) => {
   // Everything that can go wrong before the first line is synthesised — no key,
   // a rejected key, the API unreachable — arrives here. A stack trace helps
   // nobody run a script; the message is the useful part.

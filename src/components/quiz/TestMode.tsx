@@ -491,7 +491,7 @@ export default function TestMode({
   const spoken = spokenLine(q);
   const answerTone = registerOf(locale, q.answer);
   // The generator names a reply clip after its exchange, which is the item id.
-  const replyAudioId = q.reply ? `${q.itemId}-r` : null;
+  const replyAudioId = q.reply ? q.replyAudio : null;
   // Tiles are tracked as `word\u0000index` so a repeated word stays distinct.
   const tokenOf = (tile: string, i: number) => `${tile}\u0000${i}`;
   const wordOf = (token: string) => token.slice(0, token.lastIndexOf("\u0000"));

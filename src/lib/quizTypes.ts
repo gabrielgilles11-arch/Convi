@@ -51,6 +51,12 @@ export interface QuizItem {
   alsoAccepted: string[];
   /** What they say back, revealed once the question is settled. */
   reply: Line | null;
+  /**
+   * The clip for `reply`. Not derivable from the item id: when they speak
+   * first their reply is `likelyReply` (`-r`), and when you do it is
+   * `answers[0]` (`-a0`). Assuming `-r` played the wrong line under the text.
+   */
+  replyAudioId?: string | null;
   /** Ids of the generated clips, or null where the side has no spoken line. */
   frontAudioId: string | null;
   answerAudioId: string | null;
@@ -668,6 +674,8 @@ export interface Question {
   answerAudio: string | null;
   /** Shown after the question settles: what they'd come back with. */
   reply: Line | null;
+  /** The clip for `reply`; see `QuizItem.replyAudioId`. */
+  replyAudio: string | null;
   options: string[]; // choice only
   tiles: string[]; // bank only
   pairs: MatchPair[]; // match only
@@ -815,6 +823,7 @@ export function buildQuestion(
     // showing "they'd say back" under it would be answering a question that
     // was never asked.
     reply: item.kind === "situation" && reverse ? null : item.reply,
+    replyAudio: item.kind === "situation" && reverse ? null : (item.replyAudioId ?? null),
     options: [],
     tiles: [],
     pairs: [],
@@ -1073,6 +1082,7 @@ export function buildMatchQuestion(
     shownAudio: null,
     answerAudio: null,
     reply: null,
+    replyAudio: null,
     options: [],
     tiles: [],
     pairs,
