@@ -106,7 +106,7 @@ const AZURE_VOICES = {
  */
 const EDGE_VOICES = {
   "sv-SE": process.env.EDGE_VOICE_SV ?? "sv-SE-SofieNeural",
-  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-SeraphinaMultilingualNeural",
+  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
   "es-ES": process.env.EDGE_VOICE_ES ?? "es-ES-ElviraNeural",
 };
 
@@ -142,11 +142,14 @@ function providerFor(locale) {
 /**
  * Voice choices: a female neural voice for German and Swedish, through Edge TTS.
  *
- * Chosen by ear from the audition runs: Seraphina for German, the newer
- * multilingual generation, which reads far less flatly than Katja; and Sofie
- * for Swedish, the better of the two Swedish voices Edge has. Both are female,
- * which is the point: a learner hears the same kind of person in Talk Mode, in
+ * Katja for German and Sofie for Swedish: both single-language voices, and
+ * both female, so a learner hears the same kind of person in Talk Mode, in
  * practice and on the scenario page.
+ *
+ * German was on Seraphina for a day. She is multilingual, and a multilingual
+ * voice decides per line which language it is reading: short lines, numbers
+ * and loanwords ("Pils", "112", "M10") came out in English. A voice that only
+ * speaks German cannot make that mistake, whatever the request says.
  *
  * Every one is overridable from the environment, because this is a matter of
  * taste and the only way to settle it is to listen:
@@ -174,7 +177,7 @@ const PROVIDERS = {
   },
   "de-DE": {
     provider: "edge",
-    voice: process.env.EDGE_VOICE_DE ?? "de-DE-SeraphinaMultilingualNeural",
+    voice: process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
     languageCode: "de-DE",
   },
   "sv-SE": {
@@ -243,10 +246,23 @@ function speakable(text, locale) {
   }
 
   return line
-    .replace(/_{2,}/g, ", ")          // "Son __ euros." -> a beat, not "underscore"
-    .replace(/\[[^\]]+\]/g, ", ")     // same for [BELOPP] / [STATION]
+    // A blank is where the learner's own word goes: the street, the amount,
+    // their name. It used to become a comma, and a comma where a word should be
+    // reads as an unfinished sentence: "Ich bin übrigens, ." came out as "Ich
+    // bin übrigens." and "Linie __, Richtung __." as "Linie, Richtung." So it
+    // is a pause you can hear, written as the ellipsis the device voice already
+    // uses; scripts/edge_say.py turns it into a real SSML break.
+    .replace(/_{2,}|\[[^\]]+\]/g, " … ")
     .replace(/\s*\/\s*/g, ", ")       // "Links/rechts" -> a beat between them
     .replace(/\s*,\s*,\s*/g, ", ")
+    // Punctuation that only belonged next to the word in the blank.
+    // A comma after it always goes; a full stop only at the very end, since
+    // mid-line it is the end of one sentence and the start of the next.
+    .replace(/…\s*,/g, "…")
+    .replace(/…\s*\.$/, "…")
+    .replace(/…\s*\.\s*/g, "…. ")
+    .replace(/,\s*…/g, " …")
+    .replace(/…\s*(?:—|–)\s*/g, "… ")
     .replace(/\s+/g, " ")
     .trim();
 }
