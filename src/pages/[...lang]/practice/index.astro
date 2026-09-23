@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import PracticeGate from "../../../components/PracticeGate";
-import { localeFromSlug, getLocaleInfo, LOCALES } from "../../../lib/content";
+import { localeFromSlug, getLocaleInfo, localePath, LOCALES } from "../../../lib/content";
 
 // Every language's practice section is paywalled the same way: the deck comes
 // from /api/quiz-items, which checks the entitlement cookie server-side.
@@ -30,9 +30,27 @@ const info = getLocaleInfo(locale);
   </div>
 
   <PracticeGate client:load locale={locale} />
+
+  {/* Practice is an app, and without JavaScript it rendered a heading and then
+      nothing at all. The scenarios are plain pages, so they are the way on. */}
+  <noscript>
+    <p class="no-js">
+      Practice needs JavaScript switched on. Every line it drills is on the{" "}
+      <a href={localePath(locale, "/scenarios")}>{info.language} scenario pages</a>, which work
+      without it.
+    </p>
+  </noscript>
 </Layout>
 
 <style>
+  .no-js {
+    max-width: var(--shell-text);
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+  }
+
   .intro {
     opacity: 0.75;
     margin: 0 0 1rem;

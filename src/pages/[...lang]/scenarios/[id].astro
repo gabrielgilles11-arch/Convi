@@ -123,7 +123,9 @@ const schema = [
 <Layout title={pageTitle} description={pageBlurb} locale={locale} schema={schema}>
   <a class="back" href={localePath(locale, "/scenarios")}>&larr; All scenarios</a>
   <div class="title-row" data-locale={locale}>
-    <h1>{category.title}</h1>
+    {/* A break opportunity after each slash, so "hotel/hostel/Airbnb" wraps
+        at a slash rather than mid-word. */}
+    <h1>{category.title.split("/").map((part, i) => (i === 0 ? part : <Fragment>/<wbr />{part}</Fragment>))}</h1>
     {/* Hidden until the script knows this device can say anything at all. */}
     <button type="button" id="voice-toggle" class="voice-toggle" aria-pressed="true" hidden>
       <span class="toggle-label">Voices</span>
@@ -165,7 +167,7 @@ const schema = [
         <span class="quick-answer-label">Short answer</span>
         <span class="quick-answer-line">
           In {info.region}, say <strong>{answer.es}</strong>
-          {answer.en && <span class="quick-answer-en"> — {answer.en}</span>}
+          {answer.en && <span class="quick-answer-en">{answer.en}</span>}
         </span>
       </p>
     )
@@ -195,12 +197,12 @@ const schema = [
               <p class="question">
                 <span class="label">Q</span> {exchange.question.es}
                 <Speaker audioId={`${exchange.id}-q`} text={exchange.question.es} label="Hear the question" />
-                <span class="translation"> — {exchange.question.en}</span>
                 {exchange.region && (
                   <span class={`tag tag--${exchange.region}`}>{REGION_LABELS[exchange.region]}</span>
                 )}
                 {exchange.young && <span class="tag tag--young">young</span>}
                 {exchange.women && <span class="tag tag--women">women</span>}
+                <span class="translation">{exchange.question.en}</span>
               </p>
 
               {exchange.answers.length > 0 && (
@@ -209,7 +211,7 @@ const schema = [
                     <li>
                       <span class="label">A</span> {answer.es}
                       <Speaker audioId={`${exchange.id}-a${i}`} text={answer.es} label="Hear this answer" />
-                      <span class="translation"> — {answer.en}</span>
+                      <span class="translation">{answer.en}</span>
                     </li>
                   ))}
                 </ul>
@@ -219,7 +221,7 @@ const schema = [
                 <p class="reply">
                   <span class="label">They'll say</span> {exchange.likelyReply.es}
                   <Speaker audioId={`${exchange.id}-r`} text={exchange.likelyReply.es} label="Hear their reply" />
-                  <span class="translation"> — {exchange.likelyReply.en}</span>
+                  <span class="translation">{exchange.likelyReply.en}</span>
                 </p>
               )}
 
@@ -231,7 +233,7 @@ const schema = [
             <p class="tip">
               {tip.es}
               <Speaker audioId={`${sub.id}-tip${i}`} text={tip.es} />
-              <span class="translation">— {tip.en}</span>
+              <span class="translation">{tip.en}</span>
             </p>
           ))}
         </section>
@@ -282,32 +284,46 @@ const schema = [
   const toggle = document.getElementById("voice-toggle") as HTMLButtonElement | null;
   const buttons = () => document.querySelectorAll<HTMLButtonElement>(".speak");
 
-  /** True once anything on this device can say a line in this language. */
-  let sayable = canSpeak(locale);
+  /** Whether the browser itself has a voice for this language. */
+  let deviceVoice = canSpeak(locale);
+  /** Speakers whose line has a recorded clip, which plays with or without one. */
+  const clipped = new Set<HTMLButtonElement>();
 
+  /**
+   * Each speaker on its own terms. A page used to decide for all of them by
+   * probing the first line's clip, and the recorded Swedish covers part of the
+   * content rather than all of it: a page whose first line had no clip hid
+   * every speaker on it, the recorded ones included.
+   */
   function sync() {
-    const on = voiceEnabled() && sayable;
-    for (const button of buttons()) button.hidden = !on;
+    const on = voiceEnabled();
+    let any = false;
+    for (const button of buttons()) {
+      const sayable = deviceVoice || clipped.has(button);
+      if (sayable) any = true;
+      button.hidden = !(on && sayable);
+    }
     if (toggle) {
-      toggle.hidden = !sayable;
-      toggle.setAttribute("aria-pressed", String(voiceEnabled()));
-      toggle.title = voiceEnabled() ? "Voices on" : "Voices off";
+      toggle.hidden = !any;
+      toggle.setAttribute("aria-pressed", String(on));
+      toggle.title = on ? "Voices on" : "Voices off";
     }
   }
 
-  // A generated clip counts even where the browser has no voice of its own, so
-  // one representative line is probed before giving up on the whole page.
-  const first = document.querySelector<HTMLButtonElement>(".speak");
-  if (!sayable && first?.dataset.audio) {
-    void hasClip(locale, first.dataset.audio).then((found) => {
-      if (!found) return;
-      sayable = true;
-      sync();
-    });
-  }
+  // One request answers for every clip on the page: `hasClip` reads a single
+  // manifest per locale and remembers it.
+  void Promise.all(
+    [...buttons()].map(async (button) => {
+      if (button.dataset.audio && (await hasClip(locale, button.dataset.audio))) {
+        clipped.add(button);
+      }
+    })
+  ).then(sync);
 
+  // The voice list can arrive late. It only ever answers for the device's own
+  // voice, so it can no longer undo what the clips said.
   onVoicesReady(() => {
-    sayable = canSpeak(locale);
+    deviceVoice = canSpeak(locale);
     sync();
   });
   subscribeVoice(sync);
@@ -380,7 +396,15 @@ const schema = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.5rem 1rem;
+  }
+
+  /* A long title ("Checking in (hotel/hostel/Airbnb)") has no break point
+     inside its slashed run, and at phone width it pushed the switch off the
+     side of the screen. The title may shrink and break; the switch may not. */
+  .title-row h1 {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .voice-toggle {
@@ -400,6 +424,12 @@ const schema = [
     text-transform: uppercase;
     color: var(--color-primary-dark);
     cursor: pointer;
+  }
+
+  /* Same story as `.speak[hidden]` in Speaker.astro: the display above would
+     otherwise keep a switch on screen for a device with nothing to switch. */
+  .voice-toggle[hidden] {
+    display: none;
   }
 
   .voice-toggle[aria-pressed="true"] {
@@ -478,6 +508,7 @@ const schema = [
   }
 
   .quick-answer-en {
+    display: block;
     color: var(--color-ink-soft);
   }
 
@@ -608,6 +639,15 @@ const schema = [
     font-size: 0.9rem;
   }
 
+  /* The meaning goes on its own line under the line it translates. It used to
+     sit inline behind a dash, and at phone width the dash was left hanging at
+     the end of one line with the English starting the next. */
+  .exchange .translation,
+  .tip .translation {
+    display: block;
+    margin-top: 0.15rem;
+  }
+
   .notes {
     font-size: 0.85rem;
     font-style: italic;
@@ -672,6 +712,14 @@ const schema = [
 
   .phrases .es {
     font-weight: 700;
+  }
+
+  /* Both halves of a row may shrink: "handsome/beautiful" is one unbroken run,
+     and on a 320px phone it pushed the row past the edge of the screen. */
+  .phrases .es,
+  .phrases .translation {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .tag {
