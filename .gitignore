@@ -112,3 +112,4 @@ tmp/
 
 # Python bytecode from the content scripts
 __pycache__/
+audio-report-*.md

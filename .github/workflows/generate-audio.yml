@@ -12,6 +12,10 @@
 #   2. mode: record, with that voice name in `voice`. Re-records the whole
 #      edition in it, removes clips left over from the old voice or from lines
 #      since deleted, and commits the result to `branch`.
+#   3. mode: verify, any time. A speech recognizer listens to every clip already
+#      committed and lists the ones it does not hear in the edition's language,
+#      or whose words do not match the line (scripts/check_audio.py). The
+#      report is on the run's summary page. A recording runs this at the end.
 #
 # Edge TTS is the default because it needs no account and no key. Azure and
 # Google are here for the day it stops working, and read their keys from
@@ -27,9 +31,9 @@ on:
         options: [sv-SE, de-DE, es-ES]
         default: sv-SE
       mode:
-        description: "audition: samples of every voice, nothing committed. record: the whole edition, committed."
+        description: "audition: samples of every voice. record: the whole edition, committed. verify: check what is committed."
         type: choice
-        options: [audition, record]
+        options: [audition, record, verify]
         default: audition
       engine:
         description: "Synthesizer"
@@ -66,12 +70,12 @@ jobs:
           node-version: "22"
 
       - uses: actions/setup-python@v5
-        if: inputs.engine == 'edge' || inputs.engine == 'piper'
+        if: inputs.engine == 'edge' || inputs.engine == 'piper' || inputs.mode != 'audition'
         with:
           python-version: "3.12"
 
       - name: Install Edge TTS
-        if: inputs.engine == 'edge'
+        if: inputs.engine == 'edge' && inputs.mode != 'verify'
         # Unpinned on purpose. edge-tts tracks changes at Microsoft's end, and
         # an old release is the usual reason it stops producing audio.
         run: pip install --quiet --upgrade edge-tts
@@ -84,6 +88,7 @@ jobs:
           sudo apt-get install -y -qq ffmpeg
 
       - name: Generate
+        if: inputs.mode != 'verify'
         env:
           LOCALE: ${{ inputs.locale }}
           MODE: ${{ inputs.mode }}
@@ -129,6 +134,27 @@ jobs:
           ls "public/audio/${{ inputs.locale }}" | wc -l
           du -sh "public/audio/${{ inputs.locale }}"
 
+      - name: Install the listener
+        if: inputs.mode != 'audition'
+        run: pip install --quiet faster-whisper
+
+      # Informational after a recording: a flagged clip is worth a listen, not
+      # a reason to throw away eight hundred good ones.
+      - name: Listen to every clip
+        if: inputs.mode != 'audition'
+        continue-on-error: ${{ inputs.mode == 'record' }}
+        env:
+          LOCALE: ${{ inputs.locale }}
+        run: python3 scripts/check_audio.py --locale "$LOCALE"
+
+      - name: Attach the report
+        if: inputs.mode != 'audition' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audio-report-${{ inputs.locale }}
+          path: audio-report-${{ inputs.locale }}.md
+          if-no-files-found: ignore
+
       - name: Commit
         if: inputs.mode == 'record'
         env:
@@ -139,6 +165,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A public/audio
+          rm -f audio-report-*.md
           # Nothing to say when the run changed nothing: a re-record in the same
           # voice produces byte-identical files.
           if git diff --cached --quiet; then
