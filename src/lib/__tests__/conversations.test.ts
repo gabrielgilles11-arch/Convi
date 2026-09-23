@@ -179,12 +179,12 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
         if (ex.speaker === "them") {
           expect(turn.theirOpener?.audioId).toBe(`${turn.id}-q`);
           turn.yourLines.forEach((line, i) => expect(line.audioId).toBe(`${turn.id}-a${i}`));
-          // A comeback that had its hook trimmed is no longer the line the clip
-          // was recorded of, so it carries none and the device voice reads what
-          // is actually on screen.
+          // A comeback that had its hook trimmed is no longer the line the full
+          // clip was recorded of, so it has a clip of its own, `-r-lead`,
+          // recorded from the trimmed text (see audio.test.ts).
           if (turn.theirReply) {
             const whole = turn.theirReply.source === ex.likelyReply?.es;
-            expect(turn.theirReply.audioId).toBe(whole ? `${turn.id}-r` : null);
+            expect(turn.theirReply.audioId).toBe(whole ? `${turn.id}-r` : `${turn.id}-r-lead`);
           }
         } else {
           expect(turn.yourLines[0]!.audioId).toBe(`${turn.id}-q`);
