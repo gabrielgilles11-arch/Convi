@@ -106,7 +106,7 @@ const AZURE_VOICES = {
  */
 const EDGE_VOICES = {
   "sv-SE": process.env.EDGE_VOICE_SV ?? "sv-SE-SofieNeural",
-  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-SeraphinaMultilingualNeural",
+  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
   "es-ES": process.env.EDGE_VOICE_ES ?? "es-ES-ElviraNeural",
 };
 
@@ -142,11 +142,14 @@ function providerFor(locale) {
 /**
  * Voice choices: a female neural voice for German and Swedish, through Edge TTS.
  *
- * Chosen by ear from the audition runs: Seraphina for German, the newer
- * multilingual generation, which reads far less flatly than Katja; and Sofie
- * for Swedish, the better of the two Swedish voices Edge has. Both are female,
- * which is the point: a learner hears the same kind of person in Talk Mode, in
+ * Katja for German and Sofie for Swedish: both single-language voices, and
+ * both female, so a learner hears the same kind of person in Talk Mode, in
  * practice and on the scenario page.
+ *
+ * German was on Seraphina for a day. She is multilingual, and a multilingual
+ * voice decides per line which language it is reading: short lines, numbers
+ * and loanwords ("Pils", "112", "M10") came out in English. A voice that only
+ * speaks German cannot make that mistake, whatever the request says.
  *
  * Every one is overridable from the environment, because this is a matter of
  * taste and the only way to settle it is to listen:
@@ -174,7 +177,7 @@ const PROVIDERS = {
   },
   "de-DE": {
     provider: "edge",
-    voice: process.env.EDGE_VOICE_DE ?? "de-DE-SeraphinaMultilingualNeural",
+    voice: process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
     languageCode: "de-DE",
   },
   "sv-SE": {

@@ -41,7 +41,7 @@ on:
         options: [edge, azure, google, piper]
         default: edge
       voice:
-        description: "Voice to record in, e.g. de-DE-SeraphinaMultilingualNeural. Blank keeps the script's default."
+        description: "Voice to record in, e.g. de-DE-KatjaNeural. Blank keeps the script's default."
         required: false
         default: ""
       branch:

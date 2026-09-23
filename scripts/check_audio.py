@@ -15,7 +15,7 @@ It is a smoke alarm, not a judge. Recognition of a one-word clip ("Ja.",
 "Tschüss!") is unreliable, so the words check only covers lines of three words
 or more, and anything flagged is worth a listen rather than proof of a fault.
 
-    python3 scripts/check_audio.py --locale de-DE [--model small]
+    python3 scripts/check_audio.py --locale de-DE [--model base|small]
 
 Writes audio-report-<locale>.md (also appended to the GitHub job summary when
 run in Actions) and exits 0 either way: it reports, it does not gate.
@@ -50,7 +50,7 @@ def normalize(text: str) -> list[str]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--locale", required=True)
-    parser.add_argument("--model", default="small")
+    parser.add_argument("--model", default="base")
     args = parser.parse_args()
 
     locale = args.locale
