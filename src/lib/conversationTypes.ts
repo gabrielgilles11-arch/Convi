@@ -483,3 +483,66 @@ export function nextBeat(
   for (let i = straight; i < best; i++) skipped.push(i);
   return { index: best, skipped };
 }
+
+// ---------------------------------------------------------------------------
+// Pacing, hints and moving on
+// ---------------------------------------------------------------------------
+
+/**
+ * How long new text stays on screen before the conversation moves past it.
+ *
+ * A fixed pause was the same 1.4 seconds for "Sí." as for a correction, the
+ * line it corrects, its English and their comeback, which is too long for one
+ * and nowhere near long enough for the other. This is a slow reading pace for
+ * somebody reading a language they are learning, with a floor so a one-word
+ * reply still registers and a ceiling so nothing stalls a conversation.
+ */
+export const READ_FLOOR = 900;
+export const READ_CEILING = 6000;
+const MS_PER_CHARACTER = 42;
+
+export function readingTime(...texts: (string | null | undefined)[]): number {
+  const characters = texts.reduce((sum, text) => sum + (text?.trim().length ?? 0), 0);
+  return Math.min(READ_CEILING, Math.max(READ_FLOOR, 300 + characters * MS_PER_CHARACTER));
+}
+
+/**
+ * The nudge before the answer: what you want to say, in English.
+ *
+ * "I don't know" used to go straight to the line, which ends the attempt. Most
+ * people who are stuck know the words and not which thing to say, and the
+ * meaning of the line is enough to get them saying it themselves. Only the
+ * authored English is used, and a beat whose line has none has no hint: the
+ * next step is the line itself.
+ */
+export function hintFor(turn: ConvTurn): string | null {
+  const en = turn.yourLines.find((line) => line.en?.trim())?.en?.trim();
+  return en || null;
+}
+
+export interface FollowingConversation {
+  conversation: Conversation;
+  /** Same category: the next room of the same place, not somewhere new. */
+  samePlace: boolean;
+}
+
+/**
+ * Where a conversation leads once it is over.
+ *
+ * The next one written for the same place first, because the subsections of a
+ * category are already the order a visit goes in: seated, ordering, a problem,
+ * the bill. After the last one, the first conversation of the next place, so
+ * finishing the restaurant walks you out into the hotel rather than back to a
+ * menu. Content order throughout, and nothing after the very last one: a
+ * conversation that wraps round to the airport would be a strange evening.
+ */
+export function followingConversation(
+  conversations: Conversation[],
+  id: string
+): FollowingConversation | null {
+  const index = conversations.findIndex((c) => c.id === id);
+  if (index < 0) return null;
+  const next = conversations[index + 1];
+  if (!next) return null;
+  return { conversation: next, samePlace: next.categoryId === conversations[index]!.categoryId };
+}

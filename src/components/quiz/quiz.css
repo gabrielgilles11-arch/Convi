@@ -238,8 +238,10 @@
 }
 
 .progress-row-status {
+  flex: none;
   font-size: 0.8125rem;
   font-weight: 700;
+  white-space: nowrap;
   color: var(--color-ink-soft);
 }
 
@@ -901,6 +903,11 @@
   font-size: 0.88rem;
   line-height: 1.35;
   color: var(--color-ink-soft);
+}
+
+/* On the line, not the row: a decoration set on the row propagates into the
+   label beside it, and `text-decoration: none` on a child cannot take it off. */
+.drawer-picked-text {
   text-decoration: line-through;
   text-decoration-color: color-mix(in srgb, var(--color-error) 55%, transparent);
 }
@@ -1548,12 +1555,15 @@
 
 .practice-path {
   position: relative;
+  max-width: 100%;
   margin: 0 auto;
 }
 
 .path-line {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 
@@ -2266,34 +2276,45 @@
   gap: 0.5rem;
 }
 
-/* Finished beats stay legible but stop competing with the one you're on — the
-   transcript is there to be read back, not to be answered again. */
-.convo-beat:not(.is-active) {
-  opacity: 0.72;
-}
+/* Finished beats are not dimmed. They were, at 0.72, and that took the soft
+   ink under them to about 3.8:1, under AA. The beat you are on is the one
+   at the bottom beside the box, which says so without greying out the rest. */
 
+/* The scene, set the way a script sets one: in italics, between the lines,
+   with no number in front of it. Numbered, the beats read as questions on a
+   worksheet; as stage directions they read as one evening moving on. */
 .convo-situation {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin: 0;
-  font-size: 0.85rem;
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.45;
   color: var(--color-ink-soft);
 }
 
-.convo-beat-n {
-  flex: none;
-  min-width: 1.35rem;
-  height: 1.35rem;
-  display: inline-flex;
-  align-items: center;
+/* Where one conversation hands over to the next inside the same thread. */
+.convo-scene {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
   justify-content: center;
-  border-radius: 999px;
-  background: var(--color-primary-tint);
-  border: 1px solid var(--color-primary-tint-border);
-  color: var(--color-primary-dark);
-  font-size: 0.8125rem;
+  gap: 0.2rem 0.5rem;
+  margin: 2rem 0 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed var(--color-border);
+  text-align: center;
+}
+
+.convo-scene-label {
+  font-size: 0.75rem;
   font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+}
+
+.convo-scene-title {
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 /* Their side left, yours right — the one convention every messaging app on
@@ -2334,14 +2355,6 @@
 }
 
 /* --- your turn --- */
-
-.convo-reply {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.35rem;
-}
 
 /* The box comes first and the written lines come after it, because typing is
    the thing being practised and a list of answers above the box is a list
@@ -2413,35 +2426,59 @@
 
 /* --- what else would have worked --- */
 
-/* After the answer, never before. A list of lines above the box is a list
-   nobody types past, and the beat stops being a question. */
+/* After the answer, never before, and folded. A list of lines above the box
+   is a list nobody types past; a list open under every answer is the eye
+   leaving the conversation twice a beat. */
 .convo-also {
   align-self: flex-end;
   max-width: 92%;
-  margin-top: 0.35rem;
-  padding: 0.55rem 0.8rem;
-  border-radius: 14px;
-  border: 1px dashed var(--color-border);
-  background: var(--color-card);
   text-align: right;
 }
 
-.convo-also-label {
-  margin: 0 0 0.3rem;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.convo-also summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.1rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
   color: var(--color-ink-soft);
+  cursor: pointer;
+  list-style: none;
+}
+
+.convo-also summary::-webkit-details-marker {
+  display: none;
+}
+
+.convo-also summary::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: 0.45rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.convo-also[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.convo-also summary:hover {
+  color: var(--color-primary-dark);
 }
 
 .convo-also ul {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.55rem 0.8rem;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+  border-radius: 14px;
+  border: 1px dashed var(--color-border);
+  background: var(--color-card);
 }
 
 .convo-also li {
@@ -2657,60 +2694,6 @@
   }
 
   .convo-bubble,
-  .convo-choice,
-  /* The authored warning about a line — "this is rude in Madrid" — which is the
-   one thing on a beat that is worth more than the beat. */
-.convo-note {
-  margin: 0.2rem 0 0;
-  padding: 0.5rem 0.75rem;
-  border-left: 3px solid var(--color-accent);
-  background: var(--color-bg);
-  border-radius: 0 8px 8px 0;
-  font-size: 0.85rem;
-  color: var(--color-ink-soft);
-}
-
-.convo-controls {
-  margin-top: 1.25rem;
-}
-
-.convo-footnote {
-  margin: 1.25rem 0 0;
-  font-size: 0.8125rem;
-  color: var(--color-ink-soft);
-}
-
-.convo-done {
-  margin-top: 1.5rem;
-  padding: 1.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  background: var(--color-card);
-  text-align: center;
-}
-
-.convo-done-title {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0 0 0.35rem;
-}
-
-.convo-done-sub {
-  margin: 0 0 1rem;
-  font-size: 0.9rem;
-  color: var(--color-ink-soft);
-}
-
-@media (max-width: 420px) {
-  /* Three tabs plus two icon toggles is more than a narrow phone has room for
-     on one line. */
-  .mode-toggle button {
-    padding: 0.45rem 0.8rem;
-    font-size: 0.9rem;
-  }
-
-  .convo-bubble,
   .convo-choice {
     max-width: 100%;
   }
@@ -2755,8 +2738,9 @@
 .convo-waiting {
   display: flex;
   align-items: center;
+  align-self: flex-start;
   width: fit-content;
-  margin: 0.75rem 0 0;
+  margin: 0;
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--color-border);
   border-radius: 16px;
@@ -2807,6 +2791,200 @@
   }
 }
 
+/* ---- The thread arriving ---- */
+
+/* Each new line eases in rather than appearing between one frame and the next.
+   Opacity and transform only, so nothing around it moves while it does. A
+   conversation already held is not animated again when it moves up the
+   thread. */
+.convo-bubble,
+.convo-correction,
+.convo-full,
+.convo-waiting,
+.convo-situation,
+.convo-scene {
+  animation: convo-in 0.28s ease-out both;
+}
+
+.convo-held .convo-bubble,
+.convo-held .convo-correction,
+.convo-held .convo-full,
+.convo-held .convo-situation,
+.convo-held .convo-scene {
+  animation: none;
+}
+
+@keyframes convo-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .convo-bubble,
+  .convo-correction,
+  .convo-full,
+  .convo-waiting,
+  .convo-situation,
+  .convo-scene {
+    animation: none;
+  }
+}
+
+/* ---- The box you answer in ---- */
+
+/* Pinned under the thread, the way the box in a messaging app is. It is in
+   the flow rather than fixed, so it never covers the last line: it sits under
+   it, and sticks to the bottom of the screen once the thread is taller than
+   the screen. */
+.convo-composer {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin-top: 1.25rem;
+  padding: 0.75rem 0 max(0.5rem, env(safe-area-inset-bottom));
+  background: var(--color-bg);
+  box-shadow: 0 -14px 14px -6px var(--color-bg);
+}
+
+.convo-composer .convo-type input::placeholder {
+  color: var(--color-ink-soft);
+  font-weight: 600;
+}
+
+.convo-help {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 44px;
+}
+
+.convo-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.5rem;
+  margin: 0 0 0.6rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-primary-tint-border);
+  font-weight: 700;
+  animation: convo-in 0.2s ease-out both;
+}
+
+.convo-hint-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .convo-hint {
+    animation: none;
+  }
+}
+
+/* Room to scroll the newest line clear of the pinned box. */
+.convo-tail {
+  height: 1px;
+}
+
+/* ---- The end of one conversation ---- */
+
+.convo-keep {
+  margin: 0 0 1.1rem;
+  text-align: left;
+}
+
+.convo-keep-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+}
+
+.convo-keep ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.convo-keep li {
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+}
+
+.convo-keep-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-weight: 700;
+}
+
+.convo-keep-en {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+/* The way on. The biggest thing on the card, because carrying on is what a
+   conversation does next, and a menu is what a quiz does next. */
+.convo-onward {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  margin: 0 0 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 0;
+  border-radius: 16px;
+  background: var(--color-primary);
+  box-shadow: 0 4px 0 var(--color-primary-dark);
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.convo-onward:hover {
+  transform: translateY(-1px);
+}
+
+.convo-onward:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--color-primary-dark);
+}
+
+.convo-onward-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.convo-onward-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.convo-onward-sub {
+  font-size: 0.85rem;
+}
+
 /* ---- Focus mode ---- */
 
 /* Inside a round the tab pair is the one control that goes: "Back to path"
@@ -2820,4 +2998,16 @@ body[data-focus="round"] .mode-toggle {
 
 body[data-focus="round"] .quiz-toolbar {
   justify-content: flex-end;
+}
+
+/* Two short answers side by side under the way on, each on one line. */
+.convo-done .controls {
+  flex-wrap: wrap;
+}
+
+.convo-done .controls button {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 0.55rem 0.9rem;
+  white-space: nowrap;
 }

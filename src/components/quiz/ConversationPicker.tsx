@@ -197,8 +197,8 @@ export default function ConversationPicker({
       {/* Two sentences, not five. The long version explained the grading rules
           before anybody had picked a place to be graded in. */}
       <p className="convo-intro">
-        Pick a place and hold the conversation that happens there. They speak
-        first and you type back.
+        Pick a place and hold the conversation that happens there. You type
+        your side, they answer, and when it's over the next one carries on.
       </p>
 
       <p className="convo-tally">

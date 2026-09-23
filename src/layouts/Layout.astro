@@ -582,21 +582,21 @@ const structuredData = {
 
   /* Brand, nav and CTA do not fit on one line at phone width, and
      space-between plus wrap put each of them on a line of its own: three rows,
-     145px of a 390px screen, before any page had said anything. The brand takes
-     the first row outright and the other two share the second. */
+     145px of a 390px screen, before any page had said anything. The brand and
+     the CTA share the first row and the nav takes the second. It used to be the
+     other way round, brand alone and nav beside the CTA, and at 320px the nav
+     and the CTA did not fit on one row either, so the three rows came back. */
   @media (max-width: 560px) {
     .site-header .container {
       padding: 0.6rem var(--shell-pad);
       row-gap: 0.35rem;
     }
 
-    .site-header .brand-link {
-      flex: 1 0 100%;
-    }
-
     .site-header nav {
+      order: 3;
+      flex: 1 0 100%;
       margin-left: 0;
-      margin-right: auto;
+      margin-right: 0;
       gap: 0.85rem;
     }
 
