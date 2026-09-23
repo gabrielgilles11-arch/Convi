@@ -14,7 +14,7 @@ import {
 import { normalizeAnswer } from "../../lib/quizTypes";
 import AudioButton from "./AudioButton";
 import { placeName } from "./ConversationPicker";
-import { speak, stopSpeaking } from "./speech";
+import { prefetchClips, speak, stopSpeaking } from "./speech";
 import { registerOf, REGISTER_LABEL } from "../../lib/register";
 
 /**
@@ -566,6 +566,16 @@ export default function ConversationMode({
   useEffect(() => {
     const run = ++runId.current;
     void openBeat(0, run);
+    // The lines this conversation says without being asked, fetched now so
+    // each one starts on cue rather than after a download on a slow phone.
+    void prefetchClips(
+      locale,
+      turns.flatMap((turn) => [
+        turn.theirOpener?.audioId ?? null,
+        turn.yourLines[0]?.audioId ?? null,
+        turn.theirReply?.audioId ?? null,
+      ])
+    );
     return () => {
       runId.current++;
       stopSpeaking();
