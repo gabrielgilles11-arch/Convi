@@ -18,8 +18,13 @@ import { STAGE_CLEAR_SCORE, type Stage } from "../../lib/quizTypes";
  * Geometry is deterministic rather than measured — a fixed column width and row
  * height mean the connecting line can be drawn as one SVG polyline through
  * known coordinates, instead of stitching per-node pseudo-elements together and
- * hoping they line up. The column is narrow enough (320px) to fit a phone
- * without scaling.
+ * hoping they line up.
+ *
+ * The column is 320px where there is room for it and narrower where there is
+ * not: a 320px phone has 288px inside its gutters. Stones are placed from the
+ * column's center rather than its left edge, so a narrower column pulls the
+ * edges in without moving the winding, and the line is drawn in a strip only
+ * as wide as the winding itself, so it never needs scaling either.
  */
 const COLUMN = 320;
 // Row spacing follows the label type size: at the larger, heavier .stone-label
@@ -30,6 +35,10 @@ const TOP = 56;
 const WIND = [0, 62, 0, -62];
 
 const xFor = (i: number) => COLUMN / 2 + WIND[i % WIND.length];
+/** Offset from the column's center, which is what the stones are placed by. */
+const offsetFor = (i: number) => WIND[i % WIND.length];
+/** The strip the line is drawn in: the winding, plus room for the stroke. */
+const LINE_STRIP = 2 * Math.max(...WIND.map(Math.abs)) + 12;
 const yFor = (i: number) => TOP + i * ROW;
 
 /** Stone geometry, in the units the progress ring is drawn in. */
@@ -65,7 +74,7 @@ interface Props {
  * order. `buildStages` already emits a category's parts together and in order,
  * so first-seen order is path order and nothing needs re-sorting.
  */
-function sectionsOf(stages: Stage[]): { categoryId: string; title: string; parts: Stage[] }[] {
+export function sectionsOf(stages: Stage[]): { categoryId: string; title: string; parts: Stage[] }[] {
   const out: { categoryId: string; title: string; parts: Stage[] }[] = [];
   const byId = new Map<string, { categoryId: string; title: string; parts: Stage[] }>();
 
@@ -140,9 +149,9 @@ export default function PracticePath({
     <div className="practice-path" style={{ width: COLUMN, height }}>
       <svg
         className="path-line"
-        width={COLUMN}
+        width={LINE_STRIP}
         height={height}
-        viewBox={`0 0 ${COLUMN} ${height}`}
+        viewBox={`${(COLUMN - LINE_STRIP) / 2} 0 ${LINE_STRIP} ${height}`}
         aria-hidden="true"
         focusable="false"
       >
@@ -168,7 +177,7 @@ export default function PracticePath({
             <li
               key={node.id}
               className="path-node"
-              style={{ left: xFor(i), top: yFor(i) }}
+              style={{ left: `calc(50% + ${offsetFor(i)}px)`, top: yFor(i) }}
             >
               <div className="stone-wrap">
                 {partial && (

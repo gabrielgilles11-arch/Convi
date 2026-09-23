@@ -82,6 +82,13 @@ const { audioId = null, text = null, label = "Hear it" } = Astro.props;
      box, which the 1px border makes 30px, so this is what reaches a round 44.
      It extends 6px past the drawn circle on every side, which is exactly the
      gap the scenario page leaves between two of them. */
+  /* The display above outranks the browser's own [hidden] rule, so without
+     this a speaker the script hides (voices off, or nothing on this device
+     that can say the line) stayed on screen and did nothing when tapped. */
+  .speak[hidden] {
+    display: none;
+  }
+
   .speak::after {
     content: "";
     position: absolute;

@@ -20,7 +20,11 @@ import {
   markConversationFinished,
   finishedConversations,
 } from "../../lib/progress";
-import type { Conversation, ConversationPayload } from "../../lib/conversationTypes";
+import {
+  followingConversation,
+  type Conversation,
+  type ConversationPayload,
+} from "../../lib/conversationTypes";
 import { markReminderPrompt, reminderPromptAnswered } from "../../lib/reminderClient";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
@@ -500,11 +504,13 @@ export default function QuizApp({ locale }: Props) {
           <ConversationMode
             conversation={chosenConvo}
             locale={locale ?? "es-ES"}
+            following={followingConversation(conversations, chosenConvo.id)}
             onBack={() => setConvoId(null)}
             onFinish={(id) => {
               markConversationFinished(id);
               setConvoDone(finishedConversations());
             }}
+            onContinue={setConvoId}
           />
         ) : (
           <ConversationPicker
