@@ -115,7 +115,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
           with a taxi driver, and catching the slang locals fire back at you.
         </p>
         <p class="language-note">
-          <strong>Three editions live now.</strong> Pick your language above.
+          <strong>Three editions live now.</strong> Pick your language above.{" "}
           {
             editions.map((e, i) => (
               <>
@@ -440,7 +440,10 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     align-items: center;
   }
 
-  .start-cta {
+  /* `.button` as well, to outrank the `.button { display: inline-block }`
+     further down: at equal weight the later rule won, the flex never applied,
+     and the flag sat against the first letter with no gap. */
+  .button.start-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;

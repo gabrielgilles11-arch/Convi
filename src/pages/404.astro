@@ -1,0 +1,122 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { LOCALES, localePath } from "../lib/content";
+
+/**
+ * The page for a link that goes nowhere.
+ *
+ * Without one, a stale link from a search result or a mistyped scenario id
+ * landed on the host's bare default: no header, no way back, and nothing to
+ * say this was the right site. The way back is the three editions, since
+ * somebody arriving here was almost always looking for one of them.
+ */
+---
+
+<Layout title="Page not found: Try Convi" description="That page doesn't exist. Pick a language and carry on.">
+  <section class="lost">
+    <p class="lost-code">404</p>
+    <h1>That page isn't here.</h1>
+    <p class="lost-sub">
+      The link may be old, or the address may have a typo in it. Everything on the site is one of
+      these three:
+    </p>
+
+    <ul class="lost-editions">
+      {
+        LOCALES.map((info) => (
+          <li>
+            <span class="lost-flag" aria-hidden="true">
+              {info.flag}
+            </span>
+            <span class="lost-lang">{info.language}</span>
+            <a href={localePath(info.locale, "/scenarios")}>Scenarios</a>
+            <a href={localePath(info.locale, "/practice")}>Practice</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a class="lost-home" href="/">Back to the home page</a>
+  </section>
+</Layout>
+
+<style>
+  .lost {
+    max-width: var(--shell-text);
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4rem) 0;
+  }
+
+  .lost-code {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary-dark);
+  }
+
+  h1 {
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .lost-sub {
+    margin: 0 0 1.25rem;
+    color: var(--color-ink-soft);
+  }
+
+  .lost-editions {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .lost-editions li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background: var(--color-card);
+  }
+
+  .lost-flag {
+    font-size: 1.25rem;
+  }
+
+  .lost-lang {
+    flex: 1 1 auto;
+    font-weight: 800;
+  }
+
+  .lost-editions a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-primary-tint-border);
+    background: var(--color-primary-tint);
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .lost-editions a:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .lost-home {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+</style>

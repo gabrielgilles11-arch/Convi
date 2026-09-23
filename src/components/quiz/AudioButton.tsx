@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   canSpeak,
+  hasClip,
   onVoicesReady,
   speak,
   subscribeVoice,
@@ -42,12 +43,23 @@ export default function AudioButton({
 
   useEffect(() => {
     // A device voice is enough on its own, so the button doesn't wait on the
-    // clip probe to appear.
-    const check = () => setAvailable(voiceEnabled() && (!!audioId || canSpeak(locale)));
+    // clip probe to appear. A clip id alone is not: every line has one, and
+    // most lines in most editions have no recording behind it, so on a device
+    // with no voice for the language it was a button that did nothing.
+    let clip = false;
+    let live = true;
+    const check = () => {
+      if (live) setAvailable(voiceEnabled() && (clip || canSpeak(locale)));
+    };
     check();
+    void hasClip(locale, audioId).then((found) => {
+      clip = found;
+      check();
+    });
     const stopWatchingVoices = onVoicesReady(check); // list can arrive late
     const stopWatchingSetting = subscribeVoice(check);
     return () => {
+      live = false;
       stopWatchingVoices();
       stopWatchingSetting();
     };

@@ -6,7 +6,12 @@ import {
   MIN_TURNS,
   CONVERSATION_STAGES,
   conversationStageOf,
+  followingConversation,
   groupByCategory,
+  hintFor,
+  readingTime,
+  READ_CEILING,
+  READ_FLOOR,
   gradeReply,
   hasSlot,
   nextBeat,
@@ -591,6 +596,63 @@ describe("shortening a category title for a tile", () => {
         expect(name.length, `${locale} ${group.categoryId} -> "${name}"`).toBeGreaterThanOrEqual(3);
         // A cut that ends on punctuation means the split landed mid-phrase.
         expect(name, `${locale} ${group.categoryId}`).not.toMatch(/[,&/(-]$/);
+      }
+    }
+  });
+});
+
+describe("readingTime", () => {
+  it("gives a one-word reply the floor, not nothing", () => {
+    expect(readingTime("Sí.")).toBe(READ_FLOOR);
+  });
+
+  it("gives more to read more time", () => {
+    const short = readingTime("Vale.");
+    const long = readingTime("De barril, gracias.", "Draft, thanks.", "¿Cuál? Tenemos Mahou o Estrella.");
+    expect(long).toBeGreaterThan(short);
+  });
+
+  it("never holds the conversation past the ceiling", () => {
+    expect(readingTime("x".repeat(2000))).toBe(READ_CEILING);
+  });
+
+  it("ignores lines that are not there", () => {
+    expect(readingTime(null, undefined, "Vale.")).toBe(readingTime("Vale."));
+  });
+});
+
+describe.each(locales)("carrying on inside the thread: %s", (locale: Locale) => {
+  const conversations = buildConversations(locale);
+
+  it("leads every conversation but the last somewhere", () => {
+    conversations.slice(0, -1).forEach((convo, i) => {
+      expect(followingConversation(conversations, convo.id)?.conversation.id).toBe(
+        conversations[i + 1]!.id
+      );
+    });
+    expect(followingConversation(conversations, conversations.at(-1)!.id)).toBeNull();
+  });
+
+  it("says whether the next one is the same place or somewhere new", () => {
+    for (const convo of conversations) {
+      const next = followingConversation(conversations, convo.id);
+      if (next) expect(next.samePlace).toBe(next.conversation.categoryId === convo.categoryId);
+    }
+  });
+
+  it("gives nothing for an id it does not know", () => {
+    expect(followingConversation(conversations, "not-a-conversation")).toBeNull();
+  });
+
+  it("hints with the authored English of a line you could say, and nothing else", () => {
+    for (const convo of conversations) {
+      for (const turn of convo.turns) {
+        const hint = hintFor(turn);
+        if (hint === null) {
+          expect(turn.yourLines.every((line) => !line.en?.trim())).toBe(true);
+        } else {
+          expect(turn.yourLines.map((line) => line.en?.trim())).toContain(hint);
+        }
       }
     }
   });

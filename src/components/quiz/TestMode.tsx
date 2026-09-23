@@ -692,7 +692,7 @@ export default function TestMode({
             {q.form !== "match" && !wasRight && choice && (
               <p className="drawer-picked">
                 <span className="drawer-picked-label">you picked</span>
-                {withBlanks(choice)}
+                <span className="drawer-picked-text">{withBlanks(choice)}</span>
               </p>
             )}
 
@@ -703,7 +703,9 @@ export default function TestMode({
             {q.form !== "match" && (q.saidByYou || !wasRight) && (
               <div className={`drawer-line${q.saidByYou ? " is-yours" : ""}`}>
                 <p className="drawer-line-label">
-                  {q.saidByYou ? "You said" : "The answer"}
+                  {/* "You said" only where you did. Over the right line after a
+                      wrong pick it contradicts the "you picked" just above it. */}
+                  {q.saidByYou ? (wasRight ? "You said" : "What to say") : "The answer"}
                   {/* Only where the line itself chose an address pronoun. It
                       is the one thing about a line a learner cannot see from
                       the translation underneath it. */}
