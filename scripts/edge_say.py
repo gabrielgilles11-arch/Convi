@@ -34,10 +34,17 @@ def main() -> None:
 
     locale = args.locale
     multilingual = "multilingual" in args.voice.lower()
+    breaks = {"on": True}
 
     def mkssml(tc, escaped_text):
         if isinstance(escaped_text, bytes):
             escaped_text = escaped_text.decode("utf-8")
+        # An ellipsis is a blank in the line, where the learner's own word goes
+        # (see `speakable` in generate-audio.mjs), or an authored trailing-off.
+        # Either way it is a pause, and a break says so more clearly than the
+        # punctuation does.
+        if breaks["on"]:
+            escaped_text = escaped_text.replace("…", "<break time='650ms'/>")
         body = f"<lang xml:lang='{locale}'>{escaped_text}</lang>" if multilingual else escaped_text
         return (
             "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' "
@@ -53,7 +60,16 @@ def main() -> None:
     # Module attribute, looked up at call time by Communicate.stream.
     communicate.mkssml = mkssml
 
-    asyncio.run(edge_tts.Communicate(args.text, args.voice, rate=args.rate).save(args.out))
+    try:
+        asyncio.run(edge_tts.Communicate(args.text, args.voice, rate=args.rate).save(args.out))
+    except edge_tts.exceptions.NoAudioReceived:
+        # If the endpoint will not take the break, the line is still worth
+        # having with the ellipsis read as punctuation. Anything else is a real
+        # failure and goes back to the recorder, which retries or reports it.
+        if "…" not in args.text:
+            raise
+        breaks["on"] = False
+        asyncio.run(edge_tts.Communicate(args.text, args.voice, rate=args.rate).save(args.out))
 
 
 if __name__ == "__main__":
