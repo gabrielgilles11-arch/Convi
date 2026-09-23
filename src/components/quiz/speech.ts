@@ -72,11 +72,42 @@ function manifestFor(locale: string): Promise<Manifest> {
   const cached = manifests.get(locale);
   if (cached) return cached;
 
-  const pending = fetch(`/audio/${locale}/index.json`)
-    .then((res) => (res.ok ? (res.json() as Promise<Manifest>) : {}))
-    .catch(() => ({}));
+  // A 404 is an answer (no clips for this locale) and is kept. A failed
+  // request is not: one dropped connection on a train used to be remembered as
+  // "this edition has no audio" for the rest of the visit, and every line fell
+  // back to the device voice. So a failure is forgotten, and the next line asks
+  // again.
+  const pending: Promise<Manifest> = fetch(`/audio/${locale}/index.json`)
+    .then((res) => {
+      if (res.ok) return res.json() as Promise<Manifest>;
+      if (res.status !== 404) throw new Error(`manifest ${res.status}`);
+      return {};
+    })
+    .catch(() => {
+      manifests.delete(locale);
+      return {};
+    });
   manifests.set(locale, pending);
   return pending;
+}
+
+/**
+ * Fetches clips ahead of the moment they are needed, so a line starts when it
+ * is due rather than after a download. Talk Mode knows every line of the
+ * conversation it has just opened; on a slow phone connection the difference
+ * is a second of silence before each one. Best effort: a clip that fails to
+ * warm up is simply fetched again when it is played.
+ */
+export async function prefetchClips(locale: string, audioIds: (string | null)[]): Promise<void> {
+  if (typeof window === "undefined" || !voiceEnabled()) return;
+  const urls = new Set<string>();
+  for (const id of audioIds) {
+    const url = await clipUrl(locale, id);
+    if (url) urls.add(url);
+  }
+  for (const url of urls) {
+    void fetch(url, { priority: "low" } as RequestInit).catch(() => {});
+  }
 }
 
 async function clipUrl(locale: string, audioId: string | null): Promise<string | null> {
@@ -263,6 +294,66 @@ const CLIPS_ENABLED_ON: readonly Surface[] = ["scenarios", "practice"];
 let playing: HTMLAudioElement | null = null;
 
 /**
+ * One audio element for every clip, rather than a new one per line.
+ *
+ * iOS Safari only lets an element play without a tap once that same element
+ * has played from a tap. Talk Mode says its lines on a timer, after a pause, so
+ * with a fresh element per line every one of them could be refused on an
+ * iPhone and fall back to the device voice, or to nothing. One element,
+ * unlocked on the first tap anywhere on the page (see `unlockOnFirstTap`), is
+ * allowed to play from then on.
+ */
+let player: HTMLAudioElement | null = null;
+/** Which play of the shared element is the current one. */
+let playToken = 0;
+
+function sharedPlayer(): HTMLAudioElement {
+  if (!player) {
+    player = new Audio();
+    player.preload = "auto";
+  }
+  return player;
+}
+
+/** A third of a second of silence, played once to unlock the element. */
+const SILENCE = "/audio/silence.mp3";
+let unlocked = false;
+
+/**
+ * Plays silence on the shared element inside the visitor's first tap or key
+ * press, which is what iOS needs to let it play later without one. Installed
+ * once per page, removed as soon as it has worked.
+ */
+function unlockOnFirstTap(): void {
+  if (typeof window === "undefined" || unlocked) return;
+  const events = ["pointerdown", "touchend", "keydown"] as const;
+  const unlock = () => {
+    if (unlocked) return;
+    const el = sharedPlayer();
+    // Only when idle: a tap on a speaker is about to play a real line itself.
+    if (!el.paused) return;
+    el.src = SILENCE;
+    el.muted = false;
+    void el.play().then(
+      () => {
+        unlocked = true;
+        for (const type of events) window.removeEventListener(type, unlock, true);
+      },
+      () => {}
+    );
+  };
+  for (const type of events) window.addEventListener(type, unlock, { capture: true, passive: true });
+}
+
+unlockOnFirstTap();
+
+/**
+ * How long a clip may take to start before the device voice takes over. A
+ * stalled download used to leave the speaker lit and the line unsaid.
+ */
+const CLIP_START_TIMEOUT = 4000;
+
+/**
  * Bumped by everything that starts or stops a line.
  *
  * A queued line checks the number it was queued under before it opens its
@@ -306,12 +397,24 @@ export async function speak(
   const url = CLIPS_ENABLED_ON.includes(surface) ? await clipUrl(locale, audioId) : null;
   if (mine !== generation) return false;
   if (url) {
+    const audio = sharedPlayer();
+    // Events on a shared element can belong to the line before: stopping it
+    // queues a "pause" that may be delivered after this line has started, and
+    // taken as this line's own ending it would cut the line short and start
+    // the next one over it. So a line only listens once it is really playing,
+    // and only while it is still the latest one.
+    const token = ++playToken;
+    let started = false;
     try {
-      const audio = new Audio(url);
+      audio.src = url;
       playing = audio;
       const finished = new Promise<void>((resolve) => {
         const done = () => {
-          if (playing === audio) playing = null;
+          if (!started && token === playToken) return;
+          audio.removeEventListener("ended", done);
+          audio.removeEventListener("error", done);
+          audio.removeEventListener("pause", done);
+          if (token === playToken && playing === audio) playing = null;
           resolve();
         };
         audio.addEventListener("ended", done);
@@ -320,13 +423,28 @@ export async function speak(
         // whatever was going to follow this line either.
         audio.addEventListener("pause", done);
       });
-      await audio.play();
+      let timer = 0;
+      const stalled = new Promise<never>((_, reject) => {
+        timer = window.setTimeout(() => reject(new Error("clip did not start")), CLIP_START_TIMEOUT);
+      });
+      try {
+        await Promise.race([audio.play(), stalled]);
+      } finally {
+        window.clearTimeout(timer);
+      }
+      started = true;
+      unlocked = true;
       if (options.untilDone) await finished;
       return true;
     } catch {
-      // Autoplay policy, or a file that 404s between the probe and the play.
-      // Fall through to the speech engine rather than going silent.
-      playing = null;
+      // Autoplay policy, a stalled download, or a file that 404s between the
+      // probe and the play. Fall through to the speech engine rather than
+      // going silent, and let the clip go so it cannot start late over it.
+      if (playing === audio) {
+        audio.pause();
+        playing = null;
+      }
+      if (mine !== generation) return false;
     }
   }
 
