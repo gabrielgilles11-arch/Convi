@@ -243,10 +243,23 @@ function speakable(text, locale) {
   }
 
   return line
-    .replace(/_{2,}/g, ", ")          // "Son __ euros." -> a beat, not "underscore"
-    .replace(/\[[^\]]+\]/g, ", ")     // same for [BELOPP] / [STATION]
+    // A blank is where the learner's own word goes: the street, the amount,
+    // their name. It used to become a comma, and a comma where a word should be
+    // reads as an unfinished sentence: "Ich bin übrigens, ." came out as "Ich
+    // bin übrigens." and "Linie __, Richtung __." as "Linie, Richtung." So it
+    // is a pause you can hear, written as the ellipsis the device voice already
+    // uses; scripts/edge_say.py turns it into a real SSML break.
+    .replace(/_{2,}|\[[^\]]+\]/g, " … ")
     .replace(/\s*\/\s*/g, ", ")       // "Links/rechts" -> a beat between them
     .replace(/\s*,\s*,\s*/g, ", ")
+    // Punctuation that only belonged next to the word in the blank.
+    // A comma after it always goes; a full stop only at the very end, since
+    // mid-line it is the end of one sentence and the start of the next.
+    .replace(/…\s*,/g, "…")
+    .replace(/…\s*\.$/, "…")
+    .replace(/…\s*\.\s*/g, "…. ")
+    .replace(/,\s*…/g, " …")
+    .replace(/…\s*(?:—|–)\s*/g, "… ")
     .replace(/\s+/g, " ")
     .trim();
 }
