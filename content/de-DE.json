@@ -198,7 +198,7 @@
               "situation": { "en": "A German friend greets you with a single syllable and then waits." },
               "question": { "es": "Na?", "en": "So? / How's things?" },
               "answers": [
-                { "es": "Na!", "en": "Hey! — mirroring it back is the correct answer." },
+                { "es": "Na!", "en": "Hey! (mirroring it back is the right answer)" },
                 { "es": "Alles gut, und selbst?", "en": "All good, and you?" }
               ],
               "likelyReply": { "es": "Auch alles gut.", "en": "All good here too." },
@@ -574,7 +574,7 @@
           "title": "Addressing friends (tone matters)",
           "phrases": [
             { "id": "de-slang-09", "practice": false, "es": "Alter!", "en": "Dude! / bro! — tone matters.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-slang-10", "es": "Digga/Digger", "en": "Bro / dude. Very casual.", "difficulty": "hard", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-10", "es": "Digga/Digger", "en": "Bro / dude (very casual)", "difficulty": "hard", "young": true, "quizQuestions": [] },
             {
               "id": "de-slang-11",
               "es": "Bruder / Bro",
@@ -667,9 +667,9 @@
           "id": "de-slang-micro",
           "title": "Useful micro-phrases",
           "phrases": [
-            { "id": "de-slang-12", "es": "keine Ahnung → kp", "en": "No idea. Shortened to \"kp\" in texts.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-12", "es": "keine Ahnung → kp", "en": "No idea (shortened to \"kp\" in texts)", "difficulty": "medium", "young": true, "quizQuestions": [] },
             { "id": "de-slang-13", "practice": false, "es": "ich schwöre", "en": "I swear.", "difficulty": "medium", "young": true, "quizQuestions": [] },
-            { "id": "de-slang-14", "es": "Bist du lost?", "en": "Are you clueless? Can come across as rude.", "difficulty": "hard", "young": true, "quizQuestions": [] },
+            { "id": "de-slang-14", "es": "Bist du lost?", "en": "Are you clueless? (can come across as rude)", "difficulty": "hard", "young": true, "quizQuestions": [] },
             { "id": "de-slang-28", "practice": false, "es": "Genau.", "en": "Exactly — and, just as often, pure filler while they think.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-29", "practice": false, "es": "Ach so!", "en": "Ohh, I see — the realization noise.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-30", "practice": false, "es": "Echt jetzt?", "en": "Seriously?", "difficulty": "easy", "quizQuestions": [] },
@@ -884,7 +884,7 @@
             {
               "id": "de-bayern-04",
               "es": "fei",
-              "en": "Emphasis particle — roughly \"you know\" / \"mind you\" / \"really\".",
+              "en": "Mind you / really (an emphasis particle, roughly \"you know\")",
               "difficulty": "hard",
               "region": "bayerisch",
               "quizQuestions": []
@@ -892,7 +892,7 @@
             {
               "id": "de-bayern-05",
               "es": "Mei…",
-              "en": "Sighing interjection: \"oh man…\".",
+              "en": "Oh man… (a sighing interjection)",
               "difficulty": "medium",
               "region": "bayerisch",
               "quizQuestions": []
@@ -1023,8 +1023,8 @@
               "id": "de-bayern-sc-11",
               "teaches": "de-bayern-06",
               "speaker": "them",
-              "situation": { "en": "You've apologized twice for being forty cents short and they've stopped listening." },
-              "question": { "es": "Es fehlen vierzig Cent.", "en": "You're forty cents short." },
+              "situation": { "en": "A friend paying you back is forty cents short and has apologized twice." },
+              "question": { "es": "Es fehlen vierzig Cent.", "en": "I'm forty cents short." },
               "answers": [
                 { "es": "Passt scho.", "en": "It's fine." }
               ],
@@ -1038,7 +1038,7 @@
               "id": "de-bayern-sc-12",
               "teaches": "de-bayern-07",
               "speaker": "them",
-              "situation": { "en": "It's late at the Wiesn and somebody has been waiting for you to say something." },
+              "situation": { "en": "It's late at the Wiesn and you finally tell somebody you like them." },
               "question": { "es": "Und? Sagst nix?", "en": "Well? Nothing to say?" },
               "answers": [
                 { "es": "I mog di.", "en": "I like you." }
@@ -1068,7 +1068,7 @@
               "id": "de-bayern-sc-14",
               "teaches": "de-bayern-22",
               "speaker": "them",
-              "situation": { "en": "You're in a beer garden and want the size the locals are drinking." },
+              "situation": { "en": "In a beer garden the server assumes you want a liter, but you want the half-liter most locals drink." },
               "question": { "es": "A Maß?", "en": "A liter?" },
               "answers": [
                 { "es": "Na, a Hoibe bitte.", "en": "No — a half, please." }
@@ -1322,7 +1322,7 @@
               "id": "de-flirt-sc-01",
               "teaches": "de-flirt-01",
               "speaker": "them",
-              "situation": { "en": "Someone you like arrives at the bar and takes their coat off." },
+              "situation": { "en": "Someone you like arrives at the bar, and you want to tell them they look good." },
               "question": { "es": "Sorry, ich bin spät.", "en": "Sorry — I'm late." },
               "answers": [
                 { "es": "Du siehst gut aus.", "en": "You look good." }
@@ -1491,7 +1491,7 @@
             { "id": "de-flirt-21", "es": "Kein Problem, wirklich.", "en": "Honestly, no problem.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-22", "practice": false, "es": "Ich lass dich in Ruhe.", "en": "I'll leave you to it.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-23", "es": "War schön, dich kennenzulernen.", "en": "It was good to meet you.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-flirt-24", "es": "Alles klar, viel Spaß noch.", "en": "All good — enjoy your night.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-flirt-24", "es": "Alles klar, viel Spaß noch.", "en": "All right, enjoy the rest of your night.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-flirt-25", "practice": false, "es": "Sorry, hab ich falsch verstanden.", "en": "Sorry, I misread that.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-flirt-26", "practice": false, "es": "Ich wollte nicht aufdringlich sein.", "en": "I didn't mean to be pushy.", "difficulty": "medium", "quizQuestions": [] }
           ],
@@ -2593,7 +2593,7 @@
             {
               "id": "de-shopping-09",
               "speaker": "them",
-              "situation": { "en": "You hand over a fifty for a four-euro shop." },
+              "situation": { "en": "You hand over a fifty for a four-euro shop and the cashier asks if you have it exact." },
               "question": { "es": "Haben Sie's passend?", "en": "Have you got it exact?" },
               "answers": [
                 { "es": "Moment, ich schaue.", "en": "One moment, let me look." },
@@ -2637,7 +2637,7 @@
           "id": "de-berlin-words",
           "title": "Berlinerisch — the words that give it away",
           "phrases": [
-            { "id": "de-berlin-01", "es": "icke / ick", "en": "I — Berlin's own version of ich.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
+            { "id": "de-berlin-01", "es": "icke / ick", "en": "I (Berlin's own version of ich)", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
             { "id": "de-berlin-02", "practice": false, "es": "wat", "en": "What — wat and det replace was and das.", "difficulty": "easy", "region": "berlin", "quizQuestions": [] },
             {
               "id": "de-berlin-03",
@@ -2983,7 +2983,7 @@
             {
               "id": "de-nightlife-09",
               "speaker": "you",
-              "situation": { "en": "You're talking to people at the bar and want to keep it going." },
+              "situation": { "en": "You're talking to people at the bar and want to know if they're regulars." },
               "question": { "es": "Kommt ihr oft her?", "en": "Do you come here often?" },
               "answers": [
                 { "es": "Jedes Wochenende.", "en": "Every weekend." }
@@ -3187,7 +3187,7 @@
             { "id": "de-drunk-06", "practice": false, "es": "besoffen", "en": "Plastered — informal, a bit crude, very common.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-drunk-07", "practice": false, "es": "hacke dicht", "en": "Hammered — Berlin's own, and said with some pride.", "difficulty": "hard", "region": "berlin", "quizQuestions": [] },
             { "id": "de-drunk-08", "practice": false, "es": "sturzbetrunken", "en": "Falling-down drunk.", "difficulty": "hard", "quizQuestions": [] },
-            { "id": "de-drunk-09", "es": "eine Schnapsleiche", "en": "Someone who has gone under — literally a \"schnapps corpse\".", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "de-drunk-09", "es": "eine Schnapsleiche", "en": "Someone who has passed out drunk (literally a \"schnapps corpse\")", "difficulty": "hard", "quizQuestions": [] },
             { "id": "de-drunk-10", "practice": false, "es": "total durch sein", "en": "Completely gone.", "difficulty": "medium", "quizQuestions": [] }
           ],
           "scenes": [
@@ -3280,7 +3280,7 @@
               "id": "de-drunk-sc-07",
               "teaches": "de-drunk-10",
               "speaker": "them",
-              "situation": { "en": "You've hit the point where the room has stopped being interesting." },
+              "situation": { "en": "Someone asks if you're coming on to the next place, and you've hit your limit." },
               "question": { "es": "Wir ziehen noch weiter, kommst du mit?", "en": "We're going on somewhere — coming?" },
               "answers": [
                 { "es": "Ich bin total durch.", "en": "I'm completely done." }
@@ -3571,7 +3571,7 @@
             {
               "id": "de-resacon-03",
               "speaker": "you",
-              "situation": { "en": "You feel wrecked and want to explain why." },
+              "situation": { "en": "At the pharmacy, you feel wrecked and want to explain you haven't slept." },
               "question": { "es": "Ich hab die ganze Nacht nicht geschlafen.", "en": "I didn't sleep all night." },
               "answers": [
                 { "es": "Viel trinken und ausruhen.", "en": "Drink plenty and rest." }
@@ -3644,7 +3644,7 @@
             { "id": "de-resacon-11", "es": "das Katerfrühstück", "en": "The hangover breakfast — salty, and a genuine institution.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-resacon-12", "practice": false, "es": "das Konterbier", "en": "Hair of the dog — literally the \"counter-beer\".", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-resacon-13", "practice": false, "es": "der Filmriss", "en": "A blackout — literally the film tearing mid-reel.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "de-resacon-14", "es": "der Restalkohol", "en": "What's still in you this morning — the word that stops you driving.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-resacon-14", "es": "der Restalkohol", "en": "Alcohol still in your blood the next morning (the word that stops you driving)", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-resacon-15", "practice": false, "es": "einen Brand haben", "en": "To be desperately thirsty the day after — literally to have a fire.", "difficulty": "hard", "quizQuestions": [] },
             { "id": "de-resacon-16", "practice": false, "es": "Nie wieder Alkohol.", "en": "Never again. Said sincerely, roughly monthly.", "difficulty": "easy", "quizQuestions": [] }
           ],
@@ -3777,7 +3777,7 @@
             {
               "id": "de-emergencies-04",
               "speaker": "them",
-              "situation": { "en": "The officer taking your report asks what you saw." },
+              "situation": { "en": "The officer taking your report asks whether you saw who did it." },
               "question": { "es": "Haben Sie den Täter gesehen?", "en": "Did you see who did it?" },
               "answers": [
                 { "es": "Nur von hinten.", "en": "Only from behind." }
