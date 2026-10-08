@@ -186,7 +186,7 @@
           "items": [
             {
               "es": "En bärs, tack.",
-              "en": "A very casual \"beer, please.\""
+              "en": "A beer, please (very casual)."
             },
             {
               "es": "Kan jag få…?",
@@ -197,8 +197,8 @@
               "en": "Is Swish okay? (only relevant with friends and some places)"
             },
             { "es": "Skål!", "en": "Cheers! — with eye contact, every single time." },
-            { "es": "En stor stark.", "en": "The default Swedish order: a large strong lager." },
-            { "es": "Tack ska du ha.", "en": "A warmer thank you than a plain tack." },
+            { "es": "En stor stark.", "en": "A large strong lager (the default Swedish order)." },
+            { "es": "Tack ska du ha.", "en": "Thanks very much (warmer than a plain tack)." },
             { "es": "Kan vi dela?", "en": "Can we share? — splitting plates is completely normal." },
             { "es": "Det blir bra så.", "en": "That's everything, thanks — closing an order." }
           ]
@@ -614,7 +614,7 @@
             {
               "id": "sv-starting-convo-09",
               "speaker": "them",
-              "situation": { "en": "Someone who fed you a month ago greets you with this." },
+              "situation": { "en": "Someone who had you over for dinner a month ago thanks you for last time." },
               "question": { "es": "Tack för senast!", "en": "Thanks for last time!" },
               "answers": [
                 { "es": "Tack själv, det var kul!", "en": "Thank you too — it was fun!" }
@@ -627,7 +627,7 @@
             {
               "id": "sv-starting-convo-10",
               "speaker": "them",
-              "situation": { "en": "You've just stepped into someone's flat." },
+              "situation": { "en": "You've just stepped into someone's flat and they show you where the shoes go." },
               "question": { "es": "Du kan ta av dig skorna där.", "en": "You can leave your shoes there." },
               "answers": [
                 { "es": "Såklart.", "en": "Of course." }
@@ -654,7 +654,7 @@
             {
               "id": "sv-starting-convo-12",
               "speaker": "them",
-              "situation": { "en": "You've been standing at a counter and someone points at the machine." },
+              "situation": { "en": "You've been standing at a counter and someone asks whether you've taken a queue ticket." },
               "question": { "es": "Har du tagit en nummerlapp?", "en": "Have you taken a queue ticket?" },
               "answers": [
                 { "es": "Nej, var finns de?", "en": "No — where are they?" }
@@ -693,7 +693,7 @@
             {
               "id": "sv-starting-convo-15",
               "speaker": "them",
-              "situation": { "en": "You've suggested meeting up and get this back." },
+              "situation": { "en": "You've suggested meeting up and they say they'll see." },
               "question": { "es": "Vi får se.", "en": "We'll see." },
               "answers": [
                 { "es": "Okej, hör av dig.", "en": "Okay — let me know." }
@@ -739,7 +739,7 @@
             {
               "id": "sv-slang-01",
               "es": "asså",
-              "en": "Filler: \"like\" / \"I mean\".",
+              "en": "Like / I mean (a filler word)",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -762,7 +762,7 @@
             {
               "id": "sv-slang-04",
               "es": "ba",
-              "en": "Short for bara — \"just\", often as filler.",
+              "en": "Just (short for bara, often used as filler)",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -930,7 +930,7 @@
             {
               "id": "sv-slang-12",
               "es": "skitbra / skitkul",
-              "en": "Really good / really fun. Not as strong as the English equivalent.",
+              "en": "Really good / really fun (milder than the English equivalent)",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -1054,7 +1054,7 @@
             {
               "id": "sv-slang-17",
               "es": "TC / T-Centralen",
-              "en": "Shorthand for the central station.",
+              "en": "Stockholm's central station (shorthand)",
               "difficulty": "easy",
               "region": "stockholm",
               "quizQuestions": []
@@ -1070,7 +1070,7 @@
             },
             { "id": "sv-slang-30", "practice": false, "es": "Söder", "en": "Södermalm — the southern island, and a whole personality with it.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] },
             { "id": "sv-slang-31", "practice": false, "es": "Stureplan", "en": "The nightlife square — expensive, and fully aware of it.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] },
-            { "id": "sv-slang-32", "es": "SL", "en": "The transport network — the card, the app and the turnstile.", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] }
+            { "id": "sv-slang-32", "es": "SL", "en": "Stockholm's public transport (the card, the app and the turnstile)", "difficulty": "easy", "region": "stockholm", "quizQuestions": [] }
           ],
           "scenes": [
             {
@@ -1092,7 +1092,7 @@
               "id": "sv-slang-sc-14",
               "teaches": "sv-slang-16",
               "speaker": "them",
-              "situation": { "en": "You've run out of something and are heading to the shop." },
+              "situation": { "en": "You're heading out to buy food and someone asks where you're going." },
               "question": { "es": "Ska du ut nånstans?", "en": "Are you heading out somewhere?" },
               "answers": [
                 { "es": "Jag ska tjacka lite mat.", "en": "I'm going to grab some food." }
@@ -1157,7 +1157,7 @@
             {
               "id": "sv-slang-19",
               "es": "bärs / bira",
-              "en": "Beer. Casual — \"bärs\" feels Stockholm-y.",
+              "en": "Beer (casual; \"bärs\" feels Stockholm-y)",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -1172,7 +1172,7 @@
             { "id": "sv-slang-34", "practice": false, "es": "efterfest", "en": "The afterparty.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-slang-35", "practice": false, "es": "krogen", "en": "The pub — \"ut på krogen\" is going out for the night.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-36", "practice": false, "es": "nubbe", "en": "A shot of snaps, usually with a song attached to it.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-slang-37", "es": "Systemet / Bolaget", "en": "Systembolaget, the state liquor store. Nobody says the whole word.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-37", "es": "Systemet / Bolaget", "en": "The state liquor store (nobody says Systembolaget in full)", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-slang-38", "practice": false, "es": "folköl", "en": "3.5% supermarket beer — the only kind sold outside Systembolaget.", "difficulty": "medium", "quizQuestions": [] }
           ],
           "scenes": [
@@ -1490,7 +1490,7 @@
             {
               "id": "sv-cuss-03",
               "es": "skit-",
-              "en": "Prefix — skitbra = really good.",
+              "en": "Shit-, as an intensifier (skitbra = really good)",
               "difficulty": "medium",
               "quizQuestions": []
             },
@@ -1819,7 +1819,7 @@
               "id": "sv-flirt-sc-01",
               "teaches": "sv-flirt-01",
               "speaker": "them",
-              "situation": { "en": "Someone you like arrives at the pre-party and hangs their coat up." },
+              "situation": { "en": "Someone you like arrives at the pre-party, and you want to tell them how great they look." },
               "question": { "es": "Hej! Har ni väntat länge?", "en": "Hi! Have you been waiting long?" },
               "answers": [
                 { "es": "Du är snygg.", "en": "You look great." }
@@ -3035,7 +3035,7 @@
             {
               "id": "sv-hotel-07",
               "speaker": "you",
-              "situation": { "en": "You've heard Swedish hotels usually have one and want to use it." },
+              "situation": { "en": "You've heard Swedish hotels often have a sauna and want to know if this one does." },
               "question": { "es": "Finns det bastu?", "en": "Is there a sauna?" },
               "answers": [
                 { "es": "Ja, på plan två.", "en": "Yes, on the second floor." },
@@ -3049,7 +3049,7 @@
             {
               "id": "sv-hotel-04",
               "speaker": "you",
-              "situation": { "en": "You're planning the last morning of the trip." },
+              "situation": { "en": "You're planning the last morning of the trip and need the checkout time." },
               "question": { "es": "När måste vi checka ut?", "en": "When do we have to check out?" },
               "answers": [
                 { "es": "Klockan elva.", "en": "At eleven." }
@@ -3217,7 +3217,7 @@
             {
               "id": "sv-shopping-11",
               "speaker": "you",
-              "situation": { "en": "It's Saturday lunchtime and you're planning the evening." },
+              "situation": { "en": "It's Saturday lunchtime and you want to know whether the shop closes early today." },
               "question": { "es": "Stänger ni tidigt på lördagar?", "en": "Do you close early on Saturdays?" },
               "answers": [
                 { "es": "Tre på lördagar, söndagar stängt.", "en": "Three on Saturdays — closed Sundays." }
@@ -3350,7 +3350,7 @@
             {
               "id": "sv-nightlife-08",
               "speaker": "you",
-              "situation": { "en": "You can hear something through the door and want to know what you're walking into." },
+              "situation": { "en": "You can hear something through the door and want to know if it's house music tonight." },
               "question": { "es": "Spelar de house ikväll?", "en": "Are they playing house tonight?" },
               "answers": [
                 { "es": "Techno, hela natten.", "en": "Techno, all night." }
@@ -3466,7 +3466,7 @@
             {
               "id": "sv-nightlife-09",
               "speaker": "you",
-              "situation": { "en": "You've started talking to a group at the bar." },
+              "situation": { "en": "You've started talking to a group at the bar and want to know if they're local." },
               "question": { "es": "Är ni härifrån?", "en": "Are you from here?" },
               "answers": [
                 { "es": "Ja, vi bor i Söder.", "en": "Yes, we live in Söder." }
@@ -3519,7 +3519,7 @@
             {
               "id": "sv-nightlife-12",
               "speaker": "you",
-              "situation": { "en": "The group you've joined is putting coats on." },
+              "situation": { "en": "The group you've joined is putting coats on and you want to know where they're heading." },
               "question": { "es": "Vart ska ni sen?", "en": "Where are you off to after this?" },
               "answers": [
                 { "es": "Hem till en kompis.", "en": "Back to a friend's place." }
@@ -3659,7 +3659,7 @@
           "title": "The scale, bottom to top",
           "phrases": [
             { "id": "sv-drunk-01", "practice": false, "es": "på snusen", "en": "Slightly tipsy.", "difficulty": "medium", "quizQuestions": [] },
-            { "id": "sv-drunk-02", "es": "salongsberusad", "en": "\"Parlour drunk\" — pleasantly, presentably tipsy.", "difficulty": "hard", "quizQuestions": [] },
+            { "id": "sv-drunk-02", "es": "salongsberusad", "en": "Pleasantly, presentably tipsy (literally \"parlor drunk\")", "difficulty": "hard", "quizQuestions": [] },
             { "id": "sv-drunk-03", "practice": false, "es": "dragen", "en": "Merry.", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-drunk-04", "es": "berusad", "en": "Intoxicated — the formal word, the one on the signs.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-drunk-05", "practice": false, "es": "full", "en": "Drunk. Never \"full\" as in fed — that is mätt.", "difficulty": "easy", "quizQuestions": [] },
@@ -4047,7 +4047,7 @@
             {
               "id": "sv-resacon-08",
               "speaker": "you",
-              "situation": { "en": "A long Nordic summer day has caught you out." },
+              "situation": { "en": "A long Nordic summer day has left you sunburned and you're at the pharmacy." },
               "question": { "es": "Jag har bränt mig i solen.", "en": "I've got sunburn." },
               "answers": [
                 { "es": "Prova den här salvan.", "en": "Try this cream." }
