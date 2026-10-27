@@ -1,35 +1,20 @@
-// Game Mode: Talk Mode played as a game, on the same authored conversations.
+// Game Mode's client-safe half: the shapes the island receives, how the three
+// options on a turn are chosen, how a run is scored, and what stays on the
+// device.
 //
-// Client-safe, like conversationTypes.ts: no content import. The island gets
-// its conversations from GET /api/conversations, the same deck Talk walks.
-//
-// Nothing here writes a line of the target language. A scene is an authored
-// subsection, the right answer is one of the lines its author wrote for that
-// beat, and the wrong answers are lines the same author wrote for other beats.
-// What this file adds is the choosing: which lines are safe to offer as wrong,
-// how a run is scored, and what a finished scene is worth.
+// No content import. The island gets its scenes from GET /api/game, which
+// resolves the scripts in ./gameScripts against content/*.json on the server
+// (./gameScenes). Nothing here writes a line of the target language.
 
 import { normalizeAnswer, shuffle, tooAlike } from "./quizTypes";
-import { gradeReply, type Conversation, type ConvLine, type ConvTurn } from "./conversationTypes";
+import { gradeReply, hasSlot, type ConvLine, type ConvTurn } from "./conversationTypes";
+import type { SceneKind } from "./gameScripts";
+
+export type { SceneKind } from "./gameScripts";
 
 // ---------------------------------------------------------------------------
-// Scenes
+// Editions
 // ---------------------------------------------------------------------------
-
-export type SceneKind = "taxi" | "bar" | "metro" | "cafe";
-
-export interface SceneDef {
-  kind: SceneKind;
-  /**
-   * The authored subsection the scene plays. Null where the edition has no
-   * dialogue for the place yet: the tile shows as coming soon rather than the
-   * game inventing a conversation to fill it.
-   */
-  subsectionId: string | null;
-  title: string;
-  /** One line to set the scene, in English. */
-  intro: string;
-}
 
 export interface EditionInfo {
   country: string;
@@ -47,88 +32,65 @@ export function editionOf(locale: string): EditionInfo {
   return EDITIONS[locale] ?? EDITIONS["es-ES"]!;
 }
 
-const TAXI_INTRO = "Convi just landed with a heavy suitcase. Get from the airport to the hotel.";
-const BAR_INTRO = "First night out. Convi walks up to the bar, thirsty.";
-const METRO_INTRO = "Convi wants to see the city without a taxi this time.";
-const CAFE_INTRO = "Morning after. Convi needs a coffee before anything else.";
+// ---------------------------------------------------------------------------
+// What /api/game sends
+// ---------------------------------------------------------------------------
 
-/**
- * The game's four places, in the order a trip goes: land, go out, get about,
- * recover. Keyed by locale because the subsection ids carry a locale prefix
- * and Swedish calls its coffee break by its own name.
- */
-export const GAME_SCENES: Record<string, SceneDef[]> = {
-  "es-ES": [
-    { kind: "taxi", subsectionId: "taxi", title: "Taxi from the airport", intro: TAXI_INTRO },
-    { kind: "bar", subsectionId: "beer-food-main", title: "Ordering at the bar", intro: BAR_INTRO },
-    { kind: "metro", subsectionId: "metro", title: "Taking the metro", intro: METRO_INTRO },
-    { kind: "cafe", subsectionId: "beer-food-coffee", title: "Coffee shop", intro: CAFE_INTRO },
-  ],
-  "sv-SE": [
-    {
-      kind: "taxi",
-      subsectionId: "sv-getting-around-taxi",
-      title: "Taxi from the airport",
-      intro: TAXI_INTRO,
-    },
-    {
-      kind: "bar",
-      subsectionId: "sv-beer-food-main",
-      title: "Ordering at the bar",
-      intro: BAR_INTRO,
-    },
-    {
-      kind: "metro",
-      subsectionId: "sv-getting-around-metro",
-      title: "Taking the tunnelbana",
-      intro: METRO_INTRO,
-    },
-    {
-      kind: "cafe",
-      subsectionId: "sv-beer-food-fika",
-      title: "Fika at the café",
-      intro: "Three o'clock in Stockholm, which means coffee and a bun.",
-    },
-  ],
-  "de-DE": [
-    {
-      kind: "taxi",
-      subsectionId: "de-getting-around-taxi",
-      title: "Taxi from the airport",
-      intro: TAXI_INTRO,
-    },
-    {
-      kind: "bar",
-      subsectionId: "de-beer-food-main",
-      title: "Ordering at the bar",
-      intro: BAR_INTRO,
-    },
-    {
-      kind: "metro",
-      subsectionId: "de-getting-around-metro",
-      title: "Taking the U-Bahn",
-      intro: METRO_INTRO,
-    },
-    // No German café dialogue has been written and sourced yet. The tile stays
-    // locked until it is, rather than the game making one up.
-    { kind: "cafe", subsectionId: null, title: "Coffee shop", intro: CAFE_INTRO },
-  ],
-};
+/** A sourced line, the same shape Talk uses. */
+export type GameLine = ConvLine;
 
-export interface GameScene {
-  def: SceneDef;
-  /** Null when the scene has no authored conversation in this edition. */
-  conversation: Conversation | null;
+export interface GameOption {
+  line: GameLine;
+  /** The way locals say it, by the content's own notes. */
+  local: boolean;
+  /** What comes back, in order. */
+  then: GameLine[];
+  /** The node it leads to; null ends the scene. */
+  next: string | null;
+  /** The authored note on the exchange the line comes from, or "". */
+  note: string;
 }
 
-export function gameScenes(locale: string, conversations: Conversation[]): GameScene[] {
-  const defs = GAME_SCENES[locale] ?? GAME_SCENES["es-ES"]!;
-  return defs.map((def) => ({
-    def,
-    conversation: def.subsectionId
-      ? (conversations.find((c) => c.id === def.subsectionId) ?? null)
-      : null,
-  }));
+export interface GameNode {
+  id: string;
+  /** They speak first. */
+  npc: GameLine | null;
+  /** Convi starts, and this says what Convi wants, in English. */
+  cue: string | null;
+  /** The question this node answers, when it was asked in the turn before. */
+  asked: GameLine | null;
+  /** The authored English moment behind the node. Used to keep wrong options wrong. */
+  situation: string;
+  /** Exchanges this node's lines come from; their other lines are never offered as wrong. */
+  exchangeIds: string[];
+  /** Subsections those exchanges sit in, so wrong options can come from the same room. */
+  groups: string[];
+  options: GameOption[];
+}
+
+export interface PlayableScene {
+  id: string;
+  kind: SceneKind;
+  title: string;
+  intro: string;
+  start: string;
+  nodes: Record<string, GameNode>;
+}
+
+/** A line Convi could say somewhere in the edition: the stock for wrong options. */
+export interface PoolLine {
+  line: GameLine;
+  exchangeId: string;
+  group: string;
+  situation: string;
+  /** Opens an exchange (a request or question) rather than answering one. */
+  opens: boolean;
+}
+
+export interface GamePayload {
+  scenes: PlayableScene[];
+  locked: { kind: SceneKind; title: string }[];
+  pool: PoolLine[];
 }
 
 // ---------------------------------------------------------------------------
@@ -138,8 +100,8 @@ export function gameScenes(locale: string, conversations: Conversation[]): GameS
 /**
  * Words that say nothing about what a line is for. Everything else counts as
  * meaning, including "thanks", "yes" and "no": a wrong answer that shares any
- * of those with the right one is dropped, which costs a few candidates and
- * buys never offering "No, thanks." against "Nothing else, thanks.".
+ * of those with a right one is dropped, which costs a few candidates and buys
+ * never offering "No, thanks." against "Nothing else, thanks.".
  */
 const EN_GRAMMAR = new Set([
   "a",
@@ -261,50 +223,20 @@ function shares(a: Set<string>, b: Set<string>): boolean {
   return false;
 }
 
-/** A line somebody could say, and where it was written. */
-interface Candidate {
-  line: ConvLine;
-  conversationId: string;
-  turnId: string;
-  /** The moment the line was written for. */
-  situation: string;
-  /** Opened a beat (a request or question) rather than answered one. */
-  opens: boolean;
-}
-
-function candidatesFrom(conversations: Conversation[]): Candidate[] {
-  const out: Candidate[] = [];
-  for (const convo of conversations) {
-    for (const turn of convo.turns) {
-      const opens = turn.theirOpener === null;
-      for (const line of turn.yourLines) {
-        out.push({
-          line,
-          conversationId: convo.id,
-          turnId: turn.id,
-          situation: turn.situation,
-          opens,
-        });
-      }
-    }
-  }
-  return out;
-}
-
 /**
- * Whether a line is safe to offer as the wrong answer on this beat.
+ * Whether a line is safe to offer as the wrong answer on this turn.
  *
- * A distractor that is arguably right is the one thing a multiple choice
- * cannot have, so every test here errs toward throwing a candidate away:
+ * A wrong option that is arguably right is the one thing a multiple choice
+ * cannot have, so every test errs toward throwing a candidate away:
  *
- * - it must not pass the grader for any line the beat accepts;
+ * - it must not pass the grader for any line the turn accepts;
  * - it must not be near-identical to one (`tooAlike`);
  * - it must not share a meaningful word with any accepted line, in English or
  *   in the language itself ("¿Aceptas tarjeta?" is too close to "Con
  *   tarjeta." to be wrong when you are asked how you are paying);
  * - and it must not share one with what was just said to you or the moment
- *   itself, which is what keeps "Do you take card?" away from "How do you want
- *   to pay?".
+ *   itself, which keeps "Do you take card?" away from "How do you want to
+ *   pay?".
  */
 export function safeDistractor(turn: ConvTurn, candidate: ConvLine): boolean {
   const accepted = turn.yourLines;
@@ -329,41 +261,62 @@ export function safeDistractor(turn: ConvTurn, candidate: ConvLine): boolean {
   return true;
 }
 
+/** The node as the guards see it: a beat with an opener and accepted lines. */
+function asTurn(node: GameNode): ConvTurn {
+  return {
+    id: node.id,
+    situation: [node.situation, node.cue ?? ""].join(" "),
+    theirOpener: node.npc ?? node.asked,
+    yourLines: node.options.map((o) => o.line),
+    theirReply: null,
+    note: "",
+  };
+}
+
 /**
- * Every line that could be offered as wrong on this beat, best first.
+ * Every line that could be offered as wrong on this node, best first.
  *
  * When somebody has just asked you something, the wrong answers are things
  * you would ask, never answers to their other questions: "Blonde." is a fair
  * reply to "What are you having?" even though it was written for "Lager or
- * amber?". When you are the one speaking first, any other line will do,
- * because the moment says what you want and the others want something else.
+ * amber?". When Convi is the one starting, any other line will do, because the
+ * cue says what Convi wants and the others want something else.
  *
- * Lines from the same scene come first, so the wrong options sound like they
- * belong in the room. The other scenes in the edition are the reserve.
+ * Lines written for the same place come first, so the wrong options sound
+ * like they belong in the room.
  */
-export function distractorPool(
-  turn: ConvTurn,
-  conversation: Conversation,
-  others: Conversation[]
-): ConvLine[] {
+export function wrongPool(node: GameNode, pool: PoolLine[], scene?: PlayableScene): GameLine[] {
+  const turn = asTurn(node);
+  // A line the scene teaches as right somewhere is never marked wrong in it.
+  const taught = new Set(
+    scene
+      ? Object.values(scene.nodes).flatMap((n) =>
+          n.options.map((o) => normalizeAnswer(o.line.source))
+        )
+      : []
+  );
   const theyAsked = turn.theirOpener !== null;
-  const pool = candidatesFrom([conversation, ...others.filter((c) => c.id !== conversation.id)]);
+  const exchanges = new Set(node.exchangeIds);
+  const groups = new Set(node.groups);
+  const moment = situationWords(turn.situation);
 
   const seen = new Set<string>();
-  const near: ConvLine[] = [];
-  const far: ConvLine[] = [];
+  const near: GameLine[] = [];
+  const far: GameLine[] = [];
 
   for (const candidate of pool) {
-    if (candidate.turnId === turn.id) continue;
+    if (exchanges.has(candidate.exchangeId)) continue;
     if (theyAsked && !candidate.opens) continue;
-    // A line written for a moment that overlaps this one ("two platforms, which
-    // one?" and "am I on the right platform?") answers it too well to be wrong.
-    if (shares(situationWords(candidate.situation), situationWords(turn.situation))) continue;
+    // A line with a blank in it is usually half an answer to something
+    // ("I need to go to ___. Which line?" to "Where to?"), so never a wrong one.
+    if (hasSlot(candidate.line.source)) continue;
+    // A line written for an overlapping moment answers this one too well.
+    if (shares(situationWords(candidate.situation), moment)) continue;
     const key = normalizeAnswer(candidate.line.source);
-    if (seen.has(key)) continue;
+    if (seen.has(key) || taught.has(key)) continue;
     if (!safeDistractor(turn, candidate.line)) continue;
     seen.add(key);
-    (candidate.conversationId === conversation.id ? near : far).push(candidate.line);
+    (groups.has(candidate.group) ? near : far).push(candidate.line);
   }
 
   return [...near, ...far];
@@ -371,45 +324,89 @@ export function distractorPool(
 
 export const CHOICES = 3;
 
-export interface Choices {
-  options: ConvLine[];
-  /** Index of the authored line for this beat within `options`. */
-  answer: number;
+export interface Choice {
+  line: GameLine;
+  /** The scripted option this is, or null for a wrong one. */
+  option: GameOption | null;
 }
 
 /**
- * Three options, one of them right.
+ * Three options for a node.
  *
- * The right one is a random pick among the lines written for the beat, so a
- * replay offers the other way of saying it. The two wrong ones are drawn from
- * the front of the pool, which keeps them in the same room where it can, and
- * are checked against each other so the two wrong answers are not the same
- * wrong answer twice.
+ * Every scripted option is a fair thing to say, and a node can have up to
+ * three of them (a caña, a beer, an iced coffee), which is a choice rather
+ * than a test. Wrong options only fill the space that is left, so a turn where
+ * there is one right thing to say has two wrong ones beside it, and a turn
+ * where you are choosing what to drink may have none.
  */
-export function buildChoices(
-  turn: ConvTurn,
-  conversation: Conversation,
-  others: Conversation[],
-  random: () => number = Math.random
-): Choices {
-  const right = turn.yourLines[Math.floor(random() * turn.yourLines.length)] ?? turn.yourLines[0]!;
-  const pool = distractorPool(turn, conversation, others);
+export function buildNodeChoices(
+  node: GameNode,
+  pool: PoolLine[],
+  random: () => number = Math.random,
+  scene?: PlayableScene
+): Choice[] {
+  const valid = shuffleWith(node.options, random)
+    .sort((x, y) => Number(y.local) - Number(x.local))
+    .slice(0, CHOICES);
+  const wrongNeeded = CHOICES - valid.length;
 
-  // Shuffle within the near and far halves separately would need the split
-  // back; a light shuffle of the first handful keeps "same room" first while
-  // still varying which two appear.
-  const head = shuffleWith(pool.slice(0, 6), random);
-  const ordered = [...head, ...pool.slice(6)];
+  const candidates = wrongPool(node, pool, scene);
+  const head = shuffleWith(candidates.slice(0, 6), random);
+  const ordered = [...head, ...candidates.slice(6)];
 
-  const wrong: ConvLine[] = [];
+  const wrong: GameLine[] = [];
   for (const line of ordered) {
-    if (wrong.length >= CHOICES - 1) break;
+    if (wrong.length >= wrongNeeded) break;
     if (wrong.some((other) => tooAlike(other.source, line.source))) continue;
     wrong.push(line);
   }
 
-  const options = shuffleWith([right, ...wrong], random);
-  return { options, answer: options.indexOf(right) };
+  return shuffleWith(
+    [
+      ...valid.map((option) => ({ line: option.line, option })),
+      ...wrong.map((line) => ({ line, option: null })),
+    ],
+    random
+  );
+}
+
+/** The option a miss is corrected to: the local one where there is one. */
+export function bestOption(node: GameNode): GameOption {
+  return node.options.find((o) => o.local) ?? node.options[0]!;
+}
+
+/** What a typed answer counts as, against the node's scripted lines. */
+export function gradeTyped(
+  node: GameNode,
+  given: string
+): { option: GameOption; correct: boolean; close: boolean } {
+  const verdict = gradeReply(
+    given,
+    node.options.map((o) => o.line)
+  );
+  const option = node.options.find((o) => o.line === verdict.line) ?? bestOption(node);
+  // A miss is corrected to the line it came closest to when it was close, and
+  // to the local line otherwise.
+  return {
+    option: verdict.correct || verdict.close ? option : bestOption(node),
+    correct: verdict.correct,
+    close: verdict.close,
+  };
+}
+
+/** The longest run of turns a scene can take, for the progress line. */
+export function longestPath(scene: PlayableScene): number {
+  const memo = new Map<string, number>();
+  const walk = (id: string | null, depth: number): number => {
+    if (!id || depth > 20) return 0;
+    if (memo.has(id)) return memo.get(id)!;
+    const node = scene.nodes[id];
+    if (!node) return 0;
+    const best = 1 + Math.max(0, ...node.options.map((o) => walk(o.next, depth + 1)));
+    memo.set(id, best);
+    return best;
+  };
+  return walk(scene.start, 0);
 }
 
 function shuffleWith<T>(items: T[], random: () => number): T[] {
@@ -429,32 +426,36 @@ function shuffleWith<T>(items: T[], random: () => number): T[] {
 export type AnswerMode = "choice" | "type";
 
 export const BASE_POINTS = 100;
+/** Saying it the way locals do is the point of the whole product. */
+export const LOCAL_MULTIPLIER = 1.5;
 /** Typing the line is harder than spotting it, and pays like it. */
 export const TYPED_MULTIPLIER = 2;
 /** Each answer in a row adds half again, up to this many. */
 export const MAX_COMBO_STEPS = 4;
 
 /**
- * What one beat is worth.
+ * What one turn is worth.
  *
- * `combo` is how many beats in a row were right before this one. A hint
- * halves the beat, and a miss is worth nothing but never takes points away:
+ * `combo` is how many turns in a row were right before this one. A hint
+ * halves the turn, and a miss is worth nothing but never takes points away:
  * this is a conversation, and the next line is still worth having.
  */
 export function pointsFor(
   correct: boolean,
   combo: number,
   mode: AnswerMode,
-  hinted: boolean
+  hinted: boolean,
+  local = false
 ): number {
   if (!correct) return 0;
   const streak = 1 + 0.5 * Math.min(Math.max(combo, 0), MAX_COMBO_STEPS);
   const typed = mode === "type" ? TYPED_MULTIPLIER : 1;
   const hint = hinted ? 0.5 : 1;
-  return Math.round(BASE_POINTS * streak * typed * hint);
+  const slang = local ? LOCAL_MULTIPLIER : 1;
+  return Math.round(BASE_POINTS * streak * typed * hint * slang);
 }
 
-/** Stars for a finished scene, from the share of beats right first time. */
+/** Stars for a finished scene, from the share of turns right first time. */
 export function starsFor(right: number, total: number): 1 | 2 | 3 {
   if (total <= 0) return 1;
   const share = right / total;
@@ -467,7 +468,7 @@ export function starsFor(right: number, total: number): 1 | 2 | 3 {
 // What stays on the device
 // ---------------------------------------------------------------------------
 
-const STORAGE_KEY = "convi:game:v1";
+const STORAGE_KEY = "convi:game:v2";
 
 export interface SceneBest {
   stars: number;
