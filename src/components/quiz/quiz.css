@@ -3017,126 +3017,41 @@ body[data-focus="round"] .quiz-toolbar {
    flat style as the reels; everything around it uses the site's tokens.
    =========================================================================== */
 
-/* --- The switch, at the top of Talk Mode --- */
+/* --- The Talk / Game switch on the rail beside the path --- */
 
-.talk-style {
+.talk-style-toggle {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0.75rem 0.6rem 0.6rem;
-  margin: 0 0 1rem;
-  border: 2px solid var(--color-border);
-  border-radius: 18px;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  margin: 0 0 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
   background: var(--color-card);
-  box-shadow: 0 3px 0 var(--color-border);
-  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.talk-style.is-game {
-  border-color: var(--color-primary-tint-border);
+.talk-style-toggle button {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 0.5rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.talk-style-toggle button:hover:not([aria-pressed="true"]) {
+  color: var(--color-primary-dark);
   background: var(--color-primary-tint);
 }
 
-/* Out of the way once a scene is being played: it has its own way out. */
-.talk-style:has(+ .game-play) {
-  display: none;
-}
-
-.talk-style-icon {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+.talk-style-toggle button[aria-pressed="true"] {
   background: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.talk-style-icon svg {
-  width: 30px;
-  height: 30px;
   color: #fff;
-}
-
-.talk-style-icon svg path:first-child {
-  fill: #fff;
-}
-
-.talk-style-icon svg path:nth-child(2) {
-  stroke: var(--color-primary);
-}
-
-.talk-style-icon svg circle {
-  fill: var(--color-primary);
-}
-
-.talk-style-text {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.talk-style-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--color-ink);
-}
-
-.talk-style-sub {
-  font-size: 0.8125rem;
-  color: var(--color-ink-soft);
-}
-
-.talk-switch {
-  flex: none;
-  position: relative;
-  width: 60px;
-  height: 44px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.talk-switch::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  right: 2px;
-  top: 7px;
-  bottom: 7px;
-  border-radius: 999px;
-  background: #cdbfb2;
-  transition: background-color 0.15s ease;
-}
-
-.talk-switch[aria-checked="true"]::before {
-  background: var(--color-primary);
-}
-
-.talk-switch-knob {
-  position: absolute;
-  top: 10px;
-  left: 5px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition: transform 0.15s ease;
-}
-
-.talk-switch[aria-checked="true"] .talk-switch-knob {
-  transform: translateX(26px);
-}
-
-.talk-switch:focus-visible {
-  outline: 3px solid var(--color-primary-dark);
-  outline-offset: 2px;
-  border-radius: 999px;
 }
 
 /* --- Scene select --- */
@@ -3699,13 +3614,6 @@ body[data-focus="round"] .quiz-toolbar {
   color: var(--color-ink-soft);
 }
 
-.game-ask-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
 .game-ask {
   margin: 0;
   font-family: var(--font-display);
@@ -3713,23 +3621,19 @@ body[data-focus="round"] .quiz-toolbar {
   font-size: 1.2rem;
 }
 
-.game-hint {
-  min-height: 44px;
-  padding: 0 0.85rem;
-  border: 2px dashed var(--color-primary-tint-border);
-  border-radius: 999px;
-  background: transparent;
-  font: inherit;
-  font-weight: 700;
-  font-size: 0.875rem;
-  color: var(--color-primary-dark);
-  cursor: pointer;
+.game-hint-text {
+  margin: 0.5rem 0 0;
 }
 
-.game-hint-text {
-  margin: 0.4rem 0 0;
-  font-size: 0.9rem;
-  color: var(--color-primary-dark);
+.game-help {
+  margin-top: 0.5rem;
+}
+
+.game-turn {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  white-space: nowrap;
 }
 
 .game-options {
@@ -3889,14 +3793,34 @@ body[data-focus="round"] .quiz-toolbar {
   color: var(--color-success-deep);
 }
 
-.game-verdict span {
+/* Direct children only: the correction nests spans of its own (the line, its
+   speaker button, the English), and a flex basis on those stretched it tall. */
+.game-verdict > span {
   flex: 1 1 12rem;
   font-size: 0.9rem;
+}
+
+.game-correction {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.game-correction-line {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.game-correction-en {
+  color: var(--color-ink-soft);
 }
 
 .game-verdict em {
   font-style: normal;
   font-weight: 800;
+  font-size: 1.05rem;
 }
 
 .game-verdict .game-primary {
@@ -3981,5 +3905,12 @@ body[data-focus="round"] .quiz-toolbar {
   .game-answer-toggle button {
     padding: 0.4rem 0.7rem;
     font-size: 0.85rem;
+  }
+}
+
+/* On a phone, Next takes its own row so the correction keeps the width. */
+@media (max-width: 480px) {
+  .game-verdict .game-primary {
+    flex-basis: 100%;
   }
 }

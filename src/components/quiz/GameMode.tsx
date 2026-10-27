@@ -21,6 +21,7 @@ import {
   type GameSave,
   type GameScene,
 } from "../../lib/gameTypes";
+import AudioButton from "./AudioButton";
 import GameStage, { type Mood, type Speaker } from "./GameStage";
 import { playCorrect, playFanfare, playPop, playWrong } from "./sound";
 import { prefetchClips, speak, stopSpeaking } from "./speech";
@@ -43,16 +44,14 @@ interface Props {
   conversations: Conversation[];
   locale: string;
   onBack: () => void;
-  /** A scene played to its end counts as the conversation held. */
-  onFinish: (conversationId: string) => void;
 }
 
-export default function GameMode({ conversations, locale, onBack, onFinish }: Props) {
+export default function GameMode({ conversations, locale, onBack }: Props) {
   const edition = editionOf(locale);
   const scenes = useMemo(() => gameScenes(locale, conversations), [locale, conversations]);
   const playable = useMemo(
     () => scenes.flatMap((s) => (s.conversation ? [s.conversation] : [])),
-    [scenes],
+    [scenes]
   );
 
   // Read after mount: localStorage has no server-side view.
@@ -102,7 +101,6 @@ export default function GameMode({ conversations, locale, onBack, onFinish }: Pr
         onComplete={(score, stars) => {
           recordSceneResult(current.conversation!.id, { score, stars });
           setSave(loadGame());
-          onFinish(current.conversation!.id);
         }}
       />
     );
@@ -117,9 +115,10 @@ export default function GameMode({ conversations, locale, onBack, onFinish }: Pr
         <span>Game Mode</span>
       </p>
 
+      {/* Two sentences, the way Talk Mode introduces itself. */}
       <p className="convo-intro">
-        Travel through {edition.country} with Convi. The locals talk, you decide what Convi says
-        next. Get it right in a row for bonus points.
+        Pick a place and play Convi's side of the conversation in {edition.country}. They talk, you
+        choose what Convi says next, or type it for double points.
       </p>
 
       <AnswerModeToggle mode={mode} onChange={chooseMode} />
@@ -158,7 +157,7 @@ export default function GameMode({ conversations, locale, onBack, onFinish }: Pr
                       {best ? (
                         <span>{best.score.toLocaleString("en-US")} pts</span>
                       ) : (
-                        <span>Not played</span>
+                        <span>Not played yet</span>
                       )}
                     </span>
                   )}
@@ -209,6 +208,9 @@ function Stars({ count, big = false }: { count: number; big?: boolean }) {
 
 type Phase = "intro" | "their" | "ask" | "answered" | "done";
 
+/** How a beat was settled: picked or typed, or the line was asked for. */
+type Settled = "answered" | "revealed";
+
 interface Bubble {
   who: "convi" | "local";
   /** Null is Convi thinking: the beat is theirs to open. */
@@ -216,6 +218,7 @@ interface Bubble {
 }
 
 interface Verdict {
+  how: Settled;
   correct: boolean;
   close: boolean;
   /** The authored line Convi ends up saying. */
@@ -226,6 +229,12 @@ interface Verdict {
 }
 
 const RIGHT_WORDS = ["Nailed it.", "Sounds local.", "Smooth.", "That's the one.", "Spot on."];
+
+/** Talk Mode's own words for a correction, so the two modes read as one. */
+function correctionHead(verdict: Verdict): string {
+  if (verdict.how === "revealed") return "Here's the line:";
+  return verdict.close ? "Almost. It goes like this:" : "Not quite. Here's the line:";
+}
 
 const wait = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
 
@@ -276,9 +285,17 @@ function ScenePlay({
   const [mood, setMood] = useState<Mood>("idle");
   const [float, setFloat] = useState<{ key: number; value: number } | null>(null);
   const [stars, setStars] = useState(0);
+  /** Off by default, as in Talk: tap a line for its meaning, or turn this on. */
+  const [english, setEnglish] = useState(false);
 
   /** Every sequence checks this before each step, so leaving or skipping ahead stops it. */
   const token = useRef(0);
+  /**
+   * The beat already settled, by token. State is a frame behind a fast double
+   * tap, so two taps on two options could both see the beat as open and score
+   * twice; this ref cannot be.
+   */
+  const settledAt = useRef(-1);
   const nextButton = useRef<HTMLButtonElement>(null);
   const input = useRef<HTMLInputElement>(null);
 
@@ -291,7 +308,7 @@ function ScenePlay({
         t.theirOpener?.audioId ?? null,
         t.theirReply?.audioId ?? null,
         ...t.yourLines.map((l) => l.audioId),
-      ]),
+      ])
     );
     return () => {
       token.current++;
@@ -344,13 +361,21 @@ function ScenePlay({
     if (phase === "answered") nextButton.current?.focus({ preventScroll: true });
   }, [phase, mode, index]);
 
-  function settle(correct: boolean, close: boolean, line: ConvLine, given: string | null) {
-    if (phase !== "ask" && phase !== "their") return;
+  function settle(
+    how: Settled,
+    correct: boolean,
+    close: boolean,
+    line: ConvLine,
+    given: string | null
+  ) {
+    if (phase !== "ask" || settledAt.current === token.current) return;
+    settledAt.current = token.current;
     const mine = ++token.current;
+    settledAt.current = mine;
     stopSpeaking();
 
     const points = pointsFor(correct, combo, mode, hinted);
-    setVerdict({ correct, close, line, given, points });
+    setVerdict({ how, correct, close, line, given, points });
     setPhase("answered");
     setScore((s) => s + points);
     setCombo((c) => (correct ? c + 1 : 0));
@@ -381,15 +406,16 @@ function ScenePlay({
   }
 
   function pick(i: number) {
-    if (!choices || (phase !== "ask" && phase !== "their")) return;
+    if (!choices || phase !== "ask" || settledAt.current === token.current) return;
     setPicked(i);
     const option = choices.options[i]!;
     const correct = i === choices.answer;
     settle(
+      "answered",
       correct,
       false,
       correct ? option : choices.options[choices.answer]!,
-      correct ? null : option.source,
+      correct ? null : option.source
     );
   }
 
@@ -398,7 +424,7 @@ function ScenePlay({
     const given = typed.trim();
     if (!given) return;
     const result = gradeReply(given, turn.yourLines);
-    settle(result.correct, result.close, result.line, given);
+    settle("answered", result.correct, result.close, result.line, given);
   }
 
   function next() {
@@ -420,7 +446,7 @@ function ScenePlay({
 
   // 1, 2, 3 or A, B, C to answer; the Next button has focus after that.
   useEffect(() => {
-    if (mode !== "choice" || (phase !== "ask" && phase !== "their")) return;
+    if (mode !== "choice" || phase !== "ask") return;
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
@@ -437,16 +463,26 @@ function ScenePlay({
   });
 
   const hint = hintFor(turn);
-  const answering = phase === "ask" || phase === "their";
+  // As in Talk, nobody answers over somebody still talking: the options open
+  // once their line is said, or after a beat for a quick reader.
+  const answering = phase === "ask";
   const last = index + 1 >= turns.length;
 
   return (
     <div className="game game-play">
       <p className="stage-line">
         <button type="button" className="stage-jump" onClick={onExit}>
-          All scenes
+          All places
         </button>
         <span>{scene.def.title}</span>
+        <button
+          type="button"
+          className="convo-english-toggle"
+          aria-pressed={english}
+          onClick={() => setEnglish((on) => !on)}
+        >
+          {english ? "Hide English" : "Show English"}
+        </button>
       </p>
 
       {/* The title and end cards sit on the stage on a wide screen and under it
@@ -465,7 +501,7 @@ function ScenePlay({
               {bubble.line ? (
                 <>
                   <span className="game-bubble-line">{bubble.line.source}</span>
-                  {showEn && bubble.line.en && (
+                  {(showEn || english) && bubble.line.en && (
                     <span className="game-bubble-en">{bubble.line.en}</span>
                   )}
                 </>
@@ -504,22 +540,20 @@ function ScenePlay({
             <Stars count={stars} big />
             <span className="game-card-score">{score.toLocaleString("en-US")} pts</span>
             <span className="game-card-text">
-              {right} of {turns.length} right
+              {right} / {turns.length} lines landed
             </span>
             <span className="game-card-actions">
               {nextTitle && (
                 <button type="button" className="game-primary" onClick={onNext}>
-                  Next: {nextTitle}
+                  Keep going: {nextTitle}
                 </button>
               )}
               <button type="button" className="game-secondary" onClick={onReplay}>
-                Play again
+                Run it again
               </button>
-              {!nextTitle && (
-                <button type="button" className="game-secondary" onClick={onExit}>
-                  All scenes
-                </button>
-              )}
+              <button type="button" className="game-secondary" onClick={onExit}>
+                Somewhere else
+              </button>
             </span>
           </div>
         )}
@@ -528,7 +562,10 @@ function ScenePlay({
       {phase !== "intro" && phase !== "done" && (
         <div className="game-panel">
           <div className="game-hud">
-            <span className="game-dots" aria-label={`Line ${index + 1} of ${turns.length}`}>
+            <span className="game-turn">
+              Turn {index + 1} of {turns.length}
+            </span>
+            <span className="game-dots" aria-hidden="true">
               {turns.map((t, i) => (
                 <i key={t.id} className={i < index ? "is-past" : i === index ? "is-now" : ""} />
               ))}
@@ -543,18 +580,14 @@ function ScenePlay({
 
           <p className="game-situation">{turn.situation}</p>
 
-          {answering && (
-            <>
-              <div className="game-ask-row">
-                <p className="game-ask">What does Convi say?</p>
-                {hint && !hinted && (
-                  <button type="button" className="game-hint" onClick={() => setHinted(true)}>
-                    Hint
-                  </button>
-                )}
-              </div>
-              {hinted && hint && <p className="game-hint-text">Convi wants to say: “{hint}”</p>}
-            </>
+          {!verdict && (
+            <p className="game-ask">{answering ? "What does Convi say?" : "They're talking…"}</p>
+          )}
+          {answering && hinted && hint && (
+            <p className="convo-hint game-hint-text">
+              <span className="convo-hint-label">You want to say</span>
+              {hint}
+            </p>
           )}
 
           {mode === "choice" && choices && (
@@ -580,7 +613,7 @@ function ScenePlay({
                       </span>
                       <span className="game-option-text">
                         <span>{option.source}</span>
-                        {verdict && option.en && (
+                        {verdict && english && option.en && (
                           <span className="game-option-en">{option.en}</span>
                         )}
                       </span>
@@ -599,26 +632,37 @@ function ScenePlay({
                 value={typed}
                 onChange={(e) => setTyped(e.target.value)}
                 disabled={!answering}
-                placeholder="Type what Convi says"
-                aria-label="What Convi says"
+                placeholder={answering ? "Type what you'd say…" : "They're talking…"}
+                aria-label="Your reply, in the language you're learning"
                 autoComplete="off"
-                autoCapitalize="off"
+                autoCapitalize="sentences"
                 spellCheck={false}
                 lang={locale}
               />
               <button type="submit" className="game-primary" disabled={!answering || !typed.trim()}>
                 Say it
               </button>
-              {answering && (
+            </form>
+          )}
+
+          {/* Talk Mode's way out, in the same two steps: the meaning first,
+              and (when typing) the line itself only after that. */}
+          {answering && (
+            <div className="convo-help game-help">
+              {hint && !hinted ? (
+                <button type="button" className="convo-stuck" onClick={() => setHinted(true)}>
+                  Stuck? Get a hint
+                </button>
+              ) : mode === "type" ? (
                 <button
                   type="button"
-                  className="game-secondary"
-                  onClick={() => settle(false, false, turn.yourLines[0]!, null)}
+                  className="convo-stuck"
+                  onClick={() => settle("revealed", false, false, turn.yourLines[0]!, null)}
                 >
-                  Not sure
+                  Show me the line
                 </button>
-              )}
-            </form>
+              ) : null}
+            </div>
           )}
 
           {verdict && (
@@ -626,15 +670,23 @@ function ScenePlay({
               <strong>
                 {verdict.correct
                   ? RIGHT_WORDS[index % RIGHT_WORDS.length]
-                  : verdict.close
-                    ? "So close."
-                    : "Not quite."}
+                  : correctionHead(verdict)}
                 {verdict.points > 0 && ` +${verdict.points}`}
               </strong>
+              {/* Both languages, always, as in Talk's correction: the line,
+                  then what it means. */}
               {!verdict.correct && (
-                <span>
-                  A local would say <em lang={locale}>{verdict.line.source}</em>
-                  {verdict.line.en && <> ({verdict.line.en})</>}
+                <span className="game-correction">
+                  <span className="game-correction-line">
+                    <em lang={locale}>{verdict.line.source}</em>
+                    <AudioButton
+                      locale={locale}
+                      audioId={verdict.line.audioId}
+                      text={verdict.line.source}
+                      surface="practice"
+                    />
+                  </span>
+                  {verdict.line.en && <span className="game-correction-en">{verdict.line.en}</span>}
                 </span>
               )}
               {verdict.correct && mode === "type" && verdict.line.source !== verdict.given && (

@@ -252,7 +252,7 @@ function sourceWords(text: string): Set<string> {
   return new Set(
     normalizeAnswer(text)
       .split(" ")
-      .filter((w) => w.length >= 4 && !/^_+$/.test(w)),
+      .filter((w) => w.length >= 4 && !/^_+$/.test(w))
   );
 }
 
@@ -344,7 +344,7 @@ export function safeDistractor(turn: ConvTurn, candidate: ConvLine): boolean {
 export function distractorPool(
   turn: ConvTurn,
   conversation: Conversation,
-  others: Conversation[],
+  others: Conversation[]
 ): ConvLine[] {
   const theyAsked = turn.theirOpener !== null;
   const pool = candidatesFrom([conversation, ...others.filter((c) => c.id !== conversation.id)]);
@@ -390,7 +390,7 @@ export function buildChoices(
   turn: ConvTurn,
   conversation: Conversation,
   others: Conversation[],
-  random: () => number = Math.random,
+  random: () => number = Math.random
 ): Choices {
   const right = turn.yourLines[Math.floor(random() * turn.yourLines.length)] ?? turn.yourLines[0]!;
   const pool = distractorPool(turn, conversation, others);
@@ -445,7 +445,7 @@ export function pointsFor(
   correct: boolean,
   combo: number,
   mode: AnswerMode,
-  hinted: boolean,
+  hinted: boolean
 ): number {
   if (!correct) return 0;
   const streak = 1 + 0.5 * Math.min(Math.max(combo, 0), MAX_COMBO_STEPS);

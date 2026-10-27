@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { createContext, useContext, useId, type ReactNode } from "react";
 import type { EditionInfo, SceneKind } from "../../lib/gameTypes";
 
 /**
@@ -239,13 +239,21 @@ function Character({
 // Signs and flags
 // ---------------------------------------------------------------------------
 
+/**
+ * The flag's clip path id, unique per stage. The scene picker draws four
+ * stages on one page, and four clip paths sharing one id would all resolve to
+ * the first of them, which breaks as soon as that one is not rendered.
+ */
+const FlagClip = createContext("gs-flag-clip");
+
 function Flag({ kind, x, y }: { kind: EditionInfo["flag"]; x: number; y: number }) {
+  const clip = useContext(FlagClip);
   const w = 54;
   const h = 36;
   return (
     <g transform={`translate(${x} ${y})`}>
       <rect width={w} height={h} rx={6} fill="#fff" />
-      <g clipPath="url(#gs-flag-clip)">
+      <g clipPath={`url(#${clip})`}>
         {kind === "es" && (
           <>
             <rect width={w} height={h} fill="#c60b1e" />
@@ -363,7 +371,7 @@ function Diamonds() {
           key={`${r}-${c}`}
           d={`M${x} ${y + 22} L${x + 30} ${y} L${x + 60} ${y + 22} L${x + 30} ${y + 44}Z`}
           fill="#6aa9e0"
-        />,
+        />
       );
     }
   }
@@ -475,7 +483,7 @@ function Background({ kind, edition }: { kind: SceneKind; edition: EditionInfo }
               rx={8}
               fill={(r + c) % 2 ? "#f0cf97" : "#f7dfb4"}
             />
-          )),
+          ))
         )}
         <line x1={880} y1={0} x2={880} y2={120} stroke="#5b3a29" strokeWidth={5} />
         <path d="M850 126 Q842 210 880 270 Q918 210 910 126Z" fill="#b4503c" />
@@ -831,6 +839,7 @@ function Foreground({ kind, edition }: { kind: SceneKind; edition: EditionInfo }
 }
 
 export default function GameStage({ kind, edition, talking, mood, children }: Props) {
+  const clip = `gs-flag-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   // Heads sit lower in a taxi, framed by the windows.
   const headY = kind === "taxi" ? 410 : 432;
   const apron = kind === "bar" || kind === "cafe";
@@ -845,11 +854,13 @@ export default function GameStage({ kind, edition, talking, mood, children }: Pr
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          <clipPath id="gs-flag-clip">
+          <clipPath id={clip}>
             <rect width={54} height={36} rx={6} />
           </clipPath>
         </defs>
-        <Background kind={kind} edition={edition} />
+        <FlagClip.Provider value={clip}>
+          <Background kind={kind} edition={edition} />
+        </FlagClip.Provider>
         {kind === "taxi" && <rect x={82} y={226} width={836} height={320} fill="#cfe9f7" />}
         <Character
           x={CONVI_X * VIEW_W}
