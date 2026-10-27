@@ -184,7 +184,7 @@ export default function QuizApp({ locale }: Props) {
   // Fires once: `conversations` is only null before the first open, and the
   // catch below sets an error rather than leaving it null and re-fetching.
   useEffect(() => {
-    if (mode !== "talk" || conversations !== null || convoError) return;
+    if (mode !== "talk" || talkStyle !== "talk" || conversations !== null || convoError) return;
     let cancelled = false;
     const query = locale ? `?locale=${encodeURIComponent(locale)}` : "";
 
@@ -204,7 +204,7 @@ export default function QuizApp({ locale }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [mode, conversations, convoError, locale]);
+  }, [mode, talkStyle, conversations, convoError, locale]);
 
   useEffect(() => {
     if (mode === "talk") setConvoDone(finishedConversations());
@@ -542,17 +542,16 @@ export default function QuizApp({ locale }: Props) {
         </>
       )}
 
+      {mode === "talk" && talkStyle === "game" && (
+        <GameMode locale={locale ?? "es-ES"} onBack={() => setMode("path")} />
+      )}
+
       {mode === "talk" &&
+        talkStyle === "talk" &&
         (convoError ? (
           <p className="quiz-error">{convoError}</p>
         ) : conversations === null ? (
           <p className="quiz-loading">Loading the conversations...</p>
-        ) : talkStyle === "game" ? (
-          <GameMode
-            conversations={conversations}
-            locale={locale ?? "es-ES"}
-            onBack={() => setMode("path")}
-          />
         ) : chosenConvo ? (
           <ConversationMode
             conversation={chosenConvo}

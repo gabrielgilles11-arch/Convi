@@ -1,4 +1,4 @@
-import { createContext, useContext, useId, type ReactNode } from "react";
+import { createContext, useContext, useId, type CSSProperties, type ReactNode } from "react";
 import type { EditionInfo, SceneKind } from "../../lib/gameTypes";
 
 /**
@@ -24,7 +24,22 @@ interface Props {
   edition: EditionInfo;
   talking: Speaker;
   mood: Mood;
+  /** Overlays on the scene itself: the speech bubbles. */
   children?: ReactNode;
+  /**
+   * What sits on the counter in front of them: Convi's thought cloud with the
+   * three options. Drawn as more of the counter, so the choices are part of the
+   * picture rather than a form under it.
+   */
+  floor?: ReactNode;
+}
+
+/** The color of whatever is in front of the characters, carried on below them. */
+function floorColor(kind: SceneKind, edition: EditionInfo): string {
+  if (kind === "metro") return "#33414f";
+  if (kind === "taxi") return "#5d6770";
+  if (kind === "cafe") return "#9a6a43";
+  return edition.flag === "de" ? "#4d2f1c" : "#6b3e22";
 }
 
 const VIEW_W = 1000;
@@ -838,51 +853,57 @@ function Foreground({ kind, edition }: { kind: SceneKind; edition: EditionInfo }
   );
 }
 
-export default function GameStage({ kind, edition, talking, mood, children }: Props) {
+export default function GameStage({ kind, edition, talking, mood, children, floor }: Props) {
   const clip = `gs-flag-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   // Heads sit lower in a taxi, framed by the windows.
   const headY = kind === "taxi" ? 410 : 432;
   const apron = kind === "bar" || kind === "cafe";
 
   return (
-    <div className={`game-stage gs-scene-${kind}`}>
-      <svg
-        className="game-stage-svg"
-        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-        role="img"
-        aria-label={`Convi and a local, ${kind === "cafe" ? "at a café" : kind === "bar" ? "at a bar" : kind === "metro" ? "in the metro" : "in a taxi"} in ${edition.country}`}
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <defs>
-          <clipPath id={clip}>
-            <rect width={54} height={36} rx={6} />
-          </clipPath>
-        </defs>
-        <FlagClip.Provider value={clip}>
-          <Background kind={kind} edition={edition} />
-        </FlagClip.Provider>
-        {kind === "taxi" && <rect x={82} y={226} width={836} height={320} fill="#cfe9f7" />}
-        <Character
-          x={CONVI_X * VIEW_W}
-          y={headY}
-          who="convi"
-          talking={talking === "convi"}
-          mood={mood}
+    <div
+      className={`game-stage gs-scene-${kind}${floor ? " has-floor" : ""}`}
+      style={{ "--floor": floorColor(kind, edition) } as CSSProperties}
+    >
+      <div className="game-stage-scene">
+        <svg
+          className="game-stage-svg"
+          viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+          role="img"
+          aria-label={`Convi and a local, ${kind === "cafe" ? "at a café" : kind === "bar" ? "at a bar" : kind === "metro" ? "in the metro" : "in a taxi"} in ${edition.country}`}
+          preserveAspectRatio="xMidYMid slice"
         >
-          <Convi />
-        </Character>
-        <Character
-          x={LOCAL_X * VIEW_W}
-          y={headY}
-          who="local"
-          talking={talking === "local"}
-          mood="idle"
-        >
-          <Local edition={edition} apron={apron} />
-        </Character>
-        <Foreground kind={kind} edition={edition} />
-      </svg>
-      {children}
+          <defs>
+            <clipPath id={clip}>
+              <rect width={54} height={36} rx={6} />
+            </clipPath>
+          </defs>
+          <FlagClip.Provider value={clip}>
+            <Background kind={kind} edition={edition} />
+          </FlagClip.Provider>
+          {kind === "taxi" && <rect x={82} y={226} width={836} height={320} fill="#cfe9f7" />}
+          <Character
+            x={CONVI_X * VIEW_W}
+            y={headY}
+            who="convi"
+            talking={talking === "convi"}
+            mood={mood}
+          >
+            <Convi />
+          </Character>
+          <Character
+            x={LOCAL_X * VIEW_W}
+            y={headY}
+            who="local"
+            talking={talking === "local"}
+            mood="idle"
+          >
+            <Local edition={edition} apron={apron} />
+          </Character>
+          <Foreground kind={kind} edition={edition} />
+        </svg>
+        {children}
+      </div>
+      {floor && <div className="game-floor">{floor}</div>}
     </div>
   );
 }
