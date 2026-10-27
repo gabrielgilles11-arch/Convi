@@ -1,4 +1,5 @@
 ---
+import { canonicalUrl } from "../../../../lib/seo";
 import Layout from "../../../../layouts/Layout.astro";
 import Speaker from "../../../../components/Speaker.astro";
 import {
@@ -52,7 +53,7 @@ const set = (buzzwords as unknown as Record<string, WordSet>)[categoryId];
 if (!category || !set) return new Response("Not found", { status: 404 });
 
 const info = getLocaleInfo(locale);
-const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const pageUrl = canonicalUrl(Astro.url.pathname, Astro.site);
 const scenarioPath = localePath(locale, `/scenarios/${categoryId}`);
 const allScenariosPath = localePath(locale, "/scenarios");
 
@@ -61,7 +62,10 @@ const allScenariosPath = localePath(locale, "/scenarios");
 const others = getCategories(locale).filter((c) => c.id !== categoryId);
 
 const title = `${set.title}: what they actually mean`;
-const description = `${set.terms.slice(0, 4).map((t) => t.term).join(" · ")}: ${set.terms.length} ${info.language} words you'll hear in ${info.region}, what each one means and the line it turns up in. Free.`;
+// Fewer sample terms until it fits the roughly 160 characters results show.
+const describe = (n: number) =>
+  `${n ? `${set.terms.slice(0, n).map((t) => t.term).join(" · ")}: ` : ""}${set.terms.length} ${info.language} words you'll hear in ${info.region}, what each one means and the line it turns up in. Free.`;
+const description = [4, 3, 2, 1, 0].map(describe).find((d) => d.length <= 160) ?? describe(0);
 
 const schema = [
   {
@@ -105,7 +109,7 @@ const schema = [
       set.terms.map((t) => (
         <div class="term-card">
           <dt>
-            <span class="term-word">{t.term}</span>
+            <span class="term-word" lang={locale}>{t.term}</span>
             <Speaker text={t.term} label={`Hear ${t.term}`} />
           </dt>
           <dd>

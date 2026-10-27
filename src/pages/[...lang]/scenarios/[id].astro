@@ -15,11 +15,13 @@ import {
   quickAnswer,
   REGION_LABELS,
   searchBlurb,
+  searchHeading,
   searchTitle,
   type DialogueSubsection,
   type PhrasebookSubsection,
 } from "../../../lib/content";
 import { ENT_COOKIE, verifyEntitlement } from "../../../lib/entitlement";
+import { canonicalUrl, contentUpdated, formatUpdated } from "../../../lib/seo";
 
 import { PAYWALL_ENABLED } from "../../../lib/paywall";
 
@@ -84,7 +86,11 @@ const answer = quickAnswer(category);
 // page to be reachable and to carry weight, without touching how the exchanges
 // below are laid out.
 const wordSet = (buzzwords as unknown as Record<string, { title: string } | undefined>)[category.id];
-const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const pageUrl = canonicalUrl(Astro.url.pathname, Astro.site);
+const pageHeading = searchHeading(category, locale);
+// Shown only when git can say when this edition last changed. See contentUpdated.
+const updated = contentUpdated(locale);
+const author = { "@id": `${Astro.site?.href}about#gabriel-gilles` };
 
 // BreadcrumbList still earns a search appearance; LearningResource is the
 // honest description of what this page is, and gives an answer engine the
@@ -116,6 +122,8 @@ const schema = [
     educationalLevel: "Beginner",
     isAccessibleForFree: true,
     audience: { "@type": "Audience", audienceType: "Travelers" },
+    author,
+    ...(updated ? { dateModified: updated.toISOString() } : {}),
   },
 ];
 ---
@@ -125,7 +133,16 @@ const schema = [
   <div class="title-row" data-locale={locale}>
     {/* A break opportunity after each slash, so "hotel/hostel/Airbnb" wraps
         at a slash rather than mid-word. */}
-    <h1>{category.title.split("/").map((part, i) => (i === 0 ? part : <Fragment>/<wbr />{part}</Fragment>))}</h1>
+    <div class="title-text">
+      {/* The category's own name, kept as a label. The H1 is the question a
+          traveler searches, so the heading and the page title say the same
+          thing. A break opportunity after each slash, so "hotel/hostel/Airbnb"
+          wraps at a slash rather than mid-word. */}
+      {pageHeading !== category.title && (
+        <p class="category-name">{category.title.split("/").map((part, i) => (i === 0 ? part : <Fragment>/<wbr />{part}</Fragment>))}</p>
+      )}
+      <h1>{pageHeading.split("/").map((part, i) => (i === 0 ? part : <Fragment>/<wbr />{part}</Fragment>))}</h1>
+    </div>
     {/* Hidden until the script knows this device can say anything at all. */}
     <button type="button" id="voice-toggle" class="voice-toggle" aria-pressed="true" hidden>
       <span class="toggle-label">Voices</span>
@@ -148,6 +165,10 @@ const schema = [
     </button>
   </div>
   <p class="description">{category.description}</p>
+  <p class="byline">
+    Compiled by <a href="/about#who-made-this">Gabriel Gilles</a>
+    {updated && <Fragment> · Updated <time datetime={updated.toISOString().slice(0, 10)}>{formatUpdated(updated)}</time></Fragment>}
+  </p>
 
   {/* Answer-first: the one line that answers the search, before anything else
       on the page. A reader who only wanted that can stop here, and an answer
@@ -166,7 +187,7 @@ const schema = [
       <p class="quick-answer">
         <span class="quick-answer-label">Short answer</span>
         <span class="quick-answer-line">
-          In {info.region}, say <strong>{answer.es}</strong>
+          In {info.region}, say <strong lang={locale}>{answer.es}</strong>
           {answer.en && <span class="quick-answer-en">{answer.en}</span>}
         </span>
       </p>
@@ -180,7 +201,7 @@ const schema = [
   {
     category.note && category.note.es && (
       <div class="note">
-        <p>{category.note.es}</p>
+        <p lang={locale}>{category.note.es}</p>
         {category.note.en && <p class="translation">{category.note.en}</p>}
       </div>
     )
@@ -195,7 +216,7 @@ const schema = [
           {(sub as DialogueSubsection).exchanges?.map((exchange) => (
             <article class="exchange">
               <p class="question">
-                <span class="label">Q</span> {exchange.question.es}
+                <span class="label">Q</span> <span lang={locale}>{exchange.question.es}</span>
                 <Speaker audioId={`${exchange.id}-q`} text={exchange.question.es} label="Hear the question" />
                 {exchange.region && (
                   <span class={`tag tag--${exchange.region}`}>{REGION_LABELS[exchange.region]}</span>
@@ -209,7 +230,7 @@ const schema = [
                 <ul class="answers">
                   {exchange.answers.map((answer, i) => (
                     <li>
-                      <span class="label">A</span> {answer.es}
+                      <span class="label">A</span> <span lang={locale}>{answer.es}</span>
                       <Speaker audioId={`${exchange.id}-a${i}`} text={answer.es} label="Hear this answer" />
                       <span class="translation">{answer.en}</span>
                     </li>
@@ -219,7 +240,7 @@ const schema = [
 
               {exchange.likelyReply && (
                 <p class="reply">
-                  <span class="label">They'll say</span> {exchange.likelyReply.es}
+                  <span class="label">They'll say</span> <span lang={locale}>{exchange.likelyReply.es}</span>
                   <Speaker audioId={`${exchange.id}-r`} text={exchange.likelyReply.es} label="Hear their reply" />
                   <span class="translation">{exchange.likelyReply.en}</span>
                 </p>
@@ -231,7 +252,7 @@ const schema = [
 
           {(sub as DialogueSubsection).items?.map((tip, i) => (
             <p class="tip">
-              {tip.es}
+              <span lang={locale}>{tip.es}</span>
               <Speaker audioId={`${sub.id}-tip${i}`} text={tip.es} />
               <span class="translation">{tip.en}</span>
             </p>
@@ -244,7 +265,7 @@ const schema = [
             {(sub as PhrasebookSubsection).phrases.map((phrase) => (
               <li>
                 <span class="es">
-                  {phrase.es}
+                  <span lang={locale}>{phrase.es}</span>
                   <Speaker audioId={phrase.id} text={phrase.es} />
                   {phrase.region && (
                     <span class={`tag tag--${phrase.region}`}>{REGION_LABELS[phrase.region]}</span>
@@ -402,8 +423,21 @@ const schema = [
   /* A long title ("Checking in (hotel/hostel/Airbnb)") has no break point
      inside its slashed run, and at phone width it pushed the switch off the
      side of the screen. The title may shrink and break; the switch may not. */
+  .title-text {
+    min-width: 0;
+  }
+
   .title-row h1 {
     min-width: 0;
+    overflow-wrap: anywhere;
+    margin-top: 0.25rem;
+  }
+
+  .category-name {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
     overflow-wrap: anywhere;
   }
 
@@ -519,7 +553,18 @@ const schema = [
 
   .description {
     color: var(--color-ink-soft);
+    margin: 0 0 0.5rem;
+  }
+
+  .byline {
+    color: var(--color-ink-soft);
+    font-size: 0.875rem;
     margin: 0 0 1.5rem;
+  }
+
+  .byline a {
+    color: var(--color-primary-dark);
+    font-weight: 700;
   }
 
   .note {
