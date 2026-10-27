@@ -126,6 +126,31 @@ Only `exchanges` become conversations. `scenes` are separate moments written to
 put one word each in context, so a transcript made of them would change the
 subject every line.
 
+## Game Mode: the same conversations, played
+
+A switch at the top of Talk turns it into Game Mode: Convi's trip through the
+edition, one place at a time (taxi from the airport, the bar, the metro, a
+café), drawn in the same flat cartoon style as the reels. The local speaks,
+and you pick what Convi says from three or type it.
+
+Nothing new is written for it. Each scene is an authored subsection
+(`GAME_SCENES` in `lib/gameTypes.ts`), the right answer is a line written for
+that beat, and the two wrong ones are lines written for other beats. A place
+an edition has no dialogue for, German café today, shows as coming soon
+rather than being filled with lines nobody sourced.
+
+The hard part is the wrong answers, because a distractor that is arguably
+right is the one thing a multiple choice cannot have. `safeDistractor` throws
+a candidate away if it passes the grader, shares a meaningful word with any
+accepted line in either language, overlaps what was just said to you, or was
+written for an overlapping moment; when you are asked something, only lines
+that open a beat are offered, never answers to another question. The tests
+shuffle every beat in every edition and assert exactly one option grades as
+right.
+
+Stars and best scores live in `localStorage` under `convi:game:v1`, like the
+rest of progress.
+
 ## Progress, and what stays on the device
 
 Everything a learner accumulates — stages cleared, streak, mistake queue —

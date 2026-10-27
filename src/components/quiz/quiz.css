@@ -3011,3 +3011,975 @@ body[data-focus="round"] .quiz-toolbar {
   padding: 0.55rem 0.9rem;
   white-space: nowrap;
 }
+
+/* ===========================================================================
+   Game Mode: Talk Mode played as Convi's trip. The stage is drawn in the same
+   flat style as the reels; everything around it uses the site's tokens.
+   =========================================================================== */
+
+/* --- The switch, at the top of Talk Mode --- */
+
+.talk-style {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem 0.6rem 0.6rem;
+  margin: 0 0 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-card);
+  box-shadow: 0 3px 0 var(--color-border);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.talk-style.is-game {
+  border-color: var(--color-primary-tint-border);
+  background: var(--color-primary-tint);
+}
+
+/* Out of the way once a scene is being played: it has its own way out. */
+.talk-style:has(+ .game-play) {
+  display: none;
+}
+
+.talk-style-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.talk-style-icon svg {
+  width: 30px;
+  height: 30px;
+  color: #fff;
+}
+
+.talk-style-icon svg path:first-child {
+  fill: #fff;
+}
+
+.talk-style-icon svg path:nth-child(2) {
+  stroke: var(--color-primary);
+}
+
+.talk-style-icon svg circle {
+  fill: var(--color-primary);
+}
+
+.talk-style-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.talk-style-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+}
+
+.talk-style-sub {
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
+}
+
+.talk-switch {
+  flex: none;
+  position: relative;
+  width: 60px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.talk-switch::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 7px;
+  bottom: 7px;
+  border-radius: 999px;
+  background: #cdbfb2;
+  transition: background-color 0.15s ease;
+}
+
+.talk-switch[aria-checked="true"]::before {
+  background: var(--color-primary);
+}
+
+.talk-switch-knob {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.talk-switch[aria-checked="true"] .talk-switch-knob {
+  transform: translateX(26px);
+}
+
+.talk-switch:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+/* --- Scene select --- */
+
+.game-answer-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  margin: 0 0 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-card);
+}
+
+.game-answer-toggle button {
+  min-height: 44px;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+
+.game-answer-toggle button[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.game-x2 {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  background: var(--color-accent);
+  color: #241610;
+}
+
+.game-scenes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: 0.9rem;
+}
+
+.game-scene-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  font: inherit;
+  color: var(--color-ink);
+  border: 2px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-card);
+  box-shadow: 0 4px 0 var(--color-border);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.game-scene-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: var(--color-primary-tint-border);
+  box-shadow: 0 6px 0 var(--color-primary-tint-border);
+}
+
+.game-scene-card:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.game-scene-card.is-locked {
+  cursor: default;
+}
+
+.game-scene-card.is-locked .game-scene-thumb {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.game-scene-thumb {
+  display: block;
+  pointer-events: none;
+}
+
+.game-scene-thumb .game-stage {
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.game-scene-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.65rem 0.85rem 0.8rem;
+}
+
+.game-scene-step {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+}
+
+.game-scene-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.game-scene-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
+}
+
+.game-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.game-stars svg {
+  width: 20px;
+  height: 20px;
+  fill: #e6d8c9;
+}
+
+.game-stars svg.is-on {
+  fill: #f4a623;
+  stroke: #b8741a;
+  stroke-width: 1;
+}
+
+.game-stars.is-big svg {
+  width: clamp(36px, 9cqi, 56px);
+  height: clamp(36px, 9cqi, 56px);
+}
+
+/* --- The stage --- */
+
+.game-stage {
+  position: relative;
+  container-type: inline-size;
+  width: 100%;
+  aspect-ratio: 1000 / 720;
+  overflow: hidden;
+  border: 3px solid #241610;
+  border-radius: 20px;
+  background: #f4d9a8;
+}
+
+.game-stage-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.gs-char {
+  animation: gs-bob 2.6s ease-in-out infinite;
+}
+
+.gs-local {
+  animation-delay: -1.3s;
+}
+
+.gs-mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.gs-char.is-talking .gs-mouth {
+  animation: gs-talk 0.2s ease-in-out infinite alternate;
+}
+
+.gs-char.is-happy {
+  animation: gs-hop 0.5s ease-out 2;
+}
+
+.gs-char.is-oops {
+  animation: gs-shake 0.45s ease-in-out 1;
+}
+
+@keyframes gs-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes gs-talk {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(4.2);
+  }
+}
+
+@keyframes gs-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes gs-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-14px);
+  }
+  40% {
+    transform: translateX(12px);
+  }
+  60% {
+    transform: translateX(-8px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Speech bubbles: white, rounded, thick ink outline, tail toward the speaker. */
+.game-bubble {
+  --tail: 48%;
+  position: absolute;
+  top: 4%;
+  width: 58%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0.55em 0.8em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(14px, 4.2cqi, 30px);
+  line-height: 1.2;
+  text-align: center;
+  color: #241610;
+  background: #fffdf7;
+  border: clamp(2px, 0.6cqi, 4px) solid #241610;
+  border-radius: 1.1em;
+  box-shadow: 0 0.18em 0 rgba(36, 22, 16, 0.25);
+  cursor: pointer;
+  animation: game-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: var(--tail) 100%;
+}
+
+.game-bubble:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.game-bubble.is-convi {
+  left: 3%;
+  --tail: 48%;
+}
+
+.game-bubble.is-local {
+  right: 3%;
+  --tail: 52%;
+}
+
+.game-bubble::before,
+.game-bubble::after {
+  content: "";
+  position: absolute;
+  left: var(--tail);
+  border-style: solid;
+  border-color: transparent;
+}
+
+.game-bubble::before {
+  bottom: -0.95em;
+  margin-left: -0.6em;
+  border-width: 0.95em 0.6em 0;
+  border-top-color: #241610;
+}
+
+.game-bubble::after {
+  bottom: -0.68em;
+  margin-left: -0.42em;
+  border-width: 0.72em 0.42em 0;
+  border-top-color: #fffdf7;
+}
+
+.game-bubble-en {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: max(13px, 0.62em);
+  color: #5f4c3e;
+}
+
+.game-bubble.is-thinking {
+  width: auto;
+  left: 20%;
+  --tail: 50%;
+  padding: 0.5em 0.9em;
+}
+
+.game-bubble-dots {
+  display: inline-flex;
+  gap: 0.3em;
+  padding: 0.35em 0;
+}
+
+.game-bubble-dots i {
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 50%;
+  background: #241610;
+  animation: game-dot 1s ease-in-out infinite;
+}
+
+.game-bubble-dots i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.game-bubble-dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes game-dot {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-0.15em);
+  }
+}
+
+@keyframes game-pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.game-float {
+  position: absolute;
+  left: 31%;
+  top: 40%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(18px, 6cqi, 40px);
+  color: #fff;
+  -webkit-text-stroke: clamp(3px, 0.8cqi, 6px) #241610;
+  paint-order: stroke fill;
+  pointer-events: none;
+  animation: game-float 1.1s ease-out forwards;
+}
+
+@keyframes game-float {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20%) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -140%) scale(1);
+  }
+}
+
+/* The title card and the end card sit on the stage like the reels' cards. */
+.game-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(86%, 560px);
+  max-height: 92%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 1.4cqi, 10px);
+  padding: clamp(12px, 3.5cqi, 28px);
+  text-align: center;
+  color: #241610;
+  background: #fffdf7;
+  border: clamp(2px, 0.6cqi, 4px) solid #241610;
+  border-radius: clamp(14px, 4cqi, 28px);
+  box-shadow: 0 6px 0 rgba(36, 22, 16, 0.25);
+  animation: game-card-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes game-card-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.game-card-kicker {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+}
+
+.game-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 5.4cqi, 36px);
+  line-height: 1.1;
+}
+
+.game-card-text {
+  font-size: clamp(13px, 2.8cqi, 17px);
+  color: #5f4c3e;
+}
+
+.game-card-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(20px, 6cqi, 40px);
+  color: var(--color-primary-dark);
+}
+
+.game-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.game-primary,
+.game-secondary {
+  min-height: 44px;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.game-primary {
+  border: none;
+  color: #fff;
+  background: var(--color-primary);
+  box-shadow: 0 3px 0 var(--color-primary-dark);
+}
+
+.game-primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.game-primary:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--color-primary-dark);
+}
+
+.game-secondary {
+  border: 2px solid var(--color-border);
+  color: var(--color-ink);
+  background: var(--color-card);
+}
+
+/* --- Under the stage: the question --- */
+
+.game-panel {
+  margin-top: 0.75rem;
+  padding: clamp(0.8rem, 2vw, 1.1rem);
+  border: 2px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-card);
+}
+
+.game-hud {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.game-dots {
+  display: inline-flex;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.game-dots i {
+  flex: 0 1 26px;
+  height: 8px;
+  border-radius: 999px;
+  background: #ece0d3;
+}
+
+.game-dots i.is-past {
+  background: var(--color-primary);
+}
+
+.game-dots i.is-now {
+  background: var(--color-accent);
+}
+
+.game-combo {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: #241610;
+  background: var(--color-accent);
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  animation: game-pop 0.3s ease-out;
+}
+
+.game-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+.game-situation {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+}
+
+.game-ask-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.game-ask {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.game-hint {
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border: 2px dashed var(--color-primary-tint-border);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--color-primary-dark);
+  cursor: pointer;
+}
+
+.game-hint-text {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+  color: var(--color-primary-dark);
+}
+
+.game-options {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.game-option {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.8rem 0.55rem 0.55rem;
+  text-align: left;
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  background: #fff;
+  border: 2px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 3px 0 var(--color-border);
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.12s ease, background-color 0.12s ease;
+}
+
+.game-option:hover:not(:disabled) {
+  border-color: var(--color-primary-tint-border);
+  background: var(--color-primary-tint);
+}
+
+.game-option:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.game-option:disabled {
+  cursor: default;
+}
+
+.game-option-key {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-tint);
+  border: 2px solid var(--color-primary-tint-border);
+}
+
+.game-option-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.game-option-en {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
+}
+
+.game-option.is-right {
+  border-color: var(--color-success);
+  background: var(--color-success-bg);
+  box-shadow: 0 3px 0 var(--color-success);
+}
+
+.game-option.is-right .game-option-key {
+  color: #fff;
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.game-option.is-wrong {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+  box-shadow: 0 3px 0 var(--color-error);
+  animation: game-nudge 0.35s ease-in-out;
+}
+
+.game-option.is-wrong .game-option-key {
+  color: #fff;
+  background: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.game-option.is-out {
+  opacity: 0.55;
+}
+
+@keyframes game-nudge {
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+.game-type {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.game-type input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0.5rem 0.85rem;
+  font: inherit;
+  font-size: 1.05rem;
+  border: 2px solid var(--color-border);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--color-ink);
+}
+
+.game-type input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.game-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 14px;
+  background: var(--color-error-bg);
+  color: var(--color-ink);
+  animation: game-pop 0.25s ease-out;
+}
+
+.game-verdict.is-right {
+  background: var(--color-success-bg);
+}
+
+.game-verdict strong {
+  color: var(--color-error);
+}
+
+.game-verdict.is-right strong {
+  color: var(--color-success-deep);
+}
+
+.game-verdict span {
+  flex: 1 1 12rem;
+  font-size: 0.9rem;
+}
+
+.game-verdict em {
+  font-style: normal;
+  font-weight: 800;
+}
+
+.game-verdict .game-primary {
+  margin-left: auto;
+}
+
+.game-panel .game-answer-toggle {
+  margin: 0.9rem 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gs-char,
+  .gs-char.is-happy,
+  .gs-char.is-oops,
+  .gs-char.is-talking .gs-mouth,
+  .game-bubble,
+  .game-bubble-dots i,
+  .game-card,
+  .game-combo,
+  .game-option.is-wrong,
+  .game-verdict {
+    animation: none;
+  }
+
+  .gs-char.is-talking .gs-mouth {
+    transform: scaleY(3);
+  }
+
+  .game-float {
+    animation: none;
+    display: none;
+  }
+
+  .game-card {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.game-stage-wrap {
+  position: relative;
+  container-type: inline-size;
+}
+
+/* A phone-width stage is about 200px tall: the card goes under it instead. */
+@container (max-width: 560px) {
+  .game-card {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: auto;
+    max-height: none;
+    margin-top: 0.75rem;
+    padding: 1rem;
+    border-radius: 18px;
+    animation: game-pop 0.3s ease-out;
+  }
+
+  .game-card-title {
+    font-size: 1.35rem;
+  }
+
+  .game-card-text {
+    font-size: 0.95rem;
+  }
+
+  .game-card-score {
+    font-size: 1.6rem;
+  }
+
+  .game-stars.is-big svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.game-answer-toggle button {
+  white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+  .game-answer-toggle button {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.85rem;
+  }
+}
