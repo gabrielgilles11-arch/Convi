@@ -35,6 +35,8 @@ import StreakBadge from "./StreakBadge";
 import RemindPrompt from "./RemindPrompt";
 import ConversationPicker from "./ConversationPicker";
 import ConversationMode from "./ConversationMode";
+import GameMode from "./GameMode";
+import { loadTalkStyle, saveTalkStyle, type TalkStyle } from "../../lib/gameTypes";
 import { soundEnabled, setSoundEnabled } from "./sound";
 import { setVoiceEnabled, stopSpeaking, voiceEnabled } from "./speech";
 import "./quiz.css";
@@ -99,10 +101,52 @@ export default function QuizApp({ locale }: Props) {
   const [convoId, setConvoId] = useState<string | null>(null);
   const [convoDone, setConvoDone] = useState<string[]>([]);
   const [askRemind, setAskRemind] = useState(false);
+  // Talk or Game. Same deck, two ways to play it; remembered per browser.
+  const [talkStyle, setTalkStyle] = useState<TalkStyle>("talk");
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
+    setTalkStyle(loadTalkStyle());
   }, []);
+
+  function chooseTalkStyle(style: TalkStyle) {
+    setTalkStyle(style);
+    saveTalkStyle(style);
+    setConvoId(null);
+    stopSpeaking();
+  }
+
+  const gameSwitch = (
+    <div className={`talk-style${talkStyle === "game" ? " is-game" : ""}`}>
+      <span className="talk-style-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path
+            d="M7 7h10a5 5 0 0 1 4.9 6l-.6 3.2a2.6 2.6 0 0 1-4.5 1.2L14.6 15H9.4l-2.2 2.4a2.6 2.6 0 0 1-4.5-1.2L2.1 13A5 5 0 0 1 7 7z"
+            fill="currentColor"
+          />
+          <path d="M7.5 9.5v4M5.5 11.5h4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+          <circle cx="16" cy="10.5" r="1.2" fill="#fff" />
+          <circle cx="18" cy="12.8" r="1.2" fill="#fff" />
+        </svg>
+      </span>
+      <span className="talk-style-text">
+        <span className="talk-style-title" id="game-switch-label">
+          Game Mode
+        </span>
+        <span className="talk-style-sub">Play it as Convi's trip: taxi, bar, metro, café</span>
+      </span>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={talkStyle === "game"}
+        aria-labelledby="game-switch-label"
+        className="talk-switch"
+        onClick={() => chooseTalkStyle(talkStyle === "game" ? "talk" : "game")}
+      >
+        <span className="talk-switch-knob" />
+      </button>
+    </div>
+  );
 
   // Re-read whenever a round is scored, and on every screen change: the streak
   // is written by TestMode straight into localStorage, which signals React
@@ -444,7 +488,7 @@ export default function QuizApp({ locale }: Props) {
                   />
                 </svg>
                 <span className="talk-launch-title">Talk Mode</span>
-                <span className="talk-launch-sub">Hold a real conversation</span>
+                <span className="talk-launch-sub">Hold a real conversation, or play Game Mode</span>
               </button>
             </div>
           </div>
@@ -500,6 +544,19 @@ export default function QuizApp({ locale }: Props) {
           <p className="quiz-error">{convoError}</p>
         ) : conversations === null ? (
           <p className="quiz-loading">Loading the conversations...</p>
+        ) : talkStyle === "game" ? (
+          <>
+            {gameSwitch}
+            <GameMode
+              conversations={conversations}
+              locale={locale ?? "es-ES"}
+              onBack={() => setMode("path")}
+              onFinish={(id) => {
+                markConversationFinished(id);
+                setConvoDone(finishedConversations());
+              }}
+            />
+          </>
         ) : chosenConvo ? (
           <ConversationMode
             conversation={chosenConvo}
@@ -513,12 +570,15 @@ export default function QuizApp({ locale }: Props) {
             onContinue={setConvoId}
           />
         ) : (
-          <ConversationPicker
-            conversations={conversations}
-            finished={convoDone}
-            onStart={setConvoId}
-            onBack={() => setMode("path")}
-          />
+          <>
+            {gameSwitch}
+            <ConversationPicker
+              conversations={conversations}
+              finished={convoDone}
+              onStart={setConvoId}
+              onBack={() => setMode("path")}
+            />
+          </>
         ))}
 
       {askRemind && (

@@ -101,3 +101,20 @@ export function playWrong(): void {
   if (!soundEnabled()) return;
   play([{ from: 220, to: 155, delay: 0, duration: 0.26, peak: 0.11, type: "triangle" }]);
 }
+
+/** A soft pop for a speech bubble landing. Game Mode only. */
+export function playPop(): void {
+  if (!soundEnabled()) return;
+  play([{ from: 520, to: 1100, delay: 0, duration: 0.09, peak: 0.07, type: "sine" }]);
+}
+
+/** Four notes up for a finished scene: the reels end on the same flourish. */
+export function playFanfare(): void {
+  if (!soundEnabled()) return;
+  play([
+    { from: 659.3, delay: 0, duration: 0.12, peak: 0.1, type: "triangle" },
+    { from: 784, delay: 0.11, duration: 0.12, peak: 0.1, type: "triangle" },
+    { from: 987.8, delay: 0.22, duration: 0.12, peak: 0.1, type: "triangle" },
+    { from: 1318.5, delay: 0.33, duration: 0.32, peak: 0.11, type: "triangle" },
+  ]);
+}
