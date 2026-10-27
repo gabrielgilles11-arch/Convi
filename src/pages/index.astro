@@ -85,7 +85,7 @@ const lineCount = editions.reduce(
 const roughLines = roughLineCount(lineCount);
 
 const pageTitle = "Try Convi: real Spanish, Swedish and German phrases for travelers";
-const pageDescription = `The Spanish, Swedish and German people actually speak, from ordering and taxis to slang and nightlife, with what they'll say back. ${categoryCount} free scenario packs and ${roughLines} lines. No account, no paywall.`;
+const pageDescription = `Free Spanish, Swedish and German phrases for travelers: taxis, bars, slang, pharmacies, each with what people say back. ${categoryCount} categories and ${roughLines} lines, no account needed.`;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -110,9 +110,9 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
           <a id="browse-cta" href={defaultStart.scenarios}>or read the scenarios first →</a>
         </p>
         <p class="sub">
-          Skip the textbook. This is the Spanish, Swedish and German you'll
-          actually use: ordering the second round, flirting at the bar, arguing
-          with a taxi driver, and catching the slang locals fire back at you.
+          Spanish, Swedish and German for what actually comes up on a trip:
+          ordering the second round, arguing with a taxi driver. Every line
+          comes with what they'll say back.
         </p>
         <p class="language-note">
           <strong>Three editions live now.</strong> Pick your language above.{" "}
@@ -191,57 +191,51 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
       to infer that it was written for them. This says it. */}
   <section class="for-travelers full-bleed">
     <div class="container">
-      <p class="for-travelers-kicker reveal">Who it's for</p>
-      <h2 class="for-travelers-line reveal">Built for travelers, not for classrooms.</h2>
+      <h2 class="for-travelers-line reveal">Made for people with a flight booked.</h2>
       <p class="for-travelers-sub reveal">
-        You have a week, not a semester. This is what you'll actually use on
-        the trip: {roughLines} lines, written for the country you're going to,
-        each one with what they'll say back to you.
+        You've got a week or two. There are {roughLines} lines here,
+        written for the country you're going to, and each one tells you what
+        to expect back.
       </p>
     </div>
   </section>
 
   <section class="explainer full-bleed">
     <div class="container">
-      <h2 class="reveal">What is Try Convi?</h2>
+      <h2 class="reveal">What's on the site</h2>
       <p class="explainer-sub reveal">
-        A language platform built to make you conversational and speak like a
-        local: the stuff you overhear on the street, not the stuff in
-        Chapter 3. Three independent editions, in Spanish, Swedish and German.
-        Read every scenario, then drill them in practice mode until they stick,
-        all of it free, no account needed.
-        <a class="explainer-more" href="/about">What this is, and every section →</a>
+        Try Convi is a phrasebook you can also practice with. Spanish, Swedish
+        and German were each written on their own for their own country, so
+        nothing is translated across. Read a scenario, then drill it until you
+        can say it without looking.
+        <a class="explainer-more" href="/about">See every section →</a>
       </p>
       <div class="tier-grid reveal">
         <div class="tier-card">
           <span class="tier-badge">Read</span>
-          <h3>Every scenario, start to finish</h3>
+          <h3>Read the whole scenario</h3>
           <p>
-            {categoryCount} everyday conversation categories across all three
-            languages: getting around, slang, ordering a beer, flirting,
-            emergencies, the lot. Nothing held back.
+            {categoryCount} categories across the three languages, all of them
+            open. Taxis, bars and slang are in there, and so is asking a
+            pharmacist for something for your head.
           </p>
           <ul>
-            <li>Real phrases people actually say</li>
-            <li>"What they'll probably say back"</li>
-            <li>Spanish, Swedish and German editions</li>
-            <li>No sign-up required</li>
+            <li>The line people really say, then what they'll probably say back</li>
+            <li>A warning wherever a phrase is regional or rude</li>
           </ul>
           <LangMenu path="/scenarios" label="Browse scenarios" variant="secondary" />
         </div>
         <div class="tier-card tier-card--highlight">
           <span class="tier-badge tier-badge--accent">Practice</span>
-          <h3>Make it stick before you land</h3>
+          <h3>Drill it before you fly</h3>
           <p>
-            A guided path through every scenario in every language, so the line
-            you need arrives when you need it instead of two hours later.
+            A guided path through every scenario, so the line shows up when you
+            need it and not two hours later.
           </p>
           <ul>
-            <li>A guided path through every scenario</li>
             <li>Rounds of eight: situations, matching pairs, typing</li>
-            <li>Hear every line spoken out loud</li>
-            <li>Spanish, Swedish <em>and</em> German</li>
-            <li>Free, no account, no card</li>
+            <li>Every line is spoken out loud</li>
+            <li>Free, and there's no account to make</li>
           </ul>
           <LangMenu path="/practice" label="Start practicing" variant="primary" />
         </div>
@@ -251,10 +245,10 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
 
   <section class="signup full-bleed">
     <div class="container reveal">
-      <h2>Get Try Convi in your pocket</h2>
+      <h2>The app isn't out yet</h2>
       <p class="signup-sub">
-        Drop your email and we'll ping you the moment the app (and printable
-        phrasebook) is ready for your next trip.
+        Leave your email and we'll tell you when the app and the printable
+        phrasebook are ready.
       </p>
       <form class="signup-form" id="signup-form">
         <input type="email" name="email" placeholder="you@email.com" required aria-label="Email address" />
@@ -620,7 +614,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
   .button {
     display: inline-block;
     padding: 0.85rem 1.5rem;
-    border-radius: 999px;
+    border-radius: var(--radius-button);
     background: var(--color-primary);
     color: #fff;
     text-decoration: none;
@@ -715,15 +709,6 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     text-align: center;
   }
 
-  .for-travelers-kicker {
-    margin: 0 0 0.9rem;
-    /* Uppercase and tracked, which is the one case the 13px floor gives way. */
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-primary-dark);
-  }
 
   .for-travelers-line {
     font-family: var(--font-display);
@@ -917,7 +902,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
     flex: 1;
     min-width: 200px;
     padding: 0.75rem 1rem;
-    border-radius: 999px;
+    border-radius: var(--radius-button);
     border: 1px solid var(--color-border);
     font-size: 1rem;
     font-family: var(--font-body);
@@ -930,7 +915,7 @@ const pageDescription = `The Spanish, Swedish and German people actually speak, 
 
   .signup-form button {
     padding: 0.75rem 1.5rem;
-    border-radius: 999px;
+    border-radius: var(--radius-button);
     border: none;
     background: var(--color-primary);
     color: #fff;

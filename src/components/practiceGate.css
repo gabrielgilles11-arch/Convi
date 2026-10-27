@@ -40,7 +40,7 @@
   display: inline-block;
   padding: 0.7rem 1.5rem 1rem;
   line-height: 1;
-  border-radius: 999px;
+  border-radius: var(--radius-button);
   background: var(--color-primary);
   color: #fff;
   text-decoration: none;
@@ -66,7 +66,7 @@
   flex: 1;
   min-width: 160px;
   padding: 0.65rem 0.9rem;
-  border-radius: 999px;
+  border-radius: var(--radius-button);
   border: 1px solid var(--color-border);
   font-size: 0.95rem;
   font-family: var(--font-body);
@@ -79,7 +79,7 @@
 
 .gate-license-form button {
   padding: 0.65rem 1.25rem;
-  border-radius: 999px;
+  border-radius: var(--radius-button);
   border: none;
   background: var(--color-ink);
   color: #fff;
