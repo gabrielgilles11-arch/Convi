@@ -128,8 +128,8 @@ subject every line.
 
 ## Game Mode: the same conversations, played
 
-A switch at the top of Talk turns it into Game Mode: Convi's trip through the
-edition, one place at a time (taxi from the airport, the bar, the metro, a
+A Talk / Game switch on the rail beside the path decides what the launch
+button opens. Game Mode is Convi's trip through the edition, one place at a time (taxi from the airport, the bar, the metro, a
 café), drawn in the same flat cartoon style as the reels. The local speaks,
 and you pick what Convi says from three or type it.
 
