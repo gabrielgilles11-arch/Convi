@@ -287,10 +287,23 @@ function stageOf(categoryId: string): string {
 
 /** The page title: a search, not a description of a page. */
 export function searchTitle(category: Category, locale: Locale): string {
-  const { language, region } = getLocaleInfo(locale);
+  const { language } = getLocaleInfo(locale);
+  const heading = searchHeading(category, locale);
+  // Longest first, falling back as needed so the title is not cut off in
+  // results (search engines show about 60 characters).
+  const options = [`${heading}: real ${language} phrases`, `${heading}: ${language} phrases`, heading];
+  return options.find((t) => t.length <= 60) ?? heading;
+}
+
+/**
+ * The page's H1: the question a traveler types, said in plain words. The
+ * category's own title stays on the page just above it.
+ */
+export function searchHeading(category: Category, locale: Locale): string {
+  const { region } = getLocaleInfo(locale);
   const intent = SEARCH_INTENT[stageOf(category.id)];
-  if (!intent) return `${category.title}: ${language} phrases`;
-  return `How to ${intent} in ${region}: real ${language} phrases`;
+  if (!intent) return category.title;
+  return `How to ${intent} in ${region}`;
 }
 
 /**
@@ -305,10 +318,21 @@ export function searchTitle(category: Category, locale: Locale): string {
 export function searchBlurb(category: Category, locale: Locale): string {
   const { language, region } = getLocaleInfo(locale);
   const intent = SEARCH_INTENT[stageOf(category.id)] ?? category.title.toLowerCase();
-  const sample = samplePhrases(category, 3).join(" · ");
   const count = countCategoryItems(category);
-  const lead = sample ? `${sample}: the ` : "The ";
-  return `${lead}${language} you actually need to ${intent} in ${region}. ${count} real lines with what they'll say back. Free, no sign-up.`;
+  // Fewer sample phrases until it fits: results cut descriptions at about 160
+  // characters, and a phrase cut in half is worse than one left out.
+  const build = (n: number, tail: string) => {
+    const sample = samplePhrases(category, n).join(" · ");
+    const lead = sample ? `${sample}: the ` : "The ";
+    return `${lead}${language} you actually need to ${intent} in ${region}. ${count} real lines with what they'll say back.${tail}`;
+  };
+  for (const tail of [" Free, no sign-up.", ""]) {
+    for (let n = 3; n >= 0; n--) {
+      const text = build(n, tail);
+      if (text.length <= 160) return text;
+    }
+  }
+  return build(0, "");
 }
 
 /** The first few target-language lines in a category, for the blurb. */

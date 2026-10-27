@@ -2,6 +2,7 @@
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
 import { localePath, localeFromSlug, getLocaleInfo, DEFAULT_LOCALE, type Locale } from "../lib/content";
+import { canonicalUrl } from "../lib/seo";
 
 interface Props {
   title?: string;
@@ -41,7 +42,7 @@ const navCurrent = locale as Locale | undefined;
 // than omitted — present-and-empty is "Spanish", absent is "no edition here".
 const localeSlug = navCurrent ? getLocaleInfo(navCurrent).slug : undefined;
 
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const canonical = canonicalUrl(Astro.url.pathname, Astro.site);
 const ogImage = new URL("/og-image.png", Astro.site);
 
 // One @graph rather than several script tags: the site-level facts, then
@@ -55,15 +56,29 @@ const structuredData = {
       name: "Try Convi",
       url: Astro.site?.href,
       description:
-        "Learn how to speak like a local: real conversations, not textbook language.",
+        "Learn how to speak like a local. Free Spanish, Swedish and German phrases for travelers, with what they'll say back.",
       inLanguage: "en",
-      publisher: {
-        "@type": "Organization",
-        "@id": `${Astro.site?.href}#org`,
-        name: "Try Convi",
-        url: Astro.site?.href,
-        logo: ogImage.href,
-      },
+      publisher: { "@id": `${Astro.site?.href}#org` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${Astro.site?.href}#org`,
+      name: "Try Convi",
+      url: Astro.site?.href,
+      logo: ogImage.href,
+      email: "hello@tryconvi.com",
+      founder: { "@id": `${Astro.site?.href}about#gabriel-gilles` },
+      // The same two links as the footer. Tells search and answer engines
+      // that the channels and the site are one brand.
+      sameAs: ["https://www.youtube.com/@TryConvi", "https://www.tiktok.com/@tryconvi"],
+    },
+    {
+      "@type": "Person",
+      "@id": `${Astro.site?.href}about#gabriel-gilles`,
+      name: "Gabriel Gilles",
+      url: `${Astro.site?.href}about#who-made-this`,
+      jobTitle: "Founder, Try Convi",
+      alumniOf: { "@type": "CollegeOrUniversity", name: "Georgetown University" },
     },
     ...schema,
   ],

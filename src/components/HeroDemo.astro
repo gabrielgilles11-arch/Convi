@@ -66,16 +66,16 @@ const lastStep = delays.length - 1;
             {beat.situation}
           </p>
           <p class="demo-bubble demo-bubble--them demo-step" data-step={i * 3}>
-            <span class="demo-source">{beat.them.source}</span>
+            <span class="demo-source" lang={demo.locale}>{beat.them.source}</span>
             <span class="demo-en">{beat.them.en}</span>
           </p>
           <p class="demo-bubble demo-bubble--you demo-step" data-step={i * 3 + 1}>
-            <span class="demo-source">{beat.you.source}</span>
+            <span class="demo-source" lang={demo.locale}>{beat.you.source}</span>
             <span class="demo-en">{beat.you.en}</span>
             {beat.you.note && <span class="demo-note">{beat.you.note}</span>}
           </p>
           <p class="demo-bubble demo-bubble--them demo-step" data-step={i * 3 + 2}>
-            <span class="demo-source">{beat.reply.source}</span>
+            <span class="demo-source" lang={demo.locale}>{beat.reply.source}</span>
             <span class="demo-en">{beat.reply.en}</span>
           </p>
         </li>
