@@ -126,29 +126,59 @@ Only `exchanges` become conversations. `scenes` are separate moments written to
 put one word each in context, so a transcript made of them would change the
 subject every line.
 
-## Game Mode: the same conversations, played
+## Game Mode: short conversations, scripted from sourced lines
 
 A Talk / Game switch on the rail beside the path decides what the launch
-button opens. Game Mode is Convi's trip through the edition, one place at a time (taxi from the airport, the bar, the metro, a
-café), drawn in the same flat cartoon style as the reels. The local speaks,
-and you pick what Convi says from three or type it.
+button opens. Game Mode is Convi's trip through the edition, one place at a
+time (taxi from the airport, the bar, the metro, a café), drawn in the same
+flat cartoon style as the reels, with a background loop per country.
 
-Nothing new is written for it. Each scene is an authored subsection
-(`GAME_SCENES` in `lib/gameTypes.ts`), the right answer is a line written for
-that beat, and the two wrong ones are lines written for other beats. A place
-an edition has no dialogue for, German café today, shows as coming soon
-rather than being filled with lines nobody sourced.
+A scene is not a subsection walked end to end. Eight beats about the boot,
+the meter, the route and the receipt is a list, not a conversation, so each
+scene is a script (`lib/gameScripts.ts`): four to six turns, the local
+speaking first wherever a local would, and Convi's choice deciding what comes
+next. Order a caña and nobody asks "draft or bottle?"; ask for an iced coffee
+and it just comes. English shows at the start of a scene and when Convi has to
+be the one to speak (a cue), and otherwise only on request.
 
-The hard part is the wrong answers, because a distractor that is arguably
-right is the one thing a multiple choice cannot have. `safeDistractor` throws
-a candidate away if it passes the grader, shares a meaningful word with any
-accepted line in either language, overlaps what was just said to you, or was
-written for an overlapping moment; when you are asked something, only lines
-that open a beat are offered, never answers to another question. The tests
-shuffle every beat in every edition and assert exactly one option grades as
-right.
+Scripts hold references, never text: an exchange id and a part (`q`, `aN`,
+`r`), resolved against the content on the server (`lib/gameScenes.ts`,
+served by `/api/game`). A line written as two alternatives ("A / B") can be
+split into its sides; nothing else is done to a line. The tests resolve every
+reference, walk every path and keep each one between three and six turns.
 
-Stars and best scores live in `localStorage` under `convi:game:v1`, like the
+What a script does add is pairings the content keeps apart. These are
+judgment calls a speaker should check, and are the only ones:
+
+| Scene | Asked | Answered with |
+| :--- | :--- | :--- |
+| es café | `beer-food-coffee-01` q | `beer-food-coffee-06` q (iced coffee as the order) |
+| es café | `beer-food-coffee-01` r | `beer-food-05` a0 / a1 (for here, to go) |
+| es café | `beer-food-coffee-07` q | `beer-food-06` a1 (no, thanks) |
+| es bar | `beer-food-01` r | `beer-food-04` a0 / a1 |
+| es taxi | `taxi-02` q | `taxi-08` q (through the center) |
+| sv bar | `sv-beer-food-01` r | `sv-beer-food-02` a0 / a1 |
+| de bar | `de-beer-food-01` r | `de-beer-food-02` a0 / a1 |
+
+Germany has no café dialogue yet, so its fourth tile is locked rather than
+filled with lines nobody sourced.
+
+The three options sit in Convi's thought cloud on the counter, inside the
+picture. Every scripted option for a turn is a fair thing to say; where there
+are fewer than three, wrong ones fill the rest. Lines marked `local` (by what
+the content's own notes say: "how locals order", "what everybody calls it")
+score half again. A wrong option that is arguably right is the one thing a
+multiple choice cannot have, so `safeDistractor` throws a candidate away if it
+passes the grader, shares a meaningful word with any accepted line in either
+language, overlaps what was just said or the moment itself, has a blank in
+it, or is taught as right elsewhere in the same scene. The tests shuffle every
+turn in every edition and assert exactly the scripted lines grade as right.
+
+The music is synthesized (`components/quiz/music.ts`): no files and nothing
+new in the CSP. It dips under every spoken line, stops in a hidden tab, and
+has its own switch, remembered per browser.
+
+Stars and best scores live in `localStorage` under `convi:game:v2`, like the
 rest of progress.
 
 ## Progress, and what stays on the device
