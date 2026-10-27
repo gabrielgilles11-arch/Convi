@@ -18,7 +18,7 @@ interface Props {
 
 const {
   title = "Try Convi",
-  description = "Learn how to speak like a local: real conversations, not textbook language.",
+  description = "Learn how to speak like a local. Free Spanish, Swedish and German phrases for travelers, with what they'll say back.",
   locale,
   schema = [],
 } = Astro.props;
@@ -123,15 +123,15 @@ const structuredData = {
       <div class="container footer-grid">
         <div class="footer-brand">
           <Logo />
-          <p class="footer-tagline">Real conversations, not textbook language.</p>
+          <p class="footer-tagline">Spanish, Swedish and German, the way people say it.</p>
         </div>
         <div class="footer-col">
           <h3>About</h3>
-          <p>¡Try Convi! is a language platform that will teach you to speak like a local, built from real conversations you'll have in Spanish, Swedish and German.</p>
+          <p>¡Try Convi! is a free phrasebook and practice app for Spanish, Swedish and German, built around the conversations you actually have on a trip.</p>
           {/* The About page carries the full section index, so this link is
               also what puts all 44 scenario pages one click from every page on
               the site rather than three. */}
-          <p><a href="/about">What Try Convi is, and every section</a></p>
+          <p><a href="/about">About, and every section</a></p>
         </div>
         <div class="footer-col">
           <h3>Contact</h3>
@@ -234,6 +234,9 @@ const structuredData = {
     --shell-wide: 1600px;
     --shell-text: 800px;
     --shell-pad: clamp(1rem, 3vw, 3rem);
+    /* Buttons and the fields beside them. Chips, badges and the quiz's own
+       controls keep their pill shape. */
+    --radius-button: 10px;
 
     --color-bg: #fff6ec;
     --color-ink: #241610;
@@ -446,7 +449,7 @@ const structuredData = {
     min-height: 44px;
     display: inline-block;
     padding: 0.55rem 1.15rem;
-    border-radius: 999px;
+    border-radius: var(--radius-button);
     background: var(--color-primary);
     color: #fff;
     text-decoration: none;
