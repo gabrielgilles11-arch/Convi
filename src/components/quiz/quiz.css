@@ -1758,17 +1758,19 @@
   background: currentColor;
 }
 
+/* Labels are short and edition-free (STAGE_TITLES), so they can be set large
+   enough to read at arm's length on a phone and still stay within two lines. */
 .stone-label {
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.25;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.2;
   text-align: center;
   color: var(--color-ink);
 }
 
 .stone-here {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
