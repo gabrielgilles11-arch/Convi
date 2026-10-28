@@ -6,6 +6,8 @@ import {
   buildQuestion,
   buildRound,
   buildStages,
+  STAGE_TITLES,
+  stageKeyOf,
   coreOf,
   pickedIt,
   tooAlike,
@@ -447,6 +449,19 @@ describe.each(LOCALES.map((l) => l.locale))("all the right answers: %s", (locale
       if (!question) continue;
       const right = question.options.filter((option) => pickedIt(option, question.accepted));
       expect(right.length, `${item.id}: ${right.length} correct options`).toBe(1);
+    }
+  });
+});
+
+describe("practice path titles", () => {
+  const COUNTRY = /\b(Germany|German-wide|Sweden|Swedish|Stockholm|Spain|Spanish)\b|\(|—/i;
+
+  it.each(locales)("%s: every section reads the same across editions, with no country", (locale: Locale) => {
+    const items = buildQuizItems(locale);
+    const stages = buildStages(items, getCategoryList(locale));
+    for (const stage of stages) {
+      expect(stage.title).not.toMatch(COUNTRY);
+      expect(STAGE_TITLES[stageKeyOf(stage.categoryId)], stage.categoryId).toBeDefined();
     }
   });
 });

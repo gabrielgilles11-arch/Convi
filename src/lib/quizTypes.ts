@@ -137,6 +137,40 @@ export const PRACTICE_PATH = [
 ];
 
 /**
+ * What a section is called in practice: on the path, in the progress panel and
+ * at the top of a round. Keyed by stage, like PRACTICE_PATH, so all three
+ * editions read the same.
+ *
+ * The content titles are guide headings and say where they are ("At a
+ * restaurant (Germany)"). On the path the edition is already chosen, so the
+ * country repeated under every stone is noise, and the guide titles had
+ * drifted apart between editions ("Shops" here, "Shopping" there). A key with
+ * no entry falls back to its content title.
+ */
+export const STAGE_TITLES: Record<string, string> = {
+  "getting-around": "Getting around",
+  "starting-convo": "Starting a convo",
+  slang: "Slang",
+  "beer-food": "Ordering drinks & food",
+  hotel: "Checking in",
+  restaurant: "At a restaurant",
+  shopping: "Shopping",
+  "bayern-slang": "Bavarian slang",
+  "berlin-slang": "Berlin slang",
+  nightlife: "Nightlife",
+  flirting: "Flirting",
+  "cuss-words": "Cuss words",
+  "drunk-scale": "How drunk are you?",
+  resacon: "The morning after",
+  "for-the-girls": "For the girls",
+  emergencies: "Emergencies",
+};
+
+export function stageTitleOf(category: { id: string; title: string }): string {
+  return STAGE_TITLES[stageKeyOf(category.id)] ?? category.title;
+}
+
+/**
  * What one round is made of: five situations, one matching screen, two
  * translation questions. Order is shuffled every run, except that a round
  * always opens on a situation — that is the thing being taught.
@@ -317,7 +351,7 @@ export function buildStages(items: QuizItem[], categories: QuizCategory[]): Stag
       stages.push({
         id: multi ? `${category.id}#${i + 1}` : category.id,
         categoryId: category.id,
-        title: multi ? `${category.title}: Part ${i + 1}` : category.title,
+        title: multi ? `${stageTitleOf(category)}: Part ${i + 1}` : stageTitleOf(category),
         part: multi ? i + 1 : null,
         partCount: chunks.length,
         itemIds: chunk,
