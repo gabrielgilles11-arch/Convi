@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
 import HeroDemo from "../components/HeroDemo.astro";
+import ConviPeek from "../components/ConviPeek.astro";
 import {
   LOCALES,
   countCategoryItems,
@@ -134,6 +135,9 @@ const pageDescription = `Free Spanish, Swedish and German phrases for travelers:
       {/* No `reveal` on this one. The card runs its own entrance, and two
           fade-ins on the same element is the jank the demo was built to avoid. */}
       <div class="hero-art">
+        {/* Convi hangs over the card's top edge. .hero-art reserves his
+            height above it, so he never reaches the copy or the header. */}
+        <div class="hero-convi"><ConviPeek /></div>
         <HeroDemo />
       </div>
     </div>
@@ -475,6 +479,27 @@ const pageDescription = `Free Spanish, Swedish and German phrases for travelers:
     justify-self: end;
     width: 100%;
     max-width: 460px;
+    /*
+     * Room above the card for Convi, who is drawn standing behind it.
+     *
+     * His SVG is 320 by 272 units and the card's edge crosses it at 252, so
+     * the part above the edge is 0.7875 of his width. Padding rather than
+     * letting him overhang: the space is part of the column, so the grid
+     * accounts for it and he cannot land on anything at any width.
+     */
+    --convi-w: clamp(116px, 11vw, 168px);
+    position: relative;
+    padding-top: calc(var(--convi-w) * 0.7875);
+  }
+
+  .hero-convi {
+    position: absolute;
+    top: 0;
+    right: 12%;
+    width: var(--convi-w);
+    /* Over the card, so the hands sit on its edge rather than under it. */
+    z-index: 1;
+    pointer-events: none;
   }
 
   @media (max-width: 720px) {

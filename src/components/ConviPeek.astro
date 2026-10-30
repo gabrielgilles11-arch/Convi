@@ -1,0 +1,117 @@
+---
+/**
+ * Convi, hanging over the top of the hero's Talk Mode card.
+ *
+ * The same character Game Mode plays as (straw hat, green band, shades), drawn
+ * from the same shapes as `Convi()` in quiz/GameStage.tsx so the two can never
+ * look like different people. Here he is out of a scene: head and hat above
+ * the card's edge, hands curled over it, everything below the edge clipped
+ * away so he reads as standing behind the card.
+ *
+ * Positioned by its parent (`.hero-art` in pages/index.astro), which reserves
+ * the height he needs above the card, so he never sits on the copy or the
+ * header and nothing reflows when he moves.
+ *
+ * Decorative: the card already says what the hero is about. `aria-hidden`
+ * keeps him out of the reading order.
+ *
+ * Motion is a slow head tilt, transform only, so it costs no layout. It is
+ * off under `prefers-reduced-motion`, and a CSS animation is not run for a
+ * hidden tab, so there is no timer to clear.
+ */
+const SKIN = "#f2c9a0";
+const KNUCKLE = "#d9a77c";
+---
+
+<svg
+  class="convi-peek"
+  viewBox="-160 -160 320 272"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    {/* Everything above the card's edge, which sits at y=92. */}
+    <clipPath id="convi-peek-above">
+      <rect x="-160" y="-160" width="320" height="252" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#convi-peek-above)">
+    <g class="convi-peek-head">
+      <rect x="-22" y="70" width="44" height="40" fill={SKIN} />
+      <circle cx="0" cy="0" r="100" fill={SKIN} />
+      <path
+        d="M-104 -16 Q-96 -96 0 -104 Q96 -96 104 -16 Q74 -54 0 -46 Q-74 -54 -104 -16Z"
+        fill="#c8872e"
+      />
+      <ellipse cx="0" cy="-66" rx="148" ry="26" fill="#f2d388" />
+      <path d="M-78 -66 Q-74 -148 0 -152 Q74 -148 78 -66Z" fill="#f2d388" />
+      <rect x="-78" y="-86" width="156" height="17" fill="#2e7d4f" />
+      <rect x="-74" y="-10" width="62" height="38" rx="15" fill="#1d2a33" />
+      <rect x="12" y="-10" width="62" height="38" rx="15" fill="#1d2a33" />
+      <rect x="-14" y="0" width="28" height="6" fill="#1d2a33" />
+      <rect x="-62" y="-4" width="16" height="6" rx="3" fill="#5c6f7d" />
+      <rect x="24" y="-4" width="16" height="6" rx="3" fill="#5c6f7d" />
+      {/* A grin rather than Game Mode's talking mouth: he is not saying anything. */}
+      <path
+        d="M-26 48 Q0 70 26 48"
+        fill="none"
+        stroke="#7a2e2e"
+        stroke-width="8"
+        stroke-linecap="round"
+      />
+    </g>
+  </g>
+
+  {/* Hands over the edge, in front of the card. */}
+  {
+    [-104, 104].map((x) => (
+      <g transform={`translate(${x} 92)`}>
+        <rect x="-32" y="-14" width="64" height="30" rx="14" fill={SKIN} />
+        {[-12, 0, 12].map((dx) => (
+          <path
+            d={`M${dx} 2 L${dx} 14`}
+            stroke={KNUCKLE}
+            stroke-width="3.5"
+            stroke-linecap="round"
+          />
+        ))}
+      </g>
+    ))
+  }
+</svg>
+
+<style>
+  .convi-peek {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .convi-peek-head {
+    transform-box: view-box;
+    /* The neck, where it meets the card: the head tilts from there. */
+    transform-origin: 50% 92%;
+    animation: convi-peek-tilt 6s ease-in-out infinite;
+  }
+
+  @keyframes convi-peek-tilt {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    30% {
+      transform: rotate(-5deg);
+    }
+    60% {
+      transform: rotate(3deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .convi-peek-head {
+      animation: none;
+    }
+  }
+</style>
