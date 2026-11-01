@@ -4471,5 +4471,13 @@
         }
       ]
     }
+  ],
+  "talk": [
+    {"id": "es-hola", "es": "¡Hola!", "en": "Hi!"},
+    {"id": "es-buenas", "es": "¡Buenas!", "en": "Hi! (any time of day)"},
+    {"id": "es-buenos-dias", "es": "¡Buenos días!", "en": "Good morning!"},
+    {"id": "es-adios", "es": "¡Adiós!", "en": "Bye!"},
+    {"id": "es-gracias", "es": "Gracias.", "en": "Thanks."},
+    {"id": "es-muchas-gracias", "es": "Muchas gracias.", "en": "Thank you very much."}
   ]
 }

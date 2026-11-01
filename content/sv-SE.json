@@ -4565,5 +4565,11 @@
         }
       ]
     }
+  ],
+  "talk": [
+    {"id": "sv-hej-da", "es": "Hej då!", "en": "Bye!"},
+    {"id": "sv-hej-hej", "es": "Hej hej!", "en": "Bye bye!"},
+    {"id": "sv-tack-hej", "es": "Tack hej!", "en": "Thanks, bye!"},
+    {"id": "sv-tack", "es": "Tack!", "en": "Thanks!"}
   ]
 }

@@ -107,3 +107,44 @@ Swedish instead of switching to English.
 The counter's reply to "En kaffe och en kanelbulle, tack." was "Ska du ha den
 värmd?". It is out; the beat now ends on "Varsågod.", which is what is actually
 said as the order is handed over. No new line was written for it.
+
+## Talk Mode greetings and goodbyes — `talk` in each content file
+
+The lines every Talk conversation opens and closes with, said on their own.
+No scenario page lists them, because nobody needs a page to learn that a bar
+starts with hello; Talk needs them because a conversation does.
+
+### Spanish
+
+Covers `es-hola`, `es-buenas`, `es-buenos-dias`, `es-adios`, `es-gracias`,
+`es-muchas-gracias`. "Hasta luego." was already in the content
+(`starting-convo-07`) and is reused, not added.
+
+- ¡Hola! / ¡Buenas! (all-purpose, any time of day) / ¡Buenos días! on walking
+  into a café or up to a market stall / Adiós —
+  https://www.immoabroad.com/how-to-greet-someone-in-spain-spanish-greeting-etiquette
+- ¡Buenas! as the everyday greeting short of a close friend —
+  https://baselang.com/blog/basic-grammar/spanish-greetings-goodbyes/
+- Gracias / Muchas gracias / ¡Hola! / Adiós —
+  https://blog.busuu.com/common-spanish-phrases/
+
+### Swedish
+
+Covers `sv-hej-da`, `sv-hej-hej`, `sv-tack-hej`, `sv-tack`. "Hej!", "Tja!",
+"Ha det bra!" and "Tack så mycket." were already in the content.
+
+- Hej då (the most common goodbye), Hej hej (a common goodbye), Tack hej
+  (thanks, bye) — https://www.clozemaster.com/blog/goodbye-in-swedish/
+- Tack / Hej då — https://www.naturetravels.co.uk/blog/basic-swedish-phrases/
+
+### German
+
+Covers `de-guten-tag`, `de-tschuess`, `de-auf-wiedersehen`, `de-schoenen-tag`,
+`de-gleichfalls`, `de-danke`. "Hallo!", "Grüß Gott!" and "Danke schön." were
+already in the content.
+
+- Guten Tag (formal) / Tschüss / Danke(schön) —
+  https://www.lingoda.com/blog/en/20-german-phrases-travelling
+- Tschüss (the most common bye), Auf Wiedersehen (new acquaintances, older
+  people), Schönen Tag noch (what store clerks say) answered with Danke
+  gleichfalls — https://www.lingoda.com/blog/en/saying-goodbye-german/

@@ -129,10 +129,24 @@ export interface Category {
   subsections: (DialogueSubsection | PhrasebookSubsection)[];
 }
 
+/**
+ * A greeting or goodbye said on its own: "¡Buenas!", "Hej då!", "Schönen Tag
+ * noch!". Talk Mode opens and closes every conversation with these, and no
+ * scenario page lists them, because nobody needs a page to learn that a bar
+ * starts with hello. Sourced like every other line; see content/SOURCES.md.
+ */
+export interface TalkLine {
+  id: string;
+  /** The line itself, in the edition's language (the schema's `es` key). */
+  es: string;
+  en: string;
+}
+
 export interface ContentFile {
   language: string;
   meta: { sourceTitle: string; tagline: string; region: string };
   categories: Category[];
+  talk?: TalkLine[];
 }
 
 export type Locale = "es-ES" | "sv-SE" | "de-DE";
@@ -180,6 +194,11 @@ export function localePath(locale: Locale, path: string): string {
 
 export function getContent(locale: Locale = DEFAULT_LOCALE): ContentFile {
   return FILES[locale];
+}
+
+/** The edition's greetings and goodbyes, for Talk Mode. */
+export function getTalkLines(locale: Locale = DEFAULT_LOCALE): TalkLine[] {
+  return getContent(locale).talk ?? [];
 }
 
 export function getCategories(locale: Locale = DEFAULT_LOCALE): Category[] {

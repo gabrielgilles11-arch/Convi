@@ -268,6 +268,9 @@ function asTurn(node: GameNode): ConvTurn {
     situation: [node.situation, node.cue ?? ""].join(" "),
     theirOpener: node.npc ?? node.asked,
     yourLines: node.options.map((o) => o.line),
+    replies: node.options.map(() => null),
+    next: node.options.map(() => null),
+    cue: node.cue ?? null,
     theirReply: null,
     note: "",
   };

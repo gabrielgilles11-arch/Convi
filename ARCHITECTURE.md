@@ -101,30 +101,48 @@ then `none`. A small stage gives up guards rather than rendering a two-option
 then makes a repair pass, because taking the first question that fits can
 strand a twin at the end next to the one question it cannot follow.
 
-## Talk: the conversations were already written
+## Talk: everyday conversations, scripted from sourced lines
 
-`/api/conversations` serves a third thing built from the same JSON. A dialogue
-subsection — "Taxi / rideshare", "At the door" — is already eight consecutive
-beats in one place: the line that opens each one, the lines you could answer
-with, and what comes back. Walking it needs no model, and the only thing the
-JSON does not say in a single field is which of those lines is whose.
+`/api/conversations` serves Talk Mode: the everyday conversations a trip is
+made of, at a bar, a café, a taxi, the metro, a restaurant, a hotel desk, a
+shop, a club door, a pharmacy, and small talk with whoever is on the next
+stool. Being robbed and shaking off a creep stay on the scenario pages and in
+the practice path; they are not conversations anybody rehearses as small talk.
 
-`speaker` decides that, and resolving it is the whole of `conversations.ts`:
+Talk used to walk a scenario subsection's eight exchanges in the order they
+were listed. A scenario page is a list, though: eight things that can happen at
+a bar, each written to stand alone. Back to back they made a bartender who asks
+which beer you want and ignores the answer, a "Son __ euros" with the blank
+still in it, and another round offered after you had paid. Nobody said hello.
 
-```
-speaker: "them"   their question opens  →  answers are yours  →  likelyReply comes back
-speaker: "you"    the question is yours →  answers are theirs →  likelyReply follows
-```
+So each conversation is now a script (`lib/talkScripts.ts`), the same idea as
+Game Mode's. You open it ("¡Buenas!", "Hej!", "Guten Tag!"), they answer what
+you said, and where what you say changes what happens, it does: a caña gets
+"Vale. ¿Algo de comer?", "una cerveza" gets "¿De barril o de botella?", an
+Helles in Munich gets "Maß oder Halbe?". It ends with a goodbye, down to "Schönen
+Tag noch!" and "Danke, gleichfalls!" at a German till.
 
-The consequence is stated on the screen rather than hidden: **the conversation
-does not branch.** Picking the bolder of two replies changes how you sound, not
-what they say next, because the content has one next. Generating the others
-would mean teaching unreviewed lines as if they were authored, which is the
-trade the whole content model exists to refuse.
+Scripts hold references, never text: an exchange id and a part (`q`, `aN`, `r`,
+with `alt` for one side of an "A / B" line), or a greeting from `talk` in the
+content file. `lib/conversations.ts` resolves them on the server. English on
+screen is the scene, once, and a short cue only where you have to start and
+nothing they said tells you what about ("Ask for the check.").
 
-Only `exchanges` become conversations. `scenes` are separate moments written to
-put one word each in context, so a transcript made of them would change the
-subject every line.
+The tests walk every path of every script in all three editions and hold it to
+what a conversation is: you open it (except the two in `THEY_OPEN`), it never
+asks a second thing before you have answered the first, they never say a blank,
+a slash or a list out loud, every line you can say grades as itself and not as
+a neighbor (which line it counts as decides the branch), and every path ends
+in three to ten of your lines.
+
+What a script adds beyond order is pairings the content keeps apart: an answer
+from one exchange to a question from another, like "Para aquí." answering the
+café's "¿Para tomar aquí?". Every one is a judgment call a speaker can check
+against the script, which reads top to bottom as the conversation does.
+
+`talk` lines and single sides of "A / B" lines are recorded under their own
+ids (`es-hola`, `taxi-01-r-alt0`) by `scripts/generate-audio.mjs`; until a run
+records them they fall back to the device voice, like everything in Spanish.
 
 ## Game Mode: short conversations, scripted from sourced lines
 
