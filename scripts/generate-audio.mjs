@@ -217,10 +217,27 @@ export function spokenLines(locale) {
           if (text && endsOnQuestion(text)) push(leadAudioId(id), statementPartOf(text));
         }
       }
+      // Each side of a line written as two ways to say it, "A / B", which is
+      // how Talk Mode says one of them on its own (`-q-alt0`, `-r-alt1`). See
+      // altAudioId in src/lib/conversations.ts.
+      for (const ex of [...(sub.exchanges ?? []), ...(sub.scenes ?? [])]) {
+        const parts = [
+          ["q", ex.question?.es],
+          ["r", ex.likelyReply?.es],
+          ...(ex.answers ?? []).map((a, i) => [`a${i}`, a.es]),
+        ];
+        for (const [part, text] of parts) {
+          const sides = (text ?? "").split(/\s+\/\s+/);
+          if (sides.length < 2) continue;
+          sides.forEach((side, n) => push(`${ex.id}-${part}-alt${n}`, side));
+        }
+      }
       for (const p of sub.phrases ?? []) push(p.id, p.es);
       (sub.items ?? []).forEach((t, i) => push(`${sub.id}-tip${i}`, t.es));
     }
   }
+  // Talk Mode's greetings and goodbyes, under their own ids.
+  for (const line of data.talk ?? []) push(line.id, line.es);
   return lines;
 }
 

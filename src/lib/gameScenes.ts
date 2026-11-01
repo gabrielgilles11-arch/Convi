@@ -22,13 +22,13 @@ import type {
 /** " / " between two ways of saying a line, as speech.ts reads it. */
 const ALTERNATIVES = /\s+\/\s+/;
 
-interface Indexed {
+export interface Indexed {
   exchange: Exchange;
   /** The subsection the exchange was written in. */
   group: string;
 }
 
-function indexExchanges(locale: Locale): Map<string, Indexed> {
+export function indexExchanges(locale: Locale): Map<string, Indexed> {
   const out = new Map<string, Indexed>();
   for (const category of getCategories(locale)) {
     for (const sub of category.subsections) {

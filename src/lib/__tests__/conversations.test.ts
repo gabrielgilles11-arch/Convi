@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { buildConversations } from "../conversations";
+import { TALK_SCRIPTS, THEY_OPEN } from "../talkScripts";
 import { placeName } from "../../components/quiz/ConversationPicker";
-import { getCategories, LOCALES, type DialogueSubsection, type Locale } from "../content";
+import { getCategories, LOCALES, type Locale } from "../content";
 import {
-  MIN_TURNS,
   CONVERSATION_STAGES,
   conversationStageOf,
   followingConversation,
@@ -14,189 +14,221 @@ import {
   READ_FLOOR,
   gradeReply,
   hasSlot,
-  nextBeat,
   replyMatches,
-  skipBudget,
+  type Conversation,
   type ConvLine,
 } from "../conversationTypes";
 
 const locales = LOCALES.map((l) => l.locale);
 
 /**
- * A comeback is the authored line, or the authored line with the hook it ended
- * on taken off.
+ * Every way through a conversation, as the list of beats it visits.
  *
- * The one place the walk-through does not show a line exactly as written. A
- * `likelyReply` ending in a question was authored for the scenario page, where
- * nothing follows it; chained into a conversation it is a question the next
- * beat never answers, so mid-conversation it keeps only the sentences in front
- * of it. Still nothing invented: whatever is shown is a prefix of what a person
- * wrote.
+ * A beat leads somewhere different depending on which of your lines you say,
+ * so a conversation is a graph and these are its paths. A path that comes back
+ * to a beat it has already visited is a loop, and is returned as it stands so
+ * the test can say which one.
  */
-function expectComeback(shown: string | null, authored: string | null) {
-  if (shown === null) {
-    // Dropped entirely only when the authored line was a question and nothing
-    // else, or there was no line to begin with.
-    if (authored !== null) expect(authored.trim()).toMatch(/[?？]$/);
-    return;
-  }
-  expect(authored).not.toBeNull();
-  if (shown === authored) return;
-  expect(authored!.trim()).toMatch(/[?？]$/);
-  expect(authored!.startsWith(shown)).toBe(true);
-  expect(shown).not.toMatch(/[?？]\s*$/);
+function paths(convo: Conversation): number[][] {
+  const out: number[][] = [];
+  const walk = (at: number, sofar: number[]) => {
+    if (sofar.includes(at) || sofar.length > 20) {
+      out.push([...sofar, at]);
+      return;
+    }
+    const here = [...sofar, at];
+    const nexts = new Set(convo.turns[at]!.next);
+    for (const next of nexts) {
+      if (next === null) out.push(here);
+      else walk(next, here);
+    }
+  };
+  walk(0, []);
+  return out;
+}
+
+const asks = (line: string | null | undefined) => Boolean(line && /[?？]\s*$/.test(line.trim()));
+
+/** Every line they say: openers and replies. */
+function theirLines(convo: Conversation) {
+  return convo.turns.flatMap((turn) =>
+    [turn.theirOpener, ...turn.replies]
+      .filter((l): l is NonNullable<typeof l> => l !== null)
+      .map((line) => ({ turn: turn.id, line }))
+  );
 }
 
 /**
- * What Talk promises, checked against the content rather than against itself.
+ * What Talk promises, checked against what it actually serves.
  *
- * The screen makes one claim worth testing — every line it offers was written
- * by hand, in the order it was written — so these tests are all the same shape:
- * take a beat off the screen and find it in the JSON. Nothing here checks how it
- * looks; the builder is the part with the decisions in it.
+ * Every conversation is a script, so the tests walk every path of every
+ * script in every edition and hold it to what a real conversation is: it
+ * starts with you, it never asks two things before you answer, nobody says a
+ * blank out loud, and it ends.
  */
 describe.each(locales)("conversations: %s", (locale: Locale) => {
   const conversations = buildConversations(locale);
 
-  /** Every exchange in the edition, by id, for looking a beat back up. */
-  const exchangesById = new Map(
-    getCategories(locale).flatMap((category) =>
-      category.subsections.flatMap((sub) =>
-        ((sub as DialogueSubsection).exchanges ?? []).map((ex) => [ex.id, ex] as const)
-      )
-    )
-  );
-
-  it("has conversations at all", () => {
-    expect(conversations.length).toBeGreaterThan(0);
+  it("has a conversation for every script, so none was silently dropped", () => {
+    expect(conversations.length).toBeGreaterThan(10);
+    expect(conversations.map((c) => c.id).sort()).toEqual(
+      (TALK_SCRIPTS[locale] ?? []).map((s) => s.id).sort()
+    );
   });
 
-  /**
-   * Talk Mode is the places where somebody talks back. Having exchanges is not
-   * the same thing: the drunk scale has eight of them and they are a scale, so
-   * walking it as a dialogue is a person being asked how drunk they are eight
-   * times over.
-   */
-  it("only offers sections that are somewhere you talk", () => {
+  it("only offers the everyday places a trip takes you", () => {
+    const stages = new Set(conversations.map((c) => conversationStageOf(c.categoryId)));
     for (const convo of conversations) {
       expect(CONVERSATION_STAGES).toContain(conversationStageOf(convo.categoryId));
     }
-  });
-
-  it("leaves the word lists and the drunk scale out", () => {
-    const stages = new Set(conversations.map((c) => conversationStageOf(c.categoryId)));
-    for (const excluded of ["drunk-scale", "slang", "cuss-words", "flirting"]) {
+    for (const excluded of ["drunk-scale", "slang", "cuss-words", "flirting", "emergencies", "for-the-girls"]) {
       expect(stages.has(excluded)).toBe(false);
     }
-  });
-
-  it("keeps the places a trip actually takes you", () => {
-    const stages = new Set(conversations.map((c) => conversationStageOf(c.categoryId)));
-    for (const kept of ["getting-around", "beer-food", "restaurant", "hotel"]) {
+    for (const kept of ["getting-around", "beer-food", "restaurant", "hotel", "shopping", "nightlife"]) {
       expect(stages.has(kept)).toBe(true);
     }
   });
 
-  it("only offers subsections long enough to be a conversation", () => {
+  it("is opened by you, the way you open one on a trip", () => {
     for (const convo of conversations) {
-      expect(convo.turns.length).toBeGreaterThanOrEqual(MIN_TURNS);
+      if (THEY_OPEN.has(convo.id)) continue;
+      expect(convo.turns[0]!.theirOpener, convo.id).toBeNull();
     }
   });
 
-  it("walks each subsection in the order it was authored", () => {
+  it("ends on every path, without going round in circles", () => {
     for (const convo of conversations) {
-      const authored = getCategories(locale)
-        .flatMap((c) => c.subsections)
-        .find((sub) => sub.id === convo.id) as DialogueSubsection | undefined;
-
-      expect(authored).toBeDefined();
-      expect(convo.turns.map((t) => t.id)).toEqual(
-        (authored!.exchanges ?? []).map((ex) => ex.id)
-      );
+      for (const path of paths(convo)) {
+        expect(new Set(path).size, `${convo.id} loops: ${path.join(" > ")}`).toBe(path.length);
+      }
     }
   });
 
-  it("always gives the learner at least one line to say", () => {
+  it("runs between three and ten of your lines, whichever way it goes", () => {
+    for (const convo of conversations) {
+      for (const path of paths(convo)) {
+        expect(path.length, `${convo.id}: ${path.join(" > ")}`).toBeGreaterThanOrEqual(3);
+        expect(path.length, `${convo.id}: ${path.join(" > ")}`).toBeLessThanOrEqual(10);
+      }
+    }
+  });
+
+  it("reaches every beat it has, so no step is written and never played", () => {
+    for (const convo of conversations) {
+      const seen = new Set(paths(convo).flat());
+      convo.turns.forEach((turn, i) => expect(seen.has(i), turn.id).toBe(true));
+    }
+  });
+
+  /**
+   * The bug that started this: a reply that asks you something, and then the
+   * next beat asking something else before you have answered it.
+   */
+  it("never asks you a second thing before you have answered the first", () => {
+    const clashes: string[] = [];
     for (const convo of conversations) {
       for (const turn of convo.turns) {
-        expect(turn.yourLines.length).toBeGreaterThan(0);
-        for (const line of turn.yourLines) expect(line.source.trim()).not.toBe("");
+        turn.replies.forEach((reply, i) => {
+          const next = turn.next[i];
+          if (next === null || !asks(reply?.source)) return;
+          const opener = convo.turns[next]!.theirOpener;
+          if (opener) clashes.push(`${turn.id}: "${reply!.source}" then "${opener.source}"`);
+        });
+      }
+    }
+    expect(clashes).toEqual([]);
+  });
+
+  /**
+   * Your turn with nothing to answer and nothing saying what you want is the
+   * screen probing you. Every such beat is either reached through something
+   * they said, or carries a cue. The goodbye is the exception: after "Here's
+   * your receipt", saying bye needs nobody to tell you to.
+   */
+  it("never leaves you a turn with nothing to react to", () => {
+    const bare: string[] = [];
+    for (const convo of conversations) {
+      convo.turns.forEach((turn) => {
+        turn.next.forEach((next, i) => {
+          if (next === null) return;
+          const target = convo.turns[next]!;
+          if (target.theirOpener || target.cue || turn.replies[i]) return;
+          if (/:(bye|thanks)$/.test(target.id)) return;
+          bare.push(`${turn.id} -> ${target.id}`);
+        });
+      });
+    }
+    expect(bare).toEqual([]);
+  });
+
+  it("never has them say a blank, a slash or a list of options out loud", () => {
+    for (const convo of conversations) {
+      for (const { turn, line } of theirLines(convo)) {
+        expect(hasSlot(line.source), `${turn}: ${line.source}`).toBe(false);
+        expect(line.source, turn).not.toMatch(/\s\/\s|\w\/\w/);
       }
     }
   });
 
   /**
-   * The one thing that cannot be inferred from the text, and the only real
-   * decision the builder makes: whose line is whose. When they open, your lines
-   * are the authored answers; when you open, your line is the question and
-   * everything else is theirs.
+   * Except a hello or a goodbye, where saying it straight back is the whole
+   * exchange: "Hallo!" gets "Hallo!", "Hasta luego." gets "Hasta luego."
    */
-  it("puts every line on the side its speaker field says", () => {
+  it("never hands you their reply as a line to say back", () => {
     for (const convo of conversations) {
       for (const turn of convo.turns) {
-        const ex = exchangesById.get(turn.id);
-        expect(ex).toBeDefined();
-
-        if (ex!.speaker === "them") {
-          expect(turn.theirOpener?.source).toBe(ex!.question.es);
-          expect(turn.yourLines.map((l) => l.source)).toEqual(ex!.answers.map((a) => a.es));
-          expectComeback(turn.theirReply?.source ?? null, ex!.likelyReply?.es ?? null);
-        } else {
-          expect(turn.theirOpener).toBeNull();
-          expect(turn.yourLines.map((l) => l.source)).toEqual([ex!.question.es]);
-          // Their answer to what you just said, or the follow-up line where the
-          // exchange has no answers at all.
-          const theirs = ex!.answers[0]?.es ?? ex!.likelyReply?.es ?? null;
-          expectComeback(turn.theirReply?.source ?? null, theirs);
-        }
-      }
-    }
-  });
-
-  /**
-   * Their comeback is never one of your options.
-   *
-   * Deliberately not the stronger claim that no line of theirs may also be one
-   * of yours: on "Someone greets you" the German and Swedish editions both have
-   * them say "Hallo!" / "Tja!" and you say it straight back, which is what
-   * greeting somebody is. An echo is authored; being handed their answer to
-   * your own line as something to say is not.
-   */
-  it("never offers their comeback as a line for you to say", () => {
-    for (const convo of conversations) {
-      for (const turn of convo.turns) {
-        if (!turn.theirReply) continue;
+        if (/:(hi|bye)$/.test(turn.id)) continue;
         const mine = new Set(turn.yourLines.map((l) => l.source));
-        expect(mine.has(turn.theirReply.source)).toBe(false);
+        turn.replies.forEach((reply) => {
+          if (reply) expect(mine.has(reply.source), `${turn.id}: ${reply.source}`).toBe(false);
+        });
       }
     }
   });
 
-  it("names clips the way the audio generator writes them", () => {
+  it("gives every beat a line to say, and every line its English", () => {
     for (const convo of conversations) {
       for (const turn of convo.turns) {
-        const ex = exchangesById.get(turn.id)!;
-        if (ex.speaker === "them") {
-          expect(turn.theirOpener?.audioId).toBe(`${turn.id}-q`);
-          turn.yourLines.forEach((line, i) => expect(line.audioId).toBe(`${turn.id}-a${i}`));
-          // A comeback that had its hook trimmed is no longer the line the full
-          // clip was recorded of, so it has a clip of its own, `-r-lead`,
-          // recorded from the trimmed text (see audio.test.ts).
-          if (turn.theirReply) {
-            const whole = turn.theirReply.source === ex.likelyReply?.es;
-            expect(turn.theirReply.audioId).toBe(whole ? `${turn.id}-r` : `${turn.id}-r-lead`);
-          }
-        } else {
-          expect(turn.yourLines[0]!.audioId).toBe(`${turn.id}-q`);
+        expect(turn.yourLines.length, turn.id).toBeGreaterThan(0);
+        expect(turn.replies).toHaveLength(turn.yourLines.length);
+        expect(turn.next).toHaveLength(turn.yourLines.length);
+        for (const line of [...turn.yourLines, ...theirLines(convo).map((x) => x.line)]) {
+          expect(line.source.trim(), turn.id).not.toBe("");
+          expect(line.en?.trim(), `${turn.id}: ${line.source}`).toBeTruthy();
         }
       }
     }
   });
 
-  it("carries a situation on every beat, since that is the whole prompt", () => {
+  it("sets the scene for every conversation and keeps the cues short", () => {
     for (const convo of conversations) {
-      for (const turn of convo.turns) expect(turn.situation.trim()).not.toBe("");
+      expect(convo.intro.trim(), convo.id).not.toBe("");
+      for (const turn of convo.turns) {
+        expect(turn.situation.trim()).not.toBe("");
+        if (turn.cue) expect(turn.cue.length, turn.id).toBeLessThanOrEqual(60);
+      }
     }
+  });
+
+  /**
+   * Which line you said decides where a branching conversation goes, so every
+   * line has to count as itself and not as a neighbor it nearly contains:
+   * "Ta med, tack." went down the "Här, tack." branch before this.
+   */
+  it("counts every line you can say as that line, not a neighbor", () => {
+    for (const convo of conversations) {
+      for (const turn of convo.turns) {
+        for (const line of turn.yourLines) {
+          const verdict = gradeReply(line.source, turn.yourLines);
+          expect(verdict.correct, `${turn.id}: ${line.source}`).toBe(true);
+          expect(verdict.line.source, `${turn.id}: ${line.source}`).toBe(line.source);
+        }
+      }
+    }
+  });
+
+  it("branches somewhere, so what you say matters", () => {
+    expect(conversations.some((c) => c.branches)).toBe(true);
   });
 
   it("gives every conversation a title and a category that exists", () => {
@@ -217,7 +249,6 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
     expect(groups.flatMap((g) => g.conversations.map((c) => c.id))).toEqual(
       conversations.map((c) => c.id)
     );
-    // One group per category, so the picker can't list the same heading twice.
     const headings = groups.map((g) => g.categoryId);
     expect(new Set(headings).size).toBe(headings.length);
   });
@@ -232,6 +263,25 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
  * a foreign language on an English keyboard needs it to be, and that the line
  * it corrects you against is the one you were reaching for.
  */
+describe("gradeReply on lines that overlap", () => {
+  const line = (source: string): ConvLine => ({ source, en: source, audioId: null });
+
+  it("takes the line typed over one it nearly contains", () => {
+    const here = line("Här, tack.");
+    const away = line("Ta med, tack.");
+    expect(gradeReply("Ta med, tack.", [here, away]).line).toBe(away);
+    expect(gradeReply("ta med tack", [here, away]).line).toBe(away);
+
+    const byes = [line("Hej då!"), line("Hej hej!"), line("Tack hej!")];
+    expect(gradeReply("Tack hej!", byes).line.source).toBe("Tack hej!");
+    expect(gradeReply("hej hej", byes).line.source).toBe("Hej hej!");
+
+    const thanks = [line("Muchas gracias, hasta otra."), line("Gracias."), line("Muchas gracias.")];
+    expect(gradeReply("Gracias.", thanks).line.source).toBe("Gracias.");
+    expect(gradeReply("muchas gracias", thanks).line.source).toBe("Muchas gracias.");
+  });
+});
+
 describe("gradeReply", () => {
   const line = (source: string, en: string | null = null): ConvLine => ({
     source,
@@ -410,126 +460,6 @@ describe("replyMatches is generous about how much you say", () => {
  * the next few authored beats is worth having, so saying you only want a drink
  * does not walk you through the one about food anyway.
  */
-describe("nextBeat", () => {
-  const line = (source: string, en: string): ConvLine => ({ source, en, audioId: null });
-
-  const turns = [
-    {
-      id: "t0",
-      situation: "The bartender asks what you want",
-      theirOpener: line("¿Qué te pongo?", "What can I get you?"),
-      yourLines: [line("Una caña.", "A small beer.")],
-      theirReply: null,
-      note: "",
-    },
-    {
-      id: "t1",
-      situation: "They ask whether you want something to eat with it",
-      theirOpener: line("¿Algo de comer?", "Anything to eat?"),
-      yourLines: [line("Una tapa.", "A tapa, please.")],
-      theirReply: null,
-      note: "",
-    },
-    {
-      id: "t2",
-      situation: "You ask for the bill",
-      theirOpener: null,
-      yourLines: [line("La cuenta, por favor.", "The bill, please.")],
-      theirReply: null,
-      note: "",
-    },
-    {
-      id: "t3",
-      situation: "They tell you where to pay",
-      theirOpener: line("En la barra.", "At the bar."),
-      yourLines: [line("Vale, gracias.", "Fine, thanks.")],
-      theirReply: null,
-      note: "",
-    },
-  ];
-
-  it("carries on in authored order when nothing was said", () => {
-    expect(nextBeat(turns, 0, null, 0)).toEqual({ index: 1, skipped: [] });
-  });
-
-  it("carries on in authored order when the answer fits the next beat", () => {
-    expect(nextBeat(turns, 0, "A tapa, please.", 0)?.index).toBe(1);
-  });
-
-  it("steps over a beat the answer has already closed", () => {
-    const next = nextBeat(turns, 0, "The bill, please. Nothing to eat.", 0);
-    expect(next?.index).toBe(2);
-    expect(next?.skipped).toEqual([1]);
-  });
-
-  it("stops at the end rather than walking off it", () => {
-    expect(nextBeat(turns, turns.length - 1, "anything", 0)).toBeNull();
-  });
-
-  it("spends a skip budget and then walks the rest as written", () => {
-    expect(skipBudget(turns)).toBe(1);
-    // Budget already spent: the branch is not taken a second time.
-    expect(nextBeat(turns, 0, "The bill, please.", 1)).toEqual({ index: 1, skipped: [] });
-  });
-
-  it("keeps a conversation long enough to be one", () => {
-    for (const locale of locales) {
-      for (const convo of buildConversations(locale)) {
-        expect(convo.turns.length - skipBudget(convo.turns)).toBeGreaterThanOrEqual(MIN_TURNS);
-      }
-    }
-  });
-});
-
-/**
- * Two questions in a row, with no turn of yours in between.
- *
- * The bug this locks out, reported from a Swedish café: a beat came back at you
- * with a question and the next beat opened with one of its own, so the screen
- * asked two things with no turn of yours in between. Both lines were authored —
- * the first as a scenario page's closing hook, the second as the next
- * exchange's opener — and chaining them dropped the first question on the
- * floor. Forty-six beats across the three editions read that way.
- */
-describe.each(locales)("the walk-through reads as one conversation: %s", (locale: Locale) => {
-  const conversations = buildConversations(locale);
-  const asks = (line: string | null | undefined) => Boolean(line && /[?？]\s*$/.test(line.trim()));
-
-  it("never asks you a second question before you have answered the first", () => {
-    const clashes: string[] = [];
-    for (const convo of conversations) {
-      convo.turns.forEach((turn, i) => {
-        const next = convo.turns[i + 1];
-        if (!next) return;
-        if (asks(turn.theirReply?.source)) {
-          clashes.push(`${convo.id} beat ${i + 1}: "${turn.theirReply!.source}" then "${next.theirOpener?.source ?? next.situation}"`);
-        }
-      });
-    }
-    expect(clashes).toEqual([]);
-  });
-
-  it("keeps a comeback wherever it was not a hook", () => {
-    const kept = conversations.flatMap((c) => c.turns.filter((t) => t.theirReply));
-    // The trim is narrow: almost every beat still comes back at you.
-    expect(kept.length).toBeGreaterThan(conversations.length * 2);
-  });
-});
-
-/**
- * The last beat is left alone.
- *
- * The trim exists because a hook collides with whatever is asked next. On the
- * final beat nothing is asked next, and a parting question is how a
- * conversation ends rather than a loose end — so it keeps its line whole.
- */
-it("lets a conversation end on a question", () => {
-  const endings = locales.flatMap((locale) =>
-    buildConversations(locale).map((c) => c.turns[c.turns.length - 1]!.theirReply?.source ?? "")
-  );
-  expect(endings.some((line) => /[?？]\s*$/.test(line.trim()))).toBe(true);
-});
-
 /**
  * What the picker's first screen is built from.
  *

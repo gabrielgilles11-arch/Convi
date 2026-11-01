@@ -4205,5 +4205,13 @@
         }
       ]
     }
+  ],
+  "talk": [
+    {"id": "de-guten-tag", "es": "Guten Tag!", "en": "Hello! (polite)"},
+    {"id": "de-tschuess", "es": "Tschüss!", "en": "Bye!"},
+    {"id": "de-auf-wiedersehen", "es": "Auf Wiedersehen!", "en": "Goodbye!"},
+    {"id": "de-schoenen-tag", "es": "Schönen Tag noch!", "en": "Have a nice day!"},
+    {"id": "de-gleichfalls", "es": "Danke, gleichfalls!", "en": "Thanks, you too!"},
+    {"id": "de-danke", "es": "Danke!", "en": "Thanks!"}
   ]
 }
