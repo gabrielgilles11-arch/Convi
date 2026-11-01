@@ -22,27 +22,37 @@ export interface ConvLine {
 }
 
 /**
- * One beat of a conversation.
+ * One beat of a conversation: maybe something they say, then you, then maybe
+ * something back.
  *
- * Whose line is whose is the whole of it, and it cannot be inferred from the
- * text — `speaker` on the authored exchange is what decides, so it is resolved
- * once here rather than everywhere downstream. See the comment on `Exchange` in
- * ./content.
+ * Built from a script (./talkScripts), so whose line is whose and what follows
+ * what is written down rather than inferred.
  */
 export interface ConvTurn {
   id: string;
-  /** The moment, in English. What the beat is for. */
+  /**
+   * The moment, in English. Only on screen with Show English on: their line is
+   * the prompt, or the cue is.
+   */
   situation: string;
+  /**
+   * What you want to do, in English, on a beat you have to open with nothing
+   * of theirs to react to: asking for the check, finding the toilet. Null
+   * everywhere else, which is most beats.
+   */
+  cue: string | null;
   /** Their line, when they speak first. Null on a beat you open. */
   theirOpener: ConvLine | null;
   /**
-   * The lines you could say here — all of them authored, none generated. Where
-   * there is more than one they are genuine alternatives (register, not
-   * correctness): nothing downstream branches on which you pick, because
-   * nothing in the content does either.
+   * The lines you could say here, all authored and all right. Where one of
+   * them changes what happens next, `replies` and `next` say how.
    */
   yourLines: ConvLine[];
-  /** What comes back once you've spoken. Null where the content has none. */
+  /** What comes back to each of `yourLines`, by position. Null: nothing does. */
+  replies: (ConvLine | null)[];
+  /** The beat each of `yourLines` leads to, by index into `turns`. Null: the end. */
+  next: (number | null)[];
+  /** What comes back to the first of your lines. The common case, for display. */
   theirReply: ConvLine | null;
   /** The authored note about this exchange, where it has one. */
   note: string;
@@ -67,6 +77,11 @@ export interface Conversation {
   categoryIcon: string;
   /** The subsection's title, or the category's where it has none. */
   title: string;
+  /** Where you are, in a sentence of English. Shown once, above the first line. */
+  intro: string;
+  /** True when something you say changes what happens next. */
+  branches: boolean;
+  /** Every beat the script has. A run walks some of them, from the first. */
   turns: ConvTurn[];
 }
 
@@ -87,8 +102,11 @@ export interface ConversationPayload {
  * you are, not eight beats of one conversation. Walking that as a dialogue
  * would be a person being asked how drunk they are eight times.
  *
- * What is left is the places where somebody actually talks back: a bar, a taxi,
- * a restaurant, a hotel desk, a shop, a door, a pharmacy, a police station.
+ * What is left is the everyday places a trip takes you where somebody talks
+ * back: a bar, a café, a taxi, the metro, a restaurant, a hotel desk, a shop,
+ * a club door, a pharmacy. Talk is for those. Being robbed and shaking off a
+ * creep are on the scenario pages and in the practice path, and are not
+ * conversations anybody wants to rehearse as small talk.
  *
  * `resacon` is the judgement call. Its name is the hangover, but the subsection
  * with the dialogue in it is at the pharmacy asking for something for your
@@ -104,8 +122,6 @@ export const CONVERSATION_STAGES = [
   "shopping",
   "nightlife",
   "resacon",
-  "emergencies",
-  "for-the-girls",
 ] as const;
 
 /** `sv-beer-food` -> `beer-food`. Mirrors stageKeyOf in quizTypes. */
@@ -379,6 +395,15 @@ export interface ReplyVerdict {
  */
 export function gradeReply(given: string, options: ConvLine[]): ReplyVerdict {
   const fallback = options[0]!;
+  // The line you actually typed first, before the generous match gets a look.
+  // The generous match is about how much of a line you said, so on a beat
+  // where one line nearly contains another it took whichever came first:
+  // "Ta med, tack." counted as "Här, tack." and the café got the wrong order,
+  // "Tack hej!" counted as "Hej hej!". In a branching conversation which line
+  // it counts as decides what happens next, so an exact match wins outright.
+  for (const option of options) {
+    if (typedAnswerMatches(given, option.source)) return { correct: true, line: option, close: false };
+  }
   for (const option of options) {
     if (replyMatches(given, option.source)) return { correct: true, line: option, close: false };
   }
@@ -394,94 +419,6 @@ export function gradeReply(given: string, options: ConvLine[]): ReplyVerdict {
   }
 
   return { correct: false, line: best, close: bestScore >= CLOSE_ENOUGH };
-}
-
-// ---------------------------------------------------------------------------
-// Which beat comes next
-// ---------------------------------------------------------------------------
-
-/**
- * How far ahead a branch can reach. Three is two skippable beats: enough for
- * "just a drink" to step over both the food beat and the follow-up about it,
- * and not so far that the conversation stops being the one it started as.
- */
-const LOOKAHEAD = 3;
-
-/** A jump has to be this much better than simply carrying on to be worth it. */
-const BRANCH_MARGIN = 0.12;
-
-/** Everything about a beat that is in English, for matching against intent. */
-function beatText(turn: ConvTurn): string {
-  return [
-    turn.situation,
-    turn.theirOpener?.en ?? "",
-    ...turn.yourLines.map((l) => l.en ?? ""),
-  ]
-    .filter(Boolean)
-    .join(" ");
-}
-
-/**
- * How many beats a conversation is allowed to step over in one run.
- *
- * A third of them, so an eight-beat subsection keeps at least six and still
- * reads as the same visit to the same bar. Without a cap, a learner who
- * answers tersely would skip most of what was written for them.
- */
-export function skipBudget(turns: ConvTurn[]): number {
-  return Math.max(0, Math.floor(turns.length / 3));
-}
-
-export interface NextBeat {
-  /** The beat to open. */
-  index: number;
-  /** Beats stepped over to get there, because of what was just said. */
-  skipped: number[];
-}
-
-/**
- * Where the conversation goes after what you just said.
- *
- * The content is linear — eight beats in the order somebody wrote them — and
- * nothing here invents a ninth. What it does is let an answer decide which of
- * the next few authored beats is the one worth having: say you only want a
- * drink and the beat about ordering food is stepped over rather than asked
- * anyway, which is the difference between a conversation and a form.
- *
- * Forward only, and never further than `LOOKAHEAD`. A beat is skipped only
- * when a later one is a clearly better answer to what was said than the next
- * one is, which is why the margin exists: ties carry on in authored order, so
- * a learner who says the expected thing walks the conversation as written.
- */
-export function nextBeat(
-  turns: ConvTurn[],
-  from: number,
-  intent: string | null,
-  skipsUsed: number
-): NextBeat | null {
-  const straight = from + 1;
-  if (straight >= turns.length) return null;
-  if (!intent?.trim()) return { index: straight, skipped: [] };
-
-  const remaining = skipBudget(turns) - skipsUsed;
-  if (remaining <= 0) return { index: straight, skipped: [] };
-
-  const last = Math.min(turns.length - 1, straight + remaining, straight + LOOKAHEAD - 1);
-
-  let best = straight;
-  let bestScore = overlap(intent, beatText(turns[straight]!));
-
-  for (let i = straight + 1; i <= last; i++) {
-    const score = overlap(intent, beatText(turns[i]!));
-    if (score > bestScore + BRANCH_MARGIN) {
-      bestScore = score;
-      best = i;
-    }
-  }
-
-  const skipped: number[] = [];
-  for (let i = straight; i < best; i++) skipped.push(i);
-  return { index: best, skipped };
 }
 
 // ---------------------------------------------------------------------------

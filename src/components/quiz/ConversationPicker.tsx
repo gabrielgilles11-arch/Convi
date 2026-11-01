@@ -152,13 +152,11 @@ export default function ConversationPicker({
                 <span className="convo-card-main">
                   <span className="convo-card-title">{convo.title}</span>
                   <span className="convo-card-meta">
-                    {convo.turns.length} turns
-                    {/* The opening beat, as a one-line trailer for the rest.
-                        It is the situation rather than a line of the language:
-                        the point of the card is whether this is the moment you
-                        want, and the moment is in English. */}
-                    {" · "}
-                    {convo.turns[0]?.situation}
+                    {/* Where you are, as a one-line trailer. In English: the
+                        point of the card is whether this is the moment you
+                        want. No turn count, since how long it runs depends on
+                        what you say. */}
+                    {convo.intro}
                   </span>
                 </span>
                 {done.has(convo.id) && (

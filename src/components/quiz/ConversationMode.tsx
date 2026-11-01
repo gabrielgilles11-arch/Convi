@@ -3,7 +3,6 @@ import {
   gradeReply,
   hasSlot,
   hintFor,
-  nextBeat,
   readingTime,
   type Conversation,
   type ConvLine,
@@ -33,10 +32,11 @@ import { registerOf, REGISTER_LABEL } from "../../lib/register";
  * somebody actually says to a barista, and marking it wrong because the
  * authored line reads "Un café con leche, por favor" teaches recitation.
  *
- * What you say also decides where the conversation goes. Say you only want a
- * drink and the beat about ordering food is stepped over rather than asked
- * anyway; see `nextBeat`. Every line on every path was still written by a
- * person — the branching picks between authored beats, it does not invent one.
+ * Every conversation is a script (lib/talkScripts.ts): you open it with a
+ * hello, they answer what you actually said, and it ends with a goodbye.
+ * Where what you say changes what happens, it does: order a caña and the
+ * bartender asks if you want something to eat, order "una cerveza" and he
+ * asks draft or bottle. Every line on every path is a sourced content line.
  *
  * The rhythm is a messaging thread's, because that is the rhythm everybody
  * already reads as a conversation. Your line lands the moment you send it; they
@@ -65,6 +65,8 @@ interface Props {
 interface Said {
   /** The authored line it counts as. */
   line: ConvLine;
+  /** Which of the beat's lines that is, which decides what comes back. */
+  index: number;
   /** What they typed, where they typed something. Null if they asked to see it. */
   typed: string | null;
   correct: boolean;
@@ -103,15 +105,12 @@ const MAX_WAIT = 9000;
 /** Earlier conversations kept on screen. Enough to scroll back through. */
 const HELD_LIMIT = 3;
 
-/** The line they said, in English, as the signal for where to go next. */
-function intentOf(said: Said | undefined): string | null {
-  if (!said) return null;
-  return said.line.en ?? said.line.source;
-}
-
 /** True where what they typed is the line rather than a shorter way to say it. */
 function saidItInFull(said: Said): boolean {
   if (!said.typed) return true;
+  // A line with a blank in it is said in full with your own word in the
+  // blank. Showing it back "in full" would show the blank.
+  if (hasSlot(said.line.source)) return true;
   return normalizeAnswer(said.typed) === normalizeAnswer(said.line.source);
 }
 
@@ -303,6 +302,7 @@ function AlsoWorks({ turn, said, locale }: { turn: ConvTurn; said: Said; locale:
 function Beat({
   turn,
   first,
+  intro,
   locale,
   said,
   english,
@@ -314,6 +314,8 @@ function Beat({
   turn: ConvTurn;
   /** The opening beat of a conversation, which always sets its scene. */
   first: boolean;
+  /** Where you are, said once above the first line. */
+  intro: string;
   locale: string;
   said: Said | undefined;
   english: boolean;
@@ -323,19 +325,19 @@ function Beat({
   openKey: string | null;
   onPop: (key: string | null) => void;
 }) {
-  // The situation is English, so it only appears where nothing else can do its
-  // job: a beat you open has no line of theirs to react to, and without the cue
-  // there is no way to know what you are meant to want. Where they speak
-  // first, their line is the prompt and the cue hides behind the toggle. The
-  // one exception is the start of a conversation, where it is the scene change
-  // that says you have walked somewhere new.
-  const showCue = first || !turn.theirOpener || english;
+  // English on screen is kept to what nothing else can say. The scene, once,
+  // at the top. A cue where you have to start and nothing they said tells you
+  // what about. Everything else is the conversation, and with Show English on,
+  // what each moment is.
+  const cue = turn.cue ?? (english && !first ? turn.situation : null);
   const openerOut = phase !== "typing";
   const replyOut = phase === "replied";
+  const reply = said ? (turn.replies[said.index] ?? null) : null;
 
   return (
     <li className={`convo-beat${active ? " is-active" : ""}`}>
-      {showCue && <p className="convo-situation">{turn.situation}</p>}
+      {first && <p className="convo-situation convo-intro">{intro}</p>}
+      {cue && <p className="convo-situation">{cue}</p>}
 
       {turn.theirOpener &&
         (openerOut ? (
@@ -380,12 +382,12 @@ function Beat({
 
           {!said.correct && <Correction said={said} locale={locale} />}
 
-          <AlsoWorks turn={turn} said={said} locale={locale} />
+          {english && <AlsoWorks turn={turn} said={said} locale={locale} />}
 
-          {turn.theirReply &&
+          {reply &&
             (replyOut ? (
               <Bubble
-                line={turn.theirReply}
+                line={reply}
                 side="them"
                 locale={locale}
                 english={english}
@@ -440,6 +442,7 @@ function Transcript({
             key={turn.id}
             turn={turn}
             first={position === 0}
+            intro={conversation.intro}
             locale={locale}
             said={said[index]}
             english={english}
@@ -478,8 +481,6 @@ export default function ConversationMode({
 
   /** The beats walked so far, in order. Branching makes this not 0,1,2,3. */
   const [route, setRoute] = useState<number[]>([0]);
-  /** Beats stepped over because of what was said. Only used for the count. */
-  const [skipped, setSkipped] = useState<number[]>([]);
   const [said, setSaid] = useState<Record<number, Said>>({});
   const [phase, setPhase] = useState<Phase>(firstPhase(conversation));
   const [typed, setTyped] = useState("");
@@ -544,7 +545,6 @@ export default function ConversationMode({
 
   function clearTranscript() {
     setRoute([0]);
-    setSkipped([]);
     setSaid({});
     setTyped("");
     setDone(false);
@@ -573,7 +573,7 @@ export default function ConversationMode({
       turns.flatMap((turn) => [
         turn.theirOpener?.audioId ?? null,
         turn.yourLines[0]?.audioId ?? null,
-        turn.theirReply?.audioId ?? null,
+        ...turn.replies.map((reply) => reply?.audioId ?? null),
       ])
     );
     return () => {
@@ -607,15 +607,14 @@ export default function ConversationMode({
     [said]
   );
 
-  /** How long this run is: everything except what your answers stepped over. */
-  const total = turns.length - skipped.length;
-
   function settle(verdict: ReplyVerdict, raw: string | null) {
     if (!current) return;
     engaged.current = true;
     const run = ++runId.current;
+    const index = Math.max(0, current.yourLines.indexOf(verdict.line));
     const entry: Said = {
       line: verdict.line,
+      index,
       typed: raw,
       correct: verdict.correct,
       close: verdict.close,
@@ -624,7 +623,7 @@ export default function ConversationMode({
     setTyped("");
     setOpenKey(null);
     setPhase("answered");
-    void respond(step, entry, run, skipped.length);
+    void respond(step, entry, run);
   }
 
   /**
@@ -636,9 +635,9 @@ export default function ConversationMode({
    * you was a second of dead air on every beat, in the same voice as the
    * person you were talking to.
    */
-  async function respond(from: number, entry: Said, run: number, skipsUsed: number) {
+  async function respond(from: number, entry: Said, run: number) {
     const turn = turns[from]!;
-    const reply = turn.theirReply;
+    const reply = turn.replies[entry.index] ?? null;
     const alive = () => run === runId.current;
 
     const worthHearing = !entry.correct || !saidItInFull(entry);
@@ -661,15 +660,16 @@ export default function ConversationMode({
     await whenVisible();
     if (!alive()) return;
 
-    const next = nextBeat(turns, from, intentOf(entry), skipsUsed);
-    if (!next) {
+    // Where the script goes from the line you said. A wrong answer counts as
+    // the line it was corrected to, so a miss never strands the conversation.
+    const next = turn.next[entry.index] ?? null;
+    if (next === null) {
       setDone(true);
       onFinish(conversation.id);
       return;
     }
-    if (next.skipped.length > 0) setSkipped((prev) => [...prev, ...next.skipped]);
-    setRoute((prev) => [...prev, next.index]);
-    await openBeat(next.index, run);
+    setRoute((prev) => [...prev, next]);
+    await openBeat(next, run);
   }
 
   function submit(event: SubmitEvent) {
@@ -724,21 +724,6 @@ export default function ConversationMode({
           {english ? "Hide English" : "Show English"}
         </button>
       </p>
-
-      <div className="round-head">
-        <div className="round-bar" aria-hidden="true">
-          <div
-            className="round-bar-fill"
-            style={{ width: `${((done ? total : route.length - 1) / total) * 100}%` }}
-          />
-        </div>
-        <div className="stats">
-          <span>
-            Turn {Math.min(route.length, total)} of {total}
-          </span>
-          <span>{conversation.categoryTitle}</span>
-        </div>
-      </div>
 
       {held.map((segment, i) => (
         <div className="convo-held" key={`${segment.conversation.id}-${i}`}>
@@ -800,7 +785,8 @@ export default function ConversationMode({
             {correctCount === route.length
               ? "Every line landed, start to finish."
               : `${route.length} turns held in ${conversation.title.toLowerCase()}.`}{" "}
-            Answer differently next time and the conversation takes a different road.
+            {conversation.branches &&
+              "Say something different next time and it goes a different way."}
           </p>
 
           {/* The lines that got away, together, while they are still fresh.
@@ -835,9 +821,7 @@ export default function ConversationMode({
                   : `Keep going: ${placeName(following.conversation.categoryTitle)}`}
               </span>
               <span className="convo-onward-title">{following.conversation.title}</span>
-              {following.conversation.turns[0] && (
-                <span className="convo-onward-sub">{following.conversation.turns[0].situation}</span>
-              )}
+              <span className="convo-onward-sub">{following.conversation.intro}</span>
             </button>
           )}
 
