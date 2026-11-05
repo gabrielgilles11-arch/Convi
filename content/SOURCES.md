@@ -72,6 +72,14 @@ Covers `de-convo-basics-01` … `de-convo-basics-07`.
   https://blog.busuu.com/common-german-phrases/ and
   https://thetalkingticket.blog/2026/07/22/master-a2-b1-german-small-talk-with-these-60-call-and-response-phrases/
 
+Also covers `de-convo-basics-08`.
+
+- Ich verstehe nur Bahnhof. (taken verbatim from the article's example
+  sentences, with the literal "I only understand train station", the informal
+  register, and Das kommt mir Spanisch vor as the same idea) —
+  https://www.thelocal.de/20181113/german-phrase-of-the-day-ich-verstehe-nur-bahnhof
+  and https://en.wikipedia.org/wiki/Bahnhof_verstehen
+
 ## German additions outside that arc
 
 ### `de-starting-convo-09` — "Was geht?"
