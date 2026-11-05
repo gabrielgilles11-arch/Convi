@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildConversations } from "../conversations";
-import { TALK_SCRIPTS, THEY_OPEN } from "../talkScripts";
+import { TALK_SCRIPTS } from "../talkScripts";
 import { placeName } from "../../components/quiz/ConversationPicker";
 import { getCategories, LOCALES, type Locale } from "../content";
 import {
@@ -89,10 +89,25 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
     }
   });
 
-  it("is opened by you, the way you open one on a trip", () => {
+  /**
+   * Straight to the point. A bare "Hej!" answered by "Hej!" opened most of
+   * these and taught nothing, so the first turn is never one of the sourced
+   * greetings, and it always has their line or a cue on it: a first screen
+   * with nothing but an empty box leaves you guessing who speaks first.
+   */
+  it("gets to the point instead of opening on a hello", () => {
+    const greetings = new Set(
+      ["es-hola", "es-buenas", "es-buenos-dias", "de-guten-tag"]
+    );
     for (const convo of conversations) {
-      if (THEY_OPEN.has(convo.id)) continue;
-      expect(convo.turns[0]!.theirOpener, convo.id).toBeNull();
+      const first = convo.turns[0]!;
+      expect(first.id.endsWith(":hi"), convo.id).toBe(false);
+      expect(Boolean(first.theirOpener || first.cue), convo.id).toBe(true);
+      const echoes = first.yourLines.every((line, i) => first.replies[i]?.source === line.source);
+      expect(echoes, `${convo.id} opens on an echoed hello`).toBe(false);
+      for (const line of first.yourLines) {
+        expect(greetings.has(line.audioId ?? ""), `${convo.id}: ${line.source}`).toBe(false);
+      }
     }
   });
 

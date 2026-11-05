@@ -784,7 +784,7 @@ export default function ConversationMode({
           <p className="convo-done-sub">
             {correctCount === route.length
               ? "Every line landed, start to finish."
-              : `${route.length} turns held in ${conversation.title.toLowerCase()}.`}{" "}
+              : `${correctCount} of ${route.length} lines said on your own, without the line shown.`}{" "}
             {conversation.branches &&
               "Say something different next time and it goes a different way."}
           </p>
