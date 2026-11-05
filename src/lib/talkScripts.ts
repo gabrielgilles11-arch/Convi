@@ -8,10 +8,12 @@
 // with the blank still in it, and an offer of another round after you had
 // paid. Nobody said hello and nobody said goodbye.
 //
-// A script is the order the conversation actually goes in. You open it, the
-// way you open every one of these on a trip: "¡Buenas!", "Hej!", "Grüß Gott!".
-// They answer what you said, not the next line on a list, and where what you
-// say changes what happens (a caña gets "¿Algo de comer?", a "cerveza" gets
+// A script is the order the conversation actually goes in. It starts at the
+// point of the moment, not on a hello: the bartender's "what are you having",
+// the stranger's "are you here alone", or a cue saying what you need. A bare
+// "Hej!" answered by "Hej!" was a turn that taught nothing and made every
+// conversation open the same way. They answer what you said, not the next
+// line on a list, and where what you say changes what happens (a caña gets "¿Algo de comer?", a "cerveza" gets
 // "¿De barril o de botella?") the script says so. It ends with a goodbye.
 //
 // Every line is still a reference into the content files, resolved on the
@@ -25,7 +27,8 @@
 // - every reference resolves, and none of their lines has a blank or a slash
 //   in it ("Son __ euros", "guapo/guapa"), since nobody says those out loud;
 // - every path through a script ends, in three to ten turns;
-// - every script opens with a line of yours, except the two in THEY_OPEN.
+// - no script opens on a bare greeting, and the first turn always has their
+//   line or a cue on it, so the screen never opens on an empty prompt.
 
 import type { Part, Ref } from "./gameScripts";
 
@@ -98,8 +101,6 @@ function step(id: string, body: Omit<TalkStep, "id">): TalkStep {
 // Spain
 // ---------------------------------------------------------------------------
 
-const ES_HI = [y(t("es-hola")), y(t("es-buenas"))];
-const ES_HI_MORNING = [y(t("es-hola")), y(t("es-buenas")), y(t("es-buenos-dias"))];
 /** "Hasta luego." is the content's own (starting-convo-07); it works said either way. */
 const ES_HASTA = q("starting-convo-07");
 const ES_BYE = [y(ES_HASTA), y(t("es-adios")), y(t("es-gracias")), y(t("es-muchas-gracias"))];
@@ -110,8 +111,8 @@ const ES: TalkScript[] = [
     id: "beer-food-main",
     intro: "You walk up to the bar. The bartender looks over.",
     steps: [
-      step("hi", { says: ES_HI, back: q("beer-food-01") }),
       step("order", {
+        them: q("beer-food-01"),
         says: [
           y(a("beer-food-01", 0), r("beer-food-01"), "food"),
           y(a("beer-food-01", 1), q("beer-food-02"), "tap"),
@@ -135,6 +136,7 @@ const ES: TalkScript[] = [
         back: r("beer-food-04"),
       }),
       step("another", {
+        cue: "A while later. Your glass is nearly empty.",
         them: q("beer-food-06"),
         says: [y(a("beer-food-06", 0)), y(a("beer-food-06", 1))],
         back: r("beer-food-06"),
@@ -155,8 +157,8 @@ const ES: TalkScript[] = [
     id: "beer-food-coffee",
     intro: "Morning. You walk into a café and up to the counter.",
     steps: [
-      step("hi", { says: ES_HI_MORNING, back: q("beer-food-coffee-01") }),
       step("order", {
+        them: q("beer-food-coffee-01"),
         says: [
           y(a("beer-food-coffee-01", 0), r("beer-food-coffee-01"), "here"),
           y(a("beer-food-coffee-01", 1), r("beer-food-coffee-01"), "here"),
@@ -186,8 +188,7 @@ const ES: TalkScript[] = [
     id: "starting-convo-main",
     intro: "You're lost and need to ask someone on the street, in Spanish.",
     steps: [
-      step("hi", { says: [y(q("starting-convo-01", 0)), ...ES_HI], back: r("starting-convo-01", 1) }),
-      step("way", { cue: "Ask if this is the way to where you're going.", says: [y(q("lost-01"))], back: r("lost-01") }),
+      step("way", { cue: "Stop someone. Ask if this is the way.", says: [y(q("lost-01"))], back: r("lost-01") }),
       step("lost", {
         cue: "That was fast. You didn't catch it.",
         says: [
@@ -201,10 +202,8 @@ const ES: TalkScript[] = [
   },
   {
     id: "starting-convo-basics",
-    intro: "At a bar, the person on the next stool turns to you.",
+    intro: "At a bar, the person on the next stool hears your accent.",
     steps: [
-      step("hi", { says: ES_HI, back: q("convo-sc-01") }),
-      step("howareyou", { says: [y(a("convo-sc-01", 0))], back: r("convo-sc-01") }),
       step("spanish", {
         them: q("convo-basics-01"),
         says: [y(a("convo-basics-01", 0)), y(a("convo-basics-01", 1))],
@@ -247,8 +246,8 @@ const ES: TalkScript[] = [
     id: "starting-convo-bond",
     intro: "There's a game on in the bar. The guy next to you turns around.",
     steps: [
-      step("hi", { says: ES_HI, back: q("starting-convo-13") }),
       step("score", {
+        them: q("starting-convo-13"),
         says: [y(a("starting-convo-13", 0)), y(a("starting-convo-13", 1))],
         back: r("starting-convo-13"),
       }),
@@ -276,8 +275,7 @@ const ES: TalkScript[] = [
     id: "airport",
     intro: "You've just landed in Madrid. Passport control first.",
     steps: [
-      step("hi", { says: ES_HI_MORNING, back: q("airport-04") }),
-      step("passport", { says: [y(a("airport-04", 0))], back: r("airport-04") }),
+      step("passport", { them: q("airport-04"), says: [y(a("airport-04", 0))], back: r("airport-04") }),
       step("bags", {
         cue: "Find out where the bags come out.",
         says: [y(q("airport-05"))],
@@ -310,8 +308,8 @@ const ES: TalkScript[] = [
     id: "taxi",
     intro: "You get into a taxi.",
     steps: [
-      step("hi", { says: ES_HI, back: q("taxi-01") }),
       step("where", {
+        them: q("taxi-01"),
         says: [y(a("taxi-01", 0)), y(a("taxi-01", 1))],
         back: r("taxi-01", 0),
       }),
@@ -357,8 +355,7 @@ const ES: TalkScript[] = [
     id: "getting-around-lost",
     intro: "It's late, your phone is dead, and nothing looks familiar.",
     steps: [
-      step("hi", { says: [y(q("starting-convo-01", 0)), ...ES_HI], back: r("starting-convo-01", 1) }),
-      step("lost", { says: [y(q("lost-03"))], back: r("lost-03") }),
+      step("lost", { cue: "Stop someone and tell them you're lost.", says: [y(q("lost-03"))], back: r("lost-03") }),
       step("way", { says: [y(q("lost-01"))], back: r("lost-01") }),
       step("far", { says: [y(q("lost-02"))], back: r("lost-02") }),
       step("dark", {
@@ -373,8 +370,7 @@ const ES: TalkScript[] = [
     id: "restaurant-seating",
     intro: "Two of you, no booking, a busy restaurant.",
     steps: [
-      step("hi", { says: ES_HI, back: q("restaurant-03") }),
-      step("howmany", { says: [y(a("restaurant-03", 0))], back: q("restaurant-02") }),
+      step("howmany", { them: q("restaurant-03"), says: [y(a("restaurant-03", 0))], back: q("restaurant-02") }),
       step("booking", {
         says: [
           y(a("restaurant-02", 0), r("restaurant-03"), "wait"),
@@ -397,8 +393,8 @@ const ES: TalkScript[] = [
     id: "restaurant-ordering",
     intro: "You're seated. The waiter comes over.",
     steps: [
-      step("hi", { says: ES_HI, back: q("restaurant-07") }),
       step("bread", {
+        them: q("restaurant-07"),
         says: [y(a("restaurant-07", 0)), y(a("restaurant-07", 1))],
         back: r("restaurant-07"),
       }),
@@ -407,13 +403,12 @@ const ES: TalkScript[] = [
         says: [y(q("restaurant-21"))],
         back: a("restaurant-21", 0),
       }),
-      step("dish", { cue: "Ask what's in one of the dishes.", says: [y(q("restaurant-19"))], back: a("restaurant-19", 0) }),
-      step("allergy", { cue: "You're allergic to nuts.", says: [y(q("restaurant-20"))], back: a("restaurant-20", 0) }),
       step("order", {
         them: q("restaurant-05"),
         says: [y(a("restaurant-05", 1)), y(a("restaurant-05", 0))],
         back: null,
       }),
+      step("allergy", { cue: "Before they go: you're allergic to nuts.", says: [y(q("restaurant-20"))], back: a("restaurant-20", 0) }),
       step("main", { them: q("restaurant-22"), says: [y(a("restaurant-22", 0))], back: r("restaurant-22"), next: null }),
     ],
   },
@@ -421,15 +416,12 @@ const ES: TalkScript[] = [
     id: "restaurant-problems",
     intro: "The food is taking a while.",
     steps: [
-      step("hi", { says: [y(q("starting-convo-01", 0))], back: r("starting-convo-01", 0) }),
-      step("waiting", { says: [y(q("restaurant-23"))], back: a("restaurant-23", 0) }),
+      step("waiting", { cue: "Catch the waiter's eye. You're still waiting.", says: [y(q("restaurant-23"))], back: a("restaurant-23", 0) }),
       step("wrong", {
         cue: "A plate arrives. It isn't yours.",
         says: [y(q("restaurant-09"), a("restaurant-09", 0)), y(q("restaurant-14"), r("restaurant-14"))],
       }),
       step("cold", { cue: "Your own dish comes, and it's cold.", says: [y(q("restaurant-13"))], back: r("restaurant-13") }),
-      step("bread", { cue: "Ask for a bit more bread.", says: [y(q("restaurant-24"))], back: a("restaurant-24", 0) }),
-      step("toilet", { cue: "Ask where the toilet is.", says: [y(q("restaurant-25"))], back: a("restaurant-25", 0) }),
       step("thanks", { says: ES_THANKS, back: null, next: null }),
     ],
   },
@@ -454,12 +446,10 @@ const ES: TalkScript[] = [
     id: "hotel-checkin",
     intro: "You walk up to the hotel's front desk with your bags.",
     steps: [
-      step("hi", { says: ES_HI_MORNING, back: q("hotel-01") }),
-      step("booking", { says: [y(a("hotel-01", 0)), y(a("hotel-01", 1))], back: r("hotel-01") }),
+      step("booking", { them: q("hotel-01"), says: [y(a("hotel-01", 0)), y(a("hotel-01", 1))], back: r("hotel-01") }),
       step("passport", { says: [y(a("nightlife-10", 0))], back: null }),
       step("breakfast", { cue: "Ask if breakfast is included.", says: [y(q("hotel-05"))], back: r("hotel-05", 0) }),
       step("wifi", { cue: "And the wifi password.", says: [y(q("hotel-06"))], back: r("hotel-06") }),
-      step("checkout", { cue: "Ask what time checkout is.", says: [y(q("hotel-03"))], back: r("hotel-03") }),
       step("thanks", { says: ES_THANKS, back: null, next: null }),
     ],
   },
@@ -467,14 +457,12 @@ const ES: TalkScript[] = [
     id: "shopping-shops",
     intro: "You wander into a clothes shop.",
     steps: [
-      step("hi", { says: ES_HI, back: q("shopping-11") }),
-      step("looking", { says: [y(a("shopping-11", 0))], back: r("shopping-11") }),
+      step("looking", { them: q("shopping-11"), says: [y(a("shopping-11", 0))], back: r("shopping-11") }),
       step("price", { cue: "You like a jacket. Ask the price.", says: [y(q("shopping-02"))], back: r("shopping-02") }),
       step("size", {
         them: q("shopping-03"),
         says: [y(a("shopping-03", 1), r("shopping-03")), y(a("shopping-03", 0), null)],
       }),
-      step("color", { cue: "Ask if it comes in another color.", says: [y(q("shopping-09"))], back: a("shopping-09", 0) }),
       step("card", { cue: "Check they take card.", says: [y(q("shopping-04"))], back: r("shopping-04") }),
       step("bye", { says: ES_BYE, back: ES_HASTA, next: null }),
     ],
@@ -488,8 +476,7 @@ const ES: TalkScript[] = [
         says: [y(a("shopping-13", 1)), y(a("shopping-13", 0))],
         back: r("shopping-13"),
       }),
-      step("hi", { cue: "Your turn.", says: ES_HI_MORNING, back: t("es-buenas") }),
-      step("price", { cue: "Ask how much the tomatoes are.", says: [y(a("shopping-05", 0))], back: r("shopping-05") }),
+      step("price", { cue: "Your turn. Ask how much the tomatoes are.", says: [y(a("shopping-05", 0))], back: r("shopping-05") }),
       step("ripe", { says: [y(q("shopping-15"))], back: a("shopping-15", 0) }),
       step("weight", { cue: "Ask for half a kilo.", says: [y(q("shopping-14"))], back: a("shopping-14", 0) }),
       step("bye", { says: ES_BYE, back: ES_HASTA, next: null }),
@@ -499,7 +486,6 @@ const ES: TalkScript[] = [
     id: "resacon-pharmacy",
     intro: "Rough morning. You make it to the pharmacy.",
     steps: [
-      step("hi", { says: ES_HI_MORNING, back: t("es-buenas") }),
       step("stomach", {
         cue: "Something you ate last night didn't agree with you.",
         says: [y(q("resacon-03"))],
@@ -514,11 +500,9 @@ const ES: TalkScript[] = [
     id: "nightlife-door",
     intro: "1 a.m. The three of you reach the door of a club.",
     steps: [
-      step("hi", { says: ES_HI, back: q("nightlife-01") }),
-      step("howmany", { says: [y(a("nightlife-01", 0))], back: q("nightlife-10") }),
+      step("howmany", { them: q("nightlife-01"), says: [y(a("nightlife-01", 0))], back: q("nightlife-10") }),
       step("id", { says: [y(a("nightlife-10", 0))], back: null }),
       step("cover", { cue: "Ask if there's a cover charge.", says: [y(q("nightlife-02"))], back: r("nightlife-02") }),
-      step("coats", { cue: "Ask about a cloakroom.", says: [y(q("nightlife-13"))], back: a("nightlife-13", 0) }),
       step("late", { says: [y(q("nightlife-03"))], back: r("nightlife-03") }),
       step("in", { them: r("nightlife-10"), says: ES_THANKS, back: null, next: null }),
     ],
@@ -527,8 +511,7 @@ const ES: TalkScript[] = [
     id: "nightlife-friends",
     intro: "You and a friend get talking to the group at the next table.",
     steps: [
-      step("hi", { says: ES_HI, back: q("nightlife-05") }),
-      step("from", { says: [y(a("nightlife-05", 0))], back: r("nightlife-05") }),
+      step("from", { them: q("nightlife-05"), says: [y(a("nightlife-05", 0))], back: r("nightlife-05") }),
       step("first", { says: [y(a("taxi-04", 0))], back: null }),
       step("plans", { cue: "Ask what the plan is tonight.", says: [y(q("nightlife-07"))], back: r("nightlife-07") }),
       step("in", {
@@ -550,9 +533,6 @@ const ES: TalkScript[] = [
 // Sweden
 // ---------------------------------------------------------------------------
 
-const SV_HEJ = a("sv-starting-convo-01", 1);
-const SV_HI = [y(SV_HEJ)];
-const SV_HI_CASUAL = [y(q("sv-starting-convo-01")), y(SV_HEJ)];
 const SV_THANKS = [y(t("sv-tack")), y(r("sv-getting-around-22"))];
 const SV_BYE = [
   y(t("sv-hej-da")),
@@ -567,8 +547,8 @@ const SV: TalkScript[] = [
     id: "sv-beer-food-main",
     intro: "First night in Stockholm. You walk up to the bar.",
     steps: [
-      step("hi", { says: SV_HI_CASUAL, back: q("sv-beer-food-01") }),
       step("order", {
+        them: q("sv-beer-food-01"),
         says: [y(a("sv-beer-food-01", 1)), y(a("sv-beer-food-01", 0))],
         back: r("sv-beer-food-01"),
       }),
@@ -602,7 +582,6 @@ const SV: TalkScript[] = [
     id: "sv-beer-food-fika",
     intro: "Mid-afternoon. Time for fika at a café.",
     steps: [
-      step("hi", { says: SV_HI, back: SV_HEJ }),
       step("buns", { cue: "Ask what buns they have today.", says: [y(q("sv-fika-05"))], back: a("sv-fika-05", 0) }),
       step("order", { says: [y(q("sv-fika-02"))], back: null }),
       step("here", {
@@ -617,9 +596,8 @@ const SV: TalkScript[] = [
     id: "sv-starting-convo-main",
     intro: "You need directions, and you want to try it in Swedish.",
     steps: [
-      step("hi", { says: SV_HI, back: SV_HEJ }),
-      step("where", { cue: "Ask where a place is.", says: [y(q("sv-starting-convo-06"))], back: a("sv-starting-convo-06", 0, 1) }),
-      step("lost", { says: [y(q("sv-starting-convo-04"))], back: a("sv-starting-convo-04", 0) }),
+      step("where", { cue: "Stop someone. Ask where a place is.", says: [y(q("sv-starting-convo-06"))], back: a("sv-starting-convo-06", 0, 1) }),
+      step("lost", { cue: "That was fast. You didn't catch it.", says: [y(q("sv-starting-convo-04"))], back: a("sv-starting-convo-04", 0) }),
       step("swedish", {
         them: r("sv-starting-convo-04"),
         says: [y(q("sv-starting-convo-17"))],
@@ -630,10 +608,8 @@ const SV: TalkScript[] = [
   },
   {
     id: "sv-starting-convo-basics",
-    intro: "At a bar, the person next to you says hi.",
+    intro: "At a bar, the person next to you turns and asks your name.",
     steps: [
-      step("hi", { says: SV_HI_CASUAL, back: r("sv-starting-convo-01") }),
-      step("how", { says: [y(a("sv-starting-convo-02", 0))], back: r("sv-starting-convo-02", 0) }),
       step("name", {
         them: q("sv-starting-convo-08"),
         says: [y(a("sv-starting-convo-08", 0)), y(a("sv-starting-convo-08", 1))],
@@ -671,8 +647,7 @@ const SV: TalkScript[] = [
     id: "sv-getting-around-airport",
     intro: "You've just landed at Arlanda. Passport control first.",
     steps: [
-      step("hi", { says: SV_HI, back: q("sv-getting-around-09") }),
-      step("passport", { says: [y(a("sv-getting-around-09", 0))], back: r("sv-getting-around-09") }),
+      step("passport", { them: q("sv-getting-around-09"), says: [y(a("sv-getting-around-09", 0))], back: r("sv-getting-around-09") }),
       step("bags", { cue: "Find out where the bags come out.", says: [y(q("sv-getting-around-10"))], back: a("sv-getting-around-10", 0) }),
       step("town", {
         cue: "In arrivals. Train, bus or taxi into town?",
@@ -692,15 +667,13 @@ const SV: TalkScript[] = [
     id: "sv-getting-around-taxi",
     intro: "You get into a taxi.",
     steps: [
-      step("hi", { says: SV_HI, back: q("sv-getting-around-01") }),
-      step("where", { says: [y(a("sv-getting-around-01", 0))], back: r("sv-getting-around-01", 0) }),
+      step("where", { them: q("sv-getting-around-01"), says: [y(a("sv-getting-around-01", 0))], back: r("sv-getting-around-01", 0) }),
       step("address", {
         them: q("sv-getting-around-18"),
         says: [y(a("sv-getting-around-18", 0)), y(a("sv-getting-around-18", 1))],
         back: r("sv-getting-around-18"),
       }),
       step("cost", { cue: "Ask roughly what it'll cost.", says: [y(q("sv-getting-around-13"))], back: a("sv-getting-around-13", 0) }),
-      step("card", { cue: "Check you can pay by card.", says: [y(q("sv-getting-around-14"))], back: a("sv-getting-around-14", 0) }),
       step("stop", { cue: "You're there.", says: [y(q("sv-getting-around-02"))], back: a("sv-getting-around-02", 0) }),
       step("receipt", { says: [y(q("sv-getting-around-17"))], back: a("sv-getting-around-17", 0) }),
       step("bye", { says: SV_BYE, back: t("sv-hej-hej"), next: null }),
@@ -710,7 +683,6 @@ const SV: TalkScript[] = [
     id: "sv-getting-around-metro",
     intro: "You're looking for the tunnelbana.",
     steps: [
-      step("hi", { says: SV_HI, back: SV_HEJ }),
       step("where", {
         cue: "Ask where the metro is.",
         says: [y(q("sv-getting-around-03", 0)), y(q("sv-getting-around-03", 1))],
@@ -727,8 +699,7 @@ const SV: TalkScript[] = [
     id: "sv-getting-around-lost",
     intro: "Late, dark, and your map has given up. Someone stops.",
     steps: [
-      step("hi", { says: SV_HI, back: q("sv-getting-around-30") }),
-      step("help", { says: [y(a("sv-getting-around-30", 0))], back: a("sv-getting-around-25", 0) }),
+      step("help", { them: q("sv-getting-around-30"), says: [y(a("sv-getting-around-30", 0))], back: a("sv-getting-around-25", 0) }),
       step("where", { says: [y(q("sv-getting-around-32"))], back: a("sv-getting-around-32", 0) }),
       step("walk", { says: [y(q("sv-getting-around-26"))], back: a("sv-getting-around-26", 0) }),
       step("map", { says: [y(q("sv-getting-around-28"))], back: a("sv-getting-around-28", 0) }),
@@ -739,8 +710,7 @@ const SV: TalkScript[] = [
     id: "sv-restaurant-main",
     intro: "Dinner for two. You walk in without a booking.",
     steps: [
-      step("hi", { says: SV_HI, back: SV_HEJ }),
-      step("table", { says: [y(q("sv-restaurant-01"))], back: a("sv-restaurant-01", 0) }),
+      step("table", { cue: "Ask if they have a table for two.", says: [y(q("sv-restaurant-01"))], back: a("sv-restaurant-01", 0) }),
       step("water", {
         them: q("sv-restaurant-03"),
         says: [y(a("sv-restaurant-03", 0)), y(a("sv-restaurant-03", 1))],
@@ -756,6 +726,7 @@ const SV: TalkScript[] = [
       }),
       step("again", { them: q("sv-restaurant-04"), says: [y(q("sv-restaurant-06"))], back: a("sv-restaurant-06", 0) }),
       step("taste", {
+        cue: "Later. The plates are cleared.",
         them: q("sv-restaurant-08"),
         says: [y(a("sv-restaurant-08", 0)), y(a("sv-restaurant-08", 1))],
         back: r("sv-restaurant-08"),
@@ -773,7 +744,7 @@ const SV: TalkScript[] = [
     id: "sv-restaurant-problems",
     intro: "Your food is taking forever.",
     steps: [
-      step("waiting", { says: [y(q("sv-restaurant-12"))], back: a("sv-restaurant-12", 0) }),
+      step("waiting", { cue: "Catch the waiter's eye.", says: [y(q("sv-restaurant-12"))], back: a("sv-restaurant-12", 0) }),
       step("wrong", { cue: "A plate arrives. Not what you ordered.", says: [y(q("sv-restaurant-09"))], back: a("sv-restaurant-09", 0) }),
       step("another", { cue: "Your glass is empty.", says: [y(q("sv-restaurant-13"))], back: a("sv-restaurant-13", 0) }),
       step("same", { says: [y(a("sv-beer-food-04", 1))], back: null }),
@@ -784,12 +755,10 @@ const SV: TalkScript[] = [
     id: "sv-hotel-checkin",
     intro: "You arrive at the hotel reception with your bags.",
     steps: [
-      step("hi", { says: SV_HI, back: SV_HEJ }),
-      step("booking", { says: [y(q("sv-hotel-01"))], back: a("sv-hotel-01", 0) }),
+      step("booking", { cue: "Tell them you have a booking.", says: [y(q("sv-hotel-01"))], back: a("sv-hotel-01", 0) }),
       step("id", { them: r("sv-hotel-01"), says: [y(a("sv-shopping-10", 0))], back: null }),
       step("nights", { them: q("sv-hotel-02"), says: [y(a("sv-hotel-02", 0))], back: r("sv-hotel-02") }),
       step("breakfast", { cue: "Ask if breakfast is included.", says: [y(q("sv-hotel-03"))], back: a("sv-hotel-03", 0) }),
-      step("wifi", { cue: "And the wifi password.", says: [y(q("sv-hotel-06"))], back: a("sv-hotel-06", 0) }),
       step("sauna", { cue: "Is there a sauna?", says: [y(q("sv-hotel-07"))], back: a("sv-hotel-07", 0) }),
       step("thanks", { says: SV_THANKS, back: null, next: null }),
     ],
@@ -798,8 +767,8 @@ const SV: TalkScript[] = [
     id: "sv-shopping-shops",
     intro: "You step into a clothes shop on Drottninggatan.",
     steps: [
-      step("hi", { says: SV_HI, back: q("sv-shopping-01") }),
       step("help", {
+        them: q("sv-shopping-01"),
         says: [y(a("sv-shopping-01", 0), r("sv-shopping-01")), y(a("sv-shopping-01", 1), null)],
       }),
       step("size", { cue: "You like a jacket, but it's too small.", says: [y(q("sv-shopping-02"))], back: a("sv-shopping-02", 0) }),
@@ -817,7 +786,6 @@ const SV: TalkScript[] = [
     id: "sv-shopping-systembolaget",
     intro: "You need a bottle for dinner, so it's Systembolaget.",
     steps: [
-      step("hi", { says: SV_HI, back: SV_HEJ }),
       step("recommend", { cue: "Ask for a recommendation.", says: [y(q("sv-shopping-12"))], back: a("sv-shopping-12", 0) }),
       step("swedish", { says: [y(q("sv-shopping-14"))], back: a("sv-shopping-14", 0) }),
       step("id", { them: q("sv-shopping-10"), says: [y(a("sv-shopping-10", 0))], back: r("sv-shopping-10") }),
@@ -829,8 +797,7 @@ const SV: TalkScript[] = [
     id: "sv-nightlife-door",
     intro: "Saturday night. You're at the front of the queue for a club.",
     steps: [
-      step("hi", { says: SV_HI_CASUAL, back: q("sv-nightlife-01") }),
-      step("howmany", { says: [y(a("sv-nightlife-01", 0))], back: r("sv-nightlife-01") }),
+      step("howmany", { them: q("sv-nightlife-01"), says: [y(a("sv-nightlife-01", 0))], back: r("sv-nightlife-01") }),
       step("list", {
         them: q("sv-nightlife-05"),
         says: [y(a("sv-nightlife-05", 1)), y(a("sv-nightlife-05", 0))],
@@ -844,8 +811,8 @@ const SV: TalkScript[] = [
     id: "sv-nightlife-friends",
     intro: "At a bar in Söder, you end up next to a friendly group.",
     steps: [
-      step("hi", { says: SV_HI_CASUAL, back: q("sv-nightlife-11") }),
       step("alone", {
+        them: q("sv-nightlife-11"),
         says: [y(a("sv-nightlife-11", 0)), y(a("sv-nightlife-11", 1))],
         back: r("sv-nightlife-11"),
       }),
@@ -863,8 +830,8 @@ const SV: TalkScript[] = [
     id: "sv-resacon-pharmacy",
     intro: "Rough morning. You make it to the apotek.",
     steps: [
-      step("hi", { says: SV_HI, back: q("sv-resacon-02") }),
       step("what", {
+        them: q("sv-resacon-02"),
         says: [y(a("sv-resacon-02", 0)), y(a("sv-resacon-02", 1))],
         back: r("sv-resacon-02"),
       }),
@@ -880,10 +847,6 @@ const SV: TalkScript[] = [
 // Germany
 // ---------------------------------------------------------------------------
 
-const DE_HALLO = q("de-starting-convo-01");
-const DE_HI = [y(t("de-guten-tag")), y(DE_HALLO)];
-const DE_HI_CASUAL = [y(DE_HALLO), y(a("de-starting-convo-01", 1))];
-const DE_HI_BAVARIA = [y(a("de-bayern-sc-01", 0)), y(DE_HALLO), y(t("de-guten-tag"))];
 const DE_THANKS = [y(t("de-danke")), y(r("de-getting-around-22"))];
 const DE_BYE = [
   y(t("de-tschuess")),
@@ -904,8 +867,8 @@ const DE: TalkScript[] = [
     id: "de-beer-food-main",
     intro: "A beer hall in Munich with a friend. The waiter comes over.",
     steps: [
-      step("hi", { says: DE_HI_BAVARIA, back: q("de-beer-food-01") }),
       step("order", {
+        them: q("de-beer-food-01"),
         says: [
           y(a("de-beer-food-01", 0), r("de-beer-food-01"), "tap"),
           y(a("de-beer-food-01", 1), q("de-beer-food-05"), "size"),
@@ -919,6 +882,7 @@ const DE: TalkScript[] = [
         back: r("de-beer-food-03"),
       }),
       step("another", {
+        cue: "A while later. Your glass is nearly empty.",
         them: q("de-beer-food-07"),
         says: [y(a("de-beer-food-07", 0), r("de-beer-food-07")), y(a("de-beer-food-07", 1), null)],
       }),
@@ -936,8 +900,7 @@ const DE: TalkScript[] = [
     id: "de-starting-convo-main",
     intro: "You need directions, and you want to try it in German.",
     steps: [
-      step("hi", { says: DE_HI_CASUAL, back: DE_HALLO }),
-      step("where", { cue: "Ask where a place is.", says: [y(q("de-starting-convo-06"))], back: a("de-starting-convo-06", 0, 1) }),
+      step("where", { cue: "Stop someone. Ask where a place is.", says: [y(q("de-starting-convo-06"))], back: a("de-starting-convo-06", 0, 1) }),
       step("lost", { cue: "You didn't catch that.", says: [y(q("de-starting-convo-04"))], back: r("de-starting-convo-04") }),
       step("again", { them: a("de-starting-convo-06", 0, 1), says: DE_THANKS, back: r("de-starting-convo-06") }),
       step("bye", { says: [y(t("de-tschuess"))], back: t("de-tschuess"), next: null }),
@@ -945,21 +908,17 @@ const DE: TalkScript[] = [
   },
   {
     id: "de-starting-convo-basics",
-    intro: "At a bar in Berlin, the person next to you says hi.",
+    intro: "At a bar in Berlin, the person next to you hears your accent.",
     steps: [
-      step("hi", { says: DE_HI_CASUAL, back: r("de-starting-convo-01") }),
-      step("how", {
-        says: [y(a("de-starting-convo-02", 0), r("de-starting-convo-07")), y(a("de-starting-convo-02", 1), r("de-starting-convo-02", 0))],
+      step("german", {
+        them: q("de-convo-basics-02"),
+        says: [y(a("de-convo-basics-02", 0)), y(a("de-convo-basics-02", 1))],
+        back: r("de-convo-basics-02"),
       }),
       step("name", { cue: "Introduce yourself.", says: [y(q("de-starting-convo-08"))], back: r("de-starting-convo-08") }),
       step("from", {
         says: [y(a("de-convo-basics-01", 0)), y(a("de-convo-basics-01", 1))],
         back: r("de-convo-basics-01"),
-      }),
-      step("german", {
-        them: q("de-convo-basics-02"),
-        says: [y(a("de-convo-basics-02", 0)), y(a("de-convo-basics-02", 1))],
-        back: r("de-convo-basics-02"),
       }),
       step("holiday", {
         them: q("de-convo-basics-03"),
@@ -980,8 +939,8 @@ const DE: TalkScript[] = [
     id: "de-getting-around-airport",
     intro: "You've just landed in Frankfurt. Passport control first.",
     steps: [
-      step("hi", { says: DE_HI, back: q("de-getting-around-08") }),
       step("passport", {
+        them: q("de-getting-around-08"),
         says: [y(a("de-getting-around-08", 0)), y(a("de-getting-around-08", 1))],
         back: r("de-getting-around-08"),
       }),
@@ -1004,8 +963,8 @@ const DE: TalkScript[] = [
     id: "de-getting-around-taxi",
     intro: "You climb into a taxi.",
     steps: [
-      step("hi", { says: DE_HI, back: q("de-getting-around-01") }),
       step("where", {
+        them: q("de-getting-around-01"),
         says: [y(a("de-getting-around-01", 0)), y(a("de-getting-around-01", 1))],
         back: r("de-getting-around-01"),
       }),
@@ -1032,7 +991,6 @@ const DE: TalkScript[] = [
     id: "de-getting-around-metro",
     intro: "You're looking for the U-Bahn.",
     steps: [
-      step("hi", { says: DE_HI_CASUAL, back: DE_HALLO }),
       step("where", { cue: "Ask where the U-Bahn is.", says: [y(q("de-getting-around-03"))], back: a("de-getting-around-03", 0, 0) }),
       step("signs", { them: r("de-getting-around-03"), says: DE_THANKS, back: null }),
       step("side", { cue: "On the platform. Check you're on the right side.", says: [y(q("de-getting-around-24"))], back: a("de-getting-around-24", 0) }),
@@ -1050,8 +1008,7 @@ const DE: TalkScript[] = [
     id: "de-restaurant-main",
     intro: "Dinner for two at a Gasthaus.",
     steps: [
-      step("hi", { says: DE_HI, back: t("de-guten-tag") }),
-      step("table", { says: [y(q("de-restaurant-01"))], back: a("de-restaurant-01", 0) }),
+      step("table", { cue: "Ask if they have a table for two.", says: [y(q("de-restaurant-01"))], back: a("de-restaurant-01", 0) }),
       step("recommend", { cue: "Ask what they'd recommend.", says: [y(q("de-restaurant-05"))], back: a("de-restaurant-05", 0) }),
       step("order", {
         them: q("de-restaurant-04"),
@@ -1063,6 +1020,7 @@ const DE: TalkScript[] = [
       step("again", { them: q("de-restaurant-04"), says: [y(q("de-restaurant-06"))], back: a("de-restaurant-06", 0) }),
       step("drink", { says: [y(a("de-beer-food-01", 0)), y(a("de-beer-food-01", 1))], back: null }),
       step("taste", {
+        cue: "Later. The plates are cleared.",
         them: q("de-restaurant-08"),
         says: [y(a("de-restaurant-08", 0)), y(a("de-restaurant-08", 1))],
         back: r("de-restaurant-08"),
@@ -1080,8 +1038,7 @@ const DE: TalkScript[] = [
     id: "de-hotel-checkin",
     intro: "You arrive at the hotel with your suitcase.",
     steps: [
-      step("hi", { says: DE_HI, back: t("de-guten-tag") }),
-      step("booking", { says: [y(q("de-hotel-01"))], back: a("de-hotel-01", 0) }),
+      step("booking", { cue: "Tell them you have a reservation.", says: [y(q("de-hotel-01"))], back: a("de-hotel-01", 0) }),
       step("passport", { them: r("de-hotel-01"), says: [y(a("de-getting-around-08", 0))], back: null }),
       step("room", { them: q("de-hotel-07"), says: [y(a("de-hotel-07", 0))], back: r("de-hotel-07") }),
       step("breakfast", { cue: "Ask if breakfast is included.", says: [y(q("de-hotel-03"))], back: a("de-hotel-03", 0) }),
@@ -1093,12 +1050,11 @@ const DE: TalkScript[] = [
     id: "de-hotel-problems",
     intro: "Back at the hotel, and the room isn't right.",
     steps: [
-      step("hi", { says: DE_HI, back: t("de-guten-tag") }),
       step("heating", { cue: "The heating isn't working.", says: [y(q("de-hotel-09"))], back: a("de-hotel-09", 0) }),
-      step("towels", { cue: "You could also use more towels.", says: [y(q("de-hotel-14"))], back: a("de-hotel-14", 0) }),
       step("wake", { cue: "Early start tomorrow. Ask for a wake-up call at seven.", says: [y(q("de-hotel-12"))], back: a("de-hotel-12", 0) }),
       step("thanks", { says: DE_THANKS, back: null }),
       step("checkout", {
+        cue: "Next morning, at checkout.",
         them: q("de-hotel-16"),
         says: [y(a("de-hotel-16", 0)), y(a("de-hotel-16", 1))],
         back: r("de-hotel-16"),
@@ -1110,8 +1066,8 @@ const DE: TalkScript[] = [
     id: "de-shopping-shops",
     intro: "You walk into a clothes shop.",
     steps: [
-      step("hi", { says: DE_HI, back: q("de-shopping-01") }),
       step("help", {
+        them: q("de-shopping-01"),
         says: [y(a("de-shopping-01", 0), r("de-shopping-01")), y(a("de-shopping-01", 1), null)],
       }),
       step("price", { cue: "You like a shirt. Ask the price.", says: [y(q("de-shopping-04"))], back: a("de-shopping-04", 0) }),
@@ -1129,7 +1085,6 @@ const DE: TalkScript[] = [
     id: "de-shopping-supermarket",
     intro: "Grabbing a few things at the supermarket.",
     steps: [
-      step("hi", { says: DE_HI_CASUAL, back: DE_HALLO }),
       step("milk", { cue: "Ask where the milk is.", says: [y(q("de-shopping-13"))], back: a("de-shopping-13", 0) }),
       step("fruit", { says: [y(q("de-shopping-15"))], back: a("de-shopping-15", 0) }),
       step("deposit", { cue: "Is there a deposit on the bottles?", says: [y(q("de-shopping-12"))], back: a("de-shopping-12", 0) }),
@@ -1143,8 +1098,7 @@ const DE: TalkScript[] = [
     id: "de-nightlife-door",
     intro: "Saturday night in Berlin. You and a friend reach the front of the queue.",
     steps: [
-      step("hi", { says: DE_HI_CASUAL, back: q("de-nightlife-01") }),
-      step("two", { says: [y(a("de-nightlife-01", 0))], back: q("de-nightlife-02") }),
+      step("two", { them: q("de-nightlife-01"), says: [y(a("de-nightlife-01", 0))], back: q("de-nightlife-02") }),
       step("age", { says: [y(a("de-nightlife-02", 0))], back: r("de-nightlife-02") }),
       step("id", { says: [y(a("de-getting-around-08", 0))], back: null }),
       step("phones", { them: q("de-nightlife-06"), says: [y(a("de-nightlife-06", 0))], back: r("de-nightlife-06") }),
@@ -1156,8 +1110,8 @@ const DE: TalkScript[] = [
     id: "de-nightlife-friends",
     intro: "A bar in Kreuzberg. Someone at the next table turns to you.",
     steps: [
-      step("hi", { says: DE_HI_CASUAL, back: q("de-nightlife-11") }),
       step("alone", {
+        them: q("de-nightlife-11"),
         says: [y(a("de-nightlife-11", 0)), y(a("de-nightlife-11", 1))],
         back: r("de-nightlife-11"),
       }),
@@ -1175,8 +1129,8 @@ const DE: TalkScript[] = [
     id: "de-resacon-pharmacy",
     intro: "Rough morning. You make it to an Apotheke.",
     steps: [
-      step("hi", { says: DE_HI, back: q("de-resacon-02") }),
       step("what", {
+        them: q("de-resacon-02"),
         says: [y(a("de-resacon-02", 0)), y(a("de-resacon-02", 1))],
         back: r("de-resacon-02"),
       }),
@@ -1193,11 +1147,3 @@ export const TALK_SCRIPTS: Record<string, TalkScript[]> = {
   "sv-SE": SV,
   "de-DE": DE,
 };
-
-/**
- * The two conversations where they speak before you do, because that is how
- * the moment goes: the waiter coming over to ask how it was before you ask for
- * the check, and the woman behind you at the market asking who's last in the
- * queue. Every other conversation is opened by you.
- */
-export const THEY_OPEN = new Set(["restaurant-paying", "shopping-market"]);
