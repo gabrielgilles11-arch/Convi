@@ -379,6 +379,17 @@
               "notes": "Was machst du so? is broader than the job question: it takes work, studies or whatever somebody is up to this week, whichever they want to give you.",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "de-convo-basics-08",
+              "speaker": "you",
+              "situation": { "en": "A man has been talking at you in thick Bavarian for a full minute and you caught none of it." },
+              "question": { "es": "Ich verstehe nur Bahnhof.", "en": "I don't understand a thing." },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Literally \"I only understand train station\": the German \"it's all Greek to me.\" Informal and everyday. Das kommt mir Spanisch vor says the same thing.",
+              "difficulty": "medium",
+              "quizQuestions": []
             }
           ]
         }
