@@ -36,12 +36,23 @@ import RemindPrompt from "./RemindPrompt";
 import ConversationPicker from "./ConversationPicker";
 import ConversationMode from "./ConversationMode";
 import GameMode from "./GameMode";
+import WelcomeRound from "./WelcomeRound";
+import TalkWelcome from "./TalkWelcome";
+import { markWelcomeSeen, pickWelcomeItems, welcomeSeen } from "../../lib/welcome";
 import { loadTalkStyle, saveTalkStyle, type TalkStyle } from "../../lib/gameTypes";
 import { soundEnabled, setSoundEnabled } from "./sound";
 import { setVoiceEnabled, stopSpeaking, voiceEnabled } from "./speech";
 import "./quiz.css";
 
-type Mode = "path" | "test" | "progress" | "talk";
+/**
+ * Game Mode is parked until Talk Mode is where it should be. Everything it
+ * needs is still here (GameMode, /api/game, the scripts); this switch only
+ * decides whether the Talk / Game toggle is offered. Off, a browser that had
+ * chosen Game before is read as Talk, so nobody is stranded on a hidden mode.
+ */
+const GAME_MODE_ENABLED = false;
+
+type Mode = "path" | "test" | "progress" | "talk" | "welcome";
 
 /**
  * Set once the email prompt has been answered either way — registered, or
@@ -103,10 +114,12 @@ export default function QuizApp({ locale }: Props) {
   const [askRemind, setAskRemind] = useState(false);
   // Talk or Game. Same deck, two ways to play it; remembered per browser.
   const [talkStyle, setTalkStyle] = useState<TalkStyle>("talk");
+  /** Talk's first-visit welcome, shown in place of the list until it is answered. */
+  const [talkWelcome, setTalkWelcome] = useState(false);
   useEffect(() => {
     setSound(soundEnabled());
     setVoice(voiceEnabled());
-    setTalkStyle(loadTalkStyle());
+    setTalkStyle(GAME_MODE_ENABLED ? loadTalkStyle() : "talk");
   }, []);
 
   function chooseTalkStyle(style: TalkStyle) {
@@ -151,7 +164,7 @@ export default function QuizApp({ locale }: Props) {
    * its own chrome \u2014 see `body[data-focus]` in Layout.astro.
    */
   useEffect(() => {
-    const focused = mode === "test" || mode === "talk";
+    const focused = mode === "test" || mode === "talk" || mode === "welcome";
     if (focused) document.body.dataset.focus = "round";
     else delete document.body.dataset.focus;
     return () => {
@@ -214,6 +227,36 @@ export default function QuizApp({ locale }: Props) {
     () => (payload ? buildStages(payload.items, payload.categories) : []),
     [payload]
   );
+
+  /**
+   * The welcome round, the first time this language's practice is opened.
+   *
+   * Only for somebody new to it: a browser that has already scored a round in
+   * this edition is not new, whatever the flag says, so people who were here
+   * before the welcome existed are not sent back to the start. Shown once,
+   * answered or skipped, per language.
+   */
+  const welcomeChecked = useRef(false);
+  useEffect(() => {
+    if (!payload || welcomeChecked.current) return;
+    welcomeChecked.current = true;
+    const loc = locale ?? "es-ES";
+    if (welcomeSeen("practice", loc)) return;
+    const scores = loadProgress().bestScores;
+    const practicedHere = stages.some((stage) => (scores[stage.id] ?? 0) > 0);
+    if (practicedHere || pickWelcomeItems(payload.items).length < 3) {
+      markWelcomeSeen("practice", loc);
+      return;
+    }
+    setMode("welcome");
+  }, [payload, stages, locale]);
+
+  function finishWelcome() {
+    markWelcomeSeen("practice", locale ?? "es-ES");
+    setScoreVersion((v) => v + 1);
+    setMode("path");
+    window.scrollTo({ top: 0 });
+  }
 
   const bestScores = useMemo(
     () => loadProgress().bestScores,
@@ -305,7 +348,10 @@ export default function QuizApp({ locale }: Props) {
   return (
     <div className="quiz-app">
       <div className="quiz-toolbar">
-        <div className="mode-toggle" role="tablist">
+{/* Hidden through the welcome round: it is one short run with its own way
+            out, and leaving it by a tab would skip the results it ends on. */}
+        {mode !== "welcome" && (
+                <div className="mode-toggle" role="tablist">
           {/* Path stays lit through a round, because a round is the path: the
               test screen is where a stone takes you, not a second place. Talk
               Mode is not a tab — it sits beside the circles, which is where
@@ -321,6 +367,7 @@ export default function QuizApp({ locale }: Props) {
             Progress
           </button>
         </div>
+        )}
 
         <button
           type="button"
@@ -439,6 +486,8 @@ export default function QuizApp({ locale }: Props) {
                 place you use them. Sticky, so it is still there four sections
                 down. */}
             <div className="talk-rail">
+              {GAME_MODE_ENABLED && (
+                <>
               {/* Talk or Game: this switch picks what the button below opens.
                   Both play the same conversations; Game is the cartoon one,
                   with Convi and three lines to choose from. */}
@@ -458,11 +507,14 @@ export default function QuizApp({ locale }: Props) {
                   Game
                 </button>
               </div>
+                </>
+              )}
               <button
                 type="button"
                 className="talk-launch"
                 onClick={() => {
                   setConvoId(null);
+                  setTalkWelcome(!welcomeSeen("talk", locale ?? "es-ES"));
                   setMode("talk");
                 }}
               >
@@ -501,6 +553,18 @@ export default function QuizApp({ locale }: Props) {
             </button>
           )}
         </>
+      )}
+
+      {mode === "welcome" && (
+        <WelcomeRound
+          locale={locale ?? "es-ES"}
+          items={payload.items}
+          onDone={finishWelcome}
+          onRoundComplete={() => {
+            recordRound(locale ?? "es-ES");
+            setScoreVersion((v) => v + 1);
+          }}
+        />
       )}
 
       {mode === "test" && (
@@ -550,6 +614,27 @@ export default function QuizApp({ locale }: Props) {
         talkStyle === "talk" &&
         (convoError ? (
           <p className="quiz-error">{convoError}</p>
+        ) : talkWelcome ? (
+          <TalkWelcome
+            locale={locale ?? "es-ES"}
+            ready={conversations !== null}
+            onStart={() => {
+              markWelcomeSeen("talk", locale ?? "es-ES");
+              setTalkWelcome(false);
+              // The bar conversation: "beer-food-main" in every edition.
+              const first =
+                conversations?.find((c) => /(^|-)beer-food-main$/.test(c.id)) ?? conversations?.[0];
+              setConvoId(first?.id ?? null);
+            }}
+            onBrowse={() => {
+              markWelcomeSeen("talk", locale ?? "es-ES");
+              setTalkWelcome(false);
+            }}
+            onBack={() => {
+              setTalkWelcome(false);
+              setMode("path");
+            }}
+          />
         ) : conversations === null ? (
           <p className="quiz-loading">Loading the conversations...</p>
         ) : chosenConvo ? (

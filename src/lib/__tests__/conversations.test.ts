@@ -52,7 +52,7 @@ const asks = (line: string | null | undefined) => Boolean(line && /[?？]\s*$/.t
 /** Every line they say: openers and replies. */
 function theirLines(convo: Conversation) {
   return convo.turns.flatMap((turn) =>
-    [turn.theirOpener, ...turn.replies]
+    [turn.theirOpener, ...turn.replies, ...turn.outros]
       .filter((l): l is NonNullable<typeof l> => l !== null)
       .map((line) => ({ turn: turn.id, line }))
   );
@@ -174,6 +174,40 @@ describe.each(locales)("conversations: %s", (locale: Locale) => {
       });
     }
     expect(bare).toEqual([]);
+  });
+
+  /**
+   * A goodbye you have to type is kept for the few conversations where leaving
+   * is the lesson. Everywhere else the scene ends on its point, and where a
+   * farewell belongs the local says it.
+   */
+  it("does not make you say goodbye to finish most conversations", () => {
+    const farewells = new Set([
+      "es-adios", "sv-hej-da", "sv-hej-hej", "sv-tack-hej", "de-tschuess", "de-auf-wiedersehen",
+      "starting-convo-07-q", "sv-starting-convo-07-r",
+    ]);
+    const forced = conversations.filter((convo) =>
+      convo.turns.some(
+        (turn, i) =>
+          turn.next.every((n) => n === null) &&
+          turn.yourLines.some((line) => farewells.has(line.audioId ?? "")) &&
+          paths(convo).some((path) => path[path.length - 1] === i)
+      )
+    );
+    expect(forced.length, forced.map((c) => c.id).join(", ")).toBeLessThanOrEqual(
+      Math.ceil(conversations.length / 4)
+    );
+  });
+
+  it("only gives a closing line to a line that ends the conversation", () => {
+    for (const convo of conversations) {
+      for (const turn of convo.turns) {
+        expect(turn.outros).toHaveLength(turn.yourLines.length);
+        turn.outros.forEach((outro, i) => {
+          if (outro) expect(turn.next[i], `${turn.id}: ${outro.source}`).toBeNull();
+        });
+      }
+    }
   });
 
   it("never has them say a blank, a slash or a list of options out loud", () => {
@@ -589,15 +623,28 @@ describe.each(locales)("carrying on inside the thread: %s", (locale: Locale) => 
     expect(followingConversation(conversations, "not-a-conversation")).toBeNull();
   });
 
-  it("hints with the authored English of a line you could say, and nothing else", () => {
+  it("hints with the authored English of the lines you could say, and nothing else", () => {
     for (const convo of conversations) {
       for (const turn of convo.turns) {
         const hint = hintFor(turn);
         if (hint === null) {
           expect(turn.yourLines.every((line) => !line.en?.trim())).toBe(true);
         } else {
-          expect(turn.yourLines.map((line) => line.en?.trim())).toContain(hint);
+          const authored = turn.yourLines.map((line) => line.en?.trim());
+          expect(hint.length).toBeGreaterThan(0);
+          expect(hint.length).toBeLessThanOrEqual(3);
+          for (const option of hint) expect(authored).toContain(option);
         }
+      }
+    }
+  });
+
+  it("shows every option in the hint where a beat branches, so the choice is visible", () => {
+    for (const convo of conversations) {
+      for (const turn of convo.turns) {
+        if (new Set(turn.next).size < 2) continue;
+        const english = new Set(turn.yourLines.map((l) => l.en?.trim().toLowerCase()).filter(Boolean));
+        expect(hintFor(turn)?.length, turn.id).toBe(Math.min(3, english.size));
       }
     }
   });
