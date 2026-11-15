@@ -15,6 +15,7 @@ import AudioButton from "./AudioButton";
 import { placeName } from "./ConversationPicker";
 import { prefetchClips, speak, stopSpeaking } from "./speech";
 import { registerOf, REGISTER_LABEL } from "../../lib/register";
+import { LANGUAGE_NAME } from "../../lib/welcome";
 
 /**
  * Talk Mode: a conversation held in the target language.
@@ -32,8 +33,10 @@ import { registerOf, REGISTER_LABEL } from "../../lib/register";
  * somebody actually says to a barista, and marking it wrong because the
  * authored line reads "Un café con leche, por favor" teaches recitation.
  *
- * Every conversation is a script (lib/talkScripts.ts): you open it with a
- * hello, they answer what you actually said, and it ends with a goodbye.
+ * Every conversation is a script (lib/talkScripts.ts): it opens on the point
+ * of the moment, they answer what you actually said, and it ends there. Where
+ * a farewell belongs the local says it (`outros`), so you are never made to
+ * type a goodbye just to finish.
  * Where what you say changes what happens, it does: order a caña and the
  * bartender asks if you want something to eat, order "una cerveza" and he
  * asks draft or bottle. Every line on every path is a sourced content line.
@@ -89,6 +92,12 @@ interface Held {
  * `replied`  their answer is on screen and the next beat is on its way.
  */
 type Phase = "typing" | "open" | "answered" | "replied";
+
+/**
+ * Their closing line on the last beat: not due yet, about to be said (the
+ * dots), or said. Beats already behind you always show theirs.
+ */
+type OutroState = "none" | "typing" | "out";
 
 /**
  * How long they take before speaking. Long enough to read as somebody about to
@@ -303,11 +312,13 @@ function Beat({
   turn,
   first,
   intro,
+  howTo,
   locale,
   said,
   english,
   active,
   phase,
+  outroState,
   openKey,
   onPop,
 }: {
@@ -316,12 +327,16 @@ function Beat({
   first: boolean;
   /** Where you are, said once above the first line. */
   intro: string;
+  /** How Talk works, in one line, until the first answer is in. */
+  howTo: string | null;
   locale: string;
   said: Said | undefined;
   english: boolean;
   active: boolean;
   /** Where this beat is. Beats already walked are always fully shown. */
   phase: Phase;
+  /** Their closing line, on the beat that ends the conversation. */
+  outroState: OutroState;
   openKey: string | null;
   onPop: (key: string | null) => void;
 }) {
@@ -333,10 +348,12 @@ function Beat({
   const openerOut = phase !== "typing";
   const replyOut = phase === "replied";
   const reply = said ? (turn.replies[said.index] ?? null) : null;
+  const outro = said ? (turn.outros[said.index] ?? null) : null;
 
   return (
     <li className={`convo-beat${active ? " is-active" : ""}`}>
       {first && <p className="convo-situation convo-intro">{intro}</p>}
+      {first && howTo && <p className="convo-howto">{howTo}</p>}
       {cue && <p className="convo-situation">{cue}</p>}
 
       {turn.theirOpener &&
@@ -399,6 +416,23 @@ function Beat({
               <Typing label="They're answering" />
             ))}
 
+          {outro &&
+            replyOut &&
+            outroState !== "none" &&
+            (outroState === "out" ? (
+              <Bubble
+                line={outro}
+                side="them"
+                locale={locale}
+                english={english}
+                openKey={openKey}
+                popKey={`${turn.id}-outro`}
+                onPop={onPop}
+              />
+            ) : (
+              <Typing label="They're wrapping up" />
+            ))}
+
           {english && replyOut && turn.note && <p className="convo-note">{turn.note}</p>}
         </>
       )}
@@ -417,6 +451,8 @@ function Transcript({
   onPop,
   step,
   phase,
+  outroState,
+  howTo,
   live,
 }: {
   conversation: Conversation;
@@ -429,6 +465,10 @@ function Transcript({
   /** The beat on screen, for the conversation being held now. */
   step: number | null;
   phase: Phase;
+  /** The closing line's state on the beat on screen. */
+  outroState: OutroState;
+  /** The how-it-works line for the first beat, or null. */
+  howTo: string | null;
   live: boolean;
 }) {
   return (
@@ -443,11 +483,13 @@ function Transcript({
             turn={turn}
             first={position === 0}
             intro={conversation.intro}
+            howTo={position === 0 ? howTo : null}
             locale={locale}
             said={said[index]}
             english={english}
             active={current}
             phase={current ? phase : "replied"}
+            outroState={current ? outroState : "out"}
             openKey={openKey}
             onPop={onPop}
           />
@@ -483,6 +525,7 @@ export default function ConversationMode({
   const [route, setRoute] = useState<number[]>([0]);
   const [said, setSaid] = useState<Record<number, Said>>({});
   const [phase, setPhase] = useState<Phase>(firstPhase(conversation));
+  const [outroState, setOutroState] = useState<OutroState>("none");
   const [typed, setTyped] = useState("");
   const [english, setEnglish] = useState(false);
   const [done, setDone] = useState(false);
@@ -550,6 +593,7 @@ export default function ConversationMode({
     setDone(false);
     setOpenKey(null);
     setHinted(false);
+    setOutroState("none");
     setPhase(firstPhase(conversation));
   }
 
@@ -664,6 +708,20 @@ export default function ConversationMode({
     // the line it was corrected to, so a miss never strands the conversation.
     const next = turn.next[entry.index] ?? null;
     if (next === null) {
+      // The local closes the scene, where the script has them do it: a beat,
+      // the dots, then their "Hasta luego" out loud, and only then the end.
+      const outro = turn.outros[entry.index] ?? null;
+      if (outro) {
+        setOutroState("typing");
+        await pause(THINKING);
+        await whenVisible();
+        if (!alive()) return;
+        setOutroState("out");
+        const closing = speakLine(outro);
+        await Promise.race([Promise.all([closing, pause(readingTime(outro.source))]), pause(MAX_WAIT)]);
+        await whenVisible();
+        if (!alive()) return;
+      }
       setDone(true);
       onFinish(conversation.id);
       return;
@@ -743,6 +801,8 @@ export default function ConversationMode({
             onPop={setOpenKey}
             step={null}
             phase="replied"
+            outroState="out"
+            howTo={null}
             live={false}
           />
         </div>
@@ -760,6 +820,12 @@ export default function ConversationMode({
         onPop={setOpenKey}
         step={done ? null : step}
         phase={phase}
+        outroState={outroState}
+        howTo={
+          held.length === 0 && route.length === 1 && !settled
+            ? `They talk, you answer in ${LANGUAGE_NAME[locale] ?? "the language"}: type it in the box below. Stuck? Tap "Get a hint".`
+            : null
+        }
         live
       />
 
@@ -847,8 +913,15 @@ export default function ConversationMode({
         <div className="convo-composer">
           {hinted && hint && canAnswer && (
             <p className="convo-hint">
-              <span className="convo-hint-label">You want to say</span>
-              {hint}
+              <span className="convo-hint-label">
+                {hint.length > 1 ? "You could say" : "You want to say"}
+              </span>
+              {hint.map((option, i) => (
+                <span key={option} className="convo-hint-option">
+                  {i > 0 && <span className="convo-hint-or">or</span>}
+                  {option}
+                </span>
+              ))}
             </p>
           )}
           <form className="convo-type" onSubmit={submit}>

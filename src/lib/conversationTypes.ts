@@ -52,6 +52,12 @@ export interface ConvTurn {
   replies: (ConvLine | null)[];
   /** The beat each of `yourLines` leads to, by index into `turns`. Null: the end. */
   next: (number | null)[];
+  /**
+   * Their closing line after each of `yourLines`, by position, where that line
+   * ends the conversation: the local's "Hasta luego" or "Hej hej!", so you are
+   * never made to type a goodbye just to finish. Null: nothing more is said.
+   */
+  outros: (ConvLine | null)[];
   /** What comes back to the first of your lines. The common case, for display. */
   theirReply: ConvLine | null;
   /** The authored note about this exchange, where it has one. */
@@ -452,9 +458,20 @@ export function readingTime(...texts: (string | null | undefined)[]): number {
  * authored English is used, and a beat whose line has none has no hint: the
  * next step is the line itself.
  */
-export function hintFor(turn: ConvTurn): string | null {
-  const en = turn.yourLines.find((line) => line.en?.trim())?.en?.trim();
-  return en || null;
+export function hintFor(turn: ConvTurn): string[] | null {
+  // Every way the beat was written, not just the first: "a small draft beer"
+  // or "a beer" says there is a choice to make, and which one you pick decides
+  // where the conversation goes. Three at most, so a hint stays a hint.
+  const seen = new Set<string>();
+  const options: string[] = [];
+  for (const line of turn.yourLines) {
+    const en = line.en?.trim();
+    if (!en || seen.has(en.toLowerCase())) continue;
+    seen.add(en.toLowerCase());
+    options.push(en);
+  }
+  if (options.length === 0) return null;
+  return options.slice(0, 3);
 }
 
 export interface FollowingConversation {
