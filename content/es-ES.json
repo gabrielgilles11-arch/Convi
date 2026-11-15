@@ -4478,6 +4478,7 @@
     {"id": "es-buenos-dias", "es": "¡Buenos días!", "en": "Good morning!"},
     {"id": "es-adios", "es": "¡Adiós!", "en": "Bye!"},
     {"id": "es-gracias", "es": "Gracias.", "en": "Thanks."},
-    {"id": "es-muchas-gracias", "es": "Muchas gracias.", "en": "Thank you very much."}
+    {"id": "es-muchas-gracias", "es": "Muchas gracias.", "en": "Thank you very much."},
+    {"id": "es-me-cobras", "es": "Me cobras, por favor.", "en": "Can I pay, please? (how locals ask for the check at a bar)"}
   ]
 }

@@ -270,6 +270,7 @@ function asTurn(node: GameNode): ConvTurn {
     yourLines: node.options.map((o) => o.line),
     replies: node.options.map(() => null),
     next: node.options.map(() => null),
+    outros: node.options.map(() => null),
     cue: node.cue ?? null,
     theirReply: null,
     note: "",
