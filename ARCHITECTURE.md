@@ -116,11 +116,20 @@ which beer you want and ignores the answer, a "Son __ euros" with the blank
 still in it, and another round offered after you had paid. Nobody said hello.
 
 So each conversation is now a script (`lib/talkScripts.ts`), the same idea as
-Game Mode's. You open it ("¡Buenas!", "Hej!", "Guten Tag!"), they answer what
-you said, and where what you say changes what happens, it does: a caña gets
-"Vale. ¿Algo de comer?", "una cerveza" gets "¿De barril o de botella?", an
-Helles in Munich gets "Maß oder Halbe?". It ends with a goodbye, down to "Schönen
-Tag noch!" and "Danke, gleichfalls!" at a German till.
+Game Mode's. It opens on the point of the moment, they answer what you said,
+and where what you say changes what happens, it does: a caña gets "Vale. ¿Algo
+de comer?", "una cerveza" gets "¿De barril o de botella?", an Helles in Munich
+gets "Maß oder Halbe?".
+
+It ends on the point too: the drink paid for, the directions given, the door
+opened. Real counter dialogues end with the local closing ("Que aproveche,
+hasta luego", "Ha en bra dag!", "Einen schönen Tag noch") and the customer
+echoing, so a step can carry an `outro`: the local's closing line, said after
+their reply on a line that ends the conversation. You are not made to type
+"Adiós" to finish. A goodbye you have to say is kept for the few
+conversations where leaving is the lesson (bailing on the fútbol fan, heading
+off from new friends, "Danke, gleichfalls!" at a German till), and a test
+holds that to a quarter of an edition at most.
 
 Scripts hold references, never text: an exchange id and a part (`q`, `aN`, `r`,
 with `alt` for one side of an "A / B" line), or a greeting from `talk` in the
@@ -145,6 +154,10 @@ ids (`es-hola`, `taxi-01-r-alt0`) by `scripts/generate-audio.mjs`; until a run
 records them they fall back to the device voice, like everything in Spanish.
 
 ## Game Mode: short conversations, scripted from sourced lines
+
+**Parked.** `GAME_MODE_ENABLED` in `QuizApp.tsx` is false until Talk Mode is
+finished, so the switch below is not offered and a stored "game" choice is
+read as Talk. Nothing else was removed.
 
 A Talk / Game switch on the rail beside the path decides what the launch
 button opens. Game Mode is Convi's trip through the edition, one place at a
