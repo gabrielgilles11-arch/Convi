@@ -102,6 +102,12 @@ export function resolveScript(
     const next = step.says.map((s) =>
       target(s.next === undefined ? step.next : s.next, i)
     );
+    const outros = step.says.map((s, j) => {
+      const ref = s.outro === undefined ? step.outro : s.outro;
+      // Only a line that ends things has a closing line after it.
+      if (!ref || next[j] !== null) return null;
+      return resolveTalkRef(index, ref);
+    });
     if (new Set(next).size > 1) branches = true;
 
     return {
@@ -112,6 +118,7 @@ export function resolveScript(
       yourLines,
       replies,
       next,
+      outros,
       theirReply: replies[0] ?? null,
       note: lead?.notes ?? "",
     };

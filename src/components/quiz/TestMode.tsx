@@ -55,6 +55,12 @@ interface Props {
   onRoundComplete: () => void;
   /** Builds the round. Defaults to the usual mix. */
   makeRound?: (items: QuizItem[], allItems: QuizItem[]) => Question[];
+  /**
+   * Takes over the end of the round: called with how each item went on its
+   * first try, in place of the usual summary screen. The welcome round uses it
+   * to show its own section-by-section results.
+   */
+  onFinish?: (firstTries: Record<string, boolean>) => void;
 }
 
 /**
@@ -144,6 +150,7 @@ export default function TestMode({
   onRoundComplete,
   onBackToPath,
   makeRound = buildRound,
+  onFinish,
 }: Props) {
   const [round, setRound] = useState<Question[]>(() => makeRound(items, allItems));
   /**
@@ -184,6 +191,8 @@ export default function TestMode({
   // Read from the progress this round just wrote — a count passed in as a prop
   // is stale by the time the round ends.
   const [mistakeCount, setMistakeCount] = useState(0);
+  /** How each item went the first time it was asked, for `onFinish`. */
+  const firstTries = useRef<Record<string, boolean>>({});
 
   const position = queue.length > 0 ? queue[0] : -1;
   const question = round[position] ?? null;
@@ -260,6 +269,7 @@ export default function TestMode({
     // Same reset as the count, and for the same reason. Without it "Another
     // round" would list the lines from the round before it as well.
     setWonIds([]);
+    firstTries.current = {};
     setDone(false);
   }
 
@@ -312,6 +322,8 @@ export default function TestMode({
     // shouldn't erase the fact that you missed it.
     if (attempted.includes(position)) return;
     setAttempted((a) => [...a, position]);
+    if (results) for (const r of results) firstTries.current[r.itemId] = r.correct;
+    else firstTries.current[question!.itemId] = correct;
     if (results) {
       for (const r of results) recordQuestionResult(r.itemId, r.correct);
       // A matching screen settles several items at once, and the rows that
@@ -369,6 +381,10 @@ export default function TestMode({
     setRoundsToday(roundsCompletedToday(progress));
     setMistakeCount(progress.missedItemIds.length);
     onRoundComplete();
+    if (onFinish) {
+      onFinish({ ...firstTries.current });
+      return;
+    }
     setDone(true);
   }
 

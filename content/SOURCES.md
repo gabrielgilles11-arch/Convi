@@ -156,3 +156,29 @@ already in the content.
 - Tschüss (the most common bye), Auf Wiedersehen (new acquaintances, older
   people), Schönen Tag noch (what store clerks say) answered with Danke
   gleichfalls — https://www.lingoda.com/blog/en/saying-goodbye-german/
+
+## Talk Mode: asking for the check at a bar, and tipping in Germany
+
+Two lines a local says where the scripts had only the textbook version.
+
+### Spanish
+
+Covers `es-me-cobras` ("Me cobras, por favor."), used in `beer-food-main`
+after a second round, beside "La cuenta, porfa.".
+
+- "Me cobras, por favor": how locals often ask for the bill —
+  https://theculturetrip.com/europe/spain/articles/11-essential-spanish-phrases-for-ordering-at-a-restaurant-like-a-local
+- "Nos cobras por favor" as the bar way to ask for the bill, and "¿Me/Nos
+  cobra, por favor?" — https://www.notesinspanish.com/?p=28704
+- "¿me cobras cuando puedas?" in a Madrid café dialogue —
+  https://elon.io/grammar/spanish-spain/texts/cafe
+
+### German
+
+Covers `de-stimmt-so` ("Stimmt so, danke."), used in `de-beer-food-main` and
+`de-restaurant-main` when paying cash.
+
+- "Hier sind 25 €. Stimmt so, danke." answered with "Vielen Dank! Einen
+  schönen Tag noch." — https://www.olesentuition.co.uk/single-post/how-to-ask-for-the-bill-in-german
+- "das stimmt so" means "keep the change" when paying —
+  https://www.yabla.com/german-blog/2019/04/21/tipping-in-germany
