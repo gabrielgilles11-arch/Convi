@@ -705,6 +705,31 @@ describe("open questions take more than one right answer", () => {
     accepts("es-ES", "nightlife-door", "howmany", "Somos cinco", /Somos/);
   });
 
+  it("takes any age at the Berlin club door, in digits or words", () => {
+    for (const typed of ["dreißig", "30", "einundzwanzig", "Ich bin 30", "Ich bin dreißig Jahre alt", "Sechsundzwanzig"]) {
+      accepts("de-DE", "de-nightlife-door", "age", typed, /Ich bin|Sechsundzwanzig/);
+    }
+  });
+
+  it("takes any group size at the Stockholm club door", () => {
+    for (const typed of ["fyra", "5", "Vi är fem", "vi är tjugotvå", "Vi är tre"]) {
+      accepts("sv-SE", "sv-nightlife-door", "howmany", typed, /Vi är/);
+    }
+  });
+
+  it("still wants a number where the blank is a number", () => {
+    const age = turnOf("de-DE", "de-nightlife-door", "age");
+    for (const typed of ["hallo", "ja", "Ich bin müde"]) {
+      expect(gradeReply(typed, age.yourLines).correct, typed).toBe(false);
+    }
+    const group = turnOf("sv-SE", "sv-nightlife-door", "howmany");
+    for (const typed of ["hej", "Vi är glada"]) {
+      expect(gradeReply(typed, group.yourLines).correct, typed).toBe(false);
+    }
+    expect(saysTheLine("Ich bin 30", "Ich bin [ALTER].")).toBe(true);
+    expect(saysTheLine("Ich bin müde", "Ich bin [ALTER].")).toBe(false);
+  });
+
   it("marks Practice the way Talk marks it, but not on one stray word", () => {
     expect(saysTheLine("una jarra", "Una jarra de cerveza, por favor.")).toBe(true);
     expect(saysTheLine("Soy de Irlanda", "Soy de __.")).toBe(true);

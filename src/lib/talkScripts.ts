@@ -849,7 +849,11 @@ const SV: TalkScript[] = [
     id: "sv-nightlife-door",
     intro: "Saturday night. You're at the front of the queue for a club.",
     steps: [
-      step("howmany", { them: q("sv-nightlife-01"), says: [y(a("sv-nightlife-01", 0))], back: r("sv-nightlife-01") }),
+      step("howmany", {
+        them: q("sv-nightlife-01"),
+        says: [y(a("sv-nightlife-01", 0)), y(a("sv-nightlife-01", 1))],
+        back: r("sv-nightlife-01"),
+      }),
       step("list", {
         them: q("sv-nightlife-05"),
         says: [y(a("sv-nightlife-05", 1)), y(a("sv-nightlife-05", 0))],
@@ -1211,7 +1215,11 @@ const DE: TalkScript[] = [
         says: [y(a("de-nightlife-01", 0)), y(a("de-nightlife-01", 1))],
         back: q("de-nightlife-02"),
       }),
-      step("age", { says: [y(a("de-nightlife-02", 0))], back: r("de-nightlife-02") }),
+      // Any age: a number on its own, "Ich bin 30", "Ich bin dreißig Jahre alt".
+      step("age", {
+        says: [y(a("de-nightlife-02", 0)), y(a("de-nightlife-02", 1)), y(a("de-nightlife-02", 2))],
+        back: r("de-nightlife-02"),
+      }),
       step("id", { says: [y(a("de-getting-around-08", 0))], back: null }),
       step("phones", { them: q("de-nightlife-06"), says: [y(a("de-nightlife-06", 0))], back: r("de-nightlife-06") }),
       step("cover", { cue: "Ask how much it is to get in.", says: [y(q("de-nightlife-03"))], back: a("de-nightlife-03", 0) }),
