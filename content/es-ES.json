@@ -25,7 +25,12 @@
               "question": { "es": "¿Qué vas a tomar?", "en": "What are you having?" },
               "answers": [
                 { "es": "Una caña, porfa.", "en": "A small draft beer, please (how locals order)." },
-                { "es": "Una cerveza, por favor.", "en": "A beer, please." }
+                { "es": "Una cerveza, por favor.", "en": "A beer, please." },
+                { "es": "Una jarra de cerveza, por favor.", "en": "A big mug of beer, please (the largest draft size)." },
+                { "es": "¿Me pones un doble?", "en": "Can I get a doble? (a bigger draft beer, about 40cl, in Madrid)" },
+                { "es": "Una clara.", "en": "A shandy (beer with lemon soda)." },
+                { "es": "Una sin.", "en": "An alcohol-free beer." },
+                { "es": "Quiero una copa de Rioja.", "en": "I'd like a glass of Rioja." }
               ],
               "likelyReply": { "es": "Vale. ¿Algo de comer?", "en": "Okay. Something to eat?" },
               "notes": "",
@@ -160,7 +165,8 @@
               "question": { "es": "¿Qué te pongo?", "en": "What can I get you?" },
               "answers": [
                 { "es": "Un café con leche, porfa.", "en": "A coffee with milk, please." },
-                { "es": "Un cortado.", "en": "An espresso with a splash of milk." }
+                { "es": "Un cortado.", "en": "An espresso with a splash of milk." },
+                { "es": "Un café solo.", "en": "An espresso." }
               ],
               "likelyReply": { "es": "¿Para tomar aquí?", "en": "For here?" },
               "notes": "\"Solo\" = straight espresso; \"cortado\" = with a little milk; \"con leche\" = latte-ish.",
@@ -417,7 +423,8 @@
               "situation": { "en": "Someone you've just met asks where you're from." },
               "question": { "es": "¿De dónde eres?", "en": "Where are you from?" },
               "answers": [
-                { "es": "Soy de Estados Unidos.", "en": "I'm from the US." }
+                { "es": "Soy de Estados Unidos.", "en": "I'm from the US." },
+                { "es": "Soy de __.", "en": "I'm from __." }
               ],
               "likelyReply": { "es": "¿Y tú?", "en": "And you?" },
               "notes": "\"Y tú?\" is your natural follow-up here, not their reply.",
@@ -3944,7 +3951,8 @@
               "situation": { "en": "Someone at the bar asks where your group is from." },
               "question": { "es": "¿De dónde sois?", "en": "Where are you (all) from?" },
               "answers": [
-                { "es": "Somos de Estados Unidos, ¿y vosotros?", "en": "We're from the US, and you?" }
+                { "es": "Somos de Estados Unidos, ¿y vosotros?", "en": "We're from the US, and you?" },
+                { "es": "Somos de __.", "en": "We're from __." }
               ],
               "likelyReply": { "es": "¡Bienvenidos! ¿Primera vez aquí?", "en": "Welcome! First time here?" },
               "notes": "",
