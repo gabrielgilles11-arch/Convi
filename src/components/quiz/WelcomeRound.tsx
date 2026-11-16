@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { buildQuestion, type Question, type QuizItem } from "../../lib/quizTypes";
 import {
   LANGUAGE_NAME,
+  WELCOME_HELLO,
+  WELCOME_PROMISE,
   pickWelcomeItems,
   tallyWelcome,
   type SectionTally,
@@ -65,17 +67,20 @@ export default function WelcomeRound({ locale, items, onDone, onRoundComplete }:
   }, [phase]);
 
   if (phase === "hello") {
+    const hello = WELCOME_HELLO[locale] ?? { text: "Welcome to Try Convi!", lang: "en" };
     return (
       <div className="welcome">
-        <ConviGuide>
-          <p className="convi-bubble-title">Welcome to Try Convi!</p>
-          <p>Where I teach you how to speak like a local.</p>
-        </ConviGuide>
-        <p className="welcome-sub">
-          Let's warm up with {round.length} quick questions in {language}: ordering at a
-          restaurant, asking for a beer, getting around and starting a convo. Pick what you'd
-          say. Wrong answers come back around, so you can't fail this one.
-        </p>
+        <ConviGuide
+          lines={[
+            { text: hello.text, lang: hello.lang, className: "convi-line--hello" },
+            { text: WELCOME_PROMISE },
+            {
+              text: `Let's warm up with ${round.length} quick questions in ${language}.`,
+              className: "convi-line--lead",
+            },
+          ]}
+        />
+        <p className="welcome-sub">Pick what you'd say. Wrong answers come back around, so you can't fail this one.</p>
         <div className="welcome-actions">
           <button
             ref={startButton}
