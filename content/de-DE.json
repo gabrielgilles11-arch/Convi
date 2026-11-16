@@ -39,7 +39,11 @@
               "question": { "es": "Was möchten Sie trinken?", "en": "What would you like to drink? (formal Sie)" },
               "answers": [
                 { "es": "Ein Bier, bitte.", "en": "A beer, please." },
-                { "es": "Ein Helles, bitte.", "en": "A pale lager, please — common in the south." }
+                { "es": "Ein Helles, bitte.", "en": "A pale lager, please — common in the south." },
+                { "es": "Ich hätte gern ein Helles.", "en": "I'd like a pale lager." },
+                { "es": "Kann ich ein Pils bestellen?", "en": "Can I order a pilsner?" },
+                { "es": "Ein großes Bier, bitte.", "en": "A large beer, please." },
+                { "es": "Ich nehme ein Bier.", "en": "I'll take a beer." }
               ],
               "likelyReply": { "es": "Vom Fass oder aus der Flasche?", "en": "Draft or bottle?" },
               "notes": "\"Ein Helles\" is the southern default. Servers open with the formal Sie.",
@@ -290,7 +294,8 @@
               "question": { "es": "Woher kommst du?", "en": "Where are you from?" },
               "answers": [
                 { "es": "Ich komme aus den USA.", "en": "I'm from the US." },
-                { "es": "Ich komme aus Kanada.", "en": "I'm from Canada." }
+                { "es": "Ich komme aus Kanada.", "en": "I'm from Canada." },
+                { "es": "Ich komme aus [LAND].", "en": "I'm from [COUNTRY]." }
               ],
               "likelyReply": { "es": "Schön, willkommen!", "en": "Nice. Welcome!" },
               "notes": "",
@@ -4224,6 +4229,7 @@
     {"id": "de-schoenen-tag", "es": "Schönen Tag noch!", "en": "Have a nice day!"},
     {"id": "de-gleichfalls", "es": "Danke, gleichfalls!", "en": "Thanks, you too!"},
     {"id": "de-danke", "es": "Danke!", "en": "Thanks!"},
-    {"id": "de-stimmt-so", "es": "Stimmt so, danke.", "en": "Keep the change, thanks."}
+    {"id": "de-stimmt-so", "es": "Stimmt so, danke.", "en": "Keep the change, thanks."},
+    {"id": "de-nein-danke", "es": "Nein, danke.", "en": "No, thanks."}
   ]
 }

@@ -21,6 +21,7 @@ import {
   DAILY_GOAL,
 } from "../../lib/progress";
 import { registerOf, REGISTER_LABEL } from "../../lib/register";
+import { saysTheLine } from "../../lib/conversationTypes";
 
 /**
  * Lines listed on the round summary before it turns into a wall.
@@ -345,7 +346,14 @@ export default function TestMode({
   function submitTyped(event: React.SubmitEvent) {
     event.preventDefault();
     if (answered || !typed.trim()) return;
-    settle(answeredIt(typed, question!.accepted));
+    const q = question!;
+    // A moment you answer ("what do you say?") takes what Talk would take: the
+    // key words of any line written for it, or the line with your own name,
+    // place or number in the blank. A translation still wants the line itself.
+    settle(
+      answeredIt(typed, q.accepted) ||
+        (q.saidByYou && q.accepted.some((line) => saysTheLine(typed, line)))
+    );
   }
 
   function submitBank() {
