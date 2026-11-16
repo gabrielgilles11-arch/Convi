@@ -1,0 +1,159 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import WaitlistForm from "../../components/WaitlistForm.astro";
+import { getLocaleInfo, LOCALES, localePath } from "../../lib/content";
+import { answerLangSlug, answersByCategory, getAnswerPages } from "../../lib/answerPages";
+import { canonicalUrl } from "../../lib/seo";
+
+/**
+ * Every answer page, one click away. Linked from the footer and from each
+ * edition's scenarios hub, which is the whole internal path a crawler needs:
+ * home, then here, then the answer.
+ */
+export const prerender = true;
+
+const editions = LOCALES.map((l) => ({
+  info: getLocaleInfo(l.locale),
+  slug: answerLangSlug(l.locale),
+  groups: answersByCategory(l.locale),
+})).filter((e) => e.groups.length > 0);
+
+const pageUrl = canonicalUrl(Astro.url.pathname, Astro.site);
+const title = "How to say it in Spanish, Swedish and German";
+const description =
+  "Quick answers to what travelers search before a trip: how to say it, how to answer it, and what locals say back. Free, no sign-up.";
+
+const schema = [
+  {
+    "@type": "CollectionPage",
+    "@id": `${pageUrl}#collection`,
+    name: title,
+    description,
+    url: pageUrl,
+    inLanguage: "en",
+    hasPart: getAnswerPages().map((p) => ({
+      "@type": "WebPage",
+      name: p.heading,
+      url: new URL(p.path, Astro.site).href,
+    })),
+  },
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <h1>Quick answers</h1>
+  <p class="intro">
+    The exact line for the moment you're in, with what they'll say back and how locals actually use it.
+  </p>
+
+  <nav class="jump" aria-label="Languages">
+    {editions.map((e) => <a href={`#${e.slug}`}>{e.info.flag} {e.info.language}</a>)}
+  </nav>
+
+  {
+    editions.map((e) => (
+      <section class="edition" id={e.slug}>
+        <h2>{e.info.flag} {e.info.language} in {e.info.region}</h2>
+        {e.groups.map((g) => (
+          <div class="group">
+            <h3>
+              <a href={localePath(e.info.locale, `/scenarios/${g.category.id}`)}>{g.category.title}</a>
+            </h3>
+            <ul>
+              {g.pages.map((p) => (
+                <li>
+                  <a href={p.path}>{p.heading}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <a class="edition-all" href={localePath(e.info.locale, "/scenarios")}>All {e.info.language} scenarios &rarr;</a>
+      </section>
+    ))
+  }
+
+  <WaitlistForm />
+</Layout>
+
+<style>
+  h1 {
+    margin: 0 0 0.35rem;
+  }
+
+  .intro {
+    margin: 0 0 1.25rem;
+    color: var(--color-ink-soft);
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 2rem;
+  }
+
+  .jump a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-primary-tint-border);
+    background: var(--color-primary-tint);
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .edition {
+    margin: 0 0 2.5rem;
+    scroll-margin-top: 1rem;
+  }
+
+  .edition h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.4rem;
+  }
+
+  .group {
+    margin: 0 0 1.25rem;
+  }
+
+  .group h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+  }
+
+  .group h3 a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary-dark);
+  }
+
+  .group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 0.75rem;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .group li a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0.3rem 0;
+    line-height: 1.35;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .edition-all {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+</style>

@@ -9,6 +9,7 @@ import {
   getLocaleInfo,
   LOCALES,
 } from "../../../lib/content";
+import { answerLangSlug, getAnswerPages } from "../../../lib/answerPages";
 
 // One template serves all three editions. Spanish uses an empty `lang`, so it
 // keeps the already-indexed /scenarios URL; the others get /sv and /de.
@@ -22,6 +23,7 @@ if (!locale) {
 }
 
 const info = getLocaleInfo(locale);
+const answerCount = getAnswerPages(locale).length;
 
 // Free categories first, paywalled ones grouped at the bottom (stable sort
 // keeps each group in its original order).
@@ -39,6 +41,13 @@ const categories = getCategories(locale).sort(
   <p class="intro">Pick a category and see how the conversation actually goes.</p>
 
   <p class="intro-hint">Open a category and it gets marked complete here.</p>
+
+  {answerCount > 0 && (
+    <a class="answers-link" href={`/answers#${answerLangSlug(locale)}`}>
+      <span class="answers-link-label">Quick {info.language} answers</span>
+      <span class="answers-link-sub">How to say one thing, and what they'll say back &rarr;</span>
+    </a>
+  )}
 
   <div class="grid">
     {
@@ -76,6 +85,32 @@ const categories = getCategories(locale).sort(
 </Layout>
 
 <style>
+  .answers-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin: 0 0 1.5rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-primary-tint-border);
+    background: var(--color-primary-tint);
+    text-decoration: none;
+  }
+
+  .answers-link:hover {
+    border-color: var(--color-primary);
+  }
+
+  .answers-link-label {
+    font-weight: 800;
+    color: var(--color-primary-dark);
+  }
+
+  .answers-link-sub {
+    font-size: 0.92rem;
+    color: var(--color-ink-soft);
+  }
+
   h1 {
     margin-bottom: 0.25rem;
     font-size: 1.9rem;
