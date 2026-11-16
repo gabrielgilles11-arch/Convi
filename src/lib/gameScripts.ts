@@ -19,7 +19,8 @@
 export type SceneKind = "taxi" | "bar" | "metro" | "cafe";
 
 /** Which line of an exchange: its question, one of its answers, or its reply. */
-export type Part = "q" | "r" | "a0" | "a1" | "a2";
+/** Their line, their reply, or the nth answer written for the moment. */
+export type Part = "q" | "r" | `a${number}`;
 
 /**
  * A line in content/*.json.

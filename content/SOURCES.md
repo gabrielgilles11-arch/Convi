@@ -182,3 +182,49 @@ Covers `de-stimmt-so` ("Stimmt so, danke."), used in `de-beer-food-main` and
   schönen Tag noch." — https://www.olesentuition.co.uk/single-post/how-to-ask-for-the-bill-in-german
 - "das stimmt so" means "keep the change" when paying —
   https://www.yabla.com/german-blog/2019/04/21/tipping-in-germany
+
+## Open questions: more than one right answer
+
+Questions with no single answer (what you're drinking, where you're from) take
+every sourced way a traveler might answer, in the guide, in Practice and in
+Talk.
+
+### Spanish
+
+Covers new answers on `beer-food-01`: "Una jarra de cerveza, por favor.",
+"¿Me pones un doble?", "Una clara.", "Una sin."
+- https://www.thelocal.es/20240923/learning-spanish-how-to-order-a-beer-in-spain
+
+Covers "Quiero una copa de Rioja." on `beer-food-01` and "Un café solo." on
+`beer-food-coffee-01`.
+- https://devourtours.com/blog/how-to-order-drink-madrid/
+
+Covers "Soy de __." on `starting-convo-02` and "Somos de __." on
+`nightlife-05`: "Soy de Uruguay.", "Somos de Canadá".
+- https://www.spanishdict.com/guide/de-donde-eres
+
+### Swedish
+
+Covers "Jag kommer från [LAND]." on `sv-convo-basics-01`: "Jag kommer från
+Colombia", "Jag kommer från Iran".
+- https://blogs.transparent.com/swedish/var-kommer-du-ifran/
+
+Covers `sv-kan-jag-fa-kaffe` ("Hej! Kan jag få en kaffe och en kanelbulle?"),
+the café scenario.
+- https://preply.com/en/blog/how-to-order-food-in-swedish/
+
+### German
+
+Covers new answers on `de-beer-food-01`: "Ich hätte gern ein Helles.", "Kann
+ich ein Pils bestellen?", "Ein großes Bier, bitte."
+- https://www.olesentuition.co.uk/single-post/essential-german-words-and-phrases-for-beer-lovers
+
+Covers "Ich nehme ein Bier." on `de-beer-food-01`.
+- https://lingopie.com/blog/how-to-order-beer-in-german/
+
+Covers "Ich komme aus [LAND]." on `de-convo-basics-01`: "Ich komme aus
+Deutschland."
+- https://www.lingoda.com/blog/en/introduce-yourself-german/
+
+Covers `de-nein-danke` ("Nein, danke.").
+- https://www.dummies.com/article/common-conversational-words-and-phrases-in-german-195687

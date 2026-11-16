@@ -274,6 +274,9 @@ const FUNCTION_WORDS = new Set([
   "den", "dem", "des", "ich", "wir", "ihr", "sie", "ist", "sind", "habe",
   "hatte", "haette", "gern", "gerne", "bitte", "und", "oder", "mit", "ohne",
   "auf", "zu", "an", "von", "im", "ins", "mal", "doch", "noch", "wurde",
+  // The German way of asking, as "quiero" and "kan jag få" are above: in
+  // "Kann ich ein Pils bestellen?" the order is the Pils.
+  "kann", "nehme", "bestellen", "mochte", "moechte",
 ]);
 
 /**
@@ -362,6 +365,30 @@ export function replyMatches(given: string, expected: string): boolean {
   const pattern = slotPattern(expected);
   if (pattern && pattern.test(normalizeAnswer(given))) return true;
   return keywordMatch(given, expected);
+}
+
+/**
+ * Whether a typed answer says what a line says, for a Practice question that
+ * asks what you would say in a moment.
+ *
+ * Talk takes the same answer it would take at the bar: "una jarra" for "Una
+ * jarra de cerveza, por favor.", "Soy de Irlanda" for "Soy de __.". Practice
+ * used to want the line to the letter, so the same answer that carried a
+ * conversation was marked wrong in a round. One difference: here the words you
+ * typed have to be at least half of what the line is about, so "metro" on its
+ * own is not "Perdona, ¿dónde está la entrada del metro?".
+ */
+export function saysTheLine(given: string, expected: string): boolean {
+  if (typedAnswerMatches(given, expected)) return true;
+  const pattern = slotPattern(expected);
+  if (pattern) return pattern.test(normalizeAnswer(given));
+
+  const said = contentWords(given);
+  const line = contentWords(expected);
+  if (said.length === 0 || line.length === 0) return false;
+  if (!said.every((word) => line.some((other) => sameWord(word, other)))) return false;
+  const covered = line.filter((word) => said.some((other) => sameWord(word, other))).length;
+  return covered / line.length >= 0.5;
 }
 
 /** Shared words over total distinct words, for "close" rather than "right". */

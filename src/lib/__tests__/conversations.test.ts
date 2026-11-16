@@ -15,6 +15,7 @@ import {
   gradeReply,
   hasSlot,
   replyMatches,
+  saysTheLine,
   type Conversation,
   type ConvLine,
 } from "../conversationTypes";
@@ -647,5 +648,68 @@ describe.each(locales)("carrying on inside the thread: %s", (locale: Locale) => 
         expect(hintFor(turn)?.length, turn.id).toBe(Math.min(3, english.size));
       }
     }
+  });
+});
+
+/**
+ * Open questions take every sourced answer a traveler might give. "Una jarra"
+ * at a Madrid bar was marked wrong because the beat only knew caña and
+ * cerveza; these pin the answers that used to fail, in Talk and in Practice.
+ */
+describe("open questions take more than one right answer", () => {
+  function turnOf(locale: Locale, convo: string, step: string) {
+    const conversation = buildConversations(locale).find((c) => c.id === convo)!;
+    return conversation.turns.find((t) => t.id === `${convo}:${step}`)!;
+  }
+  function accepts(locale: Locale, convo: string, step: string, typed: string, means: RegExp) {
+    const turn = turnOf(locale, convo, step);
+    const verdict = gradeReply(typed, turn.yourLines);
+    expect(verdict.correct, `${convo}:${step} "${typed}"`).toBe(true);
+    expect(verdict.line.source, `${convo}:${step} "${typed}"`).toMatch(means);
+  }
+
+  it("orders a drink at a Spanish bar any way the guide gives", () => {
+    accepts("es-ES", "beer-food-main", "order", "una jarra", /jarra/);
+    accepts("es-ES", "beer-food-main", "order", "Una jarra de cerveza, por favor", /jarra/);
+    accepts("es-ES", "beer-food-main", "order", "me pones un doble", /doble/);
+    accepts("es-ES", "beer-food-main", "order", "una clara", /clara/);
+    accepts("es-ES", "beer-food-main", "order", "una caña", /caña/);
+    accepts("es-ES", "beer-food-main", "order", "una cerveza", /cerveza, por favor/);
+    accepts("es-ES", "beer-food-coffee", "order", "un café solo", /solo/);
+  });
+
+  it("asks a plain cerveza draft or bottle, and sends a jarra straight on", () => {
+    const turn = turnOf("es-ES", "beer-food-main", "order");
+    const cerveza = turn.yourLines.findIndex((l) => l.source === "Una cerveza, por favor.");
+    const jarra = turn.yourLines.findIndex((l) => /jarra/.test(l.source));
+    expect(turn.replies[cerveza]?.source).toMatch(/barril/);
+    expect(turn.replies[jarra]?.source).toMatch(/comer/);
+  });
+
+  it("orders in a Munich beer hall by size, style or a plain beer", () => {
+    accepts("de-DE", "de-beer-food-main", "order", "Eine Maß, bitte", /Maß/);
+    accepts("de-DE", "de-beer-food-main", "order", "ein Pils", /Pils/);
+    accepts("de-DE", "de-beer-food-main", "order", "ein großes Bier bitte", /großes/);
+    accepts("de-DE", "de-beer-food-main", "food", "Nein, danke", /Nein, danke/);
+  });
+
+  it("takes any country for where you're from, in all three", () => {
+    accepts("es-ES", "starting-convo-basics", "from", "Soy de Irlanda", /Soy de/);
+    accepts("es-ES", "nightlife-friends", "from", "Somos de Canadá", /Somos de/);
+    accepts("sv-SE", "sv-starting-convo-basics", "from", "Jag kommer från Irland", /kommer från/);
+    accepts("de-DE", "de-starting-convo-basics", "from", "Ich komme aus Irland", /komme aus/);
+  });
+
+  it("takes any group size at the restaurant and the club door", () => {
+    accepts("es-ES", "restaurant-seating", "howmany", "Somos cuatro", /Somos/);
+    accepts("es-ES", "nightlife-door", "howmany", "Somos cinco", /Somos/);
+  });
+
+  it("marks Practice the way Talk marks it, but not on one stray word", () => {
+    expect(saysTheLine("una jarra", "Una jarra de cerveza, por favor.")).toBe(true);
+    expect(saysTheLine("Soy de Irlanda", "Soy de __.")).toBe(true);
+    expect(saysTheLine("un pils", "Kann ich ein Pils bestellen?")).toBe(true);
+    expect(saysTheLine("metro", "Perdona, ¿dónde está la entrada del metro?")).toBe(false);
+    expect(saysTheLine("una caña", "Una jarra de cerveza, por favor.")).toBe(false);
   });
 });
