@@ -228,3 +228,18 @@ Deutschland."
 
 Covers `de-nein-danke` ("Nein, danke.").
 - https://www.dummies.com/article/common-conversational-words-and-phrases-in-german-195687
+
+## Club doors: any age, any group size
+
+Covers "Ich bin [ALTER]." and "Ich bin [ALTER] Jahre alt." on `de-nightlife-02`:
+"Ich bin … Jahre alt", and "Ich bin 35" with the years dropped.
+- https://www.lingoda.com/blog/en/introduce-yourself-german/
+
+Covers "Vi är [ANTAL]." on `sv-nightlife-01`: "Nej, vi är två.", "Vi är fyra".
+- https://elon.io/grammar/swedish/texts/dialogue-restaurant
+
+A blank for a number takes a number, in digits or in words, and a bare number
+answers the line on its own. The German and Swedish number words the matcher
+recognizes, and how 21 to 99 are built, are from:
+- https://www.languagesandnumbers.com/how-to-count-in-german/en/deu/
+- https://www.languagesandnumbers.com/how-to-count-in-swedish/en/swe/

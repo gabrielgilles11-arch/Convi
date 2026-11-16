@@ -207,6 +207,47 @@ export function hasSlot(line: string): boolean {
   return HAS_SLOT.test(line);
 }
 
+/**
+ * A blank that holds a number: an age at the door, how many of you there are.
+ * Only these take a bare number as the whole answer, so "fyra" at "Hur många
+ * är ni?" is "Vi är [ANTAL]." and "dreißig" at "Wie alt seid ihr?" is
+ * "Ich bin [ALTER].".
+ */
+const NUMBER_SLOT = /\[(alter|antal|zahl|numero|age|number)\]/i;
+
+/**
+ * A number as somebody would type it: digits, or the word in German or
+ * Swedish, 1 to 99. Written to the normalized form (no accents, ß as ss), the
+ * way `normalizeAnswer` leaves what was typed. The words and how 21 to 99 are
+ * built are from languagesandnumbers.com: German puts the unit first and joins
+ * it with "und" (einunddreißig), Swedish puts the ten first with nothing
+ * between (fyrtioåtta).
+ *
+ * This is matching vocabulary, not a line anybody is taught: it never appears
+ * on screen.
+ */
+const DE_UNIT = "ein|zwei|drei|vier|funf|sechs|sieben|acht|neun";
+const DE_TEN = "zwanzig|dreissig|vierzig|funfzig|sechzig|siebzig|achtzig|neunzig";
+const DE_NUMBER = new RegExp(
+  `^(eins|${DE_UNIT}|zehn|elf|zwolf|dreizehn|vierzehn|funfzehn|sechzehn|siebzehn|achtzehn|neunzehn|${DE_TEN}|(${DE_UNIT})und(${DE_TEN}))$`
+);
+const SV_UNIT = "en|ett|tva|tre|fyra|fem|sex|sju|atta|nio";
+const SV_TEN = "tjugo|trettio|fyrtio|femtio|sextio|sjuttio|attio|nittio";
+const SV_NUMBER = new RegExp(
+  `^(${SV_UNIT}|tio|elva|tolv|tretton|fjorton|femton|sexton|sjutton|arton|nitton|(${SV_TEN})(${SV_UNIT})?)$`
+);
+
+/** True when a normalized word is a number, in digits or in words. */
+function isNumber(word: string): boolean {
+  return /^\d{1,3}$/.test(word) || DE_NUMBER.test(word) || SV_NUMBER.test(word);
+}
+
+/** A typed answer that is only a number, for a line whose blank is one. */
+function numberOnly(given: string, expected: string): boolean {
+  if (!NUMBER_SLOT.test(expected)) return false;
+  return isNumber(normalizeAnswer(given));
+}
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -229,8 +270,11 @@ function slotPattern(expected: string): RegExp | null {
     .split(SLOT_SPLIT)
     .map((part) =>
       IS_SLOT.test(part)
-        ? // At least one character, so an empty blank is not an answer.
-          "(.+)"
+        ? NUMBER_SLOT.test(part)
+          ? // A number blank takes a number, in digits or words.
+            "(\\S+)"
+          : // At least one character, so an empty blank is not an answer.
+            "(.+)"
         : escapeRegExp(part).replace(/\s+/g, "\\s+")
     )
     .join("");
@@ -242,6 +286,22 @@ function slotPattern(expected: string): RegExp | null {
     // over; the plain comparison above it still applies.
     return null;
   }
+}
+
+/**
+ * True when what was typed is the line with its blanks filled in: anything in
+ * a blank for a name or a place, a number in a blank for a number. A line
+ * whose blank is a number also takes the number on its own, which is how
+ * people answer "how old are you?" and "how many of you?" at a door.
+ */
+function fillsTheBlanks(given: string, expected: string): boolean {
+  if (numberOnly(given, expected)) return true;
+  const pattern = slotPattern(expected);
+  if (!pattern) return false;
+  const match = pattern.exec(normalizeAnswer(given));
+  if (!match) return false;
+  const blanks = normalizeAnswer(expected).match(new RegExp(SLOT_SPLIT.source, "g")) ?? [];
+  return blanks.every((blank, i) => !NUMBER_SLOT.test(blank) || isNumber(match[i + 1] ?? ""));
 }
 
 /**
@@ -362,8 +422,7 @@ function keywordMatch(given: string, expected: string): boolean {
 /** True when what somebody said is this line, blanks and all. */
 export function replyMatches(given: string, expected: string): boolean {
   if (typedAnswerMatches(given, expected)) return true;
-  const pattern = slotPattern(expected);
-  if (pattern && pattern.test(normalizeAnswer(given))) return true;
+  if (fillsTheBlanks(given, expected)) return true;
   return keywordMatch(given, expected);
 }
 
@@ -380,8 +439,7 @@ export function replyMatches(given: string, expected: string): boolean {
  */
 export function saysTheLine(given: string, expected: string): boolean {
   if (typedAnswerMatches(given, expected)) return true;
-  const pattern = slotPattern(expected);
-  if (pattern) return pattern.test(normalizeAnswer(given));
+  if (hasSlot(expected)) return fillsTheBlanks(given, expected);
 
   const said = contentWords(given);
   const line = contentWords(expected);

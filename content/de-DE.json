@@ -2889,7 +2889,9 @@
               "situation": { "en": "The bouncer looks at you and wants to know your age." },
               "question": { "es": "Wie alt seid ihr?", "en": "How old are you all?" },
               "answers": [
-                { "es": "Sechsundzwanzig.", "en": "Twenty-six." }
+                { "es": "Sechsundzwanzig.", "en": "Twenty-six." },
+                { "es": "Ich bin [ALTER].", "en": "I'm [AGE]." },
+                { "es": "Ich bin [ALTER] Jahre alt.", "en": "I'm [AGE] years old." }
               ],
               "likelyReply": { "es": "Ausweis, bitte.", "en": "ID, please." },
               "notes": "",
