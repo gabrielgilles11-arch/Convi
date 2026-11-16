@@ -515,7 +515,8 @@
               "question": { "es": "Var kommer du ifrån?", "en": "Where are you from?" },
               "answers": [
                 { "es": "Jag kommer ifrån USA.", "en": "I'm from the US." },
-                { "es": "Jag kommer ifrån England.", "en": "I'm from England." }
+                { "es": "Jag kommer ifrån England.", "en": "I'm from England." },
+                { "es": "Jag kommer från [LAND].", "en": "I'm from [COUNTRY]." }
               ],
               "likelyReply": { "es": "Vad kul, välkommen hit.", "en": "How nice. Welcome here!" },
               "notes": "Var kommer du ifrån? and varifrån kommer du? are the same question. Answer with ifrån and you sound like you have said it before.",
@@ -4570,6 +4571,7 @@
     {"id": "sv-hej-da", "es": "Hej då!", "en": "Bye!"},
     {"id": "sv-hej-hej", "es": "Hej hej!", "en": "Bye bye!"},
     {"id": "sv-tack-hej", "es": "Tack hej!", "en": "Thanks, bye!"},
-    {"id": "sv-tack", "es": "Tack!", "en": "Thanks!"}
+    {"id": "sv-tack", "es": "Tack!", "en": "Thanks!"},
+    {"id": "sv-kan-jag-fa-kaffe", "es": "Hej! Kan jag få en kaffe och en kanelbulle?", "en": "Hi! Can I get a coffee and a cinnamon bun?"}
   ]
 }
