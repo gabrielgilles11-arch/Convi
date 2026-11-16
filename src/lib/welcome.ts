@@ -179,3 +179,21 @@ export const LANGUAGE_NAME: Record<string, string> = {
   "sv-SE": "Swedish",
   "de-DE": "German",
 };
+
+/**
+ * Convi's first words on a welcome screen, in the language you picked.
+ *
+ * Sourced like every other line in the target language (content/SOURCES.md,
+ * "Welcome screens"): Spanish "bienvenido a" as in "bienvenido a casa"
+ * (Quillbot), Swedish "Välkommen till" as in "Välkommen till Wikipedia."
+ * (Clozemaster), German "Willkommen bei" for a company, as in "Willkommen bei
+ * [Firma]" (Lingoda). Try Convi is the name, so it stays as it is.
+ */
+export const WELCOME_HELLO: Record<string, { text: string; lang: string }> = {
+  "es-ES": { text: "¡Bienvenido a Try Convi!", lang: "es" },
+  "sv-SE": { text: "Välkommen till Try Convi!", lang: "sv" },
+  "de-DE": { text: "Willkommen bei Try Convi!", lang: "de" },
+};
+
+/** What Convi says second, in every edition. */
+export const WELCOME_PROMISE = "Where I teach you to speak like a local.";

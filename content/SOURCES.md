@@ -243,3 +243,15 @@ answers the line on its own. The German and Swedish number words the matcher
 recognizes, and how 21 to 99 are built, are from:
 - https://www.languagesandnumbers.com/how-to-count-in-german/en/deu/
 - https://www.languagesandnumbers.com/how-to-count-in-swedish/en/swe/
+
+## Welcome screens
+
+Convi's hello on the practice and Talk welcome screens (`WELCOME_HELLO` in
+`src/lib/welcome.ts`). Try Convi is the name and stays in English.
+
+- "¡Bienvenido a Try Convi!": "bienvenido a casa" (welcome home) —
+  https://quillbot.com/blog/?p=30988
+- "Välkommen till Try Convi!": "Välkommen till Wikipedia." —
+  https://www.clozemaster.com/how-to-say-it/welcome-in-swedish
+- "Willkommen bei Try Convi!": "Willkommen bei [Firma]" (welcome to [company]) —
+  https://www.lingoda.com/blog/en/welcome-in-german/
