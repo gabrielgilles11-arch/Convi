@@ -7,12 +7,15 @@ import sitemap from '@astrojs/sitemap';
 import { contentUpdated } from './src/lib/seo.ts';
 
 /**
- * Which edition a scenario URL belongs to, for its lastmod.
+ * Which edition a scenario or answer URL belongs to, for its lastmod.
  * @param {string} url
  * @returns {'es-ES' | 'sv-SE' | 'de-DE' | null}
  */
 function scenarioLocale(url) {
   const path = new URL(url).pathname;
+  if (path.startsWith('/answers/swedish')) return 'sv-SE';
+  if (path.startsWith('/answers/german')) return 'de-DE';
+  if (path.startsWith('/answers/spanish')) return 'es-ES';
   if (path.startsWith('/sv/scenarios')) return 'sv-SE';
   if (path.startsWith('/de/scenarios')) return 'de-DE';
   if (path.startsWith('/scenarios')) return 'es-ES';

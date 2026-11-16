@@ -1,0 +1,121 @@
+---
+/**
+ * The app waitlist, for pages outside the home page.
+ *
+ * Posts to the same /api/signup the home page uses, so an address from an
+ * answer page lands on the same list. Class-based rather than id-based so a
+ * page could carry more than one without the script tripping over itself.
+ */
+interface Props {
+  heading?: string;
+  sub?: string;
+}
+const {
+  heading = "The app isn't out yet",
+  sub = "Leave your email and we'll tell you when the app and the printable phrasebook are ready.",
+} = Astro.props;
+---
+
+<section class="waitlist">
+  <h2>{heading}</h2>
+  <p class="waitlist-sub">{sub}</p>
+  <form class="waitlist-form">
+    <input type="email" name="email" placeholder="you@email.com" required aria-label="Email address" />
+    <button type="submit">Notify me</button>
+  </form>
+  <p class="waitlist-note" hidden>Thanks! We'll let you know.</p>
+  <p class="waitlist-error" hidden>Something went wrong. Try again in a moment.</p>
+</section>
+
+<script>
+  for (const section of document.querySelectorAll<HTMLElement>(".waitlist")) {
+    const form = section.querySelector<HTMLFormElement>(".waitlist-form");
+    const note = section.querySelector<HTMLElement>(".waitlist-note");
+    const errorNote = section.querySelector<HTMLElement>(".waitlist-error");
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (errorNote) errorNote.hidden = true;
+      const email = (new FormData(form).get("email") as string) ?? "";
+      try {
+        const res = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        if (!res.ok) throw new Error("signup failed");
+        form.hidden = true;
+        if (note) note.hidden = false;
+      } catch {
+        if (errorNote) errorNote.hidden = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .waitlist {
+    margin: clamp(2rem, 4vw, 3rem) 0 0;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border-radius: 16px;
+    background: var(--color-primary-tint);
+    border: 1px solid var(--color-primary-tint-border);
+  }
+
+  .waitlist h2 {
+    font-size: 1.35rem;
+    margin: 0 0 0.4rem;
+  }
+
+  .waitlist-sub {
+    color: var(--color-ink-soft);
+    margin: 0 0 1rem;
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .waitlist-form input {
+    flex: 1;
+    min-width: 0;
+    flex-basis: 200px;
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-button);
+    border: 1px solid var(--color-border);
+    font-size: 1rem;
+    font-family: var(--font-body);
+  }
+
+  .waitlist-form input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .waitlist-form button {
+    min-height: 44px;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-button);
+    border: none;
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--color-primary-dark);
+  }
+
+  .waitlist-note {
+    margin: 0;
+    font-weight: 600;
+    color: var(--color-primary-dark);
+  }
+
+  .waitlist-error {
+    margin: 0.5rem 0 0;
+    font-weight: 600;
+    color: var(--color-error);
+  }
+</style>
