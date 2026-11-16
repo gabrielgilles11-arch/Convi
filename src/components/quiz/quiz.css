@@ -4008,7 +4008,7 @@ body[data-focus="round"] .quiz-toolbar {
 /* Head to toe, so taller than wide: the width sets the size. */
 .convi-figure {
   flex: none;
-  width: clamp(6.25rem, 27vw, 10rem);
+  width: clamp(6.5rem, 32vw, 11rem);
   height: auto;
   overflow: visible;
 }

@@ -3,13 +3,11 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 /**
  * Convi, the welcome screens' host, head to toe.
  *
- * The head is the Shorts' Convi, shape for shape and color for color
- * (`convi_sprite` in the Shorts generator): the straw hat with the green band,
- * the ginger sideburns, the dark shades with their glints, the small mouth.
- * The coordinates below are the Shorts' own, so the two cannot drift apart:
- * the viewBox just frames them. Below the head is the rest of him: a red
- * floral shirt with an open camp collar, khaki shorts, arms and legs in the
- * same flat, outline-free style.
+ * The head is the front page's Convi, shape for shape and color for color:
+ * the round face, the ginger hair swept under the straw hat, the green band,
+ * the shades, the grin. Below it is the rest of him: a red floral shirt with
+ * an open camp collar, khaki shorts, arms and legs in the same flat,
+ * outline-free style.
  *
  * He moves like a person rather than a sticker: the upper body breathes, the
  * head tilts from the neck, the right arm waves hello from the shoulder, and
@@ -21,7 +19,10 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
  * reader reads.
  */
 
-const VB = { x: 70, y: 860, w: 520, h: 980 };
+const VB = { x: 70, y: 940, w: 520, h: 900 };
+
+/** Where the front page's head sits on the body, and how big. */
+const HEAD = { x: 320, y: 1150, scale: 1.3 };
 
 /**
  * A pivot at (x, y) in the drawing's coordinates, as a CSS transform-origin.
@@ -35,16 +36,14 @@ function pivot(x: number, y: number): React.CSSProperties {
   return { transformBox: "view-box", transformOrigin: `${x}px ${y}px` };
 }
 
-// The Shorts' palette.
-const SKIN = "#f0c8a0";
-const HAIR = "#cd8737";
-const HAT = "#f0ce84";
-const BRIM = "#f2d692";
-const BAND = "#2d7d50";
-const SHADES = "#1c2632";
-const GLINT = "#5f6c7d";
-const MOUTH = "#8c3732";
-const MOUTH_OPEN = "#7d2828";
+// The front page's palette (ConviPeek.astro).
+const SKIN = "#f2c9a0";
+const HAIR = "#c8872e";
+const HAT = "#f2d388";
+const BAND = "#2e7d4f";
+const SHADES = "#1d2a33";
+const GLINT = "#5c6f7d";
+const MOUTH = "#7a2e2e";
 // The site's Convi red, now a floral shirt, and the shorts.
 const SHIRT = "#e8574a";
 const SHIRT_DARK = "#c9433a";
@@ -136,32 +135,33 @@ function Arm({ side }: { side: "left" | "right" }) {
   );
 }
 
-/** The head, from the Shorts, with its mouth open or shut. */
+/**
+ * The head: the front page's Convi, shape for shape (ConviPeek.astro, and
+ * `Convi()` in GameStage.tsx, which share it). A round face, ginger hair
+ * swept under the straw hat, the green band, the shades, the grin. Drawn in
+ * its own coordinates around the middle of the face and scaled onto the body,
+ * so the numbers can be checked against the front page's one for one.
+ *
+ * Talking swaps the grin for the same smile held open, nothing more.
+ */
 function Head({ mouthOpen }: { mouthOpen: boolean }) {
   return (
-    <g>
-      <clipPath id="convi-hair">
-        <rect x={150} y={940} width={340} height={150} />
-      </clipPath>
-      <ellipse cx={320} cy={1140} rx={142} ry={150} fill={HAIR} clipPath="url(#convi-hair)" />
-      <ellipse cx={320} cy={1156} rx={133} ry={144} fill={SKIN} />
-      <polygon points="178,1000 250,995 196,1065" fill={HAIR} />
-      <polygon points="462,1000 390,995 444,1065" fill={HAIR} />
-      {/* Hat: crown, band, brim. */}
-      <path d="M215 969 A105 91 0 0 1 425 969 Z" fill={HAT} />
-      <rect x={215} y={968} width={210} height={22} fill={HAT} />
-      <ellipse cx={320} cy={984} rx={198} ry={38} fill={BRIM} />
-      <rect x={215} y={960} width={210} height={24} fill={BAND} />
-      {/* Shades. */}
-      <rect x={220} y={1052} width={83} height={54} rx={24} fill={SHADES} />
-      <rect x={335} y={1052} width={83} height={54} rx={24} fill={SHADES} />
-      <rect x={300} y={1064} width={38} height={8} fill={SHADES} />
-      <rect x={236} y={1062} width={26} height={7} rx={3} fill={GLINT} />
-      <rect x={351} y={1062} width={26} height={7} rx={3} fill={GLINT} />
+    <g transform={`translate(${HEAD.x} ${HEAD.y}) scale(${HEAD.scale})`}>
+      <rect x={-22} y={70} width={44} height={40} fill={SKIN} />
+      <circle cx={0} cy={0} r={100} fill={SKIN} />
+      <path d="M-104 -16 Q-96 -96 0 -104 Q96 -96 104 -16 Q74 -54 0 -46 Q-74 -54 -104 -16Z" fill={HAIR} />
+      <ellipse cx={0} cy={-66} rx={148} ry={26} fill={HAT} />
+      <path d="M-78 -66 Q-74 -148 0 -152 Q74 -148 78 -66Z" fill={HAT} />
+      <rect x={-78} y={-86} width={156} height={17} fill={BAND} />
+      <rect x={-74} y={-10} width={62} height={38} rx={15} fill={SHADES} />
+      <rect x={12} y={-10} width={62} height={38} rx={15} fill={SHADES} />
+      <rect x={-14} y={0} width={28} height={6} fill={SHADES} />
+      <rect x={-62} y={-4} width={16} height={6} rx={3} fill={GLINT} />
+      <rect x={24} y={-4} width={16} height={6} rx={3} fill={GLINT} />
       {mouthOpen ? (
-        <ellipse cx={320} cy={1159} rx={24} ry={26} fill={MOUTH_OPEN} />
+        <path d="M-26 46 Q0 52 26 46 Q22 76 0 78 Q-22 76 -26 46Z" fill={MOUTH} />
       ) : (
-        <path d="M290 1146 Q320 1168 350 1146" fill="none" stroke={MOUTH} strokeWidth={9} strokeLinecap="round" />
+        <path d="M-26 48 Q0 70 26 48" fill="none" stroke={MOUTH} strokeWidth={8} strokeLinecap="round" />
       )}
     </g>
   );
