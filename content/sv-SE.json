@@ -3367,7 +3367,8 @@
               "situation": { "en": "You reach the front of the queue and the doorman counts your group." },
               "question": { "es": "Hur många är ni?", "en": "How many of you are there?" },
               "answers": [
-                { "es": "Vi är tre.", "en": "There are three of us." }
+                { "es": "Vi är tre.", "en": "There are three of us." },
+                { "es": "Vi är [ANTAL].", "en": "There are [NUMBER] of us." }
               ],
               "likelyReply": { "es": "Ni får vänta lite.", "en": "You'll have to wait a bit." },
               "notes": "",
