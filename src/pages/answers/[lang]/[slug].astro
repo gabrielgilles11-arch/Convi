@@ -1,0 +1,429 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Speaker from "../../../components/Speaker.astro";
+import WaitlistForm from "../../../components/WaitlistForm.astro";
+import { getLocaleInfo, localePath, REGION_LABELS } from "../../../lib/content";
+import {
+  getAnswerPages,
+  localeFromAnswerSlug,
+  relatedAnswers,
+  type AnswerPage,
+} from "../../../lib/answerPages";
+import { canonicalUrl } from "../../../lib/seo";
+
+/**
+ * One line, answered: "how to say do you take card in Spanish".
+ *
+ * Built from content/*.json at build time; see lib/answerPages.ts for which
+ * exchanges get a page and why. Every link on it points somewhere a searcher
+ * should go next: the whole conversation this line comes from, practice, and
+ * the app waitlist.
+ */
+export const prerender = true;
+
+export function getStaticPaths() {
+  return getAnswerPages().map((page) => ({
+    params: { lang: page.langSlug, slug: page.slug },
+    props: { page },
+  }));
+}
+
+interface Props {
+  page: AnswerPage;
+}
+
+const { page } = Astro.props;
+// Guarded anyway: a prerendered route only ever sees its own params, but a
+// mismatch here would be a page under the wrong language, which is worse
+// than no page.
+if (localeFromAnswerSlug(Astro.params.lang) !== page.locale) {
+  return new Response("Not found", { status: 404 });
+}
+
+const { locale, category, exchange, kind, yourLine, theirLine, alternatives } = page;
+const info = getLocaleInfo(locale);
+const pageUrl = canonicalUrl(Astro.url.pathname, Astro.site);
+const scenarioPath = localePath(locale, `/scenarios/${category.id}`);
+const practicePath = localePath(locale, "/practice");
+const indexAnchor = `/answers#${page.langSlug}`;
+const related = relatedAnswers(page);
+
+// The scenario page's recorded clips, by the same ids, so a line that has a
+// real voice on the scenario page has it here too.
+const id = exchange.id;
+const yourClip = kind === "say" ? `${id}-q` : `${id}-a0`;
+const theirClip = kind === "say" ? (exchange.answers[0] ? `${id}-a0` : `${id}-r`) : `${id}-q`;
+
+const shortAnswer = `In ${info.region}, say "${yourLine.es}"${yourLine.en ? ` (${yourLine.en})` : ""}.`;
+
+const schema = [
+  {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Try Convi", item: Astro.site?.href },
+      { "@type": "ListItem", position: 2, name: "Answers", item: new URL("/answers", Astro.site).href },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: category.title,
+        item: new URL(scenarioPath, Astro.site).href,
+      },
+      { "@type": "ListItem", position: 4, name: page.heading, item: pageUrl },
+    ],
+  },
+  {
+    // One question, one answer, on a page that exists to answer it. Google no
+    // longer shows FAQ rich results for most sites, but answer engines still
+    // read the pair, and it is an honest description of the page.
+    "@type": "FAQPage",
+    "@id": `${pageUrl}#faq`,
+    url: pageUrl,
+    inLanguage: "en",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: page.heading,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${shortAnswer} ${exchange.notes}`.trim(),
+        },
+      },
+    ],
+  },
+];
+---
+
+<Layout title={page.title} description={page.description} locale={locale} schema={schema}>
+  <div class="answer" data-locale={locale}>
+    <a class="back" href={scenarioPath}>&larr; {category.title}</a>
+
+    <p class="category-name">{info.language} · {category.title}{page.subsectionTitle && ` · ${page.subsectionTitle}`}</p>
+    <h1>{page.heading}</h1>
+
+    <p class="quick-answer">
+      <span class="quick-answer-label">Short answer</span>
+      <span class="quick-answer-line">
+        <strong lang={locale}>{yourLine.es}</strong>
+        <Speaker audioId={yourClip} text={yourLine.es} label="Hear it" />
+      </span>
+      {yourLine.en && <span class="quick-answer-en">{yourLine.en}</span>}
+      {(exchange.region || exchange.young) && (
+        <span class="tags">
+          {exchange.region && <span class={`tag tag--${exchange.region}`}>{REGION_LABELS[exchange.region]}</span>}
+          {exchange.young && <span class="tag tag--young">young</span>}
+        </span>
+      )}
+    </p>
+
+    <section class="block">
+      <h2>When you'd say it</h2>
+      <p>{exchange.situation.en}</p>
+    </section>
+
+    {
+      theirLine && (
+        <section class="block">
+          <h2>{kind === "say" ? "What they'll say back" : "What they ask first"}</h2>
+          <p class="line">
+            <span lang={locale}>{theirLine.es}</span>
+            <Speaker audioId={theirClip} text={theirLine.es} label="Hear their line" />
+          </p>
+          {theirLine.en && <p class="translation">{theirLine.en}</p>}
+          {kind === "say" && exchange.likelyReply && exchange.likelyReply.es !== theirLine.es && (
+            <Fragment>
+              <p class="line line--follow">
+                <span lang={locale}>{exchange.likelyReply.es}</span>
+                <Speaker audioId={`${id}-r`} text={exchange.likelyReply.es} label="Hear their reply" />
+              </p>
+              {exchange.likelyReply.en && <p class="translation">{exchange.likelyReply.en}</p>}
+            </Fragment>
+          )}
+        </section>
+      )
+    }
+
+    {
+      alternatives.length > 0 && (
+        <section class="block">
+          <h2>Another way to answer</h2>
+          {alternatives.map((alt, i) => (
+            <Fragment>
+              <p class="line">
+                <span lang={locale}>{alt.es}</span>
+                <Speaker audioId={`${id}-a${i + 1}`} text={alt.es} label="Hear it" />
+              </p>
+              {alt.en && <p class="translation">{alt.en}</p>}
+            </Fragment>
+          ))}
+        </section>
+      )
+    }
+
+    <section class="block">
+      <h2>How locals use it</h2>
+      <p>{exchange.notes}</p>
+    </section>
+
+    <section class="onward">
+      <a class="onward-primary" href={scenarioPath}>
+        <span class="onward-label">See the whole conversation</span>
+        <span class="onward-sub">{category.title}, with what they say back &rarr;</span>
+      </a>
+      <a class="onward-secondary" href={practicePath}>Practice it out loud, free &rarr;</a>
+    </section>
+
+    {
+      related.length > 0 && (
+        <section class="related">
+          <h2>More from {category.title}</h2>
+          <ul>
+            {related.map((r) => (
+              <li>
+                <a href={r.path}>{r.heading}</a>
+              </li>
+            ))}
+          </ul>
+          <a class="related-all" href={indexAnchor}>Every {info.language} answer</a>
+        </section>
+      )
+    }
+
+    <WaitlistForm />
+  </div>
+</Layout>
+
+<script>
+  // The speakers, wired the way the scenario page wires them: each one is
+  // revealed only once something can actually say its line, a recorded clip
+  // or the device's own voice, so a visitor with neither sees no dead button.
+  import { canSpeak, hasClip, onVoicesReady, speak, voiceEnabled } from "../../../components/quiz/speech";
+
+  const locale = document.querySelector<HTMLElement>(".answer")?.dataset.locale ?? "es-ES";
+  const buttons = () => document.querySelectorAll<HTMLButtonElement>(".speak");
+  let deviceVoice = canSpeak(locale);
+  const clipped = new Set<HTMLButtonElement>();
+
+  function sync() {
+    const on = voiceEnabled();
+    for (const button of buttons()) {
+      button.hidden = !(on && (deviceVoice || clipped.has(button)));
+    }
+  }
+
+  void Promise.all(
+    [...buttons()].map(async (button) => {
+      if (button.dataset.audio && (await hasClip(locale, button.dataset.audio))) clipped.add(button);
+    })
+  ).then(sync);
+
+  onVoicesReady(() => {
+    deviceVoice = canSpeak(locale);
+    sync();
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement | null)?.closest<HTMLButtonElement>(".speak");
+    if (!button) return;
+    button.dataset.speaking = "true";
+    void speak(locale, button.dataset.audio || null, button.dataset.text ?? "", "scenarios").finally(() => {
+      delete button.dataset.speaking;
+    });
+  });
+  sync();
+</script>
+
+<style>
+  .back {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-primary-tint-border);
+    background: var(--color-primary-tint);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-primary-dark);
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
+
+  .back:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .category-name {
+    margin: 0 0 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  h1 {
+    margin: 0 0 1.25rem;
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .quick-answer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin: 0 0 1.75rem;
+    padding: 1rem 1.15rem;
+    border-left: 4px solid var(--color-primary);
+    border-radius: 12px;
+    background: var(--color-primary-tint);
+  }
+
+  .quick-answer-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary-dark);
+  }
+
+  .quick-answer-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .quick-answer-line strong {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .quick-answer-en {
+    color: var(--color-ink-soft);
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--color-card);
+    border: 1px solid var(--color-primary-tint-border);
+    color: var(--color-primary-dark);
+  }
+
+  .block {
+    margin: 0 0 1.5rem;
+  }
+
+  .block h2,
+  .related h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+  }
+
+  .block p {
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .line--follow {
+    margin-top: 0.6rem !important;
+  }
+
+  .translation {
+    color: var(--color-ink-soft);
+  }
+
+  .onward {
+    display: grid;
+    gap: 0.6rem;
+    margin: 2rem 0;
+  }
+
+  .onward-primary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 1rem 1.15rem;
+    border-radius: 16px;
+    border: 1px solid var(--color-primary);
+    background: var(--color-card);
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .onward-primary:hover {
+    background: var(--color-primary-tint);
+  }
+
+  .onward-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--color-primary-dark);
+  }
+
+  .onward-sub {
+    color: var(--color-ink-soft);
+    font-size: 0.92rem;
+  }
+
+  .onward-secondary {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .related ul {
+    list-style: none;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .related li a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0.3rem 0;
+    line-height: 1.35;
+    color: var(--color-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .related-all {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+</style>

@@ -10,6 +10,7 @@ import {
   type Category,
   type Locale,
 } from "../lib/content";
+import { answerLangSlug } from "../lib/answerPages";
 
 // Built, not served from a request: it is the same file for everybody and it
 // changes only when the content does.
@@ -49,6 +50,7 @@ function section(locale: Locale): string {
     "",
     `- [All ${language} scenarios](${SITE}${localePath(locale, "/scenarios")}): every ${language} category in one list.`,
     ...rows,
+    `- [Quick ${language} answers](${SITE}/answers#${answerLangSlug(locale)}): one line per page, how to say it or answer it, with what they say back.`,
     `- [Practise ${language}](${SITE}${localePath(locale, "/practice")}): free drills and Talk Mode over the same material.`,
   ].join("\n");
 }
