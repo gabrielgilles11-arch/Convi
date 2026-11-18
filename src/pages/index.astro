@@ -111,8 +111,9 @@ const pageDescription = `Free Spanish, Swedish and German phrases for travelers:
           <a id="browse-cta" href={defaultStart.scenarios}>or read the scenarios first →</a>
         </p>
         <p class="sub">
-          Spanish, Swedish and German exactly how the locals speak it. No more
-          learning textbook languages.
+          Spanish, Swedish and German the way locals actually speak them. Start
+          with scenarios to learn how to navigate everyday life, or hop into
+          practice to get conversational fast. No more speaking like a textbook.
         </p>
         <p class="language-note">
           <strong>Three editions live now.</strong> Pick your language above.{" "}
@@ -190,9 +191,6 @@ const pageDescription = `Free Spanish, Swedish and German phrases for travelers:
   <section class="for-travelers full-bleed">
     <div class="container">
       <h2 class="for-travelers-line reveal">For those who don&rsquo;t want to learn &ldquo;The house is red.&rdquo;</h2>
-      <p class="for-travelers-sub reveal">
-        Learn the lingo and what locals will say back to you.
-      </p>
     </div>
   </section>
 
@@ -736,17 +734,9 @@ const pageDescription = `Free Spanish, Swedish and German phrases for travelers:
     /* `auto` sides so the measure itself centers. 22ch rather than 18ch:
        centered text wants a wider measure before it starts looking like a
        column, and the line still breaks in two. */
-    margin: 0 auto 1.5rem;
+    margin: 0 auto;
     max-width: 22ch;
     color: var(--color-ink);
-  }
-
-  .for-travelers-sub {
-    margin: 0 auto;
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
-    line-height: 1.55;
-    color: var(--color-ink-soft);
-    max-width: 52ch;
   }
 
   @media (max-width: 720px) {
