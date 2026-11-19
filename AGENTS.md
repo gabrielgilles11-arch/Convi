@@ -49,8 +49,11 @@ editions, not just the Spanish one.
 not a conjugation, not a "small fix" to one that is already there. Every line
 of Spanish, Swedish or German in `content/*.json` has to come from a published
 phrasebook, a language blog, a course site or another real source, and the
-source has to be recorded: cite the URL in the commit that adds the line, and
-list it in `content/SOURCES.md` beside the exchange ids it covers.
+source has to be recorded, but **off GitHub**: list it in
+`content/SOURCES.local.md` beside the exchange ids it covers. That file is
+git-ignored on purpose. Never put source URLs or site names in a commit
+message, a PR, or anything else that is pushed. `content/SOURCES.md` holds the
+older record and gets no new entries.
 
 The reason is not style. A line that reads as plausible target language and is
 subtly wrong is the one failure this product cannot survive: somebody says it

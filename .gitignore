@@ -113,3 +113,7 @@ tmp/
 # Python bytecode from the content scripts
 __pycache__/
 audio-report-*.md
+
+# The record of where content lines come from. Kept local by choice:
+# see "Writing copy" in CLAUDE.md.
+content/SOURCES.local.md
