@@ -8,7 +8,7 @@
   "categories": [
     {
       "id": "de-beer-food",
-      "order": 3,
+      "order": 4,
       "title": "Ordering a beer/food like a local (Germany)",
       "icon": "🍺",
       "type": "dialogue",
@@ -322,7 +322,7 @@
     },
     {
       "id": "de-basics",
-      "order": 4,
+      "order": 5,
       "title": "The basics: who you are (Germany)",
       "icon": "🙋",
       "type": "dialogue",
@@ -636,7 +636,7 @@
     },
     {
       "id": "de-starting-convo",
-      "order": 5,
+      "order": 6,
       "title": "Starting a convo/basic survival (Germany)",
       "icon": "👋",
       "type": "dialogue",
@@ -1183,8 +1183,369 @@
       ]
     },
     {
+      "id": "de-basics-2",
+      "order": 3,
+      "title": "The basics, part 2: how you feel (Germany)",
+      "icon": "😮‍💨",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "de-basics-2-mood",
+          "title": "Tired, hungry, happy, fed up",
+          "exchanges": [
+            {
+              "id": "de-basics2-mood-01",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend you know well asks how you are. Answer honestly: okay, but tired."
+              },
+              "question": {
+                "es": "Ach, ganz okay. Bisschen müde, ehrlich gesagt.",
+                "en": "Ah, okay-ish. A bit tired, to be honest."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Wie geht's? is a real question in Germany, asked of people you know, and it expects a real answer.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-02",
+              "speaker": "you",
+              "situation": {
+                "en": "Check in with a friend, casually."
+              },
+              "question": {
+                "es": "Na, alles gut bei dir?",
+                "en": "Hey, everything good with you?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Na is the friendly, casual opener: roughly hey, how's things.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-03",
+              "speaker": "you",
+              "situation": {
+                "en": "You're starving and everyone's still dawdling."
+              },
+              "question": {
+                "es": "Ich habe großen Hunger, lass uns endlich essen.",
+                "en": "I'm really hungry, let's finally eat."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Hunger is something you have in German: ich habe Hunger.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-04",
+              "speaker": "you",
+              "situation": {
+                "en": "It's been a long day. Say you're calling it an early night."
+              },
+              "question": {
+                "es": "Ich bin total müde, ich gehe früh ins Bett.",
+                "en": "I'm totally tired, I'm going to bed early."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-05",
+              "speaker": "you",
+              "situation": {
+                "en": "You don't feel well at all today."
+              },
+              "question": {
+                "es": "Ich fühle mich heute gar nicht wohl.",
+                "en": "I don't feel well at all today."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-06",
+              "speaker": "you",
+              "situation": {
+                "en": "You feel sick and need to lie down."
+              },
+              "question": {
+                "es": "Mir ist schlecht, ich glaube, ich muss mich hinlegen.",
+                "en": "I feel sick, I think I need to lie down."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Mir ist schlecht: the feeling happens to you, so it's mir, not ich.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-07",
+              "speaker": "you",
+              "situation": {
+                "en": "Your head is pounding. Ask a friend for a painkiller."
+              },
+              "question": {
+                "es": "Mir tut der Kopf weh, hast du eine Tablette?",
+                "en": "My head hurts, do you have a pill?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-08",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend has gone quiet on you. Ask if they're angry."
+              },
+              "question": {
+                "es": "Bist du wütend auf mich?",
+                "en": "Are you angry with me?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Wütend auf someone is angry with them.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-09",
+              "speaker": "you",
+              "situation": {
+                "en": "You're stuck in traffic and fuming."
+              },
+              "question": {
+                "es": "Ich ärgere mich total über diesen Stau.",
+                "en": "I'm really annoyed about this traffic jam."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-10",
+              "speaker": "you",
+              "situation": {
+                "en": "Your train is late again. Complain like a local."
+              },
+              "question": {
+                "es": "Es nervt mich, dass der Zug schon wieder Verspätung hat.",
+                "en": "It annoys me that the train is delayed yet again."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Complaining about Deutsche Bahn is a national pastime, and nerven is the verb for it.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-11",
+              "speaker": "you",
+              "situation": {
+                "en": "You can't wait for your vacation."
+              },
+              "question": {
+                "es": "Ich freue mich riesig auf den Urlaub.",
+                "en": "I'm really looking forward to the vacation."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Sich freuen auf is looking forward to something; sich freuen über is being happy about something you've got.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-mood-12",
+              "speaker": "you",
+              "situation": {
+                "en": "Ask a friend if they feel like going to the movies tonight."
+              },
+              "question": {
+                "es": "Hast du Lust, heute Abend ins Kino zu gehen?",
+                "en": "Do you feel like going to the movies tonight?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Lust haben is feeling like it. Among friends, Bock haben means the same, only more colloquial.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "de-basics-2-react",
+          "title": "Reacting like you're from here",
+          "exchanges": [
+            {
+              "id": "de-basics2-react-01",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend walks into your party. Show you're glad they came."
+              },
+              "question": {
+                "es": "Wie schön, dass du da bist!",
+                "en": "How lovely that you're here!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-02",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend says they can't make it tonight."
+              },
+              "question": {
+                "es": "Wie schade, dass du nicht kommen kannst!",
+                "en": "What a shame you can't come!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-03",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend just missed the last train."
+              },
+              "question": {
+                "es": "So ein Pech!",
+                "en": "What bad luck!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-04",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend passed their exam. Congratulate them."
+              },
+              "question": {
+                "es": "Du hast die Prüfung bestanden? Wahnsinn, herzlichen Glückwunsch!",
+                "en": "You passed the exam? Amazing, congratulations!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Wahnsinn, madness, is the everyday wow.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-05",
+              "speaker": "you",
+              "situation": {
+                "en": "You've just heard news you can't take in."
+              },
+              "question": {
+                "es": "Ich kann es nicht glauben!",
+                "en": "I can't believe it!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-06",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend is nervous about tomorrow. Cheer them on."
+              },
+              "question": {
+                "es": "Du schaffst das, ich glaube an dich.",
+                "en": "You can do it, I believe in you."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-07",
+              "speaker": "you",
+              "situation": {
+                "en": "You're completely lost on the assignment. Say it the way students do."
+              },
+              "question": {
+                "es": "Ich bin gerade voll lost, ich check die Aufgabe nicht.",
+                "en": "I'm totally lost right now, I don't get the assignment."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Voll is the young intensifier, and English words like lost and checken are everyday youth German.",
+              "difficulty": "easy",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-08",
+              "speaker": "you",
+              "situation": {
+                "en": "In Munich, you run into someone you haven't seen in ages."
+              },
+              "question": {
+                "es": "Servus, mei, lang nimmer gsehn!",
+                "en": "Hi, oh wow, haven't seen you in ages!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Bavarian dialect. Servus is hello and goodbye in the south; outside Bavaria it sounds put on.",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-basics2-react-09",
+              "speaker": "you",
+              "situation": {
+                "en": "Someone tells you a tall story at a Bavarian beer table."
+              },
+              "question": {
+                "es": "So a Schmarrn, des glaub i ned.",
+                "en": "What nonsense, I don't believe that."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Schmarrn is nonsense in Bavaria (and a shredded pancake, too).",
+              "difficulty": "medium",
+              "region": "bayerisch",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "de-bayern-slang",
-      "order": 6,
+      "order": 7,
       "title": "Bayern slang / Bavarian flavor",
       "icon": "🥨",
       "type": "phrasebook",
@@ -1530,7 +1891,7 @@
     },
     {
       "id": "de-cuss-words",
-      "order": 7,
+      "order": 8,
       "title": "Cuss words & \"don't get punched\" warnings (Germany)",
       "icon": "🤬",
       "type": "phrasebook",
@@ -1724,7 +2085,7 @@
     },
     {
       "id": "de-flirting",
-      "order": 8,
+      "order": 9,
       "title": "Calling someone attractive (Germany)",
       "icon": "😏",
       "type": "phrasebook",
@@ -2445,7 +2806,7 @@
     },
     {
       "id": "de-restaurant",
-      "order": 9,
+      "order": 10,
       "title": "At a restaurant (Germany)",
       "icon": "🍽️",
       "type": "dialogue",
@@ -2580,7 +2941,7 @@
     },
     {
       "id": "de-hotel",
-      "order": 10,
+      "order": 11,
       "title": "Checking in (hotel/hostel/Airbnb) (Germany)",
       "icon": "🛎️",
       "type": "dialogue",
@@ -2816,7 +3177,7 @@
     },
     {
       "id": "de-shopping",
-      "order": 11,
+      "order": 12,
       "title": "Shops, supermarkets & Pfand (Germany)",
       "icon": "🛍️",
       "type": "dialogue",
@@ -3053,7 +3414,7 @@
     },
     {
       "id": "de-berlin-slang",
-      "order": 12,
+      "order": 13,
       "title": "Berlin slang / Berliner Schnauze",
       "icon": "🐻",
       "type": "phrasebook",
@@ -3272,7 +3633,7 @@
     },
     {
       "id": "de-nightlife",
-      "order": 13,
+      "order": 14,
       "title": "Nightlife — the door, the club, the people (Germany)",
       "icon": "🎧",
       "type": "dialogue",
@@ -3597,7 +3958,7 @@
     },
     {
       "id": "de-drunk-scale",
-      "order": 14,
+      "order": 15,
       "title": "How drunk are you? (Germany)",
       "icon": "🍻",
       "type": "dialogue",
@@ -3950,7 +4311,7 @@
     },
     {
       "id": "de-resacon",
-      "order": 15,
+      "order": 16,
       "title": "The morning after & the pharmacy (Germany)",
       "icon": "🤕",
       "type": "dialogue",
@@ -4157,7 +4518,7 @@
     },
     {
       "id": "de-emergencies",
-      "order": 16,
+      "order": 17,
       "title": "Robbed, lost & emergencies (Germany)",
       "icon": "🚨",
       "type": "dialogue",
@@ -4388,7 +4749,7 @@
     },
     {
       "id": "de-for-the-girls",
-      "order": 17,
+      "order": 18,
       "title": "For the girls (Germany)",
       "icon": "💜",
       "type": "dialogue",

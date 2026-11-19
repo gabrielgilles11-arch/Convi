@@ -123,6 +123,10 @@ export const PRACTICE_PATH = [
   "beer-food",
   "restaurant",
   "slang",
+  // Part 2 of the basics: how you feel, and reacting the way people here
+  // do. Further down than part 1 on purpose, once a learner has the bar and
+  // the table, so the moods and the slang land on someone already talking.
+  "basics-2",
   "hotel",
   "shopping",
   "bayern-slang",
@@ -150,7 +154,8 @@ export const PRACTICE_PATH = [
  */
 export const STAGE_TITLES: Record<string, string> = {
   "getting-around": "Getting around",
-  basics: "The basics",
+  basics: "The basics, part 1",
+  "basics-2": "The basics, part 2",
   "starting-convo": "Starting a convo",
   slang: "Slang",
   "beer-food": "Ordering drinks & food",

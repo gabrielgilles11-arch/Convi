@@ -162,7 +162,7 @@ by any page.
 ## `Region`
 
 ```
-"madrid" | "barcelona" | "catalan" | "stockholm" | "bayern" | "bayerisch" | "berlin"
+"madrid" | "barcelona" | "catalan" | "stockholm" | "goteborg" | "bayern" | "bayerisch" | "berlin"
 ```
 
 Two kinds of tag share the field, and the distinction is the useful part.

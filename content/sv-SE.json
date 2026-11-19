@@ -8,7 +8,7 @@
   "categories": [
     {
       "id": "sv-beer-food",
-      "order": 3,
+      "order": 4,
       "title": "Ordering a beer/food like a local (Sweden)",
       "icon": "🍺",
       "type": "dialogue",
@@ -496,7 +496,7 @@
     },
     {
       "id": "sv-basics",
-      "order": 4,
+      "order": 5,
       "title": "The basics: who you are (Sweden)",
       "icon": "🙋",
       "type": "dialogue",
@@ -790,7 +790,7 @@
     },
     {
       "id": "sv-starting-convo",
-      "order": 5,
+      "order": 6,
       "title": "Starting a convo/basic survival (Stockholm)",
       "icon": "👋",
       "type": "dialogue",
@@ -1858,8 +1858,406 @@
       ]
     },
     {
+      "id": "sv-basics-2",
+      "order": 3,
+      "title": "The basics, part 2: how you feel (Sweden)",
+      "icon": "😮‍💨",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "sv-basics-2-mood",
+          "title": "Tired, hungry, happy, fed up",
+          "exchanges": [
+            {
+              "id": "sv-basics2-mood-01",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend asks how you are. You're not feeling so good."
+              },
+              "question": {
+                "es": "Jag mår inte så bra.",
+                "en": "I'm not feeling so good."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Må is the verb for how you are: jag mår bra. Jag är bra means you're good at something.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-02",
+              "speaker": "you",
+              "situation": {
+                "en": "You're flagging. Say you feel tired."
+              },
+              "question": {
+                "es": "Jag känner mig trött.",
+                "en": "I feel tired."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Feeling takes mig: jag känner mig trött, never jag känner trött.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-03",
+              "speaker": "you",
+              "situation": {
+                "en": "You're terribly hungry."
+              },
+              "question": {
+                "es": "Jag är väldigt hungrig.",
+                "en": "I'm terribly hungry."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "In everyday speech Swedes reach for jätte- more than väldigt: jättehungrig.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-04",
+              "speaker": "you",
+              "situation": {
+                "en": "You're cold. Ask if the window can be closed."
+              },
+              "question": {
+                "es": "Jag fryser, kan vi stänga fönstret?",
+                "en": "I'm cold, can we close the window?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Feeling cold is a verb, frysa: jag fryser.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-05",
+              "speaker": "you",
+              "situation": {
+                "en": "You have a headache."
+              },
+              "question": {
+                "es": "Jag har ont i huvudet.",
+                "en": "My head hurts."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Pain is something you have, in the body part: ha ont i huvudet, ont i magen.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend made it to your party. Tell them how happy you are."
+              },
+              "question": {
+                "es": "Jag är så glad att du kunde komma!",
+                "en": "I'm so happy you could come!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-07",
+              "speaker": "you",
+              "situation": {
+                "en": "It's rained all week and you've had enough."
+              },
+              "question": {
+                "es": "Jag är jätteless på det här vädret, det har regnat i en vecka.",
+                "en": "I'm really fed up with this weather, it's been raining for a week."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Less på is fed up with, and the weather is the national thing to be fed up with.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-08",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend is cross with you over something that wasn't your doing."
+              },
+              "question": {
+                "es": "Var inte arg på mig, det var inte mitt fel.",
+                "en": "Don't be angry with me, it wasn't my fault."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Angry at someone is arg på, not arg med.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-09",
+              "speaker": "you",
+              "situation": {
+                "en": "Admit that speaking in front of people always makes you nervous."
+              },
+              "question": {
+                "es": "Jag blir alltid nervös när jag ska tala inför folk.",
+                "en": "I always get nervous when I have to speak in front of people."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Bli is getting into a feeling; vara is being in it.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-10",
+              "speaker": "you",
+              "situation": {
+                "en": "You're in a good mood today."
+              },
+              "question": {
+                "es": "Jag är på bra humör i dag.",
+                "en": "I'm in a good mood today."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-11",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend looks down. Ask why they're sad."
+              },
+              "question": {
+                "es": "Varför är du ledsen?",
+                "en": "Why are you sad?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Ledsen is the everyday word for sad.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-mood-12",
+              "speaker": "you",
+              "situation": {
+                "en": "It's bitterly cold out and you can't feel your fingers."
+              },
+              "question": {
+                "es": "Usch, vad kallt det är! Jag känner inte fingrarna.",
+                "en": "Ugh, it's so cold! I can't feel my fingers."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Usch, vad ... det är! is the standard Swedish complaint.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-basics-2-react",
+          "title": "Reacting like you're from here",
+          "exchanges": [
+            {
+              "id": "sv-basics2-react-01",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend just got the apartment they wanted."
+              },
+              "question": {
+                "es": "Vad kul! Grattis!",
+                "en": "That's great! Congratulations!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Vad kul! is the go-to happy reaction to someone's good news.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-02",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend tells you their cat died over the weekend."
+              },
+              "question": {
+                "es": "Åh, så tråkigt! Jag beklagar.",
+                "en": "Oh, how sad! I'm sorry."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Så tråkigt here means what a shame. The same word also means boring, so context does the work.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-03",
+              "speaker": "you",
+              "situation": {
+                "en": "You nearly forgot your friend's birthday."
+              },
+              "question": {
+                "es": "Oj, jag glömde nästan din födelsedag!",
+                "en": "Oops, I almost forgot your birthday!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-04",
+              "speaker": "you",
+              "situation": {
+                "en": "Tell your friends the movie was random but actually great."
+              },
+              "question": {
+                "es": "Filmen var helt random men faktiskt rätt lit.",
+                "en": "The movie was completely random but actually pretty great."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Young Swedish borrows English freely: random, lit, chilla, najs.",
+              "difficulty": "easy",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-05",
+              "speaker": "you",
+              "situation": {
+                "en": "Tell a friend how you reacted when you heard the price."
+              },
+              "question": {
+                "es": "Jag ba 'seriöst?!' när han berättade priset.",
+                "en": "I was like 'seriously?!' when he told me the price."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Ba is the Swedish be like: jag ba, hon ba.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Greet a friend in the suburbs and tell them the film was bad."
+              },
+              "question": {
+                "es": "Shoo len, vad händer? Den där filmen var helt keff.",
+                "en": "Hey mate, what's up? That film was totally rubbish."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Förortssvenska, the suburban slang of Stockholm and beyond. Keff is bad, and it's in the official dictionary now.",
+              "difficulty": "hard",
+              "region": "stockholm",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-07",
+              "speaker": "you",
+              "situation": {
+                "en": "Say it's great that they're coming, but tell them to bring a jacket."
+              },
+              "question": {
+                "es": "Det är skitkul att du kommer, men det är jättekallt ute så ta jacka.",
+                "en": "It's super fun that you're coming, but it's really cold out so bring a jacket."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Skit- and jätte- are the intensifiers: skitkul, jättekallt. Skit- is the stronger, rougher one.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-08",
+              "speaker": "you",
+              "situation": {
+                "en": "In Gothenburg, you run into an old friend."
+              },
+              "question": {
+                "es": "Va gött att se dig igen!",
+                "en": "So nice to see you again!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Gött is Gothenburg's word for nice, and the city's sing-song melody goes with it.",
+              "difficulty": "easy",
+              "region": "goteborg",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-09",
+              "speaker": "you",
+              "situation": {
+                "en": "Back from a few days off, tell your Gothenburg colleagues it was nice."
+              },
+              "question": {
+                "es": "Det var gött med lite ledigt.",
+                "en": "It was nice to get some time off."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "region": "goteborg",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-10",
+              "speaker": "you",
+              "situation": {
+                "en": "Reassure a friend in Gothenburg that it'll be fine."
+              },
+              "question": {
+                "es": "Det går la bra, eller hur?",
+                "en": "It'll be fine, I guess, won't it?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "La is Gothenburg's softener, the standard väl: I suppose, surely.",
+              "difficulty": "medium",
+              "region": "goteborg",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics2-react-11",
+              "speaker": "you",
+              "situation": {
+                "en": "Suggest grabbing a coffee later, Gothenburg style."
+              },
+              "question": {
+                "es": "Ska vi ta en fika sen, eller?",
+                "en": "Shall we grab a coffee later, then?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Ending on eller? softens a suggestion. In Gothenburg the whole line rises at the end.",
+              "difficulty": "easy",
+              "region": "goteborg",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "sv-cuss-words",
-      "order": 6,
+      "order": 7,
       "title": "Cuss words & “don’t get punched” warnings (Sweden)",
       "icon": "🤬",
       "type": "phrasebook",
@@ -2166,7 +2564,7 @@
     },
     {
       "id": "sv-flirting",
-      "order": 7,
+      "order": 8,
       "title": "Calling someone attractive (Sweden)",
       "icon": "😏",
       "type": "phrasebook",
@@ -3103,7 +3501,7 @@
     },
     {
       "id": "sv-restaurant",
-      "order": 8,
+      "order": 9,
       "title": "At a restaurant (Sweden)",
       "icon": "🍽️",
       "type": "dialogue",
@@ -3371,7 +3769,7 @@
     },
     {
       "id": "sv-hotel",
-      "order": 9,
+      "order": 10,
       "title": "Checking in (hotel/hostel/Airbnb) (Sweden)",
       "icon": "🛎️",
       "type": "dialogue",
@@ -3494,7 +3892,7 @@
     },
     {
       "id": "sv-shopping",
-      "order": 10,
+      "order": 11,
       "title": "Shops, cashless Sweden & Systembolaget",
       "icon": "🛍️",
       "type": "dialogue",
@@ -3726,7 +4124,7 @@
     },
     {
       "id": "sv-nightlife",
-      "order": 11,
+      "order": 12,
       "title": "Nightlife — the door, the club, the people (Sweden)",
       "icon": "🎧",
       "type": "dialogue",
@@ -4050,7 +4448,7 @@
     },
     {
       "id": "sv-drunk-scale",
-      "order": 12,
+      "order": 13,
       "title": "How drunk are you? (Sweden)",
       "icon": "🍻",
       "type": "dialogue",
@@ -4384,7 +4782,7 @@
     },
     {
       "id": "sv-resacon",
-      "order": 13,
+      "order": 14,
       "title": "The morning after & the pharmacy (Sweden)",
       "icon": "🤕",
       "type": "dialogue",
@@ -4598,7 +4996,7 @@
     },
     {
       "id": "sv-emergencies",
-      "order": 14,
+      "order": 15,
       "title": "Robbed, lost & emergencies (Sweden)",
       "icon": "🚨",
       "type": "dialogue",
@@ -4722,7 +5120,7 @@
     },
     {
       "id": "sv-for-the-girls",
-      "order": 15,
+      "order": 16,
       "title": "For the girls (Sweden)",
       "icon": "💜",
       "type": "dialogue",

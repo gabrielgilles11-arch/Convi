@@ -8,7 +8,7 @@
   "categories": [
     {
       "id": "beer-food",
-      "order": 3,
+      "order": 4,
       "title": "Ordering a beer/food like a local",
       "icon": "🍺",
       "type": "dialogue",
@@ -443,7 +443,7 @@
     },
     {
       "id": "basics",
-      "order": 4,
+      "order": 5,
       "title": "The basics: who you are (Spain)",
       "icon": "🙋",
       "type": "dialogue",
@@ -725,7 +725,7 @@
     },
     {
       "id": "starting-convo",
-      "order": 5,
+      "order": 6,
       "title": "Starting a convo/basic survival",
       "icon": "💬",
       "type": "dialogue",
@@ -1674,8 +1674,393 @@
       ]
     },
     {
+      "id": "basics-2",
+      "order": 3,
+      "title": "The basics, part 2: how you feel (Spain)",
+      "icon": "😮‍💨",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "basics-2-mood",
+          "title": "Tired, hungry, happy, fed up",
+          "exchanges": [
+            {
+              "id": "basics2-mood-01",
+              "speaker": "you",
+              "situation": {
+                "en": "You bump into a friend. Greet them the way people your age do in Spain."
+              },
+              "question": {
+                "es": "¿Qué pasa, tío? ¿Cómo andas?",
+                "en": "Hey, mate, how's it going?"
+              },
+              "answers": [
+                {
+                  "es": "Nada, aquí. ¿Y tú?",
+                  "en": "Not much, just here. You?"
+                }
+              ],
+              "likelyReply": null,
+              "notes": "¿Qué pasa? is a greeting, not a question about events. The answer is nada or bien, not news.",
+              "difficulty": "easy",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-02",
+              "speaker": "you",
+              "situation": {
+                "en": "You're starving. Suggest going to get something to eat."
+              },
+              "question": {
+                "es": "Tengo hambre. ¿Vamos a comer algo?",
+                "en": "I'm hungry. Shall we go get something to eat?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Hunger is something you have in Spanish: tengo hambre.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-03",
+              "speaker": "you",
+              "situation": {
+                "en": "You haven't eaten since breakfast and you're desperate."
+              },
+              "question": {
+                "es": "Tengo muchísima hambre, llevo sin comer desde el desayuno.",
+                "en": "I'm incredibly hungry, I haven't eaten since breakfast."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Hambre is feminine, so the intensifier agrees: mucha, muchísima.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-04",
+              "speaker": "you",
+              "situation": {
+                "en": "Someone offers you food but you've just eaten."
+              },
+              "question": {
+                "es": "No tengo hambre, gracias. Acabo de comer.",
+                "en": "I'm not hungry, thanks. I just ate."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-05",
+              "speaker": "you",
+              "situation": {
+                "en": "You're wiped out and really don't want to go to a family birthday tonight."
+              },
+              "question": {
+                "es": "¿Tenemos que ir al cumpleaños de tu primo? Es que estoy reventado.",
+                "en": "Do we have to go to your cousin's birthday? I'm exhausted."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Reventado is Spain's slang for wiped out.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Complain, among friends, that you're unbelievably sleepy."
+              },
+              "question": {
+                "es": "Tengo un sueño que no te lo crees, joder.",
+                "en": "I'm so tired you wouldn't believe it, honestly."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Sueño is sleepiness, and in Spanish you have it. Joder here just adds force; keep it among friends.",
+              "difficulty": "medium",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-07",
+              "speaker": "you",
+              "situation": {
+                "en": "Nobody can face cooking tonight. Suggest ordering in."
+              },
+              "question": {
+                "es": "No tengo ganas de cocinar, ¿pedimos algo?",
+                "en": "I don't feel like cooking, shall we order something?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Tener ganas de is the everyday way to feel like doing something.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-08",
+              "speaker": "you",
+              "situation": {
+                "en": "You can't wait to see someone on Saturday. Tell them."
+              },
+              "question": {
+                "es": "Tengo muchas ganas de verte el sábado.",
+                "en": "I'm really looking forward to seeing you Saturday."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Warmer than quiero verte, and less pushy.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-09",
+              "speaker": "you",
+              "situation": {
+                "en": "Explain that you get grumpy when you haven't slept."
+              },
+              "question": {
+                "es": "Me pongo de muy mal humor cuando no he dormido bien.",
+                "en": "I get in a really bad mood when I haven't slept well."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Ponerse is for a change of mood: me pongo nervioso, me pongo de mal humor.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-10",
+              "speaker": "you",
+              "situation": {
+                "en": "Warn a friend to leave your coworker alone today: he's in a foul mood about work."
+              },
+              "question": {
+                "es": "Hoy no le hables, está de mala leche por lo del trabajo.",
+                "en": "Don't talk to him today, he's in a foul mood because of the work thing."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Estar de mala leche is Spain's bad mood. It's rough and informal: fine at the bar, not at an interview.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-11",
+              "speaker": "you",
+              "situation": {
+                "en": "It's freezing out and you're grabbing your coat."
+              },
+              "question": {
+                "es": "Voy a ponerme el abrigo, que hace un frío que pela.",
+                "en": "I'm going to put my coat on, it's freezing."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Hace un frío que pela is the Spanish way to say it's bitterly cold.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-mood-12",
+              "speaker": "you",
+              "situation": {
+                "en": "You step outside into the cold and swear about it, the way a Spaniard would."
+              },
+              "question": {
+                "es": "¡Joder, qué frío hace!",
+                "en": "Damn, it's freezing!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Joder is everywhere in Spain among friends, closer to damn than to the English f-word. Not with grandparents.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "basics-2-react",
+          "title": "Reacting like you're from here",
+          "exchanges": [
+            {
+              "id": "basics2-react-01",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend tells you something that blows your mind."
+              },
+              "question": {
+                "es": "Estoy flipando con lo que me has contado.",
+                "en": "I'm freaking out at what you just told me."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Flipar is to be amazed, and it's almost always flipando.",
+              "difficulty": "easy",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-02",
+              "speaker": "you",
+              "situation": {
+                "en": "You love the bar your friend brought you to. Say so."
+              },
+              "question": {
+                "es": "Tío, mola un montón este sitio.",
+                "en": "Mate, this place is super cool."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Molar works like gustar: a mí me mola. Tío and tía are for friends your age.",
+              "difficulty": "easy",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-03",
+              "speaker": "you",
+              "situation": {
+                "en": "Your song comes on. Say you love it, Madrid style."
+              },
+              "question": {
+                "es": "Me gusta mazo esta canción.",
+                "en": "I like this song a ton."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Mazo as very or a ton is young Madrid slang.",
+              "difficulty": "easy",
+              "region": "madrid",
+              "young": true,
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-04",
+              "speaker": "you",
+              "situation": {
+                "en": "You run into a friend you haven't seen for ages."
+              },
+              "question": {
+                "es": "¡Tío, hace siglos que no te veo!",
+                "en": "Mate, I haven't seen you in ages!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-05",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend took your joke badly. Tell them you were only kidding."
+              },
+              "question": {
+                "es": "No te enfades, que sólo te estaba tomando el pelo.",
+                "en": "Don't get angry, I was just pulling your leg."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Tomar el pelo, literally to take someone's hair, is to tease them.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend makes a point you completely agree with."
+              },
+              "question": {
+                "es": "Tienes toda la razón del mundo.",
+                "en": "You're absolutely right."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "In Spanish you have reason rather than being right: tener razón.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-07",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend got the best one out of the lot."
+              },
+              "question": {
+                "es": "¡Qué suerte tienes! Te ha tocado el bueno.",
+                "en": "You're so lucky! You got the good one."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-08",
+              "speaker": "you",
+              "situation": {
+                "en": "You have to leave or you'll be late for work."
+              },
+              "question": {
+                "es": "Tengo que irme, que llego tarde al curro.",
+                "en": "I have to go, I'm running late for work."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Curro is Spain's slang for work or a job; currar is to work.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-09",
+              "speaker": "you",
+              "situation": {
+                "en": "A friend has cooked something that looks amazing."
+              },
+              "question": {
+                "es": "Esto tiene muy buena pinta. ¿Cómo lo has hecho?",
+                "en": "This looks really good. How did you make it?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Tener buena pinta, to have a good look, is how food and plans look promising.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "basics2-react-10",
+              "speaker": "you",
+              "situation": {
+                "en": "Someone sneaks up behind you and makes you jump."
+              },
+              "question": {
+                "es": "¡Hostia, qué susto me has dado!",
+                "en": "Holy crap, you scared me!"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Hostia is a strong, very Spanish interjection. Among friends only.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "cuss-words",
-      "order": 10,
+      "order": 11,
       "title": "Cuss words & \"don't get punched\" warnings",
       "icon": "🤬",
       "type": "phrasebook",
@@ -1950,7 +2335,7 @@
     },
     {
       "id": "flirting",
-      "order": 11,
+      "order": 12,
       "title": "Calling someone attractive",
       "icon": "😏",
       "type": "phrasebook",
@@ -2773,7 +3158,7 @@
     },
     {
       "id": "restaurant",
-      "order": 6,
+      "order": 7,
       "title": "At a restaurant",
       "icon": "🍽️",
       "type": "dialogue",
@@ -3240,7 +3625,7 @@
     },
     {
       "id": "hotel",
-      "order": 7,
+      "order": 8,
       "title": "Checking in (hotel/hostel/Airbnb)",
       "icon": "🏨",
       "type": "dialogue",
@@ -3349,7 +3734,7 @@
     },
     {
       "id": "shopping",
-      "order": 8,
+      "order": 9,
       "title": "Shopping, markets & haggling",
       "icon": "🛍️",
       "type": "dialogue",
@@ -3572,7 +3957,7 @@
     },
     {
       "id": "resacon",
-      "order": 12,
+      "order": 13,
       "title": "Sickness & feeling hungover",
       "icon": "🥴",
       "type": "dialogue",
@@ -3771,7 +4156,7 @@
     },
     {
       "id": "emergencies",
-      "order": 13,
+      "order": 14,
       "title": "Robbed & emergencies",
       "icon": "🚨",
       "type": "dialogue",
@@ -3987,7 +4372,7 @@
     },
     {
       "id": "for-the-girls",
-      "order": 9,
+      "order": 10,
       "title": "For the girls",
       "icon": "💜",
       "type": "dialogue",
@@ -4205,7 +4590,7 @@
     },
     {
       "id": "nightlife",
-      "order": 14,
+      "order": 15,
       "title": "Nightlife — into the club & making friends",
       "icon": "🕺",
       "type": "dialogue",
@@ -4521,7 +4906,7 @@
     },
     {
       "id": "drunk-scale",
-      "order": 15,
+      "order": 16,
       "title": "How drunk are you? (Spain)",
       "icon": "🍻",
       "type": "dialogue",
