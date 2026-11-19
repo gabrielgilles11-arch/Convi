@@ -498,6 +498,17 @@
               "notes": "Swedes switch to be helpful. Saying you are learning first makes it land: Ursäkta, jag lär mig svenska. Not with a long queue behind you, though.",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "sv-starting-convo-21",
+              "speaker": "you",
+              "situation": { "en": "Someone uses a word you don't know and you want to ask what it means." },
+              "question": { "es": "Vad betyder det?", "en": "What does that mean?" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Det, not den: Vad betyder den? is wrong here.",
+              "difficulty": "easy",
+              "quizQuestions": []
             }
           ]
         },
@@ -726,6 +737,17 @@
               "likelyReply": null,
               "notes": "Lagom is the national value: not too much, not too little. Used about a measure, it is a compliment.",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-starting-convo-22",
+              "speaker": "you",
+              "situation": { "en": "You've just finished dinner at a Swedish friend's place." },
+              "question": { "es": "Tack för maten, det var jättegott!", "en": "Thanks for the food, it was really delicious!" },
+              "answers": [{ "es": "Varsågod.", "en": "You're welcome." }, { "es": "Tack själv.", "en": "Thank you, too." }],
+              "likelyReply": null,
+              "notes": "Not optional politeness. Leaving it out in somebody's home gets noticed.",
+              "difficulty": "easy",
               "quizQuestions": []
             }
           ]
@@ -1477,7 +1499,8 @@
             { "id": "sv-slang-tone-06", "es": "Men jag sa ju att mjölken är slut!", "en": "But I told you we are out of milk!", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-tone-07", "es": "Ska du gå hem redan? Klockan är ju bara åtta!", "en": "Are you going home so soon? It's only eight o'clock!", "difficulty": "medium", "quizQuestions": [] },
             { "id": "sv-slang-tone-08", "es": "Hon var liksom... trevlig.", "en": "She was, like... nice. (liksom while you search for the word)", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "sv-slang-tone-09", "es": "Det där var inte kul liksom.", "en": "That wasn't, like, cool.", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "sv-slang-tone-09", "es": "Det där var inte kul liksom.", "en": "That wasn't, like, cool.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-tone-10", "es": "Det blir nog bra.", "en": "It'll probably turn out fine. (nog: a confident guess, the classic way to play down worry)", "difficulty": "easy", "quizQuestions": [] }
           ]
         }
       ]
