@@ -1,15 +1,17 @@
 import type { APIRoute } from "astro";
 import {
   dropPush,
+  park,
   recordNudgeSent,
   remindersConfigured,
   staleSubscribers,
 } from "../../../lib/reminders";
-import { planNudge, LADDER } from "../../../lib/reminderPlan";
+import { planNudge, LADDER, MAX_NUDGES } from "../../../lib/reminderPlan";
 import { sendPush, pushConfigured } from "../../../lib/webpush";
 import { emailConfigured, sendEmail } from "../../../lib/email";
 import { reminderEmail } from "../../../lib/reminderEmail";
 import { getLocaleInfo, localePath } from "../../../lib/content";
+import { secretMatches } from "../../../lib/secrets";
 
 export const prerender = false;
 
@@ -32,7 +34,7 @@ function authorised(request: Request): boolean {
   if (!secret) return false;
 
   const header = request.headers.get("authorization") ?? "";
-  return header === `Bearer ${secret}`;
+  return secretMatches(header, `Bearer ${secret}`);
 }
 
 export const POST: APIRoute = async ({ request }) => run(request);
@@ -80,6 +82,9 @@ async function run(request: Request): Promise<Response> {
     );
 
     if (!nudge) {
+      // Finished the ladder: never due again until they visit, so stop them
+      // taking a slot in tomorrow's page of candidates.
+      if (record.sentSinceSeen >= MAX_NUDGES) await park(id, now);
       skipped += 1;
       continue;
     }

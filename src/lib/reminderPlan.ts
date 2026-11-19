@@ -95,7 +95,7 @@ function copyFor(step: number, state: ReminderState, daysAway: number): Nudge {
             body: `One round is eight questions. Nothing to sign up for.`,
             subject: `Two minutes of ${language}?`,
             preheader: `One round is eight questions. That's the whole ask.`,
-            cta: `Practise ${language}`,
+            cta: `Practice ${language}`,
             last: false,
           };
 

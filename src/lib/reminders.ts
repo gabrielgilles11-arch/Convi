@@ -188,6 +188,27 @@ export async function recordNudgeSent(id: string, at = Date.now()): Promise<void
 }
 
 /** Opting out. Both channels at once — there is one X, not two. */
+/**
+ * Moves a subscriber who has had every nudge out of the nightly sweep's way.
+ *
+ * The sweep reads the oldest `lastSeen` scores first, a page at a time. Someone
+ * at the end of the ladder is never due again, but their score is the oldest
+ * there is, so left alone they sit at the front of every page; once a page's
+ * worth of them had built up, nobody newer would ever be read. Their index
+ * score is pushed forward to when the record expires instead. A visit rewrites
+ * it through `write()`, which puts them back in line; if the record has expired
+ * by the time the score comes due, the sweep finds no record and tidies the
+ * entry away as it already does.
+ */
+export async function park(id: string, now = Date.now()): Promise<void> {
+  if (!kv) return;
+  try {
+    await kv.zadd(INDEX, { score: now + RECORD_TTL_SECONDS * 1000, member: id });
+  } catch {
+    // Tomorrow's run will find them again and try once more.
+  }
+}
+
 export async function unsubscribe(id: string): Promise<boolean> {
   if (!kv) return false;
   try {
