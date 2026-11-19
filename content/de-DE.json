@@ -267,6 +267,39 @@
               "notes": "",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-20",
+              "speaker": "you",
+              "situation": { "en": "Someone uses a word you don't know and you want to know what it means." },
+              "question": { "es": "Was bedeutet das?", "en": "What does that mean?" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-21",
+              "speaker": "you",
+              "situation": { "en": "A stranger said something too fast to catch and you want it once more." },
+              "question": { "es": "Können Sie das bitte wiederholen?", "en": "Could you say that again, please?" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Sie, the polite form, for strangers and officials. With friends it is du.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-starting-convo-22",
+              "speaker": "you",
+              "situation": { "en": "They keep switching to English and you want to stay in German." },
+              "question": { "es": "Können Sie bitte Deutsch sprechen? Das hilft mir beim Lernen.", "en": "Can you please speak in German? It helps me to learn." },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Ask politely: they may want to practice their English too.",
+              "difficulty": "medium",
+              "quizQuestions": []
             }
           ]
         },
@@ -764,6 +797,20 @@
               "difficulty": "easy",
               "quizQuestions": []
             }
+          ]
+        },
+        {
+          "id": "de-slang-fillers",
+          "title": "Fillers and the little words",
+          "phrases": [
+            { "id": "de-slang-fill-01", "es": "Naja.", "en": "Well… Half agreeing, half doubting, usually at the start of a reply.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-fill-02", "es": "Quasi schon.", "en": "Basically, yes. / Sort of. (quasi is mostly spoken)", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-fill-03", "es": "Also, gehen wir bald?", "en": "So, are we going soon?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-fill-04", "es": "Ich kann halt nicht warten.", "en": "I just can't wait. (halt: that's just how it is)", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-fill-05", "es": "Komm mal her.", "en": "Come over here. (mal makes a request sound friendlier)", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-fill-06", "es": "Das ist schon komisch.", "en": "That is pretty strange. (schon confirms it)", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-fill-07", "es": "Tja, das ist schade.", "en": "Well, that's a shame.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-fill-08", "es": "Äh, was soll ich dazu sagen?", "en": "Uh, what should I say?", "difficulty": "easy", "quizQuestions": [] }
           ]
         }
       ]

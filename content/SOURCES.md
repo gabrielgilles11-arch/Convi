@@ -255,3 +255,81 @@ Convi's hello on the practice and Talk welcome screens (`WELCOME_HELLO` in
   https://www.clozemaster.com/how-to-say-it/welcome-in-swedish
 - "Willkommen bei Try Convi!": "Willkommen bei [Firma]" (welcome to [company]) —
   https://www.lingoda.com/blog/en/welcome-in-german/
+
+## Repair: asking what something means, and staying in the language
+
+Lines for the moment a conversation slips: a word you do not know, a line too
+fast to catch, a local who switches to English to be helpful. Talk Mode's
+"Huh?" moment draws on these and on the getting-unstuck lines already above.
+
+### Spanish — `starting-convo-main`
+
+Covers `starting-convo-20` ("¿Qué significa eso?") and `starting-convo-21`
+("¿Podemos hablar en español, por favor?", with the formal "¿Podríamos hablar
+en español, por favor?" in its note).
+- https://joyoflanguages.com/posts/spanish-phrases
+
+### Swedish — `sv-starting-convo-main`
+
+Covers `sv-starting-convo-20` ("Kan du fortsätta på svenska?"). The source
+gives it after "Ursäkta, jag lär mig svenska. Men jag behöver träna.", and
+the advice about not doing it with a queue behind you.
+- https://swedishmadeeasy.com/all-swedes-speak-english-or/
+
+### German — `de-starting-convo-main`
+
+Covers `de-starting-convo-20` ("Was bedeutet das?") and `de-starting-convo-21`
+("Können Sie das bitte wiederholen?").
+- https://storylearning.com/learn/german/german-tips/basic-german-phrases
+
+Covers `de-starting-convo-22` ("Können Sie bitte Deutsch sprechen? Das hilft
+mir beim Lernen.").
+- https://www.iamexpat.de/education/education-news/how-get-germans-speak-german-you
+
+## Filler words and the little words
+
+One new word list per edition: the fillers and particles everyday speech runs
+on, as said in Spain, Sweden and Germany. Each line is the source's own,
+example sentences included.
+
+### Spanish — `slang-fillers`
+
+Covers `slang-fill-01` … `slang-fill-07` (Bueno, Pues, Digo, Entonces, Es
+decir, Mira, ¿Sabes?), with the uses given in the source's table.
+- https://www.spanishdict.com/guide/filler-words-in-spanish
+
+Covers `slang-fill-08` ("¿Vale?" at the end of a sentence, as when giving
+directions).
+- https://www.fluentu.com/blog/spanish/spanish-filler-words/
+
+### Swedish — `sv-slang-tone`
+
+Covers `sv-slang-tone-01` and `sv-slang-tone-02` ("Jaha.", "Jaha, så det var
+därför.", and stretching it to "jahaaa" to sound interested).
+- https://www.thelocal.se/20190521/swedish-word-of-the-day-jaha
+
+Covers `sv-slang-tone-03` ("Är du redo? Jajamensan!"). Wiktionary gives
+jajamänsan as the standard spelling, which the gloss mentions.
+- https://www.thelocal.se/20181116/swedish-word-of-the-day-jajamensan
+- https://en.wiktionary.org/wiki/jajamensan
+
+Covers `sv-slang-tone-04` ("Du har väl städat rummet?").
+- https://en.wiktionary.org/wiki/v%C3%A4l
+
+Covers `sv-slang-tone-05` … `sv-slang-tone-07`, the three uses of ju.
+- https://swedishmadeeasy.com/the-swedish-word-ju/
+
+Covers `sv-slang-tone-08` and `sv-slang-tone-09` (liksom as a filler).
+- https://www.thelocal.se/20190423/swedish-word-of-the-day-liksom
+
+### German — `de-slang-fillers`
+
+Covers `de-slang-fill-01` ("Naja.").
+- https://www.thelocal.de/20190410/naja/
+
+Covers `de-slang-fill-02` ("Quasi schon.").
+- https://www.thelocal.de/20191127/german-word-of-the-day-quasi
+
+Covers `de-slang-fill-03` … `de-slang-fill-08` (also, halt, mal, schon, tja,
+äh, each in the source's example sentence).
+- https://storylearning.com/learn/german/german-tips/spoken-german

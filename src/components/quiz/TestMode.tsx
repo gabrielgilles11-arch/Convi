@@ -12,6 +12,7 @@ import AudioButton from "./AudioButton";
 import MatchQuestion from "./MatchQuestion";
 import { playCorrect, playWrong } from "./sound";
 import { speak, stopSpeaking } from "./speech";
+import { FAST_RATE, SLOW_RATE } from "../../lib/repairTypes";
 import {
   recordAnswer,
   recordQuestionResult,
@@ -207,6 +208,8 @@ export default function TestMode({
   const answerArea = useRef<HTMLDivElement>(null);
   const questionCard = useRef<HTMLDivElement>(null);
   const voiceTimer = useRef(0);
+  /** Which question a "Huh?" exchange is being played out for. */
+  const huhKey = useRef("");
 
   // Leaving a question — or the round — stops it mid-sentence. A line still
   // being read over the next question is worse than not hearing it at all.
@@ -216,6 +219,17 @@ export default function TestMode({
       stopSpeaking();
     };
   }, [position, attempt]);
+
+  // A "Huh?" question opens on the line going by too fast, out loud, the way
+  // it would at a counter. Its text stays blurred until the question settles.
+  const huhQuestion = question?.huh ? question : null;
+  useEffect(() => {
+    if (!huhQuestion || answered) return;
+    const timer = window.setTimeout(() => {
+      void speak(locale, huhQuestion.shownAudio, huhQuestion.shown, "practice", { rate: FAST_RATE });
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [huhQuestion, position, attempt]);
   useEffect(() => {
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const behavior: ScrollBehavior = reduced ? "auto" : "smooth";
@@ -309,7 +323,23 @@ export default function TestMode({
     // learner's hands are already busy. Held back a beat so it doesn't play
     // over the feedback tone — two sounds at once is neither.
     const line = spokenLine(question!);
-    if (line) {
+    if (question?.huh) {
+      // The whole exchange, in order: you ask, they say they'll repeat it,
+      // and they say it again slowly. Each waits for the one before, and a
+      // move to the next question drops the rest.
+      const q = question;
+      const at = `${position}:${attempt}`;
+      const still = () => huhKey.current === at;
+      huhKey.current = at;
+      window.clearTimeout(voiceTimer.current);
+      voiceTimer.current = window.setTimeout(async () => {
+        await speak(locale, q.answerAudio, q.answer, "practice", { untilDone: true });
+        if (!still() || !q.reply) return;
+        await speak(locale, q.replyAudio, q.reply.source, "practice", { untilDone: true });
+        if (!still()) return;
+        void speak(locale, q.shownAudio, q.shown, "practice", { rate: SLOW_RATE });
+      }, 260);
+    } else if (line) {
       window.clearTimeout(voiceTimer.current);
       voiceTimer.current = window.setTimeout(() => {
         void speak(locale, line.audioId, line.text, "practice");
@@ -324,13 +354,15 @@ export default function TestMode({
     if (attempted.includes(position)) return;
     setAttempted((a) => [...a, position]);
     if (results) for (const r of results) firstTries.current[r.itemId] = r.correct;
-    else firstTries.current[question!.itemId] = correct;
+    else if (!question!.huh) firstTries.current[question!.itemId] = correct;
     if (results) {
       for (const r of results) recordQuestionResult(r.itemId, r.correct);
       // A matching screen settles several items at once, and the rows that
       // went right are won even when the screen as a whole did not.
       setWonIds((ids) => [...ids, ...results.filter((r) => r.correct).map((r) => r.itemId)]);
-    } else {
+    } else if (!question!.huh) {
+      // A "Huh?" question is not an item in the deck: there is no line of its
+      // own to put in the mistake queue or list as won, only the asking.
       recordQuestionResult(question!.itemId, correct);
       if (correct) setWonIds((ids) => [...ids, question!.itemId]);
     }
@@ -552,10 +584,27 @@ export default function TestMode({
         ) : (
           <>
             <p className="quiz-prompt">{q.prompt}</p>
+            {q.huh && !answered ? (
+              <p className="quiz-front quiz-front--huh">
+                <span className="convo-blur" aria-hidden="true">
+                  {q.shown}
+                </span>
+                <span className="sr-only">Something said too fast to catch.</span>
+                <button
+                  type="button"
+                  className="convo-replay"
+                  onClick={() =>
+                    void speak(locale, q.shownAudio, q.shown, "practice", { rate: FAST_RATE })
+                  }
+                >
+                  Hear it again
+                </button>
+              </p>
+            ) : (
             <p className="quiz-front">
               {withBlanks(q.shown)}
               {q.shownSub && <span className="en">{withBlanks(q.shownSub)}</span>}
-              {q.answerLang === "en" && (
+              {(q.answerLang === "en" || q.huh) && (
                 <AudioButton
                   locale={locale}
                   audioId={q.shownAudio}
@@ -564,6 +613,7 @@ export default function TestMode({
                 />
               )}
             </p>
+            )}
           </>
         )}
       </div>
@@ -770,7 +820,7 @@ export default function TestMode({
                 through to its end. */}
             {q.reply && (
               <div className="drawer-line drawer-reply">
-                <p className="drawer-line-label">They'll say back</p>
+                <p className="drawer-line-label">{q.huh ? "They'll repeat it" : "They'll say back"}</p>
                 <div className="drawer-line-row">
                   <button
                     type="button"
