@@ -108,23 +108,22 @@ export interface QuizPayload {
  * shows up at the bottom of the path rather than disappearing.
  */
 export const PRACTICE_PATH = [
-  // Arriving, then being able to say who you are, then the slang that makes
-  // the rest of it make sense, then the bar.
+  // Arriving, then who you are, then the conversation it opens, then the bar
+  // and the table. The four a trip runs on come first and in that order;
+  // slang follows them rather than interrupting them.
   //
-  // `starting-convo` sits second because it is the floor everything else
-  // stands on: a learner who can order a beer but cannot say their own name
-  // has been taught the trip out of order. It used to sit fifth, behind slang
-  // and the bar, which put "¿cómo te llamas?" after "¿me pones otra?".
-  //
-  // Slang stays high for its own reason: it is the most interesting thing here
-  // and the reason somebody picked this over a textbook, and burying it at
-  // stage seven meant most people would never reach it.
+  // `basics` is where you say who you are and what you look like: where you
+  // are from, how old you are, what you are wearing. It sits before
+  // `starting-convo` because a conversation is mostly those questions, and a
+  // learner who can open one but not answer "¿de dónde eres?" has been taught
+  // it out of order.
   "getting-around",
+  "basics",
   "starting-convo",
-  "slang",
   "beer-food",
-  "hotel",
   "restaurant",
+  "slang",
+  "hotel",
   "shopping",
   "bayern-slang",
   "berlin-slang",
@@ -151,6 +150,7 @@ export const PRACTICE_PATH = [
  */
 export const STAGE_TITLES: Record<string, string> = {
   "getting-around": "Getting around",
+  basics: "The basics",
   "starting-convo": "Starting a convo",
   slang: "Slang",
   "beer-food": "Ordering drinks & food",
@@ -173,14 +173,14 @@ export function stageTitleOf(category: { id: string; title: string }): string {
 }
 
 /**
- * What one round is made of: five situations, one matching screen, two
+ * What one round is made of: six situations, one matching screen, two
  * translation questions. Order is shuffled every run, except that a round
  * always opens on a situation — that is the thing being taught.
  *
  * Nothing asks what the other person would say. Their reply is shown after
  * each situation settles instead.
  */
-export const SITUATIONS_PER_ROUND = 5;
+export const SITUATIONS_PER_ROUND = 6;
 export const MATCH_PER_ROUND = 1;
 export const TRANSLATION_PER_ROUND = 2;
 export const ROUND_LENGTH = SITUATIONS_PER_ROUND + MATCH_PER_ROUND + TRANSLATION_PER_ROUND;

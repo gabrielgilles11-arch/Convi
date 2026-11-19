@@ -32,7 +32,7 @@ export const SLOW_RATE = 0.8;
 export const FAST_RATE = 1.35;
 
 // ---------------------------------------------------------------------------
-// Practice: one "Huh?" question per round
+// Practice: a "Huh?" question in some rounds
 // ---------------------------------------------------------------------------
 
 /**
@@ -48,6 +48,19 @@ const NO_HUH_STAGES = new Set(["for-the-girls", "cuss-words"]);
 
 export function huhFitsStage(categoryId: string): boolean {
   return !NO_HUH_STAGES.has(stageKeyOf(categoryId));
+}
+
+/**
+ * How many practice rounds carry a "Huh?" question: about one in three.
+ *
+ * It used to be every round, and a moment meant to catch you off guard stops
+ * doing that when it is the same trick every time. Decided per round, so it
+ * stays a surprise rather than a pattern you can count.
+ */
+export const HUH_ROUND_CHANCE = 1 / 3;
+
+export function huhThisRound(random: () => number = Math.random): boolean {
+  return random() < HUH_ROUND_CHANCE;
 }
 
 /** Prompt on a practice "Huh?" question. */
