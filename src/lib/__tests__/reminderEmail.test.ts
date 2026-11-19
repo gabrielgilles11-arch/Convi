@@ -77,7 +77,7 @@ describe("the reminder email", () => {
   it("names the edition rather than defaulting to Spanish", () => {
     const swedish = reminderEmail(nudgeAt(0), "sv-SE", ID);
     expect(swedish.html).toContain("Swedish");
-    expect(swedish.html).not.toContain("practising Spanish");
+    expect(swedish.html).not.toContain("practicing Spanish");
   });
 });
 

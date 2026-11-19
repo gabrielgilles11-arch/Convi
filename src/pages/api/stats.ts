@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { allowRequest, clientIp } from "../../lib/ratelimit";
 import { parseEvent, readStats, record } from "../../lib/stats";
+import { secretMatches } from "../../lib/secrets";
 
 export const prerender = false;
 
@@ -63,7 +64,7 @@ export const GET: APIRoute = async ({ request }) => {
     url.searchParams.get("token") ??
     request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ??
     "";
-  if (given !== expected) return json({ error: "Not found" }, 404);
+  if (!secretMatches(given, expected)) return json({ error: "Not found" }, 404);
 
   const days = Math.min(Math.max(Number(url.searchParams.get("days")) || 30, 1), 90);
   return json(await readStats(days));

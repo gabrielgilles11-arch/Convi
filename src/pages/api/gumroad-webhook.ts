@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { kv } from "../../lib/kv";
 import { allowRequest, clientIp } from "../../lib/ratelimit";
+import { secretMatches } from "../../lib/secrets";
 
 export const prerender = false;
 
@@ -23,8 +24,7 @@ export const POST: APIRoute = async ({ request, url, clientAddress }) => {
     return new Response("Too many requests", { status: 429 });
   }
 
-  const secret = url.searchParams.get("secret");
-  if (!secret || secret !== import.meta.env.GUMROAD_WEBHOOK_SECRET) {
+  if (!secretMatches(url.searchParams.get("secret"), import.meta.env.GUMROAD_WEBHOOK_SECRET)) {
     return new Response("Unauthorized", { status: 401 });
   }
 

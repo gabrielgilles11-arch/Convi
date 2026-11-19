@@ -50,8 +50,8 @@ export function reminderEmail(
   // though it promises to stop: "we'll stop" is a promise, and an opt-out that
   // depends on a promise being kept is not an opt-out.
   const footer = nudge.last
-    ? `You asked for these while practising ${escapeHtml(language)}. That's us done, but you can <a href="${escapeHtml(off)}" style="color:#8a7768;">stop them yourself</a>.`
-    : `You asked for these while practising ${escapeHtml(language)}. <a href="${escapeHtml(off)}" style="color:#8a7768;">Stop them</a>: one click, no questions.`;
+    ? `You asked for these while practicing ${escapeHtml(language)}. That's us done, but you can <a href="${escapeHtml(off)}" style="color:#8a7768;">stop them yourself</a>.`
+    : `You asked for these while practicing ${escapeHtml(language)}. <a href="${escapeHtml(off)}" style="color:#8a7768;">Stop them</a>: one click, no questions.`;
 
   return {
     subject: nudge.subject,

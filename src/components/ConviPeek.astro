@@ -30,9 +30,13 @@ const KNUCKLE = "#d9a77c";
   focusable="false"
 >
   <defs>
-    {/* Everything above the card's edge, which sits at y=92. */}
+    {/* Everything above the card's edge, which sits at y=92. The edge is the
+        only side that should cut: the rect runs far past the viewBox on the
+        left, right and top, so the brim and crown stay whole at either end of
+        the tilt. It used to stop at the viewBox, which sliced the brim off
+        along a straight line, as if the hat had gone behind a panel. */}
     <clipPath id="convi-peek-above">
-      <rect x="-160" y="-160" width="320" height="252" />
+      <rect x="-400" y="-400" width="800" height="492" />
     </clipPath>
   </defs>
 
@@ -90,9 +94,18 @@ const KNUCKLE = "#d9a77c";
   }
 
   .convi-peek-head {
-    transform-box: view-box;
-    /* The neck, where it meets the card: the head tilts from there. */
-    transform-origin: 50% 92%;
+    /*
+     * The neck, where it meets the card: the head tilts from there.
+     *
+     * Measured against the head's own box (brim tip to brim tip, crown to neck:
+     * x -148..148, y -152..110), so 92.4% is y=90, just above the card's edge.
+     * `view-box` was used before, but engines place that reference box at the
+     * user-space origin rather than at the viewBox's corner, and with a viewBox
+     * starting at -160 that put the pivot far off to the lower right. The head
+     * swung much further than five degrees and out past its clip.
+     */
+    transform-box: fill-box;
+    transform-origin: 50% 92.4%;
     animation: convi-peek-tilt 6s ease-in-out infinite;
   }
 
