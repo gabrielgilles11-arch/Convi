@@ -355,6 +355,28 @@
               "notes": "Closing line to end the conversation.",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-20",
+              "speaker": "you",
+              "situation": { "en": "Someone uses a word you don't know and you want to ask what it means." },
+              "question": { "es": "¿Qué significa eso?", "en": "What does that mean?" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Point at the word on a menu and ask the waiter.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-21",
+              "speaker": "you",
+              "situation": { "en": "You answered in Spanish and they replied in English. You want to keep practicing." },
+              "question": { "es": "¿Podemos hablar en español, por favor?", "en": "Can we speak in Spanish, please?" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "The more formal version is ¿Podríamos hablar en español, por favor?",
+              "difficulty": "easy",
+              "quizQuestions": []
             }
           ],
           "scenes": [
@@ -1284,6 +1306,20 @@
               "region": "catalan",
               "quizQuestions": []
             }
+          ]
+        },
+        {
+          "id": "slang-fillers",
+          "title": "Fillers you will hear in Spain",
+          "phrases": [
+            { "id": "slang-fill-01", "es": "Bueno…", "en": "So, well: opens a statement, or buys time before an answer you are unsure of.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-fill-02", "es": "Pues…", "en": "Well… (unsure, or answering a question you did not expect)", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-fill-03", "es": "Digo…", "en": "I mean… (correcting yourself after a slip)", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-fill-04", "es": "Entonces…", "en": "So… (moving to a new topic, or gathering your thoughts)", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-fill-05", "es": "Es decir…", "en": "That is to say… (restating something more clearly)", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-fill-06", "es": "Mira…", "en": "Look… (before setting the record straight or a long explanation)", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-fill-07", "es": "¿Sabes?", "en": "You know? Checks the other person is following, or agrees.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-fill-08", "es": "¿Vale?", "en": "Okay? Tagged onto the end of a sentence, like when giving directions.", "difficulty": "easy", "quizQuestions": [] }
           ]
         }
       ]
