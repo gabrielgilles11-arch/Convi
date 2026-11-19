@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { ENT_COOKIE, verifyEntitlement } from "../../lib/entitlement";
 import { PAYWALL_ENABLED } from "../../lib/paywall";
 import { buildConversations } from "../../lib/conversations";
+import { buildRepairKit } from "../../lib/repair";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../../lib/content";
 
 export const prerender = false;
@@ -31,7 +32,7 @@ export const GET: APIRoute = async ({ cookies, url }) => {
   const requested = url.searchParams.get("locale") as Locale | null;
   const locale = requested && KNOWN_LOCALES.has(requested) ? requested : DEFAULT_LOCALE;
 
-  return new Response(JSON.stringify({ conversations: buildConversations(locale) }), {
+  return new Response(JSON.stringify({ conversations: buildConversations(locale), repair: buildRepairKit(locale) }), {
     status: 200,
     headers: {
       "Content-Type": "application/json",

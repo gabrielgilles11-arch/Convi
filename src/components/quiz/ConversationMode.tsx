@@ -16,6 +16,15 @@ import { placeName } from "./ConversationPicker";
 import { prefetchClips, speak, stopSpeaking } from "./speech";
 import { registerOf, REGISTER_LABEL } from "../../lib/register";
 import { LANGUAGE_NAME } from "../../lib/welcome";
+import {
+  bumpTalkCount,
+  FAST_RATE,
+  huhDue,
+  huhPlan,
+  SLOW_RATE,
+  type HuhPlan,
+  type RepairKit,
+} from "../../lib/repairTypes";
 
 /**
  * Talk Mode: a conversation held in the target language.
@@ -62,6 +71,8 @@ interface Props {
   onFinish: (id: string) => void;
   /** Carry on into another conversation without leaving the thread. */
   onContinue: (id: string) => void;
+  /** The lines a "Huh?" moment is made of. Null: no moment, ever. */
+  repair: RepairKit | null;
 }
 
 /** What was actually said on a beat, once it is settled. */
@@ -81,6 +92,68 @@ interface Held {
   conversation: Conversation;
   route: number[];
   said: Record<number, Said>;
+  huh: Huh | null;
+}
+
+/**
+ * A "Huh?" moment, as it played out on its beat.
+ *
+ * Their line goes by too fast to catch and you have to ask for it again, in
+ * the language, the way it actually goes at a bar. In Sweden the local's first
+ * instinct is to switch to English instead, so there you steer them back
+ * before they repeat it. Then they say it again, slowly, and the beat carries
+ * on as any other.
+ *
+ * `missed`    their line went by too fast; your turn to ask.
+ * `offered`   (Sweden) they offered English; your turn to steer back.
+ * `waiting`   they are about to answer; the dots are up.
+ * `repeated`  they said it again, slowly. The beat is an ordinary one now.
+ */
+interface Huh {
+  step: number;
+  stage: "missed" | "offered" | "waiting" | "repeated";
+  ask: Said | null;
+  steer: Said | null;
+  /** What they said back during the moment, in order. */
+  theirs: ConvLine[];
+}
+
+/** Their line, too fast to catch: blurred, with a way to hear it go by again. */
+function MissedBubble({ line, locale }: { line: ConvLine; locale: string }) {
+  return (
+    <div className="convo-bubble convo-bubble--them convo-missed">
+      <p className="convo-source">
+        <span className="convo-blur" aria-hidden="true">
+          {line.source}
+        </span>
+        <span className="sr-only">Something said too fast to catch.</span>
+        <button
+          type="button"
+          className="convo-replay"
+          onClick={() =>
+            void speak(locale, line.audioId, line.source, "practice", { rate: FAST_RATE })
+          }
+        >
+          Hear it again
+        </button>
+      </p>
+      <p className="convo-missed-label">Too fast to catch</p>
+    </div>
+  );
+}
+
+/** Your side of a "Huh?" moment: what you said, and the line where it missed. */
+function HuhYours({ said, locale }: { said: Said; locale: string }) {
+  return (
+    <>
+      {said.typed !== null && (
+        <div className={`convo-bubble convo-bubble--you${said.correct ? "" : " is-wrong"}`}>
+          <p className="convo-source">{said.typed}</p>
+        </div>
+      )}
+      {!said.correct && <Correction said={said} locale={locale} />}
+    </>
+  );
 }
 
 /**
@@ -321,8 +394,11 @@ function Beat({
   outroState,
   openKey,
   onPop,
+  huh,
 }: {
   turn: ConvTurn;
+  /** The "Huh?" moment on this beat, where there is one. */
+  huh: Huh | null;
   /** The opening beat of a conversation, which always sets its scene. */
   first: boolean;
   /** Where you are, said once above the first line. */
@@ -356,7 +432,57 @@ function Beat({
       {first && howTo && <p className="convo-howto">{howTo}</p>}
       {cue && <p className="convo-situation">{cue}</p>}
 
+      {turn.theirOpener && huh && (
+        <>
+          {openerOut ? (
+            <MissedBubble line={turn.theirOpener} locale={locale} />
+          ) : (
+            <Typing label="They're about to say something" />
+          )}
+          {huh.ask && <HuhYours said={huh.ask} locale={locale} />}
+          {huh.theirs[0] && (
+            <Bubble
+              line={huh.theirs[0]}
+              side="them"
+              locale={locale}
+              english={english}
+              openKey={openKey}
+              popKey={`${turn.id}-huh-0`}
+              onPop={onPop}
+            />
+          )}
+          {huh.steer && <HuhYours said={huh.steer} locale={locale} />}
+          {huh.theirs[1] && (
+            <Bubble
+              line={huh.theirs[1]}
+              side="them"
+              locale={locale}
+              english={english}
+              openKey={openKey}
+              popKey={`${turn.id}-huh-1`}
+              onPop={onPop}
+            />
+          )}
+          {huh.stage === "waiting" && <Typing label="They're answering" />}
+          {huh.stage === "repeated" && (
+            <>
+              <p className="convo-slower">Again, slower:</p>
+              <Bubble
+                line={turn.theirOpener}
+                side="them"
+                locale={locale}
+                english={english}
+                openKey={openKey}
+                popKey={`${turn.id}-them`}
+                onPop={onPop}
+              />
+            </>
+          )}
+        </>
+      )}
+
       {turn.theirOpener &&
+        !huh &&
         (openerOut ? (
           <Bubble
             line={turn.theirOpener}
@@ -454,10 +580,13 @@ function Transcript({
   outroState,
   howTo,
   live,
+  huh,
 }: {
   conversation: Conversation;
   route: number[];
   said: Record<number, Said>;
+  /** The "Huh?" moment in this conversation, where it had one. */
+  huh: Huh | null;
   locale: string;
   english: boolean;
   openKey: string | null;
@@ -492,6 +621,7 @@ function Transcript({
             outroState={current ? outroState : "out"}
             openKey={openKey}
             onPop={onPop}
+            huh={huh && huh.step === index ? huh : null}
           />
         );
       })}
@@ -518,6 +648,7 @@ export default function ConversationMode({
   onBack,
   onFinish,
   onContinue,
+  repair,
 }: Props) {
   const turns = conversation.turns;
 
@@ -535,6 +666,12 @@ export default function ConversationMode({
   const [openKey, setOpenKey] = useState<string | null>(null);
   /** Conversations already held in this sitting, oldest first. */
   const [held, setHeld] = useState<Held[]>([]);
+  /** This conversation's "Huh?" moment, once it has started. */
+  const [huh, setHuh] = useState<Huh | null>(null);
+  /** Where this run's moment is due, if it has one at all. */
+  const huhAt = useRef<HuhPlan | null>(null);
+  /** Beats walked so far on which they spoke first, for an `nth` plan. */
+  const theirBeats = useRef(0);
 
   /**
    * A new conversation is a new transcript, cleared while rendering rather
@@ -552,6 +689,11 @@ export default function ConversationMode({
   const current = turns[step];
   const settled = said[step] !== undefined;
   const canAnswer = phase === "open" && !settled && !done;
+  /** Your turn inside a "Huh?" moment: asking again, or steering back. */
+  const huhTurn =
+    huh && huh.step === step && (huh.stage === "missed" || huh.stage === "offered") ? huh.stage : null;
+  /** The lines that count on this turn of the moment. */
+  const huhLines = huhTurn === "missed" ? repair?.asks : huhTurn === "offered" ? repair?.english?.steer : null;
 
   /**
    * Which walk-through a pending step belongs to. Answering, restarting,
@@ -570,6 +712,16 @@ export default function ConversationMode({
     return speak(locale, line.audioId, line.source, "practice", { untilDone: true });
   }
 
+  /** Whether the moment lands on this beat, counting it if they speak first. */
+  function huhLandsOn(index: number): boolean {
+    const plan = huhAt.current;
+    if (!plan || !repair || !turns[index]?.theirOpener) return false;
+    theirBeats.current += 1;
+    const lands = "at" in plan ? plan.at === index : plan.nth === theirBeats.current;
+    if (lands) huhAt.current = null; // once per run
+    return lands;
+  }
+
   /** Opens a beat: a moment of them about to speak, then their line, out loud. */
   async function openBeat(index: number, run: number) {
     const turn = turns[index];
@@ -578,15 +730,84 @@ export default function ConversationMode({
       setPhase("open");
       return;
     }
+    const missed = huhLandsOn(index);
     setPhase("typing");
     await pause(THINKING);
     await whenVisible();
     if (run !== runId.current) return;
+    if (missed) {
+      // Too fast to catch. Their line plays quick and stays blurred, and the
+      // box waits for you to ask for it again.
+      setHuh({ step: index, stage: "missed", ask: null, steer: null, theirs: [] });
+      setPhase("open");
+      void speak(locale, turn.theirOpener.audioId, turn.theirOpener.source, "practice", {
+        rate: FAST_RATE,
+      });
+      return;
+    }
     setPhase("open");
     void speakLine(turn.theirOpener);
   }
 
+  /** Settles your turn inside the moment: the ask, or (Sweden) the steer. */
+  function settleHuh(verdict: ReplyVerdict, raw: string | null) {
+    if (!huh || !huhTurn || !repair) return;
+    engaged.current = true;
+    const run = ++runId.current;
+    const entry: Said = {
+      line: verdict.line,
+      index: 0,
+      typed: raw,
+      correct: verdict.correct,
+      close: verdict.close,
+    };
+    const from = huhTurn;
+    setHuh((h) => (h ? { ...h, stage: "waiting", ...(from === "missed" ? { ask: entry } : { steer: entry }) } : h));
+    setTyped("");
+    setOpenKey(null);
+    setPhase("answered");
+    void huhRespond(from, entry, run);
+  }
+
+  /**
+   * Their side of the moment. In Sweden, the first ask gets English offered
+   * back and waits for you to steer; everywhere else, and after the steer,
+   * they say they'll repeat it, then repeat it slowly, and the beat opens.
+   */
+  async function huhRespond(from: "missed" | "offered", entry: Said, run: number) {
+    if (!repair) return;
+    const alive = () => run === runId.current;
+    const yours = entry.correct ? Promise.resolve(false) : speakLine(entry.line);
+    await Promise.race([Promise.all([yours, pause(THINKING)]), pause(MAX_WAIT)]);
+    await whenVisible();
+    if (!alive()) return;
+
+    if (from === "missed" && repair.english) {
+      const offer = repair.english.offer;
+      setHuh((h) => (h ? { ...h, stage: "offered", theirs: [offer] } : h));
+      setPhase("open");
+      void speakLine(offer);
+      return;
+    }
+
+    const back = from === "offered" && repair.english ? repair.english.agree : repair.back;
+    setHuh((h) => (h ? { ...h, theirs: [...h.theirs, back] } : h));
+    const heard = speakLine(back);
+    await Promise.race([Promise.all([heard, pause(readingTime(back.source))]), pause(MAX_WAIT)]);
+    await whenVisible();
+    if (!alive()) return;
+
+    const opener = turns[step]?.theirOpener;
+    setHuh((h) => (h ? { ...h, stage: "repeated" } : h));
+    setPhase("open");
+    if (opener) {
+      void speak(locale, opener.audioId, opener.source, "practice", { rate: SLOW_RATE });
+    }
+  }
+
   function clearTranscript() {
+    setHuh(null);
+    theirBeats.current = 0;
     setRoute([0]);
     setSaid({});
     setTyped("");
@@ -601,6 +822,9 @@ export default function ConversationMode({
     const run = ++runId.current;
     stopSpeaking();
     clearTranscript();
+    // Running it again is not a new conversation started, so it does not
+    // count toward the every-third moment. A wired one still has its moment.
+    huhAt.current = repair && conversation.huhAt !== null ? huhPlan(conversation) : null;
     void openBeat(0, run);
   }
 
@@ -609,6 +833,11 @@ export default function ConversationMode({
   // `openBeat` reads the conversation it was rendered with, which is this one.
   useEffect(() => {
     const run = ++runId.current;
+    // Every conversation started counts, and every third gets a "Huh?" moment
+    // somewhere in it; the wired ones always do. Decided before the first beat
+    // opens, since the first beat can be where it lands.
+    huhAt.current = repair && huhDue(conversation, bumpTalkCount()) ? huhPlan(conversation) : null;
+    theirBeats.current = 0;
     void openBeat(0, run);
     // The lines this conversation says without being asked, fetched now so
     // each one starts on cue rather than after a download on a slow phone.
@@ -736,12 +965,20 @@ export default function ConversationMode({
     // Typing ahead while they are still talking is allowed, and what was typed
     // waits in the box for the beat to open rather than being thrown away.
     if (!canAnswer || !typed.trim() || !current) return;
+    if (huhLines?.length) {
+      settleHuh(gradeReply(typed, huhLines), typed.trim());
+      return;
+    }
     settle(gradeReply(typed, current.yourLines), typed.trim());
   }
 
   /** Stuck. Shows the line rather than leaving the conversation nowhere to go. */
   function reveal() {
     if (!canAnswer || !current) return;
+    if (huhLines?.length) {
+      settleHuh({ correct: false, line: huhLines[0]!, close: false }, null);
+      return;
+    }
     settle({ correct: false, line: current.yourLines[0]!, close: false }, null);
   }
 
@@ -749,12 +986,20 @@ export default function ConversationMode({
   function carryOn() {
     if (!following) return;
     setHeld((prev) =>
-      [...prev, { conversation, route, said }].slice(-HELD_LIMIT)
+      [...prev, { conversation, route, said, huh }].slice(-HELD_LIMIT)
     );
     onContinue(following.conversation.id);
   }
 
-  const hint = current ? hintFor(current) : null;
+  // Inside the moment the hint is what asking again means, in English.
+  const huhHint = huhLines?.map((l) => l.en?.trim() ?? "").filter(Boolean) ?? [];
+  const hint = huhLines?.length
+    ? huhHint.length
+      ? huhHint
+      : null
+    : current
+      ? hintFor(current)
+      : null;
   const toKeep = route
     .map((index) => ({ turn: turns[index], entry: said[index] }))
     .filter((row): row is { turn: ConvTurn; entry: Said } => !!row.turn && !!row.entry && !row.entry.correct);
@@ -795,6 +1040,7 @@ export default function ConversationMode({
             conversation={segment.conversation}
             route={segment.route}
             said={segment.said}
+            huh={segment.huh}
             locale={locale}
             english={english}
             openKey={openKey}
@@ -814,6 +1060,7 @@ export default function ConversationMode({
         conversation={conversation}
         route={route}
         said={said}
+        huh={huh}
         locale={locale}
         english={english}
         openKey={openKey}
@@ -933,7 +1180,15 @@ export default function ConversationMode({
                 engaged.current = true;
                 setTyped(e.target.value);
               }}
-              placeholder={canAnswer ? "Type what you'd say…" : "They're talking…"}
+              placeholder={
+                !canAnswer
+                  ? "They're talking…"
+                  : huhTurn === "missed"
+                    ? "Missed it? Ask again…"
+                    : huhTurn === "offered"
+                      ? `Keep it in ${LANGUAGE_NAME[locale] ?? "the language"}…`
+                      : "Type what you'd say…"
+              }
               aria-label="Your reply, in the language you're learning"
               autoComplete="off"
               autoCapitalize="sentences"
