@@ -201,15 +201,29 @@ export function getTalkLines(locale: Locale = DEFAULT_LOCALE): TalkLine[] {
   return getContent(locale).talk ?? [];
 }
 
+/**
+ * Sections kept in the content files but off the site for now.
+ *
+ * "For the girls" is parked: it is safety content, and getting its framing
+ * right is a bigger job than the section is ready for. Hidden here, in the one
+ * accessor every page, the practice deck, the answer pages, the sitemap and the
+ * line counts read through, so it disappears everywhere at once and comes back
+ * everywhere at once by deleting its ids from this set. Its lines and sources
+ * stay where they are.
+ */
+const HIDDEN_CATEGORY_IDS = new Set(["for-the-girls", "sv-for-the-girls", "de-for-the-girls"]);
+
+const shown = (category: Category) => !HIDDEN_CATEGORY_IDS.has(category.id);
+
 export function getCategories(locale: Locale = DEFAULT_LOCALE): Category[] {
-  return [...FILES[locale].categories].sort((a, b) => a.order - b.order);
+  return FILES[locale].categories.filter(shown).sort((a, b) => a.order - b.order);
 }
 
 /** Category ids are unique across every locale file, so an id alone is enough. */
 export function getCategoryById(id: string, locale?: Locale): Category | undefined {
   const files = locale ? [FILES[locale]] : Object.values(FILES);
   for (const file of files) {
-    const found = file.categories.find((c) => c.id === id);
+    const found = file.categories.find((c) => c.id === id && shown(c));
     if (found) return found;
   }
   return undefined;
@@ -218,7 +232,7 @@ export function getCategoryById(id: string, locale?: Locale): Category | undefin
 /** Which locale a category id belongs to — used to build correct links. */
 export function localeOfCategory(id: string): Locale | undefined {
   for (const [locale, file] of Object.entries(FILES) as [Locale, ContentFile][]) {
-    if (file.categories.some((c) => c.id === id)) return locale;
+    if (file.categories.some((c) => c.id === id && shown(c))) return locale;
   }
   return undefined;
 }
