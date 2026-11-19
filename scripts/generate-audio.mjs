@@ -106,7 +106,7 @@ const AZURE_VOICES = {
  */
 const EDGE_VOICES = {
   "sv-SE": process.env.EDGE_VOICE_SV ?? "sv-SE-SofieNeural",
-  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
+  "de-DE": process.env.EDGE_VOICE_DE ?? "de-DE-TanjaNeural",
   "es-ES": process.env.EDGE_VOICE_ES ?? "es-ES-ElviraNeural",
 };
 
@@ -142,9 +142,15 @@ function providerFor(locale) {
 /**
  * Voice choices: a female neural voice for German and Swedish, through Edge TTS.
  *
- * Katja for German and Sofie for Swedish: both single-language voices, and
+ * Tanja for German and Sofie for Swedish: both single-language voices, and
  * both female, so a learner hears the same kind of person in Talk Mode, in
  * practice and on the scenario page.
+ *
+ * German was Katja until Edge stopped offering her (November 2026). Tanja is
+ * the one female German voice Edge still lists, and the whole German set was
+ * re-recorded in her voice at once, so no conversation switches speaker
+ * halfway through. Azure still has Katja, which is why the Azure default
+ * below is unchanged.
  *
  * German was on Seraphina for a day. She is multilingual, and a multilingual
  * voice decides per line which language it is reading: short lines, numbers
@@ -177,7 +183,7 @@ const PROVIDERS = {
   },
   "de-DE": {
     provider: "edge",
-    voice: process.env.EDGE_VOICE_DE ?? "de-DE-KatjaNeural",
+    voice: process.env.EDGE_VOICE_DE ?? "de-DE-TanjaNeural",
     languageCode: "de-DE",
   },
   "sv-SE": {
