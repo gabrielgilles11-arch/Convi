@@ -296,6 +296,7 @@ export function isDialogueSubsection(
  */
 const SEARCH_INTENT: Record<string, string> = {
   "getting-around": "get around",
+  basics: "introduce yourself",
   slang: "use slang",
   "beer-food": "order a beer",
   "starting-convo": "start a conversation",

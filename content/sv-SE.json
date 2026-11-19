@@ -180,6 +180,182 @@
           ]
         },
         {
+          "id": "sv-beer-food-local",
+          "title": "Meatballs, fika and the Friday night in",
+          "exchanges": [
+            {
+              "id": "sv-beer-food-local-01",
+              "speaker": "them",
+              "situation": {
+                "en": "The waiter asks if you want a drink while you look at the menu. Order a beer and ask what's good."
+              },
+              "question": {
+                "es": "Vill ni ha något att dricka medan ni tittar?",
+                "en": "Do you want something to drink while you look?"
+              },
+              "answers": [
+                {
+                  "es": "Jag tar en öl, tack. Och vad rekommenderar du?",
+                  "en": "I'll have a beer, thanks. And what do you recommend?"
+                }
+              ],
+              "likelyReply": {
+                "es": "Våra köttbullar med potatismos är väldigt populära. Och fisken är dagens.",
+                "en": "Our meatballs with mashed potatoes are very popular. And the fish is today's special."
+              },
+              "notes": "Dagens is short for dagens rätt, the dish of the day: the lunch deal chalked up outside most places.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-02",
+              "speaker": "you",
+              "situation": {
+                "en": "Go with the meatballs they just recommended."
+              },
+              "question": {
+                "es": "Då tar jag köttbullarna.",
+                "en": "Then I'll have the meatballs."
+              },
+              "answers": [
+                {
+                  "es": "Utmärkt val. Kommer strax.",
+                  "en": "Excellent choice. Coming right up."
+                }
+              ],
+              "likelyReply": null,
+              "notes": "Meatballs come with mashed potatoes, cream sauce and lingonberries.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-03",
+              "speaker": "you",
+              "situation": {
+                "en": "You're making coffee for a Swedish friend. Ask how much milk they want."
+              },
+              "question": {
+                "es": "Hur mycket mjölk vill du ha?",
+                "en": "How much milk would you like?"
+              },
+              "answers": [
+                {
+                  "es": "Lagom, tack.",
+                  "en": "Just the right amount, thanks."
+                }
+              ],
+              "likelyReply": null,
+              "notes": "Lagom means not too much, not too little. It's a whole answer on its own.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-04",
+              "speaker": "you",
+              "situation": {
+                "en": "Invite a friend for coffee and say the buns are on you."
+              },
+              "question": {
+                "es": "Ska vi fika? Jag bjuder på kanelbullar.",
+                "en": "Shall we have a fika? I'll treat you to cinnamon buns."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Fika works as a verb too: ska vi fika?",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-05",
+              "speaker": "them",
+              "situation": {
+                "en": "At a café counter they ask if your coffee is to go. It is, and you want the price."
+              },
+              "question": {
+                "es": "Vill du ha kaffet att ta med eller dricka här?",
+                "en": "Do you want the coffee to go or to drink here?"
+              },
+              "answers": [
+                {
+                  "es": "Att ta med, tack. Och vad kostar det?",
+                  "en": "To go, please. And how much is it?"
+                }
+              ],
+              "likelyReply": {
+                "es": "Det blir femtiofem kronor.",
+                "en": "That'll be fifty-five kronor."
+              },
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Time to pay. Ask if card works, or Swish."
+              },
+              "question": {
+                "es": "Kan jag betala med kort? Eller går det bra med Swish?",
+                "en": "Can I pay by card? Or is Swish okay?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Many places no longer take cash. Swish is the phone payment app nearly everyone in Sweden uses.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-07",
+              "speaker": "you",
+              "situation": {
+                "en": "Flag down the waiter for the bill."
+              },
+              "question": {
+                "es": "Kan jag få notan, tack?",
+                "en": "Can I have the bill, please?"
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Tack does the job please does in English. Snälla sounds like begging.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-08",
+              "speaker": "you",
+              "situation": {
+                "en": "Someone asks what a Swedish Friday night looks like."
+              },
+              "question": {
+                "es": "På fredagar blir det fredagsmys med tacos och film.",
+                "en": "On Fridays it's fredagsmys: tacos and a movie."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Fredagsmys is the cozy Friday night in, and Swedish tacos are a fixture of it.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-beer-food-local-09",
+              "speaker": "you",
+              "situation": {
+                "en": "They ask what happens at Midsummer."
+              },
+              "question": {
+                "es": "På midsommar dansar vi runt midsommarstången och äter sill.",
+                "en": "At Midsummer we dance around the maypole and eat herring."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Pickled herring, new potatoes and a snaps or two: the Midsummer table.",
+              "difficulty": "hard",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
           "id": "sv-beer-food-tips",
           "title": "Tiny upgrades that sound natural (Stockholm)",
           "type": "tips",
@@ -319,8 +495,302 @@
       ]
     },
     {
-      "id": "sv-starting-convo",
+      "id": "sv-basics",
       "order": 4,
+      "title": "The basics: who you are (Sweden)",
+      "icon": "🙋",
+      "type": "dialogue",
+      "description": "Q → A → what they'll probably say",
+      "subsections": [
+        {
+          "id": "sv-starting-convo-basics",
+          "title": "The first five questions",
+          "exchanges": [
+            {
+              "id": "sv-starting-convo-08",
+              "speaker": "them",
+              "situation": { "en": "Somebody you've just met asks what you're called." },
+              "question": { "es": "Vad heter du?", "en": "What's your name?" },
+              "answers": [
+                { "es": "Jag heter [NAMN].", "en": "My name is [NAME]." },
+                { "es": "[NAMN]. Och du?", "en": "[NAME]. And you?" }
+              ],
+              "likelyReply": { "es": "Trevligt att träffas.", "en": "Nice to meet you." },
+              "notes": "Heter is the verb for being called, so it is jag heter, never jag är for a name.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-01",
+              "speaker": "them",
+              "situation": { "en": "Two lines in, they want to know where you've come from." },
+              "question": { "es": "Var kommer du ifrån?", "en": "Where are you from?" },
+              "answers": [
+                { "es": "Jag kommer ifrån USA.", "en": "I'm from the US." },
+                { "es": "Jag kommer ifrån England.", "en": "I'm from England." },
+                { "es": "Jag kommer från [LAND].", "en": "I'm from [COUNTRY]." }
+              ],
+              "likelyReply": { "es": "Vad kul, välkommen hit.", "en": "How nice. Welcome here!" },
+              "notes": "Var kommer du ifrån? and varifrån kommer du? are the same question. Answer with ifrån and you sound like you have said it before.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-02",
+              "speaker": "them",
+              "situation": { "en": "They have switched into Swedish and you have to say how little you have." },
+              "question": { "es": "Pratar du svenska?", "en": "Do you speak Swedish?" },
+              "answers": [
+                { "es": "Jag pratar inte svenska.", "en": "I don't speak Swedish." },
+                { "es": "Bara lite.", "en": "Only a little." }
+              ],
+              "likelyReply": { "es": "Ingen fara, vi tar det på engelska.", "en": "No problem, we'll do it in English." },
+              "notes": "Swedes switch to English the second they hear you struggle. Jag pratar inte svenska is the honest version; jag lär mig svenska keeps them in Swedish a little longer.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-03",
+              "speaker": "them",
+              "situation": { "en": "Somebody wants to know what you're doing in the country." },
+              "question": { "es": "Är du här på semester?", "en": "Are you here on vacation?" },
+              "answers": [
+                { "es": "Ja, jag är här på semester.", "en": "Yes, I'm here on vacation." },
+                { "es": "Nej, jag jobbar här.", "en": "No, I'm working here." }
+              ],
+              "likelyReply": { "es": "Då har du tur med vädret.", "en": "You're lucky with the weather, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-04",
+              "speaker": "them",
+              "situation": { "en": "They ask how much of the trip you have left." },
+              "question": { "es": "Hur länge stannar du?", "en": "How long are you staying?" },
+              "answers": [
+                { "es": "Jag stannar en vecka.", "en": "I'm staying a week." },
+                { "es": "Bara några dagar.", "en": "Just a few days." }
+              ],
+              "likelyReply": { "es": "Då hinner du med Gamla stan.", "en": "You'll have time for Gamla stan, then." },
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-05",
+              "speaker": "them",
+              "situation": { "en": "The talk turns to what you do for a living." },
+              "question": { "es": "Vad jobbar du med?", "en": "What do you do for work?" },
+              "answers": [
+                { "es": "Jag jobbar som lärare.", "en": "I work as a teacher." },
+                { "es": "Jag pluggar fortfarande.", "en": "I'm still studying." }
+              ],
+              "likelyReply": { "es": "Spännande.", "en": "Interesting." },
+              "notes": "Vad jobbar du med? is what a Swede actually asks, and it comes later in the evening than it would at home: work is not the opening question here.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-06",
+              "speaker": "them",
+              "situation": { "en": "Somebody at the table asks your age straight out." },
+              "question": { "es": "Hur gammal är du?", "en": "How old are you?" },
+              "answers": [
+                { "es": "Jag är trettio.", "en": "I'm thirty." },
+                { "es": "Jag är trettio år gammal.", "en": "I'm thirty years old." }
+              ],
+              "likelyReply": { "es": "Samma här.", "en": "Same here." },
+              "notes": "Jag är trettio år gammal is correct and almost nobody says all of it. Drop år gammal and give the number.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-convo-basics-07",
+              "speaker": "you",
+              "situation": { "en": "You've answered six questions in a row and want to ask one." },
+              "question": { "es": "Och du då? Vad gör du?", "en": "And you? What do you do?" },
+              "answers": [
+                { "es": "Jag jobbar på ett kafé.", "en": "I work at a café." }
+              ],
+              "likelyReply": null,
+              "notes": "Och du då? is the standard turn-it-around. A question answered and not returned reads as you being finished talking.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            }
+          ]
+        },
+        {
+          "id": "sv-basics-describe",
+          "title": "How you look, what you're wearing, where you're from",
+          "exchanges": [
+            {
+              "id": "sv-basics-describe-01",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend looks sharp today. Say so."
+              },
+              "question": {
+                "es": "Hej! Du ser fräsch ut idag.",
+                "en": "Hi! You look sharp today."
+              },
+              "answers": [
+                {
+                  "es": "Tack så mycket! Jag gillar din tröja.",
+                  "en": "Thank you so much! I like your sweater."
+                }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-02",
+              "speaker": "you",
+              "situation": {
+                "en": "Meeting someone at a busy station, tell them what you're wearing."
+              },
+              "question": {
+                "es": "Jag har en blå skjorta på mig idag",
+                "en": "I'm wearing a blue shirt today."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Wearing is ha på sig: jag har en blå skjorta på mig.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-03",
+              "speaker": "you",
+              "situation": {
+                "en": "You're helping someone find your friend in the crowd. Describe her."
+              },
+              "question": {
+                "es": "Hon är mycket lång och har brunt hår.",
+                "en": "She's very tall and has brown hair."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-04",
+              "speaker": "you",
+              "situation": {
+                "en": "They ask what your sister looks like."
+              },
+              "question": {
+                "es": "Hon har gröna ögon och bär glasögon när hon läser.",
+                "en": "She has green eyes and wears glasses when she reads."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-05",
+              "speaker": "you",
+              "situation": {
+                "en": "Pay someone a compliment about their eyes."
+              },
+              "question": {
+                "es": "Du har vackra ögon.",
+                "en": "You have beautiful eyes."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-06",
+              "speaker": "you",
+              "situation": {
+                "en": "Tell a friend you like their hair."
+              },
+              "question": {
+                "es": "Jag gillar ditt hår",
+                "en": "I like your hair."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-07",
+              "speaker": "you",
+              "situation": {
+                "en": "Your friend has a new jacket on. Say it's nice."
+              },
+              "question": {
+                "es": "Vilken fin jacka",
+                "en": "What a nice jacket."
+              },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-08",
+              "speaker": "you",
+              "situation": {
+                "en": "They've just said it's nice to meet you. Say likewise and ask where they're from."
+              },
+              "question": {
+                "es": "Detsamma! Var kommer du ifrån?",
+                "en": "Likewise! Where are you from?"
+              },
+              "answers": [
+                {
+                  "es": "Jag bor här i Stockholm, men jag kommer från Malmö.",
+                  "en": "I live here in Stockholm, but I'm from Malmö."
+                }
+              ],
+              "likelyReply": null,
+              "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "sv-basics-describe-09",
+              "speaker": "you",
+              "situation": {
+                "en": "Tell them you're studying Swedish, and ask if they speak English."
+              },
+              "question": {
+                "es": "Jag studerar svenska. Pratar du engelska?",
+                "en": "I'm studying Swedish. Do you speak English?"
+              },
+              "answers": [
+                {
+                  "es": "Ja, lite. Men vi pratar svenska nu!",
+                  "en": "Yes, a little. But we're speaking Swedish now!"
+                }
+              ],
+              "likelyReply": null,
+              "notes": "Swedes switch to English the moment they hear an accent. Saying you're learning is how you keep it in Swedish.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            }
+          ]
+        }
+      
+      ]
+    },
+    {
+      "id": "sv-starting-convo",
+      "order": 5,
       "title": "Starting a convo/basic survival (Stockholm)",
       "icon": "👋",
       "type": "dialogue",
@@ -507,124 +977,6 @@
               "answers": [],
               "likelyReply": null,
               "notes": "Det, not den: Vad betyder den? is wrong here.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            }
-          ]
-        },
-        {
-          "id": "sv-starting-convo-basics",
-          "title": "The first five questions",
-          "exchanges": [
-            {
-              "id": "sv-starting-convo-08",
-              "speaker": "them",
-              "situation": { "en": "Somebody you've just met asks what you're called." },
-              "question": { "es": "Vad heter du?", "en": "What's your name?" },
-              "answers": [
-                { "es": "Jag heter [NAMN].", "en": "My name is [NAME]." },
-                { "es": "[NAMN]. Och du?", "en": "[NAME]. And you?" }
-              ],
-              "likelyReply": { "es": "Trevligt att träffas.", "en": "Nice to meet you." },
-              "notes": "Heter is the verb for being called, so it is jag heter, never jag är for a name.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-convo-basics-01",
-              "speaker": "them",
-              "situation": { "en": "Two lines in, they want to know where you've come from." },
-              "question": { "es": "Var kommer du ifrån?", "en": "Where are you from?" },
-              "answers": [
-                { "es": "Jag kommer ifrån USA.", "en": "I'm from the US." },
-                { "es": "Jag kommer ifrån England.", "en": "I'm from England." },
-                { "es": "Jag kommer från [LAND].", "en": "I'm from [COUNTRY]." }
-              ],
-              "likelyReply": { "es": "Vad kul, välkommen hit.", "en": "How nice. Welcome here!" },
-              "notes": "Var kommer du ifrån? and varifrån kommer du? are the same question. Answer with ifrån and you sound like you have said it before.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-convo-basics-02",
-              "speaker": "them",
-              "situation": { "en": "They have switched into Swedish and you have to say how little you have." },
-              "question": { "es": "Pratar du svenska?", "en": "Do you speak Swedish?" },
-              "answers": [
-                { "es": "Jag pratar inte svenska.", "en": "I don't speak Swedish." },
-                { "es": "Bara lite.", "en": "Only a little." }
-              ],
-              "likelyReply": { "es": "Ingen fara, vi tar det på engelska.", "en": "No problem, we'll do it in English." },
-              "notes": "Swedes switch to English the second they hear you struggle. Jag pratar inte svenska is the honest version; jag lär mig svenska keeps them in Swedish a little longer.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-convo-basics-03",
-              "speaker": "them",
-              "situation": { "en": "Somebody wants to know what you're doing in the country." },
-              "question": { "es": "Är du här på semester?", "en": "Are you here on vacation?" },
-              "answers": [
-                { "es": "Ja, jag är här på semester.", "en": "Yes, I'm here on vacation." },
-                { "es": "Nej, jag jobbar här.", "en": "No, I'm working here." }
-              ],
-              "likelyReply": { "es": "Då har du tur med vädret.", "en": "You're lucky with the weather, then." },
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-convo-basics-04",
-              "speaker": "them",
-              "situation": { "en": "They ask how much of the trip you have left." },
-              "question": { "es": "Hur länge stannar du?", "en": "How long are you staying?" },
-              "answers": [
-                { "es": "Jag stannar en vecka.", "en": "I'm staying a week." },
-                { "es": "Bara några dagar.", "en": "Just a few days." }
-              ],
-              "likelyReply": { "es": "Då hinner du med Gamla stan.", "en": "You'll have time for Gamla stan, then." },
-              "notes": "",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-convo-basics-05",
-              "speaker": "them",
-              "situation": { "en": "The talk turns to what you do for a living." },
-              "question": { "es": "Vad jobbar du med?", "en": "What do you do for work?" },
-              "answers": [
-                { "es": "Jag jobbar som lärare.", "en": "I work as a teacher." },
-                { "es": "Jag pluggar fortfarande.", "en": "I'm still studying." }
-              ],
-              "likelyReply": { "es": "Spännande.", "en": "Interesting." },
-              "notes": "Vad jobbar du med? is what a Swede actually asks, and it comes later in the evening than it would at home: work is not the opening question here.",
-              "difficulty": "medium",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-convo-basics-06",
-              "speaker": "them",
-              "situation": { "en": "Somebody at the table asks your age straight out." },
-              "question": { "es": "Hur gammal är du?", "en": "How old are you?" },
-              "answers": [
-                { "es": "Jag är trettio.", "en": "I'm thirty." },
-                { "es": "Jag är trettio år gammal.", "en": "I'm thirty years old." }
-              ],
-              "likelyReply": { "es": "Samma här.", "en": "Same here." },
-              "notes": "Jag är trettio år gammal is correct and almost nobody says all of it. Drop år gammal and give the number.",
-              "difficulty": "easy",
-              "quizQuestions": []
-            },
-            {
-              "id": "sv-convo-basics-07",
-              "speaker": "you",
-              "situation": { "en": "You've answered six questions in a row and want to ask one." },
-              "question": { "es": "Och du då? Vad gör du?", "en": "And you? What do you do?" },
-              "answers": [
-                { "es": "Jag jobbar på ett kafé.", "en": "I work at a café." }
-              ],
-              "likelyReply": null,
-              "notes": "Och du då? is the standard turn-it-around. A question answered and not returned reads as you being finished talking.",
               "difficulty": "easy",
               "quizQuestions": []
             }
@@ -1507,7 +1859,7 @@
     },
     {
       "id": "sv-cuss-words",
-      "order": 5,
+      "order": 6,
       "title": "Cuss words & “don’t get punched” warnings (Sweden)",
       "icon": "🤬",
       "type": "phrasebook",
@@ -1814,7 +2166,7 @@
     },
     {
       "id": "sv-flirting",
-      "order": 6,
+      "order": 7,
       "title": "Calling someone attractive (Sweden)",
       "icon": "😏",
       "type": "phrasebook",
@@ -2751,7 +3103,7 @@
     },
     {
       "id": "sv-restaurant",
-      "order": 7,
+      "order": 8,
       "title": "At a restaurant (Sweden)",
       "icon": "🍽️",
       "type": "dialogue",
@@ -3019,7 +3371,7 @@
     },
     {
       "id": "sv-hotel",
-      "order": 8,
+      "order": 9,
       "title": "Checking in (hotel/hostel/Airbnb) (Sweden)",
       "icon": "🛎️",
       "type": "dialogue",
@@ -3142,7 +3494,7 @@
     },
     {
       "id": "sv-shopping",
-      "order": 9,
+      "order": 10,
       "title": "Shops, cashless Sweden & Systembolaget",
       "icon": "🛍️",
       "type": "dialogue",
@@ -3374,7 +3726,7 @@
     },
     {
       "id": "sv-nightlife",
-      "order": 10,
+      "order": 11,
       "title": "Nightlife — the door, the club, the people (Sweden)",
       "icon": "🎧",
       "type": "dialogue",
@@ -3698,7 +4050,7 @@
     },
     {
       "id": "sv-drunk-scale",
-      "order": 11,
+      "order": 12,
       "title": "How drunk are you? (Sweden)",
       "icon": "🍻",
       "type": "dialogue",
@@ -4032,7 +4384,7 @@
     },
     {
       "id": "sv-resacon",
-      "order": 12,
+      "order": 13,
       "title": "The morning after & the pharmacy (Sweden)",
       "icon": "🤕",
       "type": "dialogue",
@@ -4246,7 +4598,7 @@
     },
     {
       "id": "sv-emergencies",
-      "order": 13,
+      "order": 14,
       "title": "Robbed, lost & emergencies (Sweden)",
       "icon": "🚨",
       "type": "dialogue",
@@ -4370,7 +4722,7 @@
     },
     {
       "id": "sv-for-the-girls",
-      "order": 14,
+      "order": 15,
       "title": "For the girls (Sweden)",
       "icon": "💜",
       "type": "dialogue",

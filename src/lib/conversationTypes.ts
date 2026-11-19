@@ -131,6 +131,7 @@ export interface ConversationPayload {
  */
 export const CONVERSATION_STAGES = [
   "getting-around",
+  "basics",
   "starting-convo",
   "beer-food",
   "restaurant",
