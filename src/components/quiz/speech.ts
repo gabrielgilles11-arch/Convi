@@ -385,9 +385,15 @@ export async function speak(
   audioId: string | null,
   text: string,
   surface: Surface = "scenarios",
-  options: { untilDone?: boolean } = {}
+  /**
+   * `rate` speeds the line up or slows it down, 1 being as recorded. The
+   * "Huh?" moment plays a line too fast to catch and then repeats it slowly
+   * (lib/repairTypes.ts); nothing else passes it.
+   */
+  options: { untilDone?: boolean; rate?: number } = {}
 ): Promise<boolean> {
   if (!voiceEnabled() || !text.trim()) return false;
+  const rate = options.rate ?? 1;
 
   // Whatever was mid-sentence is abandoned. Two lines over each other is worse
   // than either of them, and a learner tapping twice means "say it again".
@@ -407,6 +413,13 @@ export async function speak(
     let started = false;
     try {
       audio.src = url;
+      // Set on every line, not only the fast or slow ones: the element is
+      // shared, and a rate left over from the last line would carry on.
+      // Loading a new src resets playbackRate to defaultPlaybackRate, so the
+      // default is what actually carries the rate through the load.
+      audio.defaultPlaybackRate = rate;
+      audio.playbackRate = rate;
+      audio.preservesPitch = true;
       playing = audio;
       const finished = new Promise<void>((resolve) => {
         const done = () => {
@@ -458,7 +471,7 @@ export async function speak(
     utterance.lang = voice.lang;
     // Slightly under conversational pace. These are lines to copy, and the
     // learner is hearing the language for the first time.
-    utterance.rate = 0.92;
+    utterance.rate = 0.92 * rate;
     const finished = new Promise<void>((resolve) => {
       utterance.addEventListener("end", () => resolve());
       utterance.addEventListener("error", () => resolve());
