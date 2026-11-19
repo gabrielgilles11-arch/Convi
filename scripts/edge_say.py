@@ -17,6 +17,7 @@ Called by scripts/generate-audio.mjs, one line per call:
         --locale de-DE --rate=-5% --text "Ein Pils, bitte." --out out.mp3
 """
 import argparse
+import os
 import asyncio
 
 import edge_tts
@@ -60,8 +61,13 @@ def main() -> None:
     # Module attribute, looked up at call time by Communicate.stream.
     communicate.mkssml = mkssml
 
+    # edge-tts talks to the endpoint over aiohttp, which ignores the proxy
+    # variables unless it is handed one. Behind a proxy (a sandboxed machine,
+    # an office network) the connection otherwise fails as unreachable.
+    proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy") or None
+
     try:
-        asyncio.run(edge_tts.Communicate(args.text, args.voice, rate=args.rate).save(args.out))
+        asyncio.run(edge_tts.Communicate(args.text, args.voice, rate=args.rate, proxy=proxy).save(args.out))
     except edge_tts.exceptions.NoAudioReceived:
         # If the endpoint will not take the break, the line is still worth
         # having with the ellipsis read as punctuation. Anything else is a real
@@ -69,7 +75,7 @@ def main() -> None:
         if "…" not in args.text:
             raise
         breaks["on"] = False
-        asyncio.run(edge_tts.Communicate(args.text, args.voice, rate=args.rate).save(args.out))
+        asyncio.run(edge_tts.Communicate(args.text, args.voice, rate=args.rate, proxy=proxy).save(args.out))
 
 
 if __name__ == "__main__":

@@ -435,7 +435,7 @@
                 { "es": "Me llamo [NOMBRE]. ¿Y tú?", "en": "My name is [NAME]. And you?" }
               ],
               "likelyReply": { "es": "Encantado de conocerte.", "en": "Nice to meet you." },
-              "notes": "Me llamo is literally I call myself, and it is the normal answer. Soy [NOMBRE] works too and is a shade more casual. Tacking ¿y tú? on the end is what turns an answer back into a conversation.",
+              "notes": "Me llamo is literally I call myself, and it is the normal answer. Soy [NOMBRE] works too and is a shade more casual. Tacking ¿y tú? on the end is what turns an answer back into a conversation. In Spain it's customary to greet people with dos besos: two kisses, one on each cheek.",
               "difficulty": "easy",
               "quizQuestions": []
             },
@@ -643,6 +643,17 @@
               "likelyReply": { "es": "¡Claro! Cuídate.", "en": "Of course! Take care." },
               "notes": "\"Otro día\" is a soft, polite way to bail.",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "starting-convo-22",
+              "speaker": "you",
+              "situation": { "en": "You've hit it off and want to meet up again tomorrow at six." },
+              "question": { "es": "¿Quedamos mañana a las seis?", "en": "Shall we meet tomorrow at six?" },
+              "answers": [{ "es": "Vale, perfecto.", "en": "OK, perfect." }],
+              "likelyReply": null,
+              "notes": "Quedar, with no se, is how Spain arranges to meet. Nos quedamos means we are staying put.",
+              "difficulty": "easy",
               "quizQuestions": []
             }
           ]
@@ -2871,6 +2882,17 @@
               ],
               "likelyReply": { "es": "Me alegro.", "en": "Glad to hear it." },
               "notes": "",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "restaurant-33",
+              "speaker": "you",
+              "situation": { "en": "Dinner is long over and you've been talking at the table for an hour. The waiter hasn't brought the bill." },
+              "question": { "es": "La cuenta, cuando puedas.", "en": "The bill, when you get a chance." },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "That hour is the sobremesa: sitting on at the table, talking, over a coffee or a chupito. Waiters won't bring the bill until you ask. They are not ignoring you, they are being polite.",
               "difficulty": "easy",
               "quizQuestions": []
             }

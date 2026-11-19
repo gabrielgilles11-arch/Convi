@@ -136,6 +136,17 @@
               "notes": "Splitting the bill is completely normal and expected.",
               "difficulty": "easy",
               "quizQuestions": []
+            },
+            {
+              "id": "de-beer-food-09",
+              "speaker": "you",
+              "situation": { "en": "The beer garden is packed. There are two empty places at the end of a long table with people already at it." },
+              "question": { "es": "Ist hier noch frei?", "en": "Is this seat taken?" },
+              "answers": [{ "es": "Ja, klar.", "en": "Yes, sure." }],
+              "likelyReply": null,
+              "notes": "Sharing tables is normal in a beer garden or a busy café. Ask, then sit.",
+              "difficulty": "easy",
+              "quizQuestions": []
             }
           ]
         }
@@ -427,6 +438,39 @@
               "likelyReply": null,
               "notes": "Literally \"I only understand train station\": the German \"it's all Greek to me.\" Informal and everyday. Das kommt mir Spanisch vor says the same thing.",
               "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-convo-basics-09",
+              "speaker": "you",
+              "situation": { "en": "You've been saying Sie to someone you now get on with, and want to switch to du." },
+              "question": { "es": "Darf ich Sie duzen?", "en": "May I use du with you?" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Germans often start on Sie and move to du later. If they offer first, it sounds like: Sie können mich gerne duzen.",
+              "difficulty": "medium",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-convo-basics-10",
+              "speaker": "you",
+              "situation": { "en": "It's midday at work and you pass a colleague on the way to lunch." },
+              "question": { "es": "Mahlzeit!", "en": "Enjoy your lunch! (the midday greeting at work)" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Literally \"mealtime\". Odd translated, completely normal in an office or canteen. Say it back.",
+              "difficulty": "easy",
+              "quizQuestions": []
+            },
+            {
+              "id": "de-convo-basics-11",
+              "speaker": "you",
+              "situation": { "en": "Work is done and you are saying bye to colleagues on the way out." },
+              "question": { "es": "Schönen Feierabend noch!", "en": "Have a nice evening off!" },
+              "answers": [],
+              "likelyReply": null,
+              "notes": "Feierabend is the time after work, and wishing someone a good one is the standard goodbye.",
+              "difficulty": "easy",
               "quizQuestions": []
             }
           ]
@@ -810,7 +854,9 @@
             { "id": "de-slang-fill-05", "es": "Komm mal her.", "en": "Come over here. (mal makes a request sound friendlier)", "difficulty": "easy", "quizQuestions": [] },
             { "id": "de-slang-fill-06", "es": "Das ist schon komisch.", "en": "That is pretty strange. (schon confirms it)", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-slang-fill-07", "es": "Tja, das ist schade.", "en": "Well, that's a shame.", "difficulty": "easy", "quizQuestions": [] },
-            { "id": "de-slang-fill-08", "es": "Äh, was soll ich dazu sagen?", "en": "Uh, what should I say?", "difficulty": "easy", "quizQuestions": [] }
+            { "id": "de-slang-fill-08", "es": "Äh, was soll ich dazu sagen?", "en": "Uh, what should I say?", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-fill-09", "es": "Warum hast du eigentlich nie zurückgerufen?", "en": "Why, actually, didn't you ever call back? (eigentlich softens it, or adds a note of reproach)", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-fill-10", "es": "Das war ein langer Tag, ne?", "en": "That was a long day, huh? (ne? is the casual tag, mostly north and center)", "difficulty": "easy", "quizQuestions": [] }
           ]
         }
       ]
