@@ -230,6 +230,11 @@ export default function QuizApp({ locale }: Props) {
     if (mode === "talk") setConvoDone(finishedConversations());
   }, [mode, convoId]);
 
+  // Any change of screen silences the voice. Each mode stops its own lines on
+  // the way out as well; this is the net under them, so a line can never
+  // follow the learner from a round to the path or from one talk to the next.
+  useEffect(() => () => stopSpeaking(), [mode, convoId, stageId, talkStyle]);
+
   const stages = useMemo<Stage[]>(
     () => (payload ? buildStages(payload.items, payload.categories) : []),
     [payload]
