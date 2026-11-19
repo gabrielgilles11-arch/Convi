@@ -89,10 +89,19 @@ export interface Conversation {
   branches: boolean;
   /** Every beat the script has. A run walks some of them, from the first. */
   turns: ConvTurn[];
+  /**
+   * The beat a "Huh?" moment is wired into, always: they say their line too
+   * fast and you have to ask for it again. Null where it is not wired, which
+   * is most conversations; those get one on every third start instead (see
+   * lib/repairTypes.ts).
+   */
+  huhAt: number | null;
 }
 
 export interface ConversationPayload {
   conversations: Conversation[];
+  /** The lines a "Huh?" moment is made of, for this edition. */
+  repair: import("./repairTypes").RepairKit | null;
 }
 
 /**

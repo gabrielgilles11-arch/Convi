@@ -93,6 +93,8 @@ export interface QuizCategory {
 export interface QuizPayload {
   items: QuizItem[];
   categories: QuizCategory[];
+  /** The lines a "Huh?" question is made of, for this edition. */
+  repair?: import("./repairTypes").RepairKit | null;
 }
 
 /**
@@ -713,6 +715,12 @@ export interface Question {
   options: string[]; // choice only
   tiles: string[]; // bank only
   pairs: MatchPair[]; // match only
+  /**
+   * A "Huh?" question (lib/repairTypes.ts): `shown` is a line said too fast to
+   * catch, hidden until the question settles, and the answer is a way of
+   * asking for it again. Absent on every ordinary question.
+   */
+  huh?: boolean;
 }
 
 /** One row of a matching screen: a phrase and the meaning it belongs to. */

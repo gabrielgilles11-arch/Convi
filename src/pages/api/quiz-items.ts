@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { ENT_COOKIE, verifyEntitlement } from "../../lib/entitlement";
 import { PAYWALL_ENABLED } from "../../lib/paywall";
 import { buildQuizItems, getCategoryList } from "../../lib/quizItems";
+import { buildRepairKit } from "../../lib/repair";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../../lib/content";
 
 export const prerender = false;
@@ -29,7 +30,11 @@ export const GET: APIRoute = async ({ cookies, url }) => {
   const locale = requested && KNOWN_LOCALES.has(requested) ? requested : DEFAULT_LOCALE;
 
   return new Response(
-    JSON.stringify({ items: buildQuizItems(locale), categories: getCategoryList(locale) }),
+    JSON.stringify({
+      items: buildQuizItems(locale),
+      categories: getCategoryList(locale),
+      repair: buildRepairKit(locale),
+    }),
     {
       status: 200,
       headers: {

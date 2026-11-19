@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  buildRound,
   buildStages,
   recommendedStageId,
   allStagesCleared,
@@ -25,6 +26,7 @@ import {
   type Conversation,
   type ConversationPayload,
 } from "../../lib/conversationTypes";
+import { withHuh, type RepairKit } from "../../lib/repairTypes";
 import { markReminderPrompt, reminderPromptAnswered } from "../../lib/reminderClient";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
@@ -108,6 +110,8 @@ export default function QuizApp({ locale }: Props) {
   // alongside the quiz deck: it carries both sides of every exchange, and most
   // sessions never open it.
   const [conversations, setConversations] = useState<Conversation[] | null>(null);
+  /** The lines Talk's "Huh?" moment is made of, from the same payload. */
+  const [talkRepair, setTalkRepair] = useState<RepairKit | null>(null);
   const [convoError, setConvoError] = useState("");
   const [convoId, setConvoId] = useState<string | null>(null);
   const [convoDone, setConvoDone] = useState<string[]>([]);
@@ -208,7 +212,10 @@ export default function QuizApp({ locale }: Props) {
         return (await res.json()) as ConversationPayload;
       })
       .then((data) => {
-        if (!cancelled) setConversations(data.conversations);
+        if (!cancelled) {
+          setConversations(data.conversations);
+          setTalkRepair(data.repair ?? null);
+        }
       })
       .catch((err: Error) => {
         if (!cancelled) setConvoError(err.message);
@@ -602,6 +609,7 @@ export default function QuizApp({ locale }: Props) {
               }
             }}
             onBackToPath={() => setMode("path")}
+            makeRound={(pool, all) => withHuh(buildRound(pool, all), pool, payload.repair ?? null)}
           />
         </>
       )}
@@ -648,6 +656,7 @@ export default function QuizApp({ locale }: Props) {
               setConvoDone(finishedConversations());
             }}
             onContinue={setConvoId}
+            repair={talkRepair}
           />
         ) : (
           <ConversationPicker

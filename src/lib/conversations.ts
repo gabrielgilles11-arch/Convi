@@ -133,7 +133,23 @@ export function resolveScript(
     intro: script.intro,
     branches,
     turns,
+    huhAt: HUH_WIRED.test(script.id) ? firstTheirs(turns) : null,
   };
+}
+
+/**
+ * Conversations with a "Huh?" moment wired in, every time, in every edition.
+ *
+ * The bar, because it is the first conversation Talk opens on, so everybody
+ * meets the moment early; and the taxi, because a driver half-turned round
+ * over the engine is the line you are most likely to miss on a real trip.
+ * The moment lands on the first beat where they speak first.
+ */
+const HUH_WIRED = /(^|-)(beer-food-main|taxi)$/;
+
+function firstTheirs(turns: ConvTurn[]): number | null {
+  const at = turns.findIndex((t) => t.theirOpener !== null);
+  return at >= 0 ? at : null;
 }
 
 /**
