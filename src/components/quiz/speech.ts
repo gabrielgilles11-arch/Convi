@@ -363,15 +363,57 @@ const CLIP_START_TIMEOUT = 4000;
  */
 let generation = 0;
 
-/** Stops whatever is currently being said. */
+/**
+ * Lines waiting to finish, released by `stopSpeaking`. Safari does not always
+ * fire "end" on a cancelled utterance, and a caller waiting on one waited for
+ * ever: the speaker stayed lit and the queue behind it never moved on.
+ */
+const waiting = new Set<() => void>();
+
+/**
+ * Stops whatever is currently being said.
+ *
+ * Stops the shared element itself, not just the line this module believes is
+ * playing: that pointer is cleared by the element's own events, and a line
+ * whose bookkeeping had already let go of it carried on over the next
+ * question. The source is dropped as well as paused, so a clip still
+ * downloading cannot start late once it arrives, which some engines do after
+ * a pause that landed before playback began.
+ */
 export function stopSpeaking(): void {
   generation++;
-  if (playing) {
-    playing.pause();
-    playing = null;
+  playing = null;
+  if (player) {
+    player.pause();
+    if (player.getAttribute("src") && player.getAttribute("src") !== SILENCE) {
+      player.removeAttribute("src");
+      player.load();
+    }
   }
   synth()?.cancel();
+  const release = [...waiting];
+  waiting.clear();
+  for (const done of release) done();
 }
+
+/**
+ * Leaving the page, or putting it away, stops the voice.
+ *
+ * A full navigation does not reliably do it on its own: Chrome and Safari both
+ * let the device voice finish its sentence over the next page, and a page kept
+ * in the back-forward cache can carry a clip with it. A hidden tab stops too,
+ * since nobody is looking at the line being read; Talk Mode waits for the tab
+ * to come back before its next line (see `whenVisible` there).
+ */
+function stopOnLeave(): void {
+  if (typeof window === "undefined") return;
+  window.addEventListener("pagehide", () => stopSpeaking());
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") stopSpeaking();
+  });
+}
+
+stopOnLeave();
 
 /**
  * Says `text` in `locale`, from a clip where one exists.
@@ -422,14 +464,22 @@ export async function speak(
       audio.preservesPitch = true;
       playing = audio;
       const finished = new Promise<void>((resolve) => {
-        const done = () => {
-          if (!started && token === playToken) return;
+        const finish = () => {
+          waiting.delete(stopped);
           audio.removeEventListener("ended", done);
           audio.removeEventListener("error", done);
           audio.removeEventListener("pause", done);
           if (token === playToken && playing === audio) playing = null;
           resolve();
         };
+        const done = () => {
+          if (!started && token === playToken) return;
+          finish();
+        };
+        // `stopSpeaking` drops the source, and loading nothing discards the
+        // "pause" it had queued, so a stopped line is released directly.
+        const stopped = () => finish();
+        waiting.add(stopped);
         audio.addEventListener("ended", done);
         audio.addEventListener("error", done);
         // A pause is `stopSpeaking`, which is a caller who no longer wants
@@ -473,8 +523,13 @@ export async function speak(
     // learner is hearing the language for the first time.
     utterance.rate = 0.92 * rate;
     const finished = new Promise<void>((resolve) => {
-      utterance.addEventListener("end", () => resolve());
-      utterance.addEventListener("error", () => resolve());
+      const done = () => {
+        waiting.delete(done);
+        resolve();
+      };
+      waiting.add(done);
+      utterance.addEventListener("end", done);
+      utterance.addEventListener("error", done);
     });
     engine.speak(utterance);
     if (options.untilDone) await finished;

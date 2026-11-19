@@ -225,7 +225,7 @@ const schema = [
     const button = (event.target as HTMLElement | null)?.closest<HTMLButtonElement>(".speak");
     if (!button) return;
     button.dataset.speaking = "true";
-    void speak(locale, button.dataset.audio || null, button.dataset.text ?? "", "scenarios").finally(() => {
+    void speak(locale, button.dataset.audio || null, button.dataset.text ?? "", "scenarios", { untilDone: true }).finally(() => {
       delete button.dataset.speaking;
     });
   });

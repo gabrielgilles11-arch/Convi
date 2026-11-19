@@ -363,7 +363,7 @@ const schema = [
     button.dataset.speaking = "true";
     // "scenarios" is what puts the recorded clips on this page and leaves
     // practice on the device voice — see Surface in speech.ts.
-    void speak(locale, button.dataset.audio || null, text, "scenarios").finally(() => {
+    void speak(locale, button.dataset.audio || null, text, "scenarios", { untilDone: true }).finally(() => {
       delete button.dataset.speaking;
     });
   });

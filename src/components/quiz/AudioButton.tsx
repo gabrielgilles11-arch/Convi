@@ -77,7 +77,7 @@ export default function AudioButton({
         // The line itself is often clickable too; one tap should say it once.
         event.stopPropagation();
         setSpeaking(true);
-        void speak(locale, audioId, text, surface).finally(() => setSpeaking(false));
+        void speak(locale, audioId, text, surface, { untilDone: true }).finally(() => setSpeaking(false));
       }}
     >
       <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">

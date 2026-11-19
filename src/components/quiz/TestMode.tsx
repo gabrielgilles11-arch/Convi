@@ -213,12 +213,17 @@ export default function TestMode({
 
   // Leaving a question — or the round — stops it mid-sentence. A line still
   // being read over the next question is worse than not hearing it at all.
+  // The summary counts as leaving: finishing a round keeps the same position,
+  // so without `done` here the last line carried on over the results. And a
+  // "Huh?" exchange is told it has been left, or the rest of it, still waiting
+  // on the line before, would be said over the next question.
   useEffect(() => {
     return () => {
       window.clearTimeout(voiceTimer.current);
+      huhKey.current = "";
       stopSpeaking();
     };
-  }, [position, attempt]);
+  }, [position, attempt, done]);
 
   // A "Huh?" question opens on the line going by too fast, out loud, the way
   // it would at a counter. Its text stays blurred until the question settles.
