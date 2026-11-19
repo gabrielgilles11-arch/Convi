@@ -51,7 +51,7 @@ function section(locale: Locale): string {
     `- [All ${language} scenarios](${SITE}${localePath(locale, "/scenarios")}): every ${language} category in one list.`,
     ...rows,
     `- [Quick ${language} answers](${SITE}/answers#${answerLangSlug(locale)}): one line per page, how to say it or answer it, with what they say back.`,
-    `- [Practise ${language}](${SITE}${localePath(locale, "/practice")}): free drills and Talk Mode over the same material.`,
+    `- [Practice ${language}](${SITE}${localePath(locale, "/practice")}): free drills and Talk Mode over the same material.`,
   ].join("\n");
 }
 

@@ -40,16 +40,28 @@ const LIST_KEY = "convi:signups";
  * .env.example for the Gmail filter that does the last mile, because no header
  * can promise the top of somebody's inbox.
  */
-async function store(email: string): Promise<void> {
-  if (!kv) return;
+/**
+ * Writes the address down, and says whether it is new.
+ *
+ * `true` when this is the first time we have seen it, or when there is no
+ * store to ask (the old behavior, so mail still goes out during setup).
+ * `false` for a repeat: the form is public, and without this anyone could type
+ * a stranger's address in a loop and have this site mail them a welcome every
+ * time, which is spam with our name on it.
+ */
+async function store(email: string): Promise<boolean> {
+  if (!kv) return true;
   try {
     // A sorted set, so a second signup from the same address updates its time
     // rather than adding a duplicate, and the newest are one range query away.
-    await kv.zadd(LIST_KEY, { score: Date.now(), member: email });
+    // ZADD answers with how many members were added: 0 means a repeat.
+    const added = await kv.zadd(LIST_KEY, { score: Date.now(), member: email });
+    return added !== 0;
   } catch {
     // Redis is down. The notification below is then the only record, which is
     // the situation this whole function exists to stop being the normal one —
     // but failing the signup would lose the address either way.
+    return true;
   }
 }
 
@@ -61,7 +73,7 @@ function welcomeEmail(email: string): { html: string; text: string } {
       "We'll email you when the Try Convi app and the printable phrasebook are ready for your next trip. That's the only thing this list is for.",
       "In the meantime everything on the site is already free: every scenario in Spanish, Swedish and German, and the practice path that drills them.",
     ],
-    ctaLabel: "Start practising",
+    ctaLabel: "Start practicing",
     ctaUrl: "https://tryconvi.com/practice",
     footer: `You're getting this because you signed up at tryconvi.com with ${escapeHtml(
       email
@@ -101,9 +113,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
   // Written down before anything is sent. A send is allowed to fail; losing the
   // address is not.
-  await store(address);
+  const isNew = await store(address);
 
-  if (emailConfigured()) {
+  // A repeat gets the same success answer, so the form says nothing about who
+  // is already on the list, but nothing is sent a second time.
+  if (isNew && emailConfigured()) {
     const owner = ownerEmail();
     const welcome = welcomeEmail(address);
 
