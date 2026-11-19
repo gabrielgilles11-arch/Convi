@@ -613,6 +613,60 @@ function variantsOf(line: string): string[] {
  * a line of a given length gets.
  */
 export function typedAnswerMatches(given: string, expected: string): boolean {
+  return withFoldedSpelling(given, expected, matchesAsTyped);
+}
+
+/**
+ * Umlauts typed the way a keyboard without them types them.
+ *
+ * Stripping the accent already makes "Grüße" match "Gruse", but nobody types
+ * that. Somebody on an English keyboard writes "Gruesse", and a Swede without
+ * å writes "aa": the standard fallback spellings, ä/ö/ü as ae/oe/ue and å as
+ * aa. Those were coming back wrong.
+ *
+ * Only for a line that actually has the letter in it, and both sides are
+ * folded the same way, so nothing changes for a line without one: the Spanish
+ * "puedo" never meets "pudo" through here.
+ */
+const HAS_UMLAUT = /[äöüÄÖÜ]/;
+const HAS_RING = /[åÅ]/;
+
+function foldSpelling(text: string, umlaut: boolean, ring: boolean): string {
+  let out = text.normalize("NFC");
+  if (umlaut) {
+    out = out
+      .replace(/[äÄ]/g, "a")
+      .replace(/[öÖ]/g, "o")
+      .replace(/[üÜ]/g, "u")
+      .replace(/a[eE]/g, "a")
+      .replace(/A[eE]/g, "A")
+      .replace(/o[eE]/g, "o")
+      .replace(/O[eE]/g, "O")
+      .replace(/u[eE]/g, "u")
+      .replace(/U[eE]/g, "U");
+  }
+  if (ring) out = out.replace(/[åÅ]/g, "a").replace(/[aA][aA]/g, "a");
+  return out;
+}
+
+/**
+ * Runs a comparison as written, then again with both sides folded where the
+ * expected line has an umlaut or an å. Exported for the conversation grader,
+ * which wraps its own looser comparisons the same way.
+ */
+export function withFoldedSpelling(
+  given: string,
+  expected: string,
+  compare: (given: string, expected: string) => boolean
+): boolean {
+  if (compare(given, expected)) return true;
+  const umlaut = HAS_UMLAUT.test(expected);
+  const ring = HAS_RING.test(expected);
+  if (!umlaut && !ring) return false;
+  return compare(foldSpelling(given, umlaut, ring), foldSpelling(expected, umlaut, ring));
+}
+
+function matchesAsTyped(given: string, expected: string): boolean {
   if (answersMatch(given, expected)) return true;
   const key = (text: string) => normalizeAnswer(text).replace(/\s+/g, "");
   const typed = key(coreOf(given));
@@ -958,6 +1012,19 @@ export function buildOptions(
         // one that answers the same cue by another route.
         if (guard !== "none" && alsoRight.some((right) => tooAlike(candidate, right))) continue;
         if (guard !== "none" && tooAlike(candidate, answer)) continue;
+        // One side of a slash is a whole answer on its own. "hombre…" means
+        // "Come on / well now", and "Come on — we're going to be late!" was
+        // offered beside it as the wrong one: two boxes that both say "come
+        // on". tooAlike reads the whole line and missed it; this reads it the
+        // way a typed answer is read, side by side.
+        if (
+          guard !== "none" &&
+          [answer, ...alsoRight].some(
+            (right) => typedAnswerMatches(candidate, right) || typedAnswerMatches(right, candidate)
+          )
+        ) {
+          continue;
+        }
         if (guard === "both" && cue && tooAlike(answerTextFor(item, otherLang), cue)) continue;
         seen.add(key);
         distractors.push(candidate);
@@ -1239,6 +1306,13 @@ export function buildRound(
   take(situations(items), wantSituations, false);                     // 1. own situations
   take(situations(earlier), wantSituations - drafts.length, false);   // 2. borrowed situations
   take(phrases(items), slots - drafts.length, false);                 // 3. own phrases
+  // 3b. Own situations not yet asked, the right way round, before anything is
+  // asked a second time. Step 1 stops at its quota, and the flips below put
+  // untouched items first but cannot flip a line with a blank in it ("Me llamo
+  // [NOMBRE].") — so a stage holding a few of those fell through to flipping
+  // lines it had already asked, and the same answer came up twice in a round
+  // while "Me llamo [NOMBRE]." sat unused.
+  take(situations(items), slots - drafts.length, false);
   take(phrases(items), slots - drafts.length, true, true);            // 4. own phrases, flipped
   take(situations(items), slots - drafts.length, true, true);         // 5. own situations, flipped
   take(phrases(earlier), slots - drafts.length, false);               // 6. earlier phrases
