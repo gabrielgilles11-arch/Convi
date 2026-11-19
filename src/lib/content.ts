@@ -17,12 +17,13 @@ export type Region =
   | "barcelona"
   | "catalan"
   | "stockholm"
+  | "goteborg"
   | "bayern"
   | "bayerisch"
   | "berlin";
 
 // Two kinds of tag share this field. `madrid`, `barcelona`, `stockholm`,
-// `bayern` and `berlin` say where a line is said; `catalan` and `bayerisch`
+// `goteborg`, `bayern` and `berlin` say where a line is said; `catalan` and `bayerisch`
 // say what language it is actually in, which is the more useful warning — a
 // visitor who reads "Bon dia" as Spanish will mispronounce it, and one who
 // tries "Griaß di" outside Bavaria will sound like a tourist doing an accent.
@@ -31,6 +32,7 @@ export const REGION_LABELS: Record<Region, string> = {
   barcelona: "Barcelona",
   catalan: "Català",
   stockholm: "Stockholm",
+  goteborg: "Göteborg",
   bayern: "Bayern",
   bayerisch: "Bairisch",
   berlin: "Berlin",
@@ -297,6 +299,7 @@ export function isDialogueSubsection(
 const SEARCH_INTENT: Record<string, string> = {
   "getting-around": "get around",
   basics: "introduce yourself",
+  "basics-2": "say how you feel",
   slang: "use slang",
   "beer-food": "order a beer",
   "starting-convo": "start a conversation",
