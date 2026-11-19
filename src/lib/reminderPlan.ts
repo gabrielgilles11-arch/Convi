@@ -14,6 +14,10 @@
  * as spam.
  */
 
+// The one import: how long a round is, from the pure quiz engine, so the copy
+// cannot go stale when the round changes length.
+import { ROUND_LENGTH } from "./quizTypes";
+
 /** Days of silence at which each successive nudge becomes due. */
 export const LADDER = [2, 4, 8, 16] as const;
 
@@ -92,9 +96,9 @@ function copyFor(step: number, state: ReminderState, daysAway: number): Nudge {
             step,
             daysAway,
             title: `Two minutes of ${language}?`,
-            body: `One round is eight questions. Nothing to sign up for.`,
+            body: `One round is ${ROUND_LENGTH} questions. Nothing to sign up for.`,
             subject: `Two minutes of ${language}?`,
-            preheader: `One round is eight questions. That's the whole ask.`,
+            preheader: `One round is ${ROUND_LENGTH} questions. That's the whole ask.`,
             cta: `Practice ${language}`,
             last: false,
           };

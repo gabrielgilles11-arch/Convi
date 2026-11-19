@@ -26,7 +26,7 @@ import {
   type Conversation,
   type ConversationPayload,
 } from "../../lib/conversationTypes";
-import { withHuh, type RepairKit } from "../../lib/repairTypes";
+import { huhThisRound, withHuh, type RepairKit } from "../../lib/repairTypes";
 import { markReminderPrompt, reminderPromptAnswered } from "../../lib/reminderClient";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
@@ -614,7 +614,10 @@ export default function QuizApp({ locale }: Props) {
               }
             }}
             onBackToPath={() => setMode("path")}
-            makeRound={(pool, all) => withHuh(buildRound(pool, all), pool, payload.repair ?? null)}
+            makeRound={(pool, all) => {
+              const round = buildRound(pool, all);
+              return huhThisRound() ? withHuh(round, pool, payload.repair ?? null) : round;
+            }}
           />
         </>
       )}

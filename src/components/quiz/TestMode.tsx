@@ -27,8 +27,8 @@ import { saysTheLine } from "../../lib/conversationTypes";
 /**
  * Lines listed on the round summary before it turns into a wall.
  *
- * A round is eight questions and the matching screen settles four items at
- * once, so a clean round can win eleven lines. Five is what fits under the
+ * A round is nine questions and the matching screen settles four items at
+ * once, so a clean round can win twelve lines. Five is what fits under the
  * score without pushing the buttons off a phone; the rest are counted.
  */
 const CAN_NOW_SHOWN = 5;
