@@ -10,7 +10,6 @@ import {
   type FollowingConversation,
   type ReplyVerdict,
 } from "../../lib/conversationTypes";
-import { normalizeAnswer } from "../../lib/quizTypes";
 import AudioButton from "./AudioButton";
 import { placeName } from "./ConversationPicker";
 import { prefetchClips, speak, stopSpeaking } from "./speech";
@@ -85,6 +84,12 @@ interface Said {
   typed: string | null;
   correct: boolean;
   close: boolean;
+  /**
+   * The line as it is written, under a correct answer that was not it to the
+   * letter: their short version, a missing accent, a blank said without its
+   * frame. Null when they said it exactly, or got it wrong.
+   */
+  recommended: ConvLine | null;
 }
 
 /** A conversation already held in this sitting, kept above the current one. */
@@ -151,8 +156,27 @@ function HuhYours({ said, locale }: { said: Said; locale: string }) {
           <p className="convo-source">{said.typed}</p>
         </div>
       )}
+      {said.correct && said.typed !== null && said.recommended && (
+        <Recommended line={said.recommended} locale={locale} />
+      )}
       {!said.correct && <Correction said={said} locale={locale} />}
     </>
+  );
+}
+
+/**
+ * Under a right answer that was not the line to the letter: the line as a
+ * local would say it. Right is right, and they still see the accent they left
+ * off, the rest of the order they shortened, or their own word back in the
+ * frame it goes in.
+ */
+function Recommended({ line, locale }: { line: ConvLine; locale: string }) {
+  return (
+    <p className="convo-full">
+      <span className="convo-full-label">Recommended</span>
+      <span>{line.source}</span>
+      <AudioButton locale={locale} audioId={line.audioId} text={line.source} surface="practice" />
+    </p>
   );
 }
 
@@ -186,15 +210,6 @@ const MAX_WAIT = 9000;
 
 /** Earlier conversations kept on screen. Enough to scroll back through. */
 const HELD_LIMIT = 3;
-
-/** True where what they typed is the line rather than a shorter way to say it. */
-function saidItInFull(said: Said): boolean {
-  if (!said.typed) return true;
-  // A line with a blank in it is said in full with your own word in the
-  // blank. Showing it back "in full" would show the blank.
-  if (hasSlot(said.line.source)) return true;
-  return normalizeAnswer(said.typed) === normalizeAnswer(said.line.source);
-}
 
 /** Where a conversation starts: waiting on them, or straight to you. */
 function firstPhase(conversation: Conversation): Phase {
@@ -510,17 +525,8 @@ function Beat({
             </div>
           )}
 
-          {said.correct && said.typed !== null && !saidItInFull(said) && (
-            <p className="convo-full">
-              <span className="convo-full-label">in full</span>
-              <span>{said.line.source}</span>
-              <AudioButton
-                locale={locale}
-                audioId={said.line.audioId}
-                text={said.line.source}
-                surface="practice"
-              />
-            </p>
+          {said.correct && said.typed !== null && said.recommended && (
+            <Recommended line={said.recommended} locale={locale} />
           )}
 
           {!said.correct && <Correction said={said} locale={locale} />}
@@ -760,6 +766,7 @@ export default function ConversationMode({
       typed: raw,
       correct: verdict.correct,
       close: verdict.close,
+      recommended: verdict.recommended,
     };
     const from = huhTurn;
     setHuh((h) => (h ? { ...h, stage: "waiting", ...(from === "missed" ? { ask: entry } : { steer: entry }) } : h));
@@ -891,6 +898,7 @@ export default function ConversationMode({
       typed: raw,
       correct: verdict.correct,
       close: verdict.close,
+      recommended: verdict.recommended,
     };
     setSaid((prev) => ({ ...prev, [step]: entry }));
     setTyped("");
@@ -913,8 +921,10 @@ export default function ConversationMode({
     const reply = turn.replies[entry.index] ?? null;
     const alive = () => run === runId.current;
 
-    const worthHearing = !entry.correct || !saidItInFull(entry);
-    const yours = worthHearing ? speakLine(entry.line) : Promise.resolve(false);
+    // A correct answer is spoken back only as the recommended line, where it
+    // differs from what they typed; a wrong one, as the line it should have been.
+    const spoken = entry.correct ? entry.recommended : entry.line;
+    const yours = spoken ? speakLine(spoken) : Promise.resolve(false);
     await Promise.race([Promise.all([yours, pause(reply ? THINKING : 300)]), pause(MAX_WAIT)]);
     await whenVisible();
     if (!alive()) return;
@@ -922,7 +932,7 @@ export default function ConversationMode({
     // Enough time to read whatever just appeared: the correction and its
     // English where there was one, and their answer.
     const toRead = readingTime(
-      entry.correct ? null : entry.line.source,
+      entry.correct ? entry.recommended?.source : entry.line.source,
       entry.correct ? null : entry.line.en,
       reply?.source
     );
@@ -976,10 +986,10 @@ export default function ConversationMode({
   function reveal() {
     if (!canAnswer || !current) return;
     if (huhLines?.length) {
-      settleHuh({ correct: false, line: huhLines[0]!, close: false }, null);
+      settleHuh({ correct: false, line: huhLines[0]!, close: false, recommended: null }, null);
       return;
     }
-    settle({ correct: false, line: current.yourLines[0]!, close: false }, null);
+    settle({ correct: false, line: current.yourLines[0]!, close: false, recommended: null }, null);
   }
 
   /** Carry on into what comes next, keeping this conversation above it. */
