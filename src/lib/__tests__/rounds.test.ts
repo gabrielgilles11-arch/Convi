@@ -9,7 +9,9 @@ import {
   STAGE_TITLES,
   stageKeyOf,
   coreOf,
+  normalizeAnswer,
   pickedIt,
+  typedAnswerMatches,
   tooAlike,
   translationCore,
   type AnswerLang,
@@ -462,6 +464,60 @@ describe("practice path titles", () => {
     for (const stage of stages) {
       expect(stage.title).not.toMatch(COUNTRY);
       expect(STAGE_TITLES[stageKeyOf(stage.categoryId)], stage.categoryId).toBeDefined();
+    }
+  });
+});
+
+/**
+ * A round never asks the same line twice while its stage has lines it has not
+ * asked. "Soy de Estados Unidos." came up as a scene and then as "How do you
+ * say: I'm from the US?" in the same Spanish round, the first answering the
+ * second, while "Me llamo [NOMBRE]." sat unused because a line with a blank
+ * cannot be asked the other way round.
+ */
+describe.each(locales)("%s rounds ask each line once", (locale) => {
+  const items = decks.get(locale)!;
+  const stages = buildStages(items, getCategoryList(locale));
+
+  it("while the stage has lines to spare", () => {
+    const pool: QuizItem[] = [];
+    for (const stage of stages) {
+      const own = items.filter((i) => stage.itemIds.includes(i.id));
+      pool.push(...own);
+      for (let run = 0; run < RUNS; run++) {
+        const round = buildRound(own, pool);
+        const asked = round.filter((q) => q.form !== "match");
+        const answers = asked.map((q) => normalizeAnswer(q.answer));
+        const repeated = answers.filter((a, i) => answers.indexOf(a) !== i);
+        if (repeated.length === 0) continue;
+        // Only once every line of the stage is already in the round.
+        const unused = own.filter((i) => !asked.some((q) => q.itemId === i.id));
+        expect(unused.map((i) => i.id), `${stage.id}: "${repeated[0]}" twice`).toEqual([]);
+      }
+    }
+  });
+});
+
+describe.each(locales)("%s distractors", (locale) => {
+  const items = decks.get(locale)!;
+
+  it("never offer one side of a slash answer as the wrong one", () => {
+    // "hombre…" is "Come on / well now"; "Come on — we're going to be late!"
+    // beside it is a second box that says "come on".
+    for (const item of items) {
+      for (const reverse of [false, true]) {
+        for (let run = 0; run < 4; run++) {
+          const question = buildQuestion(item, reverse, "choice", items, items);
+          if (!question || question.form !== "choice") continue;
+          for (const option of question.options) {
+            if (pickedIt(option, question.accepted)) continue;
+            const clash = question.accepted.find(
+              (right) => typedAnswerMatches(option, right) || typedAnswerMatches(right, option)
+            );
+            expect(clash, `${item.id}: "${option}" beside "${question.answer}"`).toBeUndefined();
+          }
+        }
+      }
     }
   });
 });

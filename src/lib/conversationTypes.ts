@@ -10,6 +10,7 @@ import {
   editBudget,
   normalizeAnswer,
   typedAnswerMatches,
+  withFoldedSpelling,
   withinEdits,
 } from "./quizTypes";
 
@@ -271,8 +272,33 @@ function escapeRegExp(value: string): string {
  * `normalizeAnswer` first, so accents, case and punctuation are as forgiving
  * here as they are anywhere else.
  */
+/**
+ * Marks "días/semanas" and "Gröna/röda/blå" as one word with a choice in it,
+ * before `normalizeAnswer` turns the slash into a space. "Llevo __
+ * días/semanas." normalized to "llevo __ dias semanas", which nobody says, so
+ * "Llevo tres días" was marked wrong for the line it is.
+ */
+const CHOICE_MARK = "\u0001";
+const WORD_CHOICE = /[\p{L}\p{M}]+(?:\/[\p{L}\p{M}]+)+/gu;
+
+function normalizedWithChoices(expected: string): string {
+  return normalizeAnswer(expected.replace(WORD_CHOICE, (word) => word.split("/").join(CHOICE_MARK)));
+}
+
+/** A fixed stretch of a slot line as a pattern, a marked choice as an alternation. */
+function fixedPattern(part: string): string {
+  return part
+    .split(/(\s+)/)
+    .map((token) => {
+      if (/^\s+$/.test(token)) return "\\s+";
+      if (!token.includes(CHOICE_MARK)) return escapeRegExp(token);
+      return `(?:${token.split(CHOICE_MARK).map(escapeRegExp).join("|")})`;
+    })
+    .join("");
+}
+
 function slotPattern(expected: string): RegExp | null {
-  const normalised = normalizeAnswer(expected);
+  const normalised = normalizedWithChoices(expected);
   if (!HAS_SLOT.test(normalised)) return null;
 
   const source = normalised
@@ -284,7 +310,7 @@ function slotPattern(expected: string): RegExp | null {
             "(\\S+)"
           : // At least one character, so an empty blank is not an answer.
             "(.+)"
-        : escapeRegExp(part).replace(/\s+/g, "\\s+")
+        : fixedPattern(part)
     )
     .join("");
 
@@ -304,13 +330,108 @@ function slotPattern(expected: string): RegExp | null {
  * people answer "how old are you?" and "how many of you?" at a door.
  */
 function fillsTheBlanks(given: string, expected: string): boolean {
-  if (numberOnly(given, expected)) return true;
+  return strictFill(given, expected) !== null;
+}
+
+/**
+ * What went in the blanks, for a line typed with them filled: one entry per
+ * blank, normalized. Null when it is not the line.
+ */
+function strictFill(given: string, expected: string): string[] | null {
+  if (numberOnly(given, expected)) return [normalizeAnswer(given)];
   const pattern = slotPattern(expected);
-  if (!pattern) return false;
+  if (!pattern) return null;
   const match = pattern.exec(normalizeAnswer(given));
-  if (!match) return false;
+  if (!match) return null;
   const blanks = normalizeAnswer(expected).match(new RegExp(SLOT_SPLIT.source, "g")) ?? [];
-  return blanks.every((blank, i) => !NUMBER_SLOT.test(blank) || isNumber(match[i + 1] ?? ""));
+  if (!blanks.every((blank, i) => !NUMBER_SLOT.test(blank) || isNumber(match[i + 1] ?? ""))) return null;
+  return match.slice(1).map((fill) => fill ?? "");
+}
+
+/**
+ * Words that answer a question with a yes or a no. A blank on its own takes
+ * almost anything, so a bare "No" would otherwise count as the name in "Sí, a
+ * nombre de __." and walk you into the branch you just said no to.
+ */
+const YES_OR_NO = new Set(["si", "no", "ja", "nej", "nein", "nee", "jo", "japp", "nope"]);
+
+/** Thanks and please, which a line can end on after its blank. */
+const POLITE = new Set(["tack", "gracias", "danke", "bitte", "porfa", "favor", "por", "please"]);
+
+/** Fixed words before a blank, at most, for the blank to be said on its own. */
+const BARE_FRAME = 4;
+
+/**
+ * A blank line said the way people actually answer.
+ *
+ * Asked "¿De dónde eres?", nobody in Madrid says "Soy de Irlanda." every time.
+ * They say "De Irlanda." or "Irlanda." Asked their name, "Ana." At the club
+ * door, "Tres." Into a taxi, "Calle Mayor, cinco." `fillsTheBlanks` wants the
+ * whole frame round the blank, and all of those came back wrong.
+ *
+ * So the start of the frame may be dropped, from the front, a word at a time;
+ * whatever follows the first blank may be left off; and the blank keeps the
+ * rest. Dropping the whole frame, which leaves the blank alone, is held to
+ * short frames ("Me llamo", "Somos", "Ich bin"), to a short answer, and to an
+ * answer that does not start with a yes or a no.
+ *
+ * Never for a question. A blank in a question is you asking ("¿Cómo se dice
+ * __?"), and a bare word there is not the question.
+ *
+ * Returns what went in the blank, normalized, and whether it was said inside
+ * some of the frame, or null. A blank said alone is a guess at where the blank
+ * ends: "Soy Ana" for "Me llamo [NOMBRE]." is right, and its blank is "Ana",
+ * not "Soy Ana", so leading function words come off a bare one.
+ */
+interface LooseFill {
+  fill: string;
+  framed: boolean;
+}
+
+function looseFill(given: string, expected: string): LooseFill | null {
+  if (!HAS_SLOT.test(expected) || coreOf(expected).includes("?")) return null;
+  const said = normalizeAnswer(given).split(" ").filter(Boolean);
+  if (said.length === 0) return null;
+
+  const tokens = normalizedWithChoices(coreOf(expected)).split(" ").filter(Boolean);
+  const firstBlank = tokens.findIndex((token) => IS_SLOT.test(token));
+  if (firstBlank < 0) return null;
+  const frame = tokens.slice(0, firstBlank);
+  const numberBlank = tokens.some((token) => IS_SLOT.test(token) && NUMBER_SLOT.test(token));
+  const tail = tokens.slice(firstBlank + 1).filter((token) => !IS_SLOT.test(token));
+  const blankEndsTheLine = tail.every((token) => FUNCTION_WORDS.has(token) || POLITE.has(token));
+
+  const same = (word: string, token: string) =>
+    token.includes(CHOICE_MARK) ? token.split(CHOICE_MARK).some((side) => sameWord(word, side)) : sameWord(word, token);
+
+  for (let drop = 0; drop <= frame.length; drop++) {
+    const kept = frame.slice(drop);
+    if (kept.length > said.length) continue;
+    if (!kept.every((token, i) => same(said[i]!, token))) continue;
+
+    const rest = said.slice(kept.length);
+    // The words after the blank are optional: "Tengo treinta" for "Tengo __
+    // años", "Ich bin 30" for "Ich bin [ALTER] Jahre alt". Where some of them
+    // are there, they come off the end rather than being read as the blank.
+    const before = rest.length;
+    while (rest.length > 1 && tail.some((token) => same(rest[rest.length - 1]!, token))) rest.pop();
+    if (rest.length === 0) continue;
+    const saidTheTail = rest.length < before;
+
+    if (kept.length === 0) {
+      if (frame.length > BARE_FRAME) continue;
+      // The blank on its own is the answer only where the line ends on it:
+      // "Somos __.", "Me llamo [NOMBRE].", "Till [ADRESS], tack.". In
+      // "Prefiero por __, si puede ser." the blank is a detail of a longer
+      // sentence, and "hola" there is not a route.
+      if (!blankEndsTheLine && !saidTheTail) continue;
+      if (rest.length > 3 || YES_OR_NO.has(rest[0]!)) continue;
+      while (rest.length > 1 && FUNCTION_WORDS.has(rest[0]!)) rest.shift();
+    }
+    if (numberBlank && !rest.some(isNumber)) continue;
+    return { fill: rest.join(" "), framed: kept.length > 0 };
+  }
+  return null;
 }
 
 /**
@@ -431,8 +552,17 @@ function keywordMatch(given: string, expected: string): boolean {
 /** True when what somebody said is this line, blanks and all. */
 export function replyMatches(given: string, expected: string): boolean {
   if (typedAnswerMatches(given, expected)) return true;
-  if (fillsTheBlanks(given, expected)) return true;
-  return keywordMatch(given, expected);
+  return withFoldedSpelling(given, expected, (g, e) => fillsTheBlanks(g, e) || keywordMatch(g, e));
+}
+
+/**
+ * The same, and also a blank line said the short way: "De Irlanda" for "Soy
+ * de __.". Only Talk takes this one, and only after every line on the beat
+ * has had its turn at the stricter comparisons, so a short answer that is
+ * another line on the beat is that line rather than a guess at a blank.
+ */
+function saysItLoosely(given: string, expected: string): boolean {
+  return withFoldedSpelling(given, expected, (g, e) => looseFill(g, e) !== null);
 }
 
 /**
@@ -448,6 +578,10 @@ export function replyMatches(given: string, expected: string): boolean {
  */
 export function saysTheLine(given: string, expected: string): boolean {
   if (typedAnswerMatches(given, expected)) return true;
+  return withFoldedSpelling(given, expected, saysTheLineAsTyped);
+}
+
+function saysTheLineAsTyped(given: string, expected: string): boolean {
   if (hasSlot(expected)) return fillsTheBlanks(given, expected);
 
   const said = contentWords(given);
@@ -480,6 +614,14 @@ export interface ReplyVerdict {
   line: ConvLine;
   /** Wrong, but recognisably an attempt at `line` rather than something else. */
   close: boolean;
+  /**
+   * On a correct answer that was not the line as written, the line as written:
+   * what to say next time. "si perfecto" is right and gets "Sí, perfecto." back
+   * under it, accent and all; "café" gets the whole order; "De Irlanda" gets
+   * "Soy de Irlanda.", with their own word in the blank. Null when they said it
+   * exactly, and on a wrong answer, where the correction already shows it.
+   */
+  recommended: ConvLine | null;
 }
 
 /**
@@ -501,11 +643,22 @@ export function gradeReply(given: string, options: ConvLine[]): ReplyVerdict {
   // "Ta med, tack." counted as "Här, tack." and the café got the wrong order,
   // "Tack hej!" counted as "Hej hej!". In a branching conversation which line
   // it counts as decides what happens next, so an exact match wins outright.
+  const right = (option: ConvLine): ReplyVerdict => ({
+    correct: true,
+    line: option,
+    close: false,
+    recommended: recommendationFor(given, option),
+  });
   for (const option of options) {
-    if (typedAnswerMatches(given, option.source)) return { correct: true, line: option, close: false };
+    if (typedAnswerMatches(given, option.source)) return right(option);
   }
   for (const option of options) {
-    if (replyMatches(given, option.source)) return { correct: true, line: option, close: false };
+    if (replyMatches(given, option.source)) return right(option);
+  }
+  // Last, a blank said the short way. After every other line has been tried,
+  // so "No" at "¿Con reserva?" is "No, sin reserva." and not a name.
+  for (const option of options) {
+    if (saysItLoosely(given, option.source)) return right(option);
   }
 
   let best = fallback;
@@ -518,7 +671,123 @@ export function gradeReply(given: string, options: ConvLine[]): ReplyVerdict {
     }
   }
 
-  return { correct: false, line: best, close: bestScore >= CLOSE_ENOUGH };
+  return { correct: false, line: best, close: bestScore >= CLOSE_ENOUGH, recommended: null };
+}
+
+/**
+ * A line compared the way it is written: case, punctuation and spacing do not
+ * count, accents do. Grading forgives a missing accent; showing the line back
+ * is where the accent is learned.
+ */
+function asWritten(text: string): string {
+  return text
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/[¿¡?!.,;:"'’‘‚“”„«»()\-–—…]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** The words someone typed, as they typed them, each with its normalized form. */
+function typedWords(given: string): { raw: string; key: string }[] {
+  const out: { raw: string; key: string }[] = [];
+  for (const raw of given.trim().split(/\s+/)) {
+    const bare = raw.replace(/^[¿¡"'“«(]+|[?!.,;:"'”»)]+$/g, "");
+    for (const key of normalizeAnswer(bare).split(" ").filter(Boolean)) out.push({ raw: bare, key });
+  }
+  return out;
+}
+
+/**
+ * The fill as the learner typed it, capitals and accents and all, found by its
+ * normalized words. Falls back to the normalized fill.
+ */
+function rawFill(given: string, fill: string): string {
+  const words = typedWords(given);
+  const want = fill.split(" ").filter(Boolean);
+  for (let start = words.length - want.length; start >= 0; start--) {
+    if (want.every((key, i) => words[start + i]!.key === key)) {
+      const picked: string[] = [];
+      for (const word of words.slice(start, start + want.length)) {
+        if (picked[picked.length - 1] !== word.raw) picked.push(word.raw);
+      }
+      return picked.join(" ");
+    }
+  }
+  return fill;
+}
+
+function recommendationFor(given: string, line: ConvLine): ConvLine | null {
+  if (!hasSlot(line.source)) {
+    return asWritten(given) === asWritten(line.source) ? null : line;
+  }
+
+  // A blank line is recommended with their own word in it, where there is one
+  // blank and the word can be found. With two blanks the frame is shown as it
+  // is written.
+  const blanks = line.source.match(new RegExp(SLOT_SPLIT.source, "g")) ?? [];
+  if (blanks.length !== 1) return line;
+  const fill =
+    withFoldedFill(given, line.source, (g, e) => strictFill(g, e)?.[0] ?? null) ??
+    withFoldedFill(given, line.source, (g, e) => {
+      // Their word goes in the frame only where it is plainly the word: they
+      // said some of the frame round it, or it is one word on its own.
+      const loose = looseFill(g, e);
+      return loose && (loose.framed || !loose.fill.includes(" ")) ? loose.fill : null;
+    });
+  if (!fill) return line;
+  const chosen = resolveChoices(given, line.source);
+  if (!chosen) return line;
+  // A phone capitalizes the first word typed. A name keeps it; a number word
+  // in the middle of a sentence does not: "Vi är fyra.", not "Vi är Fyra.".
+  let word = rawFill(given, fill);
+  if (isNumber(normalizeAnswer(word)) && !line.source.trimStart().match(/^(_{2,}|\[)/)) {
+    word = word.charAt(0).toLowerCase() + word.slice(1);
+  }
+  const filled = chosen.replace(HAS_SLOT, word);
+  if (asWritten(given) === asWritten(filled)) return null;
+  return {
+    source: filled,
+    // The English stays as written: their word in it would be a Spanish or
+    // Swedish word in an English sentence, and the frame says what it means.
+    en: line.en,
+    // The clip, where there is one, says the frame and not their word. The
+    // device voice reads the line as it is now.
+    audioId: null,
+  };
+}
+
+/**
+ * "Llevo __ días/semanas." with the side they said: "días" for "Llevo tres
+ * días". Null where they said neither side exactly, because the only other
+ * honest thing to show is the frame as written. "Llevo una semana" is right,
+ * and "Llevo una semanas." is not Spanish.
+ */
+function resolveChoices(given: string, line: string): string | null {
+  const said = new Set(normalizeAnswer(given).split(" ").filter(Boolean));
+  let unresolved = false;
+  const out = line.replace(WORD_CHOICE, (word) => {
+    const side = word.split("/").find((option) => said.has(normalizeAnswer(option)));
+    if (!side) unresolved = true;
+    return side ?? word;
+  });
+  return unresolved ? null : out;
+}
+
+/** A fill read as typed, then with umlaut spellings folded, as everywhere else. */
+function withFoldedFill(
+  given: string,
+  expected: string,
+  read: (given: string, expected: string) => string | null
+): string | null {
+  const plain = read(given, expected);
+  if (plain) return plain;
+  let found: string | null = null;
+  withFoldedSpelling(given, expected, (g, e) => {
+    found = read(g, e);
+    return found !== null;
+  });
+  return found;
 }
 
 // ---------------------------------------------------------------------------
