@@ -738,3 +738,152 @@ describe("open questions take more than one right answer", () => {
     expect(saysTheLine("una caña", "Una jarra de cerveza, por favor.")).toBe(false);
   });
 });
+
+/**
+ * A native speaker's answer, and the line it should have been shown.
+ *
+ * Talk marked these wrong: a short answer to a blank ("De Irlanda", "Ana",
+ * "Tres"), an umlaut typed the way an English keyboard types it ("Gaerna"),
+ * and sourced answers a beat had never been given ("Nein, passt schon" to
+ * another beer). Right is right, and under a right answer that was not the
+ * line to the letter, the line as written is shown back.
+ */
+describe("a native answer is right, and the line as written follows it", () => {
+  function turnOf(locale: Locale, convo: string, step: string) {
+    const conversation = buildConversations(locale).find((c) => c.id === convo)!;
+    return conversation.turns.find((t) => t.id === `${convo}:${step}`)!;
+  }
+  function grade(locale: Locale, convo: string, step: string, typed: string) {
+    return gradeReply(typed, turnOf(locale, convo, step).yourLines);
+  }
+
+  it("takes a blank said the short way, and puts their word back in the frame", () => {
+    const cases: [Locale, string, string, string, string][] = [
+      ["es-ES", "starting-convo-basics", "from", "De Irlanda", "Soy de Irlanda."],
+      ["es-ES", "starting-convo-basics", "from", "Irlanda", "Soy de Irlanda."],
+      ["es-ES", "starting-convo-basics", "name", "Ana", "Me llamo Ana."],
+      ["es-ES", "starting-convo-basics", "name", "Soy Ana", "Me llamo Ana."],
+      ["es-ES", "restaurant-seating", "booking", "López", "Sí, a nombre de López."],
+      ["es-ES", "taxi", "route", "Prefiero por la M-30", "Prefiero por la M-30, si puede ser."],
+      ["sv-SE", "sv-starting-convo-basics", "from", "Irland", "Jag kommer från Irland."],
+      ["sv-SE", "sv-nightlife-door", "howmany", "Fyra", "Vi är fyra."],
+      ["de-DE", "de-nightlife-door", "age", "30", "Ich bin 30."],
+      ["de-DE", "de-starting-convo-basics", "name", "Max", "Ich bin übrigens Max."],
+    ];
+    for (const [locale, convo, step, typed, shown] of cases) {
+      const verdict = grade(locale, convo, step, typed);
+      expect(verdict.correct, `${convo}:${step} "${typed}"`).toBe(true);
+      expect(verdict.recommended?.source, `${convo}:${step} "${typed}"`).toBe(shown);
+    }
+  });
+
+  it("reads a word with a choice in it as either side", () => {
+    expect(grade("es-ES", "starting-convo-basics", "long", "Llevo tres días").correct).toBe(true);
+    expect(grade("es-ES", "starting-convo-basics", "long", "Llevo dos semanas").correct).toBe(true);
+    expect(grade("es-ES", "starting-convo-basics", "long", "Tres semanas").recommended?.source).toBe(
+      "Llevo Tres semanas."
+    );
+  });
+
+  it("shows the frame as written where their word cannot be placed in it honestly", () => {
+    // "Llevo una semanas." is not Spanish, and nothing here can make it so.
+    expect(grade("es-ES", "starting-convo-basics", "long", "llevo una semana").recommended?.source).toBe(
+      "Llevo __ días/semanas."
+    );
+    expect(grade("de-DE", "de-starting-convo-basics", "name", "Ich heiße Max").recommended?.source).toBe(
+      "Ich bin übrigens [NAME]."
+    );
+    expect(grade("es-ES", "taxi", "where", "Calle Mayor 5").recommended?.source).toBe(
+      "A la calle __, número __, por favor."
+    );
+  });
+
+  it("never takes a yes or a no as the word in a blank", () => {
+    expect(grade("es-ES", "starting-convo-basics", "name", "No").correct).toBe(false);
+    expect(grade("es-ES", "starting-convo-basics", "from", "No").correct).toBe(false);
+    // "No" at "¿Con reserva?" is the no-reservation branch, not a name.
+    const booking = grade("es-ES", "restaurant-seating", "booking", "No");
+    expect(booking.correct).toBe(true);
+    expect(booking.line.source).toBe("No, sin reserva.");
+  });
+
+  it("never takes a bare word for a question with a blank in it", () => {
+    expect(replyMatches("Sol", "Perdona, ¿esto para __ es por aquí?")).toBe(false);
+    expect(replyMatches("Sol es por aquí", "Perdona, ¿esto para __ es por aquí?")).toBe(false);
+    expect(replyMatches("Perdona, ¿esto para Sol es por aquí?", "Perdona, ¿esto para __ es por aquí?")).toBe(true);
+  });
+
+  it("takes umlauts typed as ae, oe, ue and å as aa, and shows them back", () => {
+    const cases: [Locale, string, string, string][] = [
+      ["sv-SE", "sv-getting-around-airport", "passport", "Haer aer det"],
+      ["sv-SE", "sv-nightlife-friends", "drink", "Gaerna, en oel"],
+      ["de-DE", "de-restaurant-main", "order", "Ich haette gern das Schnitzel"],
+      ["de-DE", "de-hotel-checkin", "breakfast", "Ist das Fruehstueck inklusive?"],
+    ];
+    for (const [locale, convo, step, typed] of cases) {
+      const verdict = grade(locale, convo, step, typed);
+      expect(verdict.correct, typed).toBe(true);
+      expect(verdict.recommended?.source, typed).toBe(verdict.line.source);
+    }
+    expect(saysTheLine("Ingaar paatar", "Ingår påtår?")).toBe(true);
+  });
+
+  it("shows the line back where only an accent was missing, and nothing where it was exact", () => {
+    const missing = grade("es-ES", "taxi", "route", "si perfecto");
+    expect(missing.correct).toBe(true);
+    expect(missing.recommended?.source).toBe("Sí, perfecto.");
+    const exact = grade("es-ES", "taxi", "route", "Sí, perfecto");
+    expect(exact.correct).toBe(true);
+    expect(exact.recommended).toBeNull();
+    expect(grade("es-ES", "taxi", "route", "hola").recommended).toBeNull();
+  });
+
+  it.each(locales)("%s: every line typed without its accents is right and recommends itself", (locale: Locale) => {
+    const strip = (text: string) => text.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ß/g, "ss");
+    for (const convo of buildConversations(locale)) {
+      for (const turn of convo.turns) {
+        for (const line of turn.yourLines) {
+          if (hasSlot(line.source) || strip(line.source) === line.source) continue;
+          const verdict = gradeReply(strip(line.source), turn.yourLines);
+          expect(verdict.correct, `${turn.id} "${strip(line.source)}"`).toBe(true);
+          expect(verdict.line, turn.id).toBe(line);
+          expect(verdict.recommended?.source, turn.id).toBe(line.source);
+        }
+      }
+    }
+  });
+
+  it("takes sourced answers the beats had been missing", () => {
+    const cases: [Locale, string, string, string][] = [
+      ["es-ES", "beer-food-main", "food", "Nada más, gracias."],
+      ["es-ES", "beer-food-main", "check", "No, gracias."],
+      ["es-ES", "airport", "hopin", "Gracias."],
+      ["sv-SE", "sv-beer-food-main", "food", "Ja tack."],
+      ["sv-SE", "sv-restaurant-main", "order", "Ja, vi är redo."],
+      ["sv-SE", "sv-restaurant-main", "again", "Ja, vi är redo."],
+      ["de-DE", "de-beer-food-main", "another", "Nein, passt schon."],
+      ["de-DE", "de-restaurant-main", "order", "Ja, wir sind so weit."],
+      ["de-DE", "de-hotel-checkin", "passport", "Moment, ich hol ihn raus."],
+      ["de-DE", "de-nightlife-door", "id", "Moment, ich hol ihn raus."],
+    ];
+    for (const [locale, convo, step, typed] of cases) {
+      const verdict = grade(locale, convo, step, typed);
+      expect(verdict.correct, `${convo}:${step} "${typed}"`).toBe(true);
+      expect(verdict.line.source, `${convo}:${step}`).toBe(typed);
+    }
+  });
+
+  it("asks for the order after you say you are ready", () => {
+    for (const [locale, convo] of [
+      ["sv-SE", "sv-restaurant-main"],
+      ["de-DE", "de-restaurant-main"],
+    ] as const) {
+      const conversation = buildConversations(locale).find((c) => c.id === convo)!;
+      const order = conversation.turns.find((t) => t.id === `${convo}:order`)!;
+      const ready = order.yourLines.findIndex((l) => /^Ja, (vi är redo|wir sind so weit)/.test(l.source));
+      const next = conversation.turns[order.next[ready]!]!;
+      expect(next.id).toBe(`${convo}:pick`);
+      expect(next.cue).toBeTruthy();
+    }
+  });
+});

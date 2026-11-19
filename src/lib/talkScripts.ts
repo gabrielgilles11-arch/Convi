@@ -149,6 +149,9 @@ const ES: TalkScript[] = [
         says: [
           y(a("beer-food-04", 1), r("beer-food-04")),
           y(a("beer-food-06", 1), r("beer-food-06")),
+          // The guide's own way to turn down "anything else", which is what
+          // "¿Algo de comer?" is asking.
+          y(a("beer-food-04", 0), r("beer-food-04")),
         ],
         next: "another",
       }),
@@ -175,7 +178,9 @@ const ES: TalkScript[] = [
       }),
       step("check", {
         them: q("beer-food-08", 0),
-        says: [y(a("beer-food-08", 0)), y(a("restaurant-07", 0))],
+        // "Not yet" is a fair answer too, and then it is you who asks later,
+        // the way it goes at a bar anyway.
+        says: [y(a("beer-food-08", 0)), y(a("restaurant-07", 0)), y(a("beer-food-06", 1), r("beer-food-06"), "cobrar")],
         back: r("beer-food-08"),
       }),
       step("pay", {
@@ -341,7 +346,7 @@ const ES: TalkScript[] = [
         says: [y(q("airport-02"))],
         back: a("airport-02", 0),
       }),
-      step("hopin", { them: r("airport-02"), says: [y(r("beer-food-06"))], back: null, next: null }),
+      step("hopin", { them: r("airport-02"), says: [y(r("beer-food-06")), ...ES_THANKS], back: null, next: null }),
     ],
   },
   {
@@ -360,7 +365,12 @@ const ES: TalkScript[] = [
       }),
       step("route", {
         them: q("taxi-02"),
-        says: [y(a("taxi-02", 0), r("taxi-02")), y(q("taxi-08"), a("taxi-08", 0))],
+        says: [
+          y(a("taxi-02", 0), r("taxi-02")),
+          y(q("taxi-08"), a("taxi-08", 0)),
+          // Your own route, named: "Prefiero por la M-30, si puede ser."
+          y(a("taxi-02", 1), r("taxi-02")),
+        ],
       }),
       step("card", { cue: "Check they take card.", says: [y(q("taxi-04"))], back: r("taxi-04") }),
       step("stop", { cue: "You're there.", says: [y(q("taxi-05"))], back: null }),
@@ -619,6 +629,8 @@ const SV: TalkScript[] = [
           y(a("sv-beer-food-03", 0), r("sv-beer-food-03", 0)),
           y(a("sv-beer-food-03", 1), r("sv-beer-food-03", 0)),
           y(a("sv-beer-food-04", 0), null),
+          // A plain yes is as likely an answer to "want food too?" as a no.
+          y(a("sv-beer-food-04", 1), r("sv-beer-food-03", 0)),
         ],
       }),
       step("pay", {
@@ -781,9 +793,22 @@ const SV: TalkScript[] = [
         says: [
           y(q("sv-restaurant-06"), a("sv-restaurant-06", 0), "taste"),
           y(a("sv-restaurant-04", 1), r("sv-restaurant-04"), "again"),
+          // "Yes, we're ready" is the guide's first answer to the question, and
+          // it was marked wrong. It leads to the order itself.
+          y(a("sv-restaurant-04", 0), null, "pick"),
         ],
       }),
-      step("again", { them: q("sv-restaurant-04"), says: [y(q("sv-restaurant-06"))], back: a("sv-restaurant-06", 0) }),
+      step("pick", {
+        cue: "Order what they recommended.",
+        says: [y(q("sv-restaurant-06"))],
+        back: a("sv-restaurant-06", 0),
+        next: "taste",
+      }),
+      step("again", {
+        them: q("sv-restaurant-04"),
+        says: [y(q("sv-restaurant-06")), y(a("sv-restaurant-04", 0), null, "pick")],
+        back: a("sv-restaurant-06", 0),
+      }),
       step("taste", {
         cue: "Later. The plates are cleared.",
         them: q("sv-restaurant-08"),
@@ -985,6 +1010,7 @@ const DE: TalkScript[] = [
           y(a("de-beer-food-07", 0), r("de-beer-food-07")),
           y(a("de-shopping-07", 0), r("de-beer-food-07")),
           y(a("de-beer-food-07", 1), null),
+          y(a("de-shopping-07", 1), null),
         ],
       }),
       step("bill", { cue: "Time to pay.", says: [y(q("de-restaurant-02"))], back: a("de-restaurant-02", 0) }),
@@ -1123,9 +1149,22 @@ const DE: TalkScript[] = [
         says: [
           y(q("de-restaurant-06"), a("de-restaurant-06", 0), "drink"),
           y(a("de-restaurant-04", 1), r("de-restaurant-04"), "again"),
+          // "Ja, wir sind so weit" is the guide's first answer to the question,
+          // and it was marked wrong. It leads to the order itself.
+          y(a("de-restaurant-04", 0), null, "pick"),
         ],
       }),
-      step("again", { them: q("de-restaurant-04"), says: [y(q("de-restaurant-06"))], back: a("de-restaurant-06", 0) }),
+      step("pick", {
+        cue: "Order what they recommended.",
+        says: [y(q("de-restaurant-06"))],
+        back: a("de-restaurant-06", 0),
+        next: "drink",
+      }),
+      step("again", {
+        them: q("de-restaurant-04"),
+        says: [y(q("de-restaurant-06")), y(a("de-restaurant-04", 0), null, "pick")],
+        back: a("de-restaurant-06", 0),
+      }),
       step("drink", {
         says: [0, 1, 2, 3, 4, 5].map((n) => y(a("de-beer-food-01", n))),
         back: null,
@@ -1158,7 +1197,11 @@ const DE: TalkScript[] = [
     intro: "You arrive at the hotel with your suitcase.",
     steps: [
       step("booking", { cue: "Tell them you have a reservation.", says: [y(q("de-hotel-01"))], back: a("de-hotel-01", 0) }),
-      step("passport", { them: r("de-hotel-01"), says: [y(a("de-getting-around-08", 0))], back: null }),
+      step("passport", {
+        them: r("de-hotel-01"),
+        says: [y(a("de-getting-around-08", 0)), y(a("de-getting-around-08", 1))],
+        back: null,
+      }),
       step("room", { them: q("de-hotel-07"), says: [y(a("de-hotel-07", 0))], back: r("de-hotel-07") }),
       step("breakfast", { cue: "Ask if breakfast is included.", says: [y(q("de-hotel-03"))], back: a("de-hotel-03", 0) }),
       step("wifi", { cue: "And the wifi password.", says: [y(q("de-hotel-06"))], back: a("de-hotel-06", 0), next: null }),
@@ -1238,7 +1281,7 @@ const DE: TalkScript[] = [
         says: [y(a("de-nightlife-02", 0)), y(a("de-nightlife-02", 1)), y(a("de-nightlife-02", 2))],
         back: r("de-nightlife-02"),
       }),
-      step("id", { says: [y(a("de-getting-around-08", 0))], back: null }),
+      step("id", { says: [y(a("de-getting-around-08", 0)), y(a("de-getting-around-08", 1))], back: null }),
       step("phones", { them: q("de-nightlife-06"), says: [y(a("de-nightlife-06", 0))], back: r("de-nightlife-06") }),
       step("cover", { cue: "Ask how much it is to get in.", says: [y(q("de-nightlife-03"))], back: a("de-nightlife-03", 0) }),
       step("jacket", { cue: "Check your jacket.", says: [y(q("de-nightlife-07"))], back: a("de-nightlife-07", 0), next: null }),
