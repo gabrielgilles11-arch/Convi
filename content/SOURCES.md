@@ -333,3 +333,52 @@ Covers `de-slang-fill-02` ("Quasi schon.").
 Covers `de-slang-fill-03` … `de-slang-fill-08` (also, halt, mal, schon, tja,
 äh, each in the source's example sentence).
 - https://storylearning.com/learn/german/german-tips/spoken-german
+
+## The four that were missing, and social rituals
+
+### Swedish
+
+Covers `sv-starting-convo-21` ("Vad betyder det?", with the det-not-den note).
+- https://elon.io/grammar/swedish/expressions/everyday-phrases
+
+Covers `sv-slang-tone-10` ("Det blir nog bra.").
+- https://elon.io/grammar/swedish/discourse/particle-nog-val
+
+Covers `sv-starting-convo-22` ("Tack för maten, det var jättegott!", answered
+"Varsågod." or "Tack själv.").
+- https://elon.io/grammar/swedish/expressions/fika-culture
+
+### German
+
+Covers `de-slang-fill-09` ("Warum hast du eigentlich nie zurückgerufen?").
+- https://babbel.com/en/magazine/german-filler-words
+
+Covers `de-slang-fill-10` ("Das war ein langer Tag, ne?").
+- https://elon.io/grammar/german/questions/tag-questions-and-echo
+
+Covers `de-convo-basics-09` ("Darf ich Sie duzen?", and "Sie können mich
+gerne duzen." in its note) and `de-convo-basics-10` ("Mahlzeit!").
+- https://storylearning.com/learn/german/german-tips/german-greetings
+- https://elon.io/grammar/german/pragmatics/greetings-and-leave-taking
+
+Covers `de-convo-basics-11` ("Schönen Feierabend noch!").
+- https://elon.io/grammar/german/expressions/greetings-and-social
+
+Covers `de-beer-food-09` ("Ist hier noch frei?"). "Ja, klar." is the
+content's own, from `de-starting-convo-03`; "ja klar" as the answer to this
+question is from Memrise.
+- https://www.lingoda.com/blog/en/the-most-common-german-phrases/
+- https://www.memrise.com/dictionary/german/how-to-say-may-i-sit-here
+
+### Spanish
+
+Covers `starting-convo-22` ("¿Quedamos mañana a las seis?" / "Vale,
+perfecto.") and the quedar-not-quedarse note.
+- https://elon.io/grammar/spanish-spain/expressions/polite
+- https://elon.io/grammar/spanish-spain/verb-reference/quedarse
+
+Covers `restaurant-33` ("La cuenta, cuando puedas.") and the sobremesa note.
+- https://elon.io/grammar/spanish-spain/paths/travel-spanish
+
+Covers the dos besos line added to the note on `convo-sc-03`.
+- https://www.spanishdict.com/translate/dos%20besos

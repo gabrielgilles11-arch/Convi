@@ -301,7 +301,13 @@ const ES: TalkScript[] = [
         back: r("starting-convo-16"),
       }),
       step("bye", {
-        says: [y(q("starting-convo-11"), r("starting-convo-11")), y(ES_HASTA, ES_HASTA)],
+        // Leaving, or leaving with the next time already set. Quedar, no se:
+        // how Spain makes plans.
+        says: [
+          y(q("starting-convo-11"), r("starting-convo-11")),
+          y(q("starting-convo-22"), a("starting-convo-22", 0)),
+          y(ES_HASTA, ES_HASTA),
+        ],
         next: null,
       }),
     ],
@@ -474,7 +480,13 @@ const ES: TalkScript[] = [
         them: q("restaurant-32"),
         says: [y(a("restaurant-32", 0), r("restaurant-32")), y(a("restaurant-32", 1), null)],
       }),
-      step("bill", { cue: "Ask for the check.", says: [y(q("restaurant-11"))], back: a("restaurant-11", 0) }),
+      // After the sobremesa: the waiter will not bring the bill until asked,
+      // and "cuando puedas" is the unhurried way to ask.
+      step("bill", {
+        cue: "Ask for the check.",
+        says: [y(q("restaurant-11")), y(q("restaurant-33"))],
+        back: a("restaurant-11", 0),
+      }),
       step("how", {
         them: r("restaurant-11"),
         says: [
@@ -933,8 +945,14 @@ function dePay(id: string): TalkStep[] {
 const DE: TalkScript[] = [
   {
     id: "de-beer-food-main",
-    intro: "A beer hall in Munich with a friend. The waiter comes over.",
+    intro: "A beer hall in Munich with a friend. It's packed, and the tables are long and shared.",
     steps: [
+      // Sharing a table is how a beer hall works: ask, then sit.
+      step("seat", {
+        cue: "Two free places at the end of a full table.",
+        says: [y(q("de-beer-food-09"))],
+        back: a("de-beer-food-09", 0),
+      }),
       step("order", {
         them: q("de-beer-food-01"),
         says: [
