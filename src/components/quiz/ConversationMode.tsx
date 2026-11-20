@@ -4,6 +4,8 @@ import {
   hasSlot,
   hintFor,
   readingTime,
+  splitAskBack,
+  type ConvAskBack,
   type Conversation,
   type ConvLine,
   type ConvTurn,
@@ -90,6 +92,20 @@ interface Said {
    * frame. Null when they said it exactly, or got it wrong.
    */
   recommended: ConvLine | null;
+  /** They asked a question back after their answer ("¿y vosotros?"). */
+  askedBack?: boolean;
+}
+
+/**
+ * A question asked back on its own, before answering: "¿Y vosotros?" at "¿De
+ * dónde sois?". They answer it, and the beat is still yours. Once a
+ * conversation, so a second one is just an answer like any other.
+ */
+interface Aside {
+  step: number;
+  typed: string;
+  /** Their answer is out, rather than the dots. */
+  out: boolean;
 }
 
 /** A conversation already held in this sitting, kept above the current one. */
@@ -98,6 +114,19 @@ interface Held {
   route: number[];
   said: Record<number, Said>;
   huh: Huh | null;
+  aside: Aside | null;
+}
+
+/**
+ * What they say before their reply, in order: the answer to a question asked
+ * back, then their reaction ("Vale."). Either may be missing.
+ */
+function preLines(turn: ConvTurn, said: Said, askBack: ConvAskBack | null): ConvLine[] {
+  const out: ConvLine[] = [];
+  if (said.askedBack && askBack) out.push(askBack.after);
+  const reaction = turn.reactions[said.index];
+  if (reaction) out.push(reaction);
+  return out;
 }
 
 /**
@@ -410,10 +439,18 @@ function Beat({
   openKey,
   onPop,
   huh,
+  aside,
+  askBack,
+  preShown,
 }: {
   turn: ConvTurn;
   /** The "Huh?" moment on this beat, where there is one. */
   huh: Huh | null;
+  /** A question asked back on this beat before answering it. */
+  aside: Aside | null;
+  askBack: ConvAskBack | null;
+  /** How many of the lines before their reply are out, on the beat on screen. */
+  preShown: number;
   /** The opening beat of a conversation, which always sets its scene. */
   first: boolean;
   /** Where you are, said once above the first line. */
@@ -440,6 +477,9 @@ function Beat({
   const replyOut = phase === "replied";
   const reply = said ? (turn.replies[said.index] ?? null) : null;
   const outro = said ? (turn.outros[said.index] ?? null) : null;
+  const pre = said ? preLines(turn, said, askBack) : [];
+  const preOut = replyOut ? pre.length : Math.min(preShown, pre.length);
+  const waiting = !replyOut && (reply !== null || preOut < pre.length);
 
   return (
     <li className={`convo-beat${active ? " is-active" : ""}`}>
@@ -512,6 +552,27 @@ function Beat({
           <Typing label="They're about to say something" />
         ))}
 
+      {aside && askBack && (
+        <>
+          <div className="convo-bubble convo-bubble--you">
+            <p className="convo-source">{aside.typed}</p>
+          </div>
+          {aside.out ? (
+            <Bubble
+              line={askBack.alone}
+              side="them"
+              locale={locale}
+              english={english}
+              openKey={openKey}
+              popKey={`${turn.id}-askback`}
+              onPop={onPop}
+            />
+          ) : (
+            <Typing label="They're answering" />
+          )}
+        </>
+      )}
+
       {said && (
         <>
           {/* What you actually said goes in your bubble, right or wrong. The
@@ -533,20 +594,32 @@ function Beat({
 
           {english && <AlsoWorks turn={turn} said={said} locale={locale} />}
 
-          {reply &&
-            (replyOut ? (
-              <Bubble
-                line={reply}
-                side="them"
-                locale={locale}
-                english={english}
-                openKey={openKey}
-                popKey={`${turn.id}-reply`}
-                onPop={onPop}
-              />
-            ) : (
-              <Typing label="They're answering" />
-            ))}
+          {pre.slice(0, preOut).map((line, i) => (
+            <Bubble
+              key={`pre-${i}`}
+              line={line}
+              side="them"
+              locale={locale}
+              english={english}
+              openKey={openKey}
+              popKey={`${turn.id}-pre-${i}`}
+              onPop={onPop}
+            />
+          ))}
+
+          {waiting && <Typing label="They're answering" />}
+
+          {reply && replyOut && (
+            <Bubble
+              line={reply}
+              side="them"
+              locale={locale}
+              english={english}
+              openKey={openKey}
+              popKey={`${turn.id}-reply`}
+              onPop={onPop}
+            />
+          )}
 
           {outro &&
             replyOut &&
@@ -587,8 +660,13 @@ function Transcript({
   howTo,
   live,
   huh,
+  aside,
+  preShown,
 }: {
   conversation: Conversation;
+  aside: Aside | null;
+  /** Lines before their reply that are out, on the beat on screen. */
+  preShown: number;
   route: number[];
   said: Record<number, Said>;
   /** The "Huh?" moment in this conversation, where it had one. */
@@ -628,6 +706,9 @@ function Transcript({
             openKey={openKey}
             onPop={onPop}
             huh={huh && huh.step === index ? huh : null}
+            aside={aside && aside.step === index ? aside : null}
+            askBack={conversation.askBack ?? null}
+            preShown={current ? preShown : Number.POSITIVE_INFINITY}
           />
         );
       })}
@@ -674,6 +755,10 @@ export default function ConversationMode({
   const [held, setHeld] = useState<Held[]>([]);
   /** This conversation's "Huh?" moment, once it has started. */
   const [huh, setHuh] = useState<Huh | null>(null);
+  /** A question asked back before answering, once a conversation. */
+  const [aside, setAside] = useState<Aside | null>(null);
+  /** Lines before their reply that are out on this beat (see `preLines`). */
+  const [preShown, setPreShown] = useState(0);
   /** Where this run's moment is due, if it has one at all. */
   const huhAt = useRef<HuhPlan | null>(null);
   /** Beats walked so far on which they spoke first, for an `nth` plan. */
@@ -814,6 +899,8 @@ export default function ConversationMode({
 
   function clearTranscript() {
     setHuh(null);
+    setAside(null);
+    setPreShown(0);
     theirBeats.current = 0;
     setRoute([0]);
     setSaid({});
@@ -854,6 +941,7 @@ export default function ConversationMode({
         turn.theirOpener?.audioId ?? null,
         turn.yourLines[0]?.audioId ?? null,
         ...turn.replies.map((reply) => reply?.audioId ?? null),
+        ...turn.reactions.map((line) => line?.audioId ?? null),
       ])
     );
     return () => {
@@ -887,7 +975,7 @@ export default function ConversationMode({
     [said]
   );
 
-  function settle(verdict: ReplyVerdict, raw: string | null) {
+  function settle(verdict: ReplyVerdict, raw: string | null, askedBack = false) {
     if (!current) return;
     engaged.current = true;
     const run = ++runId.current;
@@ -899,8 +987,10 @@ export default function ConversationMode({
       correct: verdict.correct,
       close: verdict.close,
       recommended: verdict.recommended,
+      ...(askedBack ? { askedBack: true } : {}),
     };
     setSaid((prev) => ({ ...prev, [step]: entry }));
+    setPreShown(0);
     setTyped("");
     setOpenKey(null);
     setPhase("answered");
@@ -925,9 +1015,20 @@ export default function ConversationMode({
     // differs from what they typed; a wrong one, as the line it should have been.
     const spoken = entry.correct ? entry.recommended : entry.line;
     const yours = spoken ? speakLine(spoken) : Promise.resolve(false);
-    await Promise.race([Promise.all([yours, pause(reply ? THINKING : 300)]), pause(MAX_WAIT)]);
+    const pre = preLines(turn, entry, conversation.askBack);
+    await Promise.race([Promise.all([yours, pause(reply || pre.length ? THINKING : 300)]), pause(MAX_WAIT)]);
     await whenVisible();
     if (!alive()) return;
+
+    // Their answer to a question asked back, then their "Vale.", each said
+    // and left long enough to read before the next thing comes.
+    for (const [i, line] of pre.entries()) {
+      setPreShown(i + 1);
+      const said = speakLine(line);
+      await Promise.race([Promise.all([said, pause(readingTime(line.source))]), pause(MAX_WAIT)]);
+      await whenVisible();
+      if (!alive()) return;
+    }
 
     // Enough time to read whatever just appeared: the correction and its
     // English where there was one, and their answer.
@@ -979,7 +1080,45 @@ export default function ConversationMode({
       settleHuh(gradeReply(typed, huhLines), typed.trim());
       return;
     }
-    settle(gradeReply(typed, current.yourLines), typed.trim());
+    const askBack = conversation.askBack;
+    const split = askBack && askBack.turns.includes(step) ? splitAskBack(typed, askBack.asks) : null;
+    if (split && !split.rest && !aside) {
+      askAlone(typed.trim());
+      return;
+    }
+    const whole = gradeReply(typed, current.yourLines, current.accepts);
+    if (split && split.rest) {
+      // Graded on the answer, the question back answered on its own. Where the
+      // whole thing is an authored line to the letter, that verdict stands.
+      const exact = whole.correct && whole.recommended === null;
+      const answer = gradeReply(split.rest, current.yourLines, current.accepts);
+      // Already answered once, on its own: they don't say it all again.
+      settle(exact || !answer.correct ? whole : answer, typed.trim(), !aside);
+      return;
+    }
+    settle(whole, typed.trim());
+  }
+
+  /** A question asked back before answering: they answer, and it is still your turn. */
+  async function askAlone(raw: string) {
+    const askBack = conversation.askBack;
+    if (!askBack) return;
+    engaged.current = true;
+    const run = ++runId.current;
+    const at = step;
+    setAside({ step: at, typed: raw, out: false });
+    setTyped("");
+    setOpenKey(null);
+    setPhase("answered");
+    await pause(THINKING);
+    await whenVisible();
+    if (run !== runId.current) return;
+    setAside({ step: at, typed: raw, out: true });
+    const heard = speakLine(askBack.alone);
+    await Promise.race([Promise.all([heard, pause(readingTime(askBack.alone.source))]), pause(MAX_WAIT)]);
+    await whenVisible();
+    if (run !== runId.current) return;
+    setPhase("open");
   }
 
   /** Stuck. Shows the line rather than leaving the conversation nowhere to go. */
@@ -996,7 +1135,7 @@ export default function ConversationMode({
   function carryOn() {
     if (!following) return;
     setHeld((prev) =>
-      [...prev, { conversation, route, said, huh }].slice(-HELD_LIMIT)
+      [...prev, { conversation, route, said, huh, aside }].slice(-HELD_LIMIT)
     );
     onContinue(following.conversation.id);
   }
@@ -1051,6 +1190,8 @@ export default function ConversationMode({
             route={segment.route}
             said={segment.said}
             huh={segment.huh}
+            aside={segment.aside}
+            preShown={Number.POSITIVE_INFINITY}
             locale={locale}
             english={english}
             openKey={openKey}
@@ -1071,6 +1212,8 @@ export default function ConversationMode({
         route={route}
         said={said}
         huh={huh}
+        aside={aside}
+        preShown={preShown}
         locale={locale}
         english={english}
         openKey={openKey}

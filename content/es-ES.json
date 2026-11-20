@@ -5268,6 +5268,8 @@
     {"id": "es-adios", "es": "¡Adiós!", "en": "Bye!"},
     {"id": "es-gracias", "es": "Gracias.", "en": "Thanks."},
     {"id": "es-muchas-gracias", "es": "Muchas gracias.", "en": "Thank you very much."},
-    {"id": "es-me-cobras", "es": "Me cobras, por favor.", "en": "Can I pay, please? (how locals ask for the check at a bar)"}
+    {"id": "es-me-cobras", "es": "Me cobras, por favor.", "en": "Can I pay, please? (how locals ask for the check at a bar)"},
+    {"id": "es-y-vosotros", "es": "¿Y vosotros?", "en": "And you? (to more than one person)"},
+    {"id": "es-que-haces-esta-noche", "es": "¿Qué haces esta noche?", "en": "What are you doing tonight?"}
   ]
 }

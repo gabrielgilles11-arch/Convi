@@ -16,6 +16,7 @@ import {
   hasSlot,
   replyMatches,
   saysTheLine,
+  splitAskBack,
   type Conversation,
   type ConvLine,
 } from "../conversationTypes";
@@ -885,5 +886,71 @@ describe("a native answer is right, and the line as written follows it", () => {
       expect(next.id).toBe(`${convo}:pick`);
       expect(next.cue).toBeTruthy();
     }
+  });
+});
+
+describe("Talk pilot: accept lists, reactions and asking back", () => {
+  const es = () => buildConversations("es-ES");
+  const turnIn = (convo: string, step: string) =>
+    es().find((c) => c.id === convo)!.turns.find((t) => t.id === `${convo}:${step}`)!;
+
+  it("takes another sourced way of saying a line as that line, and shows the authored one", () => {
+    const plans = turnIn("nightlife-friends", "plans");
+    for (const typed of ["¿Qué haces esta noche?", "que plan tienes hoy"]) {
+      const verdict = gradeReply(typed, plans.yourLines, plans.accepts);
+      expect(verdict.correct, typed).toBe(true);
+      expect(verdict.line).toBe(plans.yourLines[0]);
+      expect(verdict.recommended?.source).toBe("¿Qué planes hay esta noche?");
+    }
+    // Without the list, the same reply was a miss.
+    expect(gradeReply("¿Qué haces esta noche?", plans.yourLines).correct).toBe(false);
+  });
+
+  it("keeps an accepted variant on the branch of the line it stands for", () => {
+    const another = turnIn("beer-food-main", "another");
+    const yes = gradeReply("¡Venga, una más!", another.yourLines, another.accepts);
+    expect(yes.correct).toBe(true);
+    expect(another.next[another.yourLines.indexOf(yes.line)]).toBe(another.next[0]);
+  });
+
+  it("gives every accept list and reaction a line, and only on the pilot", () => {
+    const pilot = new Set(["nightlife-friends", "beer-food-main", "restaurant-ordering"]);
+    for (const locale of locales) {
+      for (const convo of buildConversations(locale)) {
+        for (const turn of convo.turns) {
+          expect(turn.accepts.length, turn.id).toBe(turn.yourLines.length);
+          expect(turn.reactions.length, turn.id).toBe(turn.yourLines.length);
+          const extras = turn.accepts.some((list) => list.length > 0) || turn.reactions.some(Boolean);
+          if (extras) expect(pilot.has(convo.id), turn.id).toBe(true);
+          for (const line of [...turn.accepts.flat(), ...turn.reactions.filter(Boolean)]) {
+            expect(line!.source.trim(), turn.id).not.toBe("");
+            expect(hasSlot(line!.source), turn.id).toBe(false);
+          }
+        }
+        if (convo.askBack) expect(pilot.has(convo.id), convo.id).toBe(true);
+      }
+    }
+  });
+
+  it("has the pilot react before the next line", () => {
+    expect(turnIn("beer-food-main", "pay").reactions.every((r) => r?.source === "Vale.")).toBe(true);
+    expect(turnIn("restaurant-ordering", "allergy").reactions[0]?.source).toBe("Vale.");
+    expect(turnIn("nightlife-friends", "first").reactions[0]?.source).toBe("Ah, mira qué bien.");
+  });
+
+  it("splits a question asked back off the end of an answer", () => {
+    const convo = es().find((c) => c.id === "nightlife-friends")!;
+    const ask = convo.askBack!;
+    expect(ask.turns).toEqual([0]);
+    expect(splitAskBack("Somos de Irlanda, ¿y vosotros?", ask.asks)).toEqual({ rest: "Somos de Irlanda" });
+    expect(splitAskBack("¿Y vosotros?", ask.asks)).toEqual({ rest: "" });
+    expect(splitAskBack("y tu", ask.asks)).toEqual({ rest: "" });
+    expect(splitAskBack("Somos de Irlanda.", ask.asks)).toBeNull();
+
+    // The answer before the question is graded on its own and is right.
+    const from = convo.turns[0]!;
+    const rest = splitAskBack("Somos de Irlanda, ¿y vosotros?", ask.asks)!.rest;
+    expect(gradeReply(rest, from.yourLines, from.accepts).correct).toBe(true);
+    expect(ask.alone.source.trim()).not.toBe("");
   });
 });
