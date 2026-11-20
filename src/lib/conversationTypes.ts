@@ -59,6 +59,14 @@ export interface ConvTurn {
    * never made to type a goodbye just to finish. Null: nothing more is said.
    */
   outros: (ConvLine | null)[];
+  /**
+   * Other sourced ways of saying each of `yourLines`, by position. One of
+   * these counts as that line: same reply, same way on, and the authored line
+   * shown as the one to learn. Never offered on screen.
+   */
+  accepts: ConvLine[][];
+  /** Their short reaction before the reply to each of `yourLines` ("Vale."). */
+  reactions: (ConvLine | null)[];
   /** What comes back to the first of your lines. The common case, for display. */
   theirReply: ConvLine | null;
   /** The authored note about this exchange, where it has one. */
@@ -97,6 +105,49 @@ export interface Conversation {
    * lib/repairTypes.ts).
    */
   huhAt: number | null;
+  /** Asking them a question back, where the script allows it. */
+  askBack: ConvAskBack | null;
+}
+
+/**
+ * "¿Y vosotros?": a question asked back, and the short answer it gets.
+ * See TalkAskBack in ./talkScripts.
+ */
+export interface ConvAskBack {
+  /** Indexes into `turns` where asking back is answered. */
+  turns: number[];
+  asks: ConvLine[];
+  /** Their answer when you only asked back. */
+  alone: ConvLine;
+  /** Their answer when you answered and then asked back. */
+  after: ConvLine;
+}
+
+/**
+ * A question asked back at the end of what was typed, split off it.
+ *
+ * "Somos de Irlanda, ¿y vosotros?" is an answer and then a question, and
+ * grading the whole thing against the answer either fails it or swallows the
+ * question. So the question comes off the end, the rest is graded, and the
+ * question is answered. Null where nothing was asked back.
+ */
+export function splitAskBack(given: string, asks: ConvLine[]): { rest: string } | null {
+  const words = given.trim().split(/\s+/).filter(Boolean);
+  for (const ask of asks) {
+    const want = normalizeAnswer(ask.source);
+    if (!want) continue;
+    const size = want.split(" ").length;
+    if (words.length < size) continue;
+    const tail = words.slice(words.length - size).join(" ");
+    if (normalizeAnswer(tail) !== want) continue;
+    const rest = words
+      .slice(0, words.length - size)
+      .join(" ")
+      .replace(/[\s,;:¿¡-]+$/u, "")
+      .trim();
+    return { rest };
+  }
+  return null;
 }
 
 export interface ConversationPayload {
@@ -636,7 +687,7 @@ export interface ReplyVerdict {
  * closest to and the conversation carries on, because this is a conversation
  * and not a test — the round screens are the test.
  */
-export function gradeReply(given: string, options: ConvLine[]): ReplyVerdict {
+export function gradeReply(given: string, options: ConvLine[], accepts: ConvLine[][] = []): ReplyVerdict {
   const fallback = options[0]!;
   // The line you actually typed first, before the generous match gets a look.
   // The generous match is about how much of a line you said, so on a beat
@@ -653,8 +704,20 @@ export function gradeReply(given: string, options: ConvLine[]): ReplyVerdict {
   for (const option of options) {
     if (typedAnswerMatches(given, option.source)) return right(option);
   }
+  // Another sourced way of saying a line, before the generous match, so
+  // "¿Qué plan tienes hoy?" is the plans line and not a near miss of it.
+  for (const [i, option] of options.entries()) {
+    for (const other of accepts[i] ?? []) {
+      if (typedAnswerMatches(given, other.source)) return { ...right(option), recommended: option };
+    }
+  }
   for (const option of options) {
     if (replyMatches(given, option.source)) return right(option);
+  }
+  for (const [i, option] of options.entries()) {
+    for (const other of accepts[i] ?? []) {
+      if (replyMatches(given, other.source)) return { ...right(option), recommended: option };
+    }
   }
   // Last, a blank said the short way. After every other line has been tried,
   // so "No" at "¿Con reserva?" is "No, sin reserva." and not a name.

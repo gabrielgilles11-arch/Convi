@@ -108,6 +108,11 @@ export function resolveScript(
       if (!ref || next[j] !== null) return null;
       return resolveTalkRef(index, ref);
     });
+    const accepts = step.says.map((s) => (s.accept ?? []).map((ref) => resolveTalkRef(index, ref)));
+    const reactions = step.says.map((s) => {
+      const ref = s.react === undefined ? step.react : s.react;
+      return ref ? resolveTalkRef(index, ref) : null;
+    });
     if (new Set(next).size > 1) branches = true;
 
     return {
@@ -119,6 +124,8 @@ export function resolveScript(
       replies,
       next,
       outros,
+      accepts,
+      reactions,
       theirReply: replies[0] ?? null,
       note: lead?.notes ?? "",
     };
@@ -134,6 +141,18 @@ export function resolveScript(
     branches,
     turns,
     huhAt: HUH_WIRED.test(script.id) ? firstTheirs(turns) : null,
+    askBack: script.askBack
+      ? {
+          turns: script.askBack.steps.map((id) => {
+            const at = position.get(id);
+            if (at === undefined) throw new Error(`Talk script ${script.id}: askBack names no step ${id}`);
+            return at;
+          }),
+          asks: script.askBack.asks.map((ref) => resolveTalkRef(index, ref)),
+          alone: resolveTalkRef(index, script.askBack.alone),
+          after: resolveTalkRef(index, script.askBack.after ?? script.askBack.alone),
+        }
+      : null,
   };
 }
 

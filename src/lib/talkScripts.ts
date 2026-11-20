@@ -49,6 +49,14 @@ export interface TalkSay {
   next?: string | null;
   /** Their closing line after this one, where it ends things. Overrides the step's. */
   outro?: TalkRef | null;
+  /**
+   * Other sourced ways of saying this line, which count as it: the same
+   * branch, the same reply, and the authored line shown as the one to learn.
+   * Never shown as options of their own.
+   */
+  accept?: TalkRef[];
+  /** Their short reaction before `back` ("Vale."). Overrides the step's. */
+  react?: TalkRef | null;
 }
 
 export interface TalkStep {
@@ -74,6 +82,33 @@ export interface TalkStep {
    * than being made to type a goodbye nobody needed to be taught.
    */
   outro?: TalkRef | null;
+  /**
+   * The listener's sound before they answer: "Vale.", "Ah, mira qué bien.".
+   * Said whatever you said, unless the line said has its own.
+   */
+  react?: TalkRef | null;
+}
+
+/**
+ * Asking them a question back: "¿Y vosotros?" after you say where you're from.
+ *
+ * Without it the question was graded as part of your line and then ignored.
+ * With it they answer, briefly, and the conversation carries on. Only on the
+ * steps listed, because "¿y tú?" means something different at every beat and
+ * one canned answer only fits the beat it was chosen for.
+ */
+export interface TalkAskBack {
+  /** The steps where asking back gets an answer. */
+  steps: string[];
+  /** The questions that count as asking back. Matched, never shown. */
+  asks: TalkRef[];
+  /** Their answer when you only asked back, so the beat is still yours. */
+  alone: TalkRef;
+  /**
+   * Their answer when you answered first and then asked back. Omitted: `alone`,
+   * where no sourced line without the question in it has been found yet.
+   */
+  after?: TalkRef;
 }
 
 export interface TalkScript {
@@ -82,6 +117,7 @@ export interface TalkScript {
   /** Where you are, in a sentence of English. Shown once, at the top. */
   intro: string;
   steps: TalkStep[];
+  askBack?: TalkAskBack;
 }
 
 // ---------------------------------------------------------------------------
@@ -108,6 +144,16 @@ function y(say: TalkRef, back?: TalkRef | null, next?: string | null, outro?: Ta
   };
 }
 
+/** The same line, with other sourced ways of saying it that count as it. */
+function also(say: TalkSay, ...accept: TalkRef[]): TalkSay {
+  return { ...say, accept };
+}
+
+/** The same line, with their own reaction before the reply. */
+function reacting(say: TalkSay, react: TalkRef | null): TalkSay {
+  return { ...say, react };
+}
+
 function step(id: string, body: Omit<TalkStep, "id">): TalkStep {
   return { id, ...body };
 }
@@ -119,6 +165,8 @@ function step(id: string, body: Omit<TalkStep, "id">): TalkStep {
 /** "Hasta luego." is the content's own (starting-convo-07); it works said either way. */
 const ES_HASTA = q("starting-convo-07");
 const ES_THANKS = [y(t("es-gracias")), y(t("es-muchas-gracias"))];
+/** "Vale." on its own, the bartender's (beer-food-06): the listener's okay. */
+const ES_VALE = r("beer-food-06");
 
 const ES: TalkScript[] = [
   {
@@ -166,7 +214,9 @@ const ES: TalkScript[] = [
         cue: "A while later. Your glass is nearly empty.",
         them: q("beer-food-06"),
         says: [
-          y(a("beer-food-06", 0), r("beer-food-06"), "cobrar"),
+          // Saying yes to one more the way it goes at a bar: "Venga, una más",
+          // "Venga, va, la última". Both are the content's own lines.
+          also(y(a("beer-food-06", 0), r("beer-food-06"), "cobrar"), q("drunk-22"), a("slang-sc-17", 0)),
           y(a("beer-food-06", 1), r("beer-food-06"), "check"),
         ],
       }),
@@ -186,6 +236,7 @@ const ES: TalkScript[] = [
       step("pay", {
         them: q("beer-food-07"),
         says: [y(a("beer-food-07", 0), r("beer-food-07")), y(a("beer-food-07", 1), null)],
+        react: ES_VALE,
         outro: ES_HASTA,
         next: null,
       }),
@@ -448,7 +499,8 @@ const ES: TalkScript[] = [
     steps: [
       step("bread", {
         them: q("restaurant-07"),
-        says: [y(a("restaurant-07", 0)), y(a("beer-food-08", 0)), y(a("restaurant-07", 1))],
+        // "Vale." is a yes to bread as much as "Sí, por favor." is.
+        says: [also(y(a("restaurant-07", 0)), ES_VALE), y(a("beer-food-08", 0)), y(a("restaurant-07", 1))],
         back: r("restaurant-07"),
       }),
       step("menu", {
@@ -460,8 +512,14 @@ const ES: TalkScript[] = [
         them: q("restaurant-05"),
         says: [y(a("restaurant-05", 1)), y(a("restaurant-05", 0))],
         back: null,
+        react: ES_VALE,
       }),
-      step("allergy", { cue: "Before they go: you're allergic to nuts.", says: [y(q("restaurant-20"))], back: a("restaurant-20", 0) }),
+      step("allergy", {
+        cue: "Before they go: you're allergic to nuts.",
+        says: [y(q("restaurant-20"))],
+        react: ES_VALE,
+        back: a("restaurant-20", 0),
+      }),
       step("main", {
         them: q("restaurant-22"),
         says: [y(a("restaurant-22", 0)), y(a("restaurant-05", 0))],
@@ -584,8 +642,12 @@ const ES: TalkScript[] = [
         says: [y(a("nightlife-05", 0)), y(a("nightlife-05", 1))],
         back: r("nightlife-05"),
       }),
-      step("first", { says: [y(a("taxi-04", 0))], back: null }),
-      step("plans", { cue: "Ask what the plan is tonight.", says: [y(q("nightlife-07"))], back: r("nightlife-07") }),
+      step("first", { says: [y(a("taxi-04", 0))], back: null, react: r("convo-basics-04") }),
+      step("plans", {
+        cue: "Ask what the plan is tonight.",
+        says: [also(y(q("nightlife-07")), t("es-que-haces-esta-noche"), q("night-sc-01"))],
+        back: r("nightlife-07"),
+      }),
       step("in", {
         says: [
           y(r("nightlife-06"), null, null),
@@ -598,6 +660,13 @@ const ES: TalkScript[] = [
         next: null,
       }),
     ],
+    // Asked where they're from back, one of them says. The answer ends on
+    // "¿Y tú?", which is the beat still being yours when you only asked back.
+    askBack: {
+      steps: ["from"],
+      asks: [t("es-y-vosotros"), r("starting-convo-02")],
+      alone: a("basics-describe-07", 0),
+    },
   },
 ];
 
