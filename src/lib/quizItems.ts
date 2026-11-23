@@ -16,6 +16,7 @@ import {
   type PhrasebookSubsection,
 } from "./content";
 import type { QuizCategory, QuizItem } from "./quizTypes";
+import { whoSays } from "./whoSays";
 
 /**
  * One authored exchange as the deck sees it, or null where it has no line for
@@ -47,8 +48,8 @@ function situationFrom(
     categoryTitle: category.title,
     subsectionId,
     kind: "situation",
-    // The prompt is the situation, in English. It is the whole question:
-    // nothing in the target language is shown until you've answered.
+    // `front` is the situation, in English. Where you speak first it is the
+    // whole question; where they do, `heard` below is shown in its place.
     prompt: "What do you say?",
     front: exchange.situation.en,
     frontTranslation: null,
@@ -69,6 +70,18 @@ function situationFrom(
     replyAudioId: theirs?.es ? theirsAudio : null,
     frontAudioId: null,
     answerAudioId: theirTurn ? `${exchange.id}-a0` : `${exchange.id}-q`,
+    // Where they speak first, Practice opens on their actual line, in the
+    // language and out loud, rather than on the English scene. When you speak
+    // first nobody has said anything yet, so there is no line to show.
+    heard:
+      theirTurn && exchange.question?.es?.trim()
+        ? {
+            source: exchange.question.es,
+            en: exchange.question.en || null,
+            audioId: `${exchange.id}-q`,
+            who: whoSays(exchange.situation.en, exchange.question.es, exchange.who),
+          }
+        : null,
   };
 }
 

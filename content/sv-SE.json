@@ -2448,6 +2448,7 @@
               "id": "sv-cuss-sc-09",
               "teaches": "sv-cuss-12",
               "speaker": "them",
+              "who": "Someone in your group",
               "situation": { "en": "Someone in your group is being loud and rude to the staff." },
               "question": { "es": "De kan väl skynda sig lite!", "en": "They could hurry up a bit!" },
               "answers": [

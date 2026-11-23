@@ -225,6 +225,21 @@ export default function TestMode({
     };
   }, [position, attempt, done]);
 
+  // Where they speak first, the question opens on their line, said out loud
+  // the way it would be at the bar: you hear it before you read it, which is
+  // the order it happens in. Its English is behind a tap, closed each time.
+  const [heardOpen, setHeardOpen] = useState(false);
+  const heardQuestion = question?.heard && !question.huh ? question : null;
+  useEffect(() => {
+    setHeardOpen(false);
+    if (!heardQuestion || answered) return;
+    const line = heardQuestion.heard!;
+    const timer = window.setTimeout(() => {
+      void speak(locale, line.audioId, line.source, "practice");
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [heardQuestion, position, attempt]);
+
   // A "Huh?" question opens on the line going by too fast, out loud, the way
   // it would at a counter. Its text stays blurred until the question settles.
   const huhQuestion = question?.huh ? question : null;
@@ -587,6 +602,44 @@ export default function TestMode({
         {q.form === "match" ? (
           <p className="quiz-front">{q.prompt}</p>
         ) : (
+          q.heard && !q.huh ? (
+            <>
+              {/* Who is talking, in English and small; then what they said, in
+                  the language. The line is the question now, so it gets the
+                  big type, and a tap on it shows what it means. */}
+              <p className="quiz-who">{q.heard.who}</p>
+              <p className="quiz-front quiz-heard">
+                <button
+                  type="button"
+                  className="heard-line"
+                  aria-expanded={heardOpen || answered}
+                  aria-controls={`heard-en-${position}`}
+                  onClick={() => setHeardOpen((open) => !open)}
+                >
+                  {withBlanks(q.heard.source)}
+                  <span className="sr-only">
+                    {heardOpen ? " (hide the English)" : " (show the English)"}
+                  </span>
+                </button>
+                <AudioButton
+                  locale={locale}
+                  audioId={q.heard.audioId}
+                  text={q.heard.source}
+                  label="Hear it again"
+                />
+              </p>
+              <p className="heard-en" id={`heard-en-${position}`} aria-live="polite">
+                {(heardOpen || answered) && q.heard.en ? (
+                  withBlanks(q.heard.en)
+                ) : (
+                  <span className="heard-hint" aria-hidden="true">
+                    Tap the line for the English
+                  </span>
+                )}
+              </p>
+              <p className="quiz-prompt quiz-prompt--after">{q.prompt}</p>
+            </>
+          ) : (
           <>
             <p className="quiz-prompt">{q.prompt}</p>
             {q.huh && !answered ? (
@@ -620,6 +673,7 @@ export default function TestMode({
             </p>
             )}
           </>
+          )
         )}
       </div>
 

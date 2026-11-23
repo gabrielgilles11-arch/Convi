@@ -453,6 +453,78 @@
   }
 }
 
+/* ---- Their line, where they speak first ----
+   Who is talking sits small and in English; what they said is the question,
+   in the language, at the size the English scene used to have. The line is a
+   button: a tap shows its English underneath. The underline is what says it
+   can be tapped, so it is drawn on all the time, not only on hover. */
+
+.quiz-who {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-soft);
+}
+
+.quiz-heard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.heard-line {
+  min-height: 44px;
+  margin: 0;
+  padding: 0.1rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-ink);
+  text-align: center;
+  /* A German or Swedish compound can outrun a phone's width on its own. */
+  overflow-wrap: anywhere;
+  max-width: 100%;
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color-primary);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  border-radius: 6px;
+}
+
+.heard-line:hover,
+.heard-line[aria-expanded="true"] {
+  text-decoration-style: solid;
+  background: var(--color-primary-tint);
+}
+
+.heard-line:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.heard-en {
+  min-height: 1.5rem;
+  margin: 0.4rem 0 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.heard-hint {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.quiz-prompt--after {
+  margin: 0.9rem 0 0;
+}
+
 .quiz-front .en {
   display: block;
   margin-top: 0.45rem;

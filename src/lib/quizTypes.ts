@@ -60,6 +60,21 @@ export interface QuizItem {
   /** Ids of the generated clips, or null where the side has no spoken line. */
   frontAudioId: string | null;
   answerAudioId: string | null;
+  /**
+   * Situation only, where they speak first: their line, in the language, which
+   * Practice puts in front of you in place of the English scene. `who` is the
+   * English label above it ("The waiter asks"). Absent where you speak first:
+   * then nobody has said anything yet and the scene stays in English.
+   */
+  heard?: HeardLine | null;
+}
+
+/** What they say to open a moment, as Practice shows and plays it. */
+export interface HeardLine {
+  source: string;
+  en: string | null;
+  audioId: string | null;
+  who: string;
 }
 
 /**
@@ -780,6 +795,12 @@ export interface Question {
    * asking for it again. Absent on every ordinary question.
    */
   huh?: boolean;
+  /**
+   * A situation asked forward where they speak first: their line, shown and
+   * played in place of the English scene in `shown`, with its English behind a
+   * tap. `shown` keeps the scene for anything that reads it as text.
+   */
+  heard?: HeardLine | null;
 }
 
 /** One row of a matching screen: a phrase and the meaning it belongs to. */
@@ -916,9 +937,16 @@ export function buildQuestion(
     accepted,
     answerLang,
     saidByYou: forwardSituation,
-    // The scene of a situation is English, so only the answer is ever spoken.
-    // A phrase shows its source side only in the forward direction.
-    shownAudio: item.kind === "phrase" && !reverse ? item.frontAudioId : null,
+    // A phrase shows its source side only in the forward direction. A
+    // situation's scene is English and never spoken, except where they speak
+    // first: then what is shown is their line, and that is what is played.
+    shownAudio:
+      item.kind === "phrase" && !reverse
+        ? item.frontAudioId
+        : forwardSituation && item.heard
+          ? item.heard.audioId
+          : null,
+    heard: forwardSituation && item.heard ? item.heard : null,
     answerAudio: answerLang === "source" ? item.answerAudioId : null,
     // The reply belongs to the scene. A reversed situation has no scene, so
     // showing "they'd say back" under it would be answering a question that
@@ -1441,7 +1469,14 @@ function spreadOut(questions: Question[], options: SpreadOptions = {}): Question
     if (separateCategories && a.categoryId === b.categoryId) return true;
     // Either side of one question showing up on either side of the next is the
     // giveaway, whichever direction each was asked in.
+    // Their line, where a situation shows one, is on screen as much as the
+    // scene is, and in the language: one screen's "¿Qué vas a tomar?" is the
+    // next screen's answer to "How do you say: What are you having?".
+    const heardClash =
+      (a.heard != null && (tooAlike(a.heard.source, b.answer) || tooAlike(a.heard.source, b.shown))) ||
+      (b.heard != null && (tooAlike(b.heard.source, a.answer) || tooAlike(b.heard.source, a.shown)));
     return (
+      heardClash ||
       tooAlike(a.answer, b.answer) ||
       tooAlike(a.shown, b.shown) ||
       tooAlike(a.answer, b.shown) ||

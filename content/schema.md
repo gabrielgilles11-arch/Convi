@@ -57,6 +57,7 @@ has no sub-grouping (single flat list of exchanges).
   "id": string,                    // unique across the whole file
   "speaker": "you" | "them",       // who says `question` — see below
   "situation": { "en": string },   // the moment, in English; the practice prompt
+  "who": string,                   // optional, English; see below
   "question": { "es": string, "en": string },
   "answers": Array<{ "es": string, "en": string }>,   // 1-2 model-answer variants; can be empty []
   "likelyReply": { "es": string, "en": string } | null, // what the local says back; null if the exchange has no reply (e.g. a farewell)
@@ -78,6 +79,14 @@ other side afterwards as what they'd say back. `situation` is the English
 prompt that sets the scene — it is the whole question, so write it as one
 sentence in the second person ("You have no cash and want to know if you can
 pay by card."), never as a translation of a line.
+
+**`who`** — only on `"speaker": "them"`. Where they speak first, Practice shows
+their `question` line itself, in the language, under a small English label
+saying who it is ("The waiter asks"). The label is read off `situation`
+(`src/lib/whoSays.ts`): a job named there, else a relation, else "Someone",
+else "They". Write `who` only where that reading names the wrong person, e.g.
+"Someone suggests you ring the landlord" is not the landlord talking, so that
+exchange carries `"who": "Someone"`. Just the person, no verb: `"The waiter"`.
 
 ```
   "notes": string,                 // slang/regional/usage notes; "" if none

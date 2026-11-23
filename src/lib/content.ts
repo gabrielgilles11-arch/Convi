@@ -50,6 +50,13 @@ export interface Exchange {
   /** English description of the moment, used as the prompt in practice. */
   situation: { en: string };
   /**
+   * Who says `question` when `speaker` is "them", in English: "The waiter",
+   * "Someone in your group". Practice shows it above their line ("The waiter
+   * asks"). Optional: normally read off `situation` (see lib/whoSays.ts), and
+   * written only where that reading would name the wrong person.
+   */
+  who?: string;
+  /**
    * On a practice scene, the id of the phrase it takes over from — the word it
    * was written to put in a moment. Named rather than inferred from the text,
    * because Spanish conjugates: a scene teaching `pirarse` says "me piro", and

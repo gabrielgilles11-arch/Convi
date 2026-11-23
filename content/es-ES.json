@@ -1356,6 +1356,7 @@
               "id": "slang-sc-20",
               "teaches": "slang-32",
               "speaker": "them",
+              "who": "Someone",
               "situation": { "en": "Someone suggests you ring the landlord about the broken boiler yourself." },
               "question": { "es": "Llámale tú, que es tu piso.", "en": "You call him — it's your flat." },
               "answers": [
@@ -2141,6 +2142,7 @@
               "id": "cuss-sc-05",
               "teaches": "cuss-11",
               "speaker": "them",
+              "who": "They",
               "situation": { "en": "You arrive to find the flat you booked double-booked and nobody at the desk." },
               "question": { "es": "No hay nadie aquí hasta las seis.", "en": "There's nobody here until six." },
               "answers": [

@@ -41,6 +41,8 @@ describe.each(locales)("audio ids line up with the recorder: %s", (locale: Local
       if (item.kind === "situation") {
         expectClip(item.answerAudioId, item.correctAnswer);
         if (item.reply) expectClip(item.replyAudioId, item.reply.source);
+        // Their opening line, played as the question appears.
+        if (item.heard) expectClip(item.heard.audioId, item.heard.source);
       } else {
         expectClip(item.frontAudioId, item.front);
       }
