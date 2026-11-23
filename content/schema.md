@@ -58,6 +58,7 @@ has no sub-grouping (single flat list of exchanges).
   "speaker": "you" | "them",       // who says `question` — see below
   "situation": { "en": string },   // the moment, in English; the practice prompt
   "who": string,                   // optional, English; see below
+  "goal": string,                  // optional, English; see below
   "question": { "es": string, "en": string },
   "answers": Array<{ "es": string, "en": string }>,   // 1-2 model-answer variants; can be empty []
   "likelyReply": { "es": string, "en": string } | null, // what the local says back; null if the exchange has no reply (e.g. a farewell)
@@ -87,6 +88,13 @@ saying who it is ("The waiter asks"). The label is read off `situation`
 else "They". Write `who` only where that reading names the wrong person, e.g.
 "Someone suggests you ring the landlord" is not the landlord talking, so that
 exchange carries `"who": "Someone"`. Just the person, no verb: `"The waiter"`.
+
+**`goal`** — only on `"speaker": "them"` exchanges (not scenes). Since Practice
+shows their line rather than the scene, anything the scene said about what
+*you* are after is no longer on screen, and without it more than one reply is
+right. Write it as `goal`, a short English sentence shown under their line:
+`"You want a vermouth."`. Scenes need none: a scene exists to teach one reply,
+so its whole `situation` is shown there instead.
 
 ```
   "notes": string,                 // slang/regional/usage notes; "" if none

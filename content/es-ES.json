@@ -149,6 +149,7 @@
               "situation": {
                 "en": "Seated with friends, the waiter offers drinks while you read the menu. You want a vermouth."
               },
+              "goal": "You want a vermouth.",
               "question": {
                 "es": "¿Os traigo algo de beber mientras vais mirando?",
                 "en": "Shall I bring you something to drink while you look?"
@@ -3858,6 +3859,7 @@
               "id": "shopping-05",
               "speaker": "them",
               "situation": { "en": "A market stallholder calls you over and you want to know the price of the tomatoes." },
+              "goal": "You want to know the price of the tomatoes.",
               "question": { "es": "¡Mira, guapo/guapa! ¿Qué te pongo?", "en": "Hey, handsome/beautiful! What can I get you?" },
               "answers": [
                 { "es": "¿A cómo están los tomates?", "en": "How much are the tomatoes?" }
@@ -5158,6 +5160,7 @@
               "id": "drunk-19",
               "speaker": "them",
               "situation": { "en": "The round is going in and you'd rather skip this one." },
+              "goal": "You'd rather skip this round.",
               "question": { "es": "¿Otra ronda?", "en": "Another round?" },
               "answers": [
                 { "es": "Yo me salto esta.", "en": "I'll sit this one out." }

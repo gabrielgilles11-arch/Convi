@@ -57,6 +57,13 @@ export interface Exchange {
    */
   who?: string;
   /**
+   * English, optional: what you are after in this moment, where their line
+   * does not say it and the answer depends on it ("You want a vermouth.").
+   * Practice shows it small under their line. Scenes do not need one: their
+   * `situation` is shown instead.
+   */
+  goal?: string;
+  /**
    * On a practice scene, the id of the phrase it takes over from — the word it
    * was written to put in a moment. Named rather than inferred from the text,
    * because Spanish conjugates: a scene teaching `pirarse` says "me piro", and

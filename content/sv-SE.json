@@ -189,6 +189,7 @@
               "situation": {
                 "en": "The waiter asks if you want a drink while you look at the menu. Order a beer and ask what's good."
               },
+              "goal": "Order a beer and ask what's good.",
               "question": {
                 "es": "Vill ni ha något att dricka medan ni tittar?",
                 "en": "Do you want something to drink while you look?"
@@ -271,6 +272,7 @@
               "situation": {
                 "en": "At a café counter they ask if your coffee is to go. It is, and you want the price."
               },
+              "goal": "It's to go, and you want to know the price.",
               "question": {
                 "es": "Vill du ha kaffet att ta med eller dricka här?",
                 "en": "Do you want the coffee to go or to drink here?"
@@ -4677,6 +4679,7 @@
               "id": "sv-drunk-18",
               "speaker": "them",
               "situation": { "en": "The round is going in and you'd rather skip this one." },
+              "goal": "You'd rather skip this round.",
               "question": { "es": "Vill du ha en till?", "en": "Want another one?" },
               "answers": [
                 { "es": "Jag tar en paus.", "en": "I'll sit one out." }

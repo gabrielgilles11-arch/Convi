@@ -75,6 +75,11 @@ export interface HeardLine {
   en: string | null;
   audioId: string | null;
   who: string;
+  /**
+   * English, small, under their line: what you are after, where the line
+   * alone leaves more than one right answer. Null where it does not.
+   */
+  context: string | null;
 }
 
 /**
@@ -959,7 +964,10 @@ export function buildQuestion(
   };
 
   if (form === "choice") {
-    question.options = buildOptions(answer, answerLang, pool, fallbackPool, item, shown, accepted);
+    question.options = buildOptions(answer, answerLang, pool, fallbackPool, item, shown, accepted, {
+      meaning: forwardSituation ? answerSub : null,
+      heard: forwardSituation ? (item.heard?.source ?? null) : null,
+    });
   } else if (form === "bank") {
     question.tiles = buildTiles(answer, answerLang, pool, fallbackPool);
   }
@@ -997,7 +1005,20 @@ export function buildOptions(
    * wrong one. An exchange written with two answers to the same scene has two
    * right boxes on the screen if this is not honoured.
    */
-  alsoRight: string[] = []
+  alsoRight: string[] = [],
+  /**
+   * Two more ways a wrong option turns out to be right, both only reachable
+   * on a situation asked forward, where the cue is a scene rather than a line:
+   *
+   * `meaning` is what the answer means. A distractor that means the same is a
+   * second right answer: "En bärs, tack." beside "En öl, tack.", both "A beer,
+   * please." The cue guard above never sees it, because the cue is the scene.
+   *
+   * `heard` is their line. A distractor written as the answer to another
+   * moment where they say the same thing ("Wie alt bist du?") answers this one
+   * too.
+   */
+  guards: { meaning?: string | null; heard?: string | null } = {}
 ): string[] {
   const seen = new Set([normalizeAnswer(answer), ...alsoRight.map(normalizeAnswer)]);
   const distractors: string[] = [];
@@ -1059,6 +1080,8 @@ export function buildOptions(
           continue;
         }
         if (guard === "both" && cue && tooAlike(answerTextFor(item, otherLang), cue)) continue;
+        if (guard === "both" && guards.meaning && tooAlike(answerTextFor(item, otherLang), guards.meaning)) continue;
+        if (guard === "both" && guards.heard && item.heard && tooAlike(item.heard.source, guards.heard)) continue;
         seen.add(key);
         distractors.push(candidate);
       }
@@ -1426,6 +1449,17 @@ function cueIdentifies(question: Question, pool: QuizItem[]): boolean {
   const cueLang: AnswerLang = question.answerLang === "source" ? "en" : "source";
   return !pool.some((item) => {
     if (item.id === question.itemId) return false;
+    // Their line is the cue now where a situation has one: another moment
+    // where they say the same thing has its own right answer, and typing that
+    // one here would be marked wrong.
+    if (
+      question.heard &&
+      item.heard &&
+      tooAlike(item.heard.source, question.heard.source) &&
+      !tooAlike(answerTextFor(item, question.answerLang), question.answer)
+    ) {
+      return true;
+    }
     const theirCue = answerTextFor(item, cueLang);
     if (!theirCue || !tooAlike(theirCue, question.shown)) return false;
     // Two items that mean the same and say the same are one line written

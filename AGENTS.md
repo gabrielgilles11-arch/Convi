@@ -40,7 +40,7 @@ check` is what catches it. Read its count carefully: it prints `1 error`,
 singular, so a grep for "errors" silently passes a broken tree.
 
 When editing `content/*.json`, convert only the English-bearing fields: `en`,
-`notes`, `note`, `gloss`, `blurb`, `heading`, `heardIn`, `title`, `description`, `who`.
+`notes`, `note`, `gloss`, `blurb`, `heading`, `heardIn`, `title`, `description`, `who`, `goal`.
 Never `es` or `term` — those hold the Spanish, Swedish or German line itself,
 and `es` is the key the schema uses for the target language in all three
 editions, not just the Spanish one.

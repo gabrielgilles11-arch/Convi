@@ -30,7 +30,9 @@ import { whoSays } from "./whoSays";
 function situationFrom(
   exchange: Exchange,
   category: Category,
-  subsectionId: string
+  subsectionId: string,
+  /** Written for Practice to put one word list's word in a moment. */
+  isScene: boolean
 ): QuizItem | null {
   const theirTurn = exchange.speaker === "them";
   const mine = theirTurn ? exchange.answers[0] : exchange.question;
@@ -80,6 +82,11 @@ function situationFrom(
             en: exchange.question.en || null,
             audioId: `${exchange.id}-q`,
             who: whoSays(exchange.situation.en, exchange.question.es, exchange.who),
+            // What you are after, where their line alone does not say. A scene
+            // exists to teach one particular reply, and its English is what
+            // makes that reply the answer rather than one of several; an
+            // ordinary exchange needs it only where the author wrote a goal.
+            context: exchange.goal?.trim() || (isScene ? exchange.situation.en : null),
           }
         : null,
   };
@@ -94,8 +101,12 @@ export function buildQuizItems(locale: Locale = DEFAULT_LOCALE): QuizItem[] {
       // `exchanges` are authored for the scenario page and practice both;
       // `scenes` exist only here, to put a word list's words in a moment. They
       // build identically — the difference is only which surfaces read them.
-      for (const exchange of [...(dialogue.exchanges ?? []), ...(sub.scenes ?? [])]) {
-        const item = situationFrom(exchange, category, sub.id);
+      for (const exchange of dialogue.exchanges ?? []) {
+        const item = situationFrom(exchange, category, sub.id, false);
+        if (item) items.push(item);
+      }
+      for (const scene of sub.scenes ?? []) {
+        const item = situationFrom(scene, category, sub.id, true);
         if (item) items.push(item);
       }
 

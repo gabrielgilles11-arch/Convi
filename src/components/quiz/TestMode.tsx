@@ -637,6 +637,11 @@ export default function TestMode({
                   </span>
                 )}
               </p>
+              {/* What you are after, where their line leaves it open: the
+                  scene a practice scene was written around, or the author's
+                  goal. Without it several replies would be right and only one
+                  is marked so. */}
+              {q.heard.context && <p className="heard-context">{q.heard.context}</p>}
               <p className="quiz-prompt quiz-prompt--after">{q.prompt}</p>
             </>
           ) : (

@@ -160,6 +160,7 @@
               "situation": {
                 "en": "The server asks which beer you want. You'd like a light one that isn't too bitter."
               },
+              "goal": "You'd like a light beer that isn't too bitter.",
               "question": {
                 "es": "Sicher, welches Bier möchten Sie?",
                 "en": "Sure, which beer would you like?"
@@ -4205,6 +4206,7 @@
               "id": "de-drunk-19",
               "speaker": "them",
               "situation": { "en": "The round is going in and you'd rather sit this one out." },
+              "goal": "You'd rather sit this round out.",
               "question": { "es": "Willst du noch einen?", "en": "Want another one?" },
               "answers": [
                 { "es": "Ich mach mal Pause.", "en": "I'll sit one out." }

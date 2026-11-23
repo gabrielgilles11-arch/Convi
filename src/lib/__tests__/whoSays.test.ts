@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { whoFromSituation, whoSays } from "../whoSays";
 import { buildQuizItems } from "../quizItems";
-import { buildQuestion } from "../quizTypes";
+import { buildQuestion, coreOf, normalizeAnswer, tooAlike, translationCore } from "../quizTypes";
 import { getCategories, LOCALES } from "../content";
 
 describe("who says their line", () => {
@@ -75,6 +75,49 @@ describe.each(LOCALES.map((l) => l.locale))("%s: their line in Practice", (local
     if (reverse) {
       expect(reverse.heard ?? null).toBeNull();
       expect(reverse.shownAudio).toBeNull();
+    }
+  });
+});
+
+describe.each(LOCALES.map((l) => l.locale))("%s: no second right answer among the options", (locale) => {
+  const items = buildQuizItems(locale);
+  const meaningOf = (i: (typeof items)[number]) =>
+    i.kind === "phrase" ? coreOf(i.correctAnswer) : translationCore(i.correctAnswerTranslation ?? "");
+  const owners = new Map<string, typeof items>();
+  for (const i of items) {
+    const key = normalizeAnswer(coreOf(i.kind === "phrase" ? i.front : i.correctAnswer));
+    owners.set(key, [...(owners.get(key) ?? []), i]);
+  }
+
+  it("never offers a line meaning the answer, or answering their same line, as wrong", () => {
+    const bad: string[] = [];
+    for (const item of items.filter((i) => i.kind === "situation")) {
+      for (let n = 0; n < 15; n++) {
+        const q = buildQuestion(item, false, "choice", items, items)!;
+        if (!q) break;
+        for (const option of q.options) {
+          if (q.accepted.some((a) => normalizeAnswer(a) === normalizeAnswer(option))) continue;
+          for (const o of owners.get(normalizeAnswer(option)) ?? []) {
+            if (q.answerSub && tooAlike(meaningOf(o), q.answerSub)) bad.push(`${q.itemId}: "${option}" means "${q.answerSub}"`);
+            if (q.heard && o.heard && o.id !== item.id && tooAlike(o.heard.source, q.heard.source))
+              bad.push(`${q.itemId}: "${option}" answers "${o.heard.source}" too`);
+          }
+        }
+      }
+    }
+    expect([...new Set(bad)]).toEqual([]);
+  });
+
+  it("puts what you are after under their line wherever a scene or a goal says it", () => {
+    for (const item of items) {
+      if (!item.heard) continue;
+      const fromScene = item.heard.context === item.front;
+      expect(item.heard.context === null || fromScene || item.heard.context.length > 0, item.id).toBe(true);
+    }
+    // The one in the screenshot that started this: "Här, tack." is right
+    // unless you know it's to go.
+    if (locale === "sv-SE") {
+      expect(items.find((i) => i.id === "sv-beer-food-local-05")?.heard?.context).toMatch(/to go/);
     }
   });
 });
