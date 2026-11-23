@@ -660,12 +660,14 @@ const ES: TalkScript[] = [
         next: null,
       }),
     ],
-    // Asked where they're from back, one of them says. The answer ends on
-    // "¿Y tú?", which is the beat still being yours when you only asked back.
+    // Asked where they're from back, one of them says. Asked on its own, the
+    // answer ends on "¿Y tú?", which is the beat still being yours. Asked after
+    // you have said where you're from, it doesn't ask you again.
     askBack: {
       steps: ["from"],
       asks: [t("es-y-vosotros"), r("starting-convo-02")],
       alone: a("basics-describe-07", 0),
+      after: t("es-aqui-naci"),
     },
   },
 ];

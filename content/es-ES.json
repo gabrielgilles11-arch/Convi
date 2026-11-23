@@ -5270,6 +5270,7 @@
     {"id": "es-muchas-gracias", "es": "Muchas gracias.", "en": "Thank you very much."},
     {"id": "es-me-cobras", "es": "Me cobras, por favor.", "en": "Can I pay, please? (how locals ask for the check at a bar)"},
     {"id": "es-y-vosotros", "es": "¿Y vosotros?", "en": "And you? (to more than one person)"},
-    {"id": "es-que-haces-esta-noche", "es": "¿Qué haces esta noche?", "en": "What are you doing tonight?"}
+    {"id": "es-que-haces-esta-noche", "es": "¿Qué haces esta noche?", "en": "What are you doing tonight?"},
+    {"id": "es-aqui-naci", "es": "Aquí nací y aquí he vivido toda mi vida.", "en": "I was born here and I've lived here my whole life."}
   ]
 }
