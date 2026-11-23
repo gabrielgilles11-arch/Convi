@@ -136,7 +136,10 @@ jobs:
 
       - name: Install the listener
         if: inputs.mode != 'audition'
-        run: pip install --quiet faster-whisper
+        # PyAV is pinned below 19: that release dropped the `metadata_errors`
+        # argument faster-whisper passes to av.open(), so every clip failed to
+        # decode and the check died on the first one.
+        run: pip install --quiet faster-whisper "av<19"
 
       # Informational after a recording: a flagged clip is worth a listen, not
       # a reason to throw away eight hundred good ones.
