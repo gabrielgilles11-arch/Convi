@@ -5007,6 +5007,14 @@
     {"id": "de-gleichfalls", "es": "Danke, gleichfalls!", "en": "Thanks, you too!"},
     {"id": "de-danke", "es": "Danke!", "en": "Thanks!"},
     {"id": "de-stimmt-so", "es": "Stimmt so, danke.", "en": "Keep the change, thanks."},
-    {"id": "de-nein-danke", "es": "Nein, danke.", "en": "No, thanks."}
+    {"id": "de-nein-danke", "es": "Nein, danke.", "en": "No, thanks."},
+    {"id": "de-filler-ja", "es": "Ja.", "en": "Yeah."},
+    {"id": "de-filler-genau", "es": "Genau.", "en": "Exactly. / Right."},
+    {"id": "de-filler-also", "es": "Also…", "en": "So… / Well…"},
+    {"id": "de-filler-okay", "es": "Okay.", "en": "Okay."},
+    {"id": "de-filler-gut", "es": "Gut.", "en": "Good. / Alright."},
+    {"id": "de-filler-mhm", "es": "Mhm.", "en": "Mm-hm."},
+    {"id": "de-filler-aeh", "es": "Äh…", "en": "Uh…"},
+    {"id": "de-filler-so", "es": "So.", "en": "Right then."}
   ]
 }

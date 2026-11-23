@@ -5372,6 +5372,13 @@
     {"id": "sv-hej-hej", "es": "Hej hej!", "en": "Bye bye!"},
     {"id": "sv-tack-hej", "es": "Tack hej!", "en": "Thanks, bye!"},
     {"id": "sv-tack", "es": "Tack!", "en": "Thanks!"},
-    {"id": "sv-kan-jag-fa-kaffe", "es": "Hej! Kan jag få en kaffe och en kanelbulle?", "en": "Hi! Can I get a coffee and a cinnamon bun?"}
+    {"id": "sv-kan-jag-fa-kaffe", "es": "Hej! Kan jag få en kaffe och en kanelbulle?", "en": "Hi! Can I get a coffee and a cinnamon bun?"},
+    {"id": "sv-filler-ja", "es": "Ja.", "en": "Yeah."},
+    {"id": "sv-filler-mm", "es": "Mm.", "en": "Mm-hm."},
+    {"id": "sv-filler-okej", "es": "Okej.", "en": "Okay."},
+    {"id": "sv-filler-precis", "es": "Precis.", "en": "Exactly. / Right."},
+    {"id": "sv-filler-alltsa", "es": "Alltså…", "en": "Well… / I mean…"},
+    {"id": "sv-filler-eh", "es": "Eh…", "en": "Um…"},
+    {"id": "sv-filler-jaha", "es": "Jaha.", "en": "Oh, I see."}
   ]
 }

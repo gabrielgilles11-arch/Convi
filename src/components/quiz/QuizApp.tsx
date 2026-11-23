@@ -25,8 +25,10 @@ import {
   followingConversation,
   type Conversation,
   type ConversationPayload,
+  type ConvLine,
 } from "../../lib/conversationTypes";
 import { huhThisRound, withHuh, type RepairKit } from "../../lib/repairTypes";
+import { fillerBag, withFillerQuestions, withFillerReactions } from "../../lib/fillerTypes";
 import { markReminderPrompt, reminderPromptAnswered } from "../../lib/reminderClient";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
@@ -112,6 +114,13 @@ export default function QuizApp({ locale }: Props) {
   const [conversations, setConversations] = useState<Conversation[] | null>(null);
   /** The lines Talk's "Huh?" moment is made of, from the same payload. */
   const [talkRepair, setTalkRepair] = useState<RepairKit | null>(null);
+  /** The fillers a Talk reply can open with, from the same payload. */
+  const [talkFillers, setTalkFillers] = useState<ConvLine[]>([]);
+  /**
+   * Bumped every time a conversation is opened, so the fillers are drawn
+   * afresh each time rather than once per page load (lib/fillerTypes.ts).
+   */
+  const [convoOpens, setConvoOpens] = useState(0);
   const [convoError, setConvoError] = useState("");
   const [convoId, setConvoId] = useState<string | null>(null);
   const [convoDone, setConvoDone] = useState<string[]>([]);
@@ -215,6 +224,7 @@ export default function QuizApp({ locale }: Props) {
         if (!cancelled) {
           setConversations(data.conversations);
           setTalkRepair(data.repair ?? null);
+          setTalkFillers(data.fillers ?? []);
         }
       })
       .catch((err: Error) => {
@@ -304,6 +314,19 @@ export default function QuizApp({ locale }: Props) {
   // A stale id — a locale switch while a conversation was open — resolves to
   // nothing, and nothing means the picker rather than a crash.
   const chosenConvo = convoId ? (conversations?.find((c) => c.id === convoId) ?? null) : null;
+  // Some of its replies with a filler in front, drawn once per opening.
+  const seededConvo = useMemo(
+    () =>
+      chosenConvo
+        ? withFillerReactions(chosenConvo, talkFillers.length ? fillerBag(locale ?? "es-ES", talkFillers) : null)
+        : null,
+    [chosenConvo, talkFillers, convoOpens]
+  );
+
+  function openConvo(id: string | null) {
+    setConvoOpens((n) => n + 1);
+    setConvoId(id);
+  }
 
   const stageIndex = stages.findIndex((s) => s.id === stageId);
   const nextStage = stageIndex >= 0 && stageIndex + 1 < stages.length ? stages[stageIndex + 1] : null;
@@ -616,7 +639,8 @@ export default function QuizApp({ locale }: Props) {
             onBackToPath={() => setMode("path")}
             makeRound={(pool, all) => {
               const round = buildRound(pool, all);
-              return huhThisRound() ? withHuh(round, pool, payload.repair ?? null) : round;
+              const bag = payload.fillers?.length ? fillerBag(locale ?? "es-ES", payload.fillers) : null;
+              return withFillerQuestions(huhThisRound() ? withHuh(round, pool, payload.repair ?? null) : round, bag);
             }}
           />
         </>
@@ -640,7 +664,7 @@ export default function QuizApp({ locale }: Props) {
               // The bar conversation: "beer-food-main" in every edition.
               const first =
                 conversations?.find((c) => /(^|-)beer-food-main$/.test(c.id)) ?? conversations?.[0];
-              setConvoId(first?.id ?? null);
+              openConvo(first?.id ?? null);
             }}
             onBrowse={() => {
               markWelcomeSeen("talk", locale ?? "es-ES");
@@ -653,24 +677,24 @@ export default function QuizApp({ locale }: Props) {
           />
         ) : conversations === null ? (
           <p className="quiz-loading">Loading the conversations...</p>
-        ) : chosenConvo ? (
+        ) : seededConvo ? (
           <ConversationMode
-            conversation={chosenConvo}
+            conversation={seededConvo}
             locale={locale ?? "es-ES"}
-            following={followingConversation(conversations, chosenConvo.id)}
+            following={followingConversation(conversations, seededConvo.id)}
             onBack={() => setConvoId(null)}
             onFinish={(id) => {
               markConversationFinished(id);
               setConvoDone(finishedConversations());
             }}
-            onContinue={setConvoId}
+            onContinue={openConvo}
             repair={talkRepair}
           />
         ) : (
           <ConversationPicker
             conversations={conversations}
             finished={convoDone}
-            onStart={setConvoId}
+            onStart={openConvo}
             onBack={() => setMode("path")}
           />
         ))}

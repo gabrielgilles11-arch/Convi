@@ -3,6 +3,7 @@ import { ENT_COOKIE, verifyEntitlement } from "../../lib/entitlement";
 import { PAYWALL_ENABLED } from "../../lib/paywall";
 import { buildQuizItems, getCategoryList } from "../../lib/quizItems";
 import { buildRepairKit } from "../../lib/repair";
+import { buildFillers } from "../../lib/fillers";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../../lib/content";
 
 export const prerender = false;
@@ -33,7 +34,7 @@ export const GET: APIRoute = async ({ cookies, url }) => {
     JSON.stringify({
       items: buildQuizItems(locale),
       categories: getCategoryList(locale),
-      repair: buildRepairKit(locale),
+      repair: buildRepairKit(locale), fillers: buildFillers(locale),
     }),
     {
       status: 200,

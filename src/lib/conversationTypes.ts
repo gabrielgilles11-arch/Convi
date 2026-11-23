@@ -154,6 +154,8 @@ export interface ConversationPayload {
   conversations: Conversation[];
   /** The lines a "Huh?" moment is made of, for this edition. */
   repair: import("./repairTypes").RepairKit | null;
+  /** The fillers a reply can open with, for this edition (lib/fillerTypes.ts). */
+  fillers?: ConvLine[];
 }
 
 /**

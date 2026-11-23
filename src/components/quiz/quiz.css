@@ -1002,6 +1002,24 @@
   text-underline-offset: 0.2em;
 }
 
+/* A filler in front of their reply ("Pues…"): its own short line, sized to its
+   words rather than stretched across the drawer, with its gloss beside it. */
+.drawer-reaction {
+  flex-wrap: wrap;
+  margin-bottom: 0.1rem;
+}
+
+.drawer-reaction .drawer-line-text {
+  flex: 0 1 auto;
+}
+
+.drawer-reaction-en {
+  margin-left: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-ink-soft);
+}
+
 .drawer-line-en {
   margin: 0.15rem 0 0;
   font-size: 0.9rem;

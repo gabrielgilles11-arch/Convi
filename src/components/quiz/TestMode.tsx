@@ -826,6 +826,27 @@ export default function TestMode({
             {q.reply && (
               <div className="drawer-line drawer-reply">
                 <p className="drawer-line-label">{q.huh ? "They'll repeat it" : "They'll say back"}</p>
+                {/* A filler before it, now and then (lib/fillerTypes.ts): the
+                    "Pues…" a local opens with, on its own line so the reply
+                    itself stays exactly as written. */}
+                {q.reaction && (
+                  <div className="drawer-line-row drawer-reaction">
+                    <button
+                      type="button"
+                      className="drawer-line-text"
+                      onClick={() => void speak(locale, q.reaction!.audioId, q.reaction!.source, "practice")}
+                    >
+                      {q.reaction.source}
+                    </button>
+                    <AudioButton
+                      locale={locale}
+                      audioId={q.reaction.audioId}
+                      text={q.reaction.source}
+                      label="Hear it"
+                    />
+                    {q.reaction.en && <span className="drawer-reaction-en">{q.reaction.en}</span>}
+                  </div>
+                )}
                 <div className="drawer-line-row">
                   <button
                     type="button"

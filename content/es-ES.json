@@ -5270,6 +5270,15 @@
     {"id": "es-muchas-gracias", "es": "Muchas gracias.", "en": "Thank you very much."},
     {"id": "es-me-cobras", "es": "Me cobras, por favor.", "en": "Can I pay, please? (how locals ask for the check at a bar)"},
     {"id": "es-y-vosotros", "es": "¿Y vosotros?", "en": "And you? (to more than one person)"},
-    {"id": "es-que-haces-esta-noche", "es": "¿Qué haces esta noche?", "en": "What are you doing tonight?"}
+    {"id": "es-que-haces-esta-noche", "es": "¿Qué haces esta noche?", "en": "What are you doing tonight?"},
+    {"id": "es-filler-vale", "es": "Vale.", "en": "Okay."},
+    {"id": "es-filler-claro", "es": "Claro.", "en": "Sure. / Of course."},
+    {"id": "es-filler-bueno", "es": "Bueno…", "en": "Well…"},
+    {"id": "es-filler-pues", "es": "Pues…", "en": "Well… / So…"},
+    {"id": "es-filler-ya", "es": "Ya.", "en": "Right. / I see."},
+    {"id": "es-filler-si-si", "es": "Sí, sí.", "en": "Yeah, yeah."},
+    {"id": "es-filler-a-ver", "es": "A ver…", "en": "Let's see…"},
+    {"id": "es-filler-eh", "es": "Eh…", "en": "Um…"},
+    {"id": "es-filler-entonces", "es": "Entonces…", "en": "So then…"}
   ]
 }

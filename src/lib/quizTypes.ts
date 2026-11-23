@@ -95,6 +95,8 @@ export interface QuizPayload {
   categories: QuizCategory[];
   /** The lines a "Huh?" question is made of, for this edition. */
   repair?: import("./repairTypes").RepairKit | null;
+  /** The fillers a reply can open with, for this edition (lib/fillerTypes.ts). */
+  fillers?: { source: string; en: string | null; audioId: string | null }[];
 }
 
 /**
@@ -780,6 +782,11 @@ export interface Question {
    * asking for it again. Absent on every ordinary question.
    */
   huh?: boolean;
+  /**
+   * A filler before their reply ("Pues…", "Genau."), shown above it in the
+   * drawer. Picked per round (lib/fillerTypes.ts). Absent on most questions.
+   */
+  reaction?: { source: string; en: string | null; audioId: string | null } | null;
 }
 
 /** One row of a matching screen: a phrase and the meaning it belongs to. */
