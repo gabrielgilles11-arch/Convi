@@ -30,11 +30,6 @@ export const SV_FILLERS: TalkFillerSlots = {
     // You say it was lovely, they are glad to hear it.
     taste: [{ phrase: "sv-slang-heard-02", when: "before-reply" }],
   },
-  "sv-hotel-checkin": {
-    // They have the booking up and are checking the length of stay against
-    // it, so your answer matching gets a confirmation before the room number.
-    nights: [{ phrase: "sv-slang-heard-06", when: "before-reply" }],
-  },
   "sv-nightlife-friends": {
     // A local's tip for the next bar is their own opinion.
     tip: [{ phrase: "sv-slang-heard-08", when: "after-reply" }],
