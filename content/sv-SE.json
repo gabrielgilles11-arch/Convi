@@ -1856,6 +1856,22 @@
             { "id": "sv-slang-tone-09", "es": "Det där var inte kul liksom.", "en": "That wasn't, like, cool.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "sv-slang-tone-10", "es": "Det blir nog bra.", "en": "It'll probably turn out fine. (nog: a confident guess, the classic way to play down worry)", "difficulty": "easy", "quizQuestions": [] }
           ]
+        },
+        {
+          "id": "sv-slang-heard",
+          "title": "Heard on every podcast",
+          "phrases": [
+            { "id": "sv-slang-heard-01", "es": "så här…", "en": "Like… Before quoting someone or acting out what happened.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-02", "es": "Ja men…", "en": "Yeah, but… / Well, yeah… Opens a reply, agreeing before adding something.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-03", "es": "…och så…", "en": "…and then… Strings the parts of a story together.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-04", "es": "…så att…", "en": "…so… Leads into a result, or a conclusion you're drawing.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "sv-slang-heard-05", "es": "…du vet?", "en": "…you know? Checks the other person is with you.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-06", "es": "Exakt.", "en": "Exactly. Strong agreement.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-07", "es": "Nej, nej.", "en": "No, no. Said softly while listening, or to wave something off.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-08", "es": "…tycker jag.", "en": "…I think. Tagged onto the end of an opinion to soften it.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-09", "es": "Så där.", "en": "So-so. / Meh. How something was, when it was not great.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "sv-slang-heard-10", "es": "I alla fall…", "en": "Anyway… / At least… Gets a story back on track.", "difficulty": "easy", "quizQuestions": [] }
+          ]
         }
       ]
     },

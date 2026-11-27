@@ -1180,6 +1180,22 @@
             { "id": "de-slang-fill-09", "es": "Warum hast du eigentlich nie zurückgerufen?", "en": "Why, actually, didn't you ever call back? (eigentlich softens it, or adds a note of reproach)", "difficulty": "medium", "quizQuestions": [] },
             { "id": "de-slang-fill-10", "es": "Das war ein langer Tag, ne?", "en": "That was a long day, huh? (ne? is the casual tag, mostly north and center)", "difficulty": "easy", "quizQuestions": [] }
           ]
+        },
+        {
+          "id": "de-slang-heard",
+          "title": "Heard on every podcast",
+          "phrases": [
+            { "id": "de-slang-heard-01", "es": "Irgendwie…", "en": "Kind of… / Somehow… The all-purpose hedge before almost any statement.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-heard-02", "es": "…und so.", "en": "…and stuff. Closes a list without finishing it.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-heard-03", "es": "…oder so.", "en": "…or something. Makes a guess sound casual.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-heard-04", "es": "Ich meine…", "en": "I mean… Restates or corrects what you just said.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-heard-05", "es": "Sozusagen…", "en": "So to speak… Flags a loose way of putting it.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-heard-06", "es": "Tatsächlich?", "en": "Really? / Actually… Surprise, or confirming something unexpected.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-heard-07", "es": "Trotzdem…", "en": "Still… / Anyway… Goes ahead despite what was just said.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-heard-08", "es": "…weißt du?", "en": "…you know? Tagged onto the end of a sentence to keep the listener with you.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "de-slang-heard-09", "es": "…nämlich.", "en": "…you see. Gives the reason behind what you just said.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "de-slang-heard-10", "es": "Egal.", "en": "Whatever. / Never mind. Drops a topic and moves on.", "difficulty": "easy", "quizQuestions": [] }
+          ]
         }
       ]
     },

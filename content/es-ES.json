@@ -1672,6 +1672,22 @@
             { "id": "slang-fill-07", "es": "¿Sabes?", "en": "You know? Checks the other person is following, or agrees.", "difficulty": "easy", "quizQuestions": [] },
             { "id": "slang-fill-08", "es": "¿Vale?", "en": "Okay? Tagged onto the end of a sentence, like when giving directions.", "difficulty": "easy", "quizQuestions": [] }
           ]
+        },
+        {
+          "id": "slang-heard",
+          "title": "Heard on every podcast",
+          "phrases": [
+            { "id": "slang-heard-01", "es": "No sé…", "en": "I dunno… Hedges an answer, or trails off the end of a thought.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-heard-02", "es": "Sí, sí.", "en": "Yeah, yeah. Said while the other person is talking, to show you're following.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-heard-03", "es": "Además…", "en": "Plus… / On top of that… Adds one more point.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-heard-04", "es": "A lo mejor…", "en": "Maybe… The everyday way to say it in Spain, far more common than quizás.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-heard-05", "es": "Como que…", "en": "Like… / Sort of… Softens a description before you give it.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-heard-06", "es": "Tipo…", "en": "Like… Before an example or a quote. Mostly younger speakers.", "difficulty": "medium", "young": true, "quizQuestions": [] },
+            { "id": "slang-heard-07", "es": "De hecho…", "en": "Actually… / In fact… Backs up or corrects what was just said.", "difficulty": "medium", "quizQuestions": [] },
+            { "id": "slang-heard-08", "es": "…y tal.", "en": "…and stuff. Closes a list without finishing it.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-heard-09", "es": "Pero bueno…", "en": "But anyway… Wraps up a complaint and moves on.", "difficulty": "easy", "quizQuestions": [] },
+            { "id": "slang-heard-10", "es": "…y eso.", "en": "…and all that. Closes a list, like y tal.", "difficulty": "easy", "quizQuestions": [] }
+          ]
         }
       ]
     },

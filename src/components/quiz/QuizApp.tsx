@@ -27,6 +27,7 @@ import {
   type ConversationPayload,
 } from "../../lib/conversationTypes";
 import { huhThisRound, withHuh, type RepairKit } from "../../lib/repairTypes";
+import { fillerThisRound, withFiller } from "../../lib/fillerTypes";
 import { markReminderPrompt, reminderPromptAnswered } from "../../lib/reminderClient";
 import { recordRound } from "../../lib/usage";
 import PracticePath from "./PracticePath";
@@ -112,6 +113,8 @@ export default function QuizApp({ locale }: Props) {
   const [conversations, setConversations] = useState<Conversation[] | null>(null);
   /** The lines Talk's "Huh?" moment is made of, from the same payload. */
   const [talkRepair, setTalkRepair] = useState<RepairKit | null>(null);
+  /** Fillers that may sit around a typed Talk reply (lib/fillerTypes.ts). */
+  const [talkFillerWords, setTalkFillerWords] = useState<string[]>([]);
   const [convoError, setConvoError] = useState("");
   const [convoId, setConvoId] = useState<string | null>(null);
   const [convoDone, setConvoDone] = useState<string[]>([]);
@@ -215,6 +218,7 @@ export default function QuizApp({ locale }: Props) {
         if (!cancelled) {
           setConversations(data.conversations);
           setTalkRepair(data.repair ?? null);
+          setTalkFillerWords(data.fillerWords ?? []);
         }
       })
       .catch((err: Error) => {
@@ -479,7 +483,8 @@ export default function QuizApp({ locale }: Props) {
             <StreakBadge streak={streak} roundsToday={roundsToday} />
           </div>
           <p className="path-intro">
-            Work along the path. A round is {ROUND_LENGTH} questions: clear it at{" "}
+            Work along the path. A round is {ROUND_LENGTH} questions, now and then{" "}
+            {ROUND_LENGTH + 1} once you know some fillers: clear it at{" "}
             {STAGE_CLEAR_SCORE}% and the circle fills. Bigger sections take a few rounds, so keep
             tapping the same circle until it's full.
           </p>
@@ -616,7 +621,10 @@ export default function QuizApp({ locale }: Props) {
             onBackToPath={() => setMode("path")}
             makeRound={(pool, all) => {
               const round = buildRound(pool, all);
-              return huhThisRound() ? withHuh(round, pool, payload.repair ?? null) : round;
+              const withRepair = huhThisRound() ? withHuh(round, pool, payload.repair ?? null) : round;
+              // Some rounds get one filler question on top, once the fillers
+              // have been reached: ten questions instead of nine.
+              return fillerThisRound() ? withFiller(withRepair, pool, all) : withRepair;
             }}
           />
         </>
@@ -665,6 +673,10 @@ export default function QuizApp({ locale }: Props) {
             }}
             onContinue={setConvoId}
             repair={talkRepair}
+            fillerWords={talkFillerWords}
+            // A conversation never finished is still being learned: a filler
+            // there is only length (lib/fillerTypes.ts, planFillerTurn).
+            firstPlay={!convoDone.includes(chosenConvo.id)}
           />
         ) : (
           <ConversationPicker

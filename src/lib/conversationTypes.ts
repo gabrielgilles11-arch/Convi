@@ -67,6 +67,12 @@ export interface ConvTurn {
   accepts: ConvLine[][];
   /** Their short reaction before the reply to each of `yourLines` ("Vale."). */
   reactions: (ConvLine | null)[];
+  /**
+   * Fillers the local can say at this beat, each as a line of its own, chosen
+   * by hand where one fits (lib/talkFillers.ts). Most runs say none of them:
+   * see `planFillerTurn` in lib/fillerTypes.ts.
+   */
+  fillers: ConvFiller[];
   /** What comes back to the first of your lines. The common case, for display. */
   theirReply: ConvLine | null;
   /** The authored note about this exchange, where it has one. */
@@ -154,6 +160,20 @@ export interface ConversationPayload {
   conversations: Conversation[];
   /** The lines a "Huh?" moment is made of, for this edition. */
   repair: import("./repairTypes").RepairKit | null;
+  /**
+   * The edition's fillers, as written, that may sit at the start or end of a
+   * typed reply without making it wrong: "Pues, una caña" is "Una caña".
+   */
+  fillerWords?: string[];
+}
+
+/** A filler the local may say at a beat, and where it goes. */
+export interface ConvFiller {
+  line: ConvLine;
+  /** Before their reply to your line, or trailing it. */
+  when: "before-reply" | "after-reply";
+  /** The indexes of your lines it fits after; null for any of them. */
+  on: number[] | null;
 }
 
 /**

@@ -6,6 +6,7 @@ import {
   readingTime,
   splitAskBack,
   type ConvAskBack,
+  type ConvFiller,
   type Conversation,
   type ConvLine,
   type ConvTurn,
@@ -15,6 +16,12 @@ import {
 import AudioButton from "./AudioButton";
 import { placeName } from "./ConversationPicker";
 import { prefetchClips, speak, stopSpeaking } from "./speech";
+import {
+  gradeAllowingFillers,
+  pickFiller,
+  planFillerTurn,
+  RECENT_FILLERS,
+} from "../../lib/fillerTypes";
 import { registerOf, REGISTER_LABEL } from "../../lib/register";
 import { LANGUAGE_NAME } from "../../lib/welcome";
 import {
@@ -74,6 +81,33 @@ interface Props {
   onContinue: (id: string) => void;
   /** The lines a "Huh?" moment is made of. Null: no moment, ever. */
   repair: RepairKit | null;
+  /** Fillers that may sit around a typed reply without making it wrong. */
+  fillerWords?: string[];
+  /**
+   * Not finished before. A first play gets no filler from the local: there it
+   * is only length between the learner and the end of the conversation.
+   */
+  firstPlay?: boolean;
+}
+
+/** The fillers said lately in this edition, newest first, so runs vary. */
+function recentFillers(locale: string): string[] {
+  try {
+    const raw = window.localStorage.getItem(`convi:talk-fillers:v1:${locale}`);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list.filter((x): x is string => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function rememberFiller(locale: string, key: string): void {
+  try {
+    const next = [key, ...recentFillers(locale).filter((k) => k !== key)].slice(0, RECENT_FILLERS);
+    window.localStorage.setItem(`convi:talk-fillers:v1:${locale}`, JSON.stringify(next));
+  } catch {
+    // No storage: the pick is still random, it just may repeat.
+  }
 }
 
 /** What was actually said on a beat, once it is settled. */
@@ -94,6 +128,8 @@ interface Said {
   recommended: ConvLine | null;
   /** They asked a question back after their answer ("¿y vosotros?"). */
   askedBack?: boolean;
+  /** A filler the local says on this beat, as a line of its own. */
+  filler?: ConvFiller | null;
 }
 
 /**
@@ -126,6 +162,7 @@ function preLines(turn: ConvTurn, said: Said, askBack: ConvAskBack | null): Conv
   if (said.askedBack && askBack) out.push(askBack.after);
   const reaction = turn.reactions[said.index];
   if (reaction) out.push(reaction);
+  if (said.filler?.when === "before-reply") out.push(said.filler.line);
   return out;
 }
 
@@ -442,6 +479,7 @@ function Beat({
   aside,
   askBack,
   preShown,
+  tailShown,
 }: {
   turn: ConvTurn;
   /** The "Huh?" moment on this beat, where there is one. */
@@ -451,6 +489,8 @@ function Beat({
   askBack: ConvAskBack | null;
   /** How many of the lines before their reply are out, on the beat on screen. */
   preShown: number;
+  /** A filler trailing their reply is out, on the beat on screen. */
+  tailShown: boolean;
   /** The opening beat of a conversation, which always sets its scene. */
   first: boolean;
   /** Where you are, said once above the first line. */
@@ -621,6 +661,18 @@ function Beat({
             />
           )}
 
+          {reply && replyOut && tailShown && said.filler?.when === "after-reply" && (
+            <Bubble
+              line={said.filler.line}
+              side="them"
+              locale={locale}
+              english={english}
+              openKey={openKey}
+              popKey={`${turn.id}-tail`}
+              onPop={onPop}
+            />
+          )}
+
           {outro &&
             replyOut &&
             outroState !== "none" &&
@@ -662,11 +714,14 @@ function Transcript({
   huh,
   aside,
   preShown,
+  tailShown,
 }: {
   conversation: Conversation;
   aside: Aside | null;
   /** Lines before their reply that are out, on the beat on screen. */
   preShown: number;
+  /** A filler trailing their reply is out, on the beat on screen. */
+  tailShown: boolean;
   route: number[];
   said: Record<number, Said>;
   /** The "Huh?" moment in this conversation, where it had one. */
@@ -709,6 +764,7 @@ function Transcript({
             aside={aside && aside.step === index ? aside : null}
             askBack={conversation.askBack ?? null}
             preShown={current ? preShown : Number.POSITIVE_INFINITY}
+            tailShown={current ? tailShown : true}
           />
         );
       })}
@@ -736,6 +792,8 @@ export default function ConversationMode({
   onFinish,
   onContinue,
   repair,
+  fillerWords = [],
+  firstPlay = true,
 }: Props) {
   const turns = conversation.turns;
 
@@ -759,6 +817,10 @@ export default function ConversationMode({
   const [aside, setAside] = useState<Aside | null>(null);
   /** Lines before their reply that are out on this beat (see `preLines`). */
   const [preShown, setPreShown] = useState(0);
+  /** A filler trailing their reply is out, on the beat on screen. */
+  const [tailShown, setTailShown] = useState(false);
+  /** The beat this run's filler is due on, if it has one at all. */
+  const fillerAt = useRef<number | null>(null);
   /** Where this run's moment is due, if it has one at all. */
   const huhAt = useRef<HuhPlan | null>(null);
   /** Beats walked so far on which they spoke first, for an `nth` plan. */
@@ -901,6 +963,7 @@ export default function ConversationMode({
     setHuh(null);
     setAside(null);
     setPreShown(0);
+    setTailShown(false);
     theirBeats.current = 0;
     setRoute([0]);
     setSaid({});
@@ -919,6 +982,7 @@ export default function ConversationMode({
     // Running it again is not a new conversation started, so it does not
     // count toward the every-third moment. A wired one still has its moment.
     huhAt.current = repair && conversation.huhAt !== null ? huhPlan(conversation) : null;
+    fillerAt.current = planFillerTurn(turns, firstPlay);
     void openBeat(0, run);
   }
 
@@ -931,6 +995,9 @@ export default function ConversationMode({
     // somewhere in it; the wired ones always do. Decided before the first beat
     // opens, since the first beat can be where it lands.
     huhAt.current = repair && huhDue(conversation, bumpTalkCount()) ? huhPlan(conversation) : null;
+    // A filler from the local, on one beat, in a minority of runs and never a
+    // first play (lib/fillerTypes.ts).
+    fillerAt.current = planFillerTurn(turns, firstPlay);
     theirBeats.current = 0;
     void openBeat(0, run);
     // The lines this conversation says without being asked, fetched now so
@@ -942,6 +1009,7 @@ export default function ConversationMode({
         turn.yourLines[0]?.audioId ?? null,
         ...turn.replies.map((reply) => reply?.audioId ?? null),
         ...turn.reactions.map((line) => line?.audioId ?? null),
+        ...turn.fillers.map((filler) => filler.line.audioId),
       ])
     );
     return () => {
@@ -980,6 +1048,22 @@ export default function ConversationMode({
     engaged.current = true;
     const run = ++runId.current;
     const index = Math.max(0, current.yourLines.indexOf(verdict.line));
+    // The local's filler, if this is the beat this run planned one for and
+    // one fits after the line you said.
+    let filler: ConvFiller | null = null;
+    if (fillerAt.current === step) {
+      fillerAt.current = null;
+      filler = pickFiller(
+        current,
+        index,
+        {
+          crowded: Boolean(current.reactions[index]) || (askedBack && Boolean(conversation.askBack)),
+          hasReply: Boolean(current.replies[index]),
+        },
+        recentFillers(locale)
+      );
+      if (filler) rememberFiller(locale, filler.line.audioId ?? filler.line.source);
+    }
     const entry: Said = {
       line: verdict.line,
       index,
@@ -988,9 +1072,11 @@ export default function ConversationMode({
       close: verdict.close,
       recommended: verdict.recommended,
       ...(askedBack ? { askedBack: true } : {}),
+      ...(filler ? { filler } : {}),
     };
     setSaid((prev) => ({ ...prev, [step]: entry }));
     setPreShown(0);
+    setTailShown(false);
     setTyped("");
     setOpenKey(null);
     setPhase("answered");
@@ -1044,6 +1130,15 @@ export default function ConversationMode({
     await whenVisible();
     if (!alive()) return;
 
+    // A filler trailing their reply ("…y tal."), said as its own line.
+    if (entry.filler?.when === "after-reply") {
+      setTailShown(true);
+      const tail = speakLine(entry.filler.line);
+      await Promise.race([Promise.all([tail, pause(readingTime(entry.filler.line.source))]), pause(MAX_WAIT)]);
+      await whenVisible();
+      if (!alive()) return;
+    }
+
     // Where the script goes from the line you said. A wrong answer counts as
     // the line it was corrected to, so a miss never strands the conversation.
     const next = turn.next[entry.index] ?? null;
@@ -1086,12 +1181,12 @@ export default function ConversationMode({
       askAlone(typed.trim());
       return;
     }
-    const whole = gradeReply(typed, current.yourLines, current.accepts);
+    const whole = gradeAllowingFillers(typed, current.yourLines, current.accepts, fillerWords);
     if (split && split.rest) {
       // Graded on the answer, the question back answered on its own. Where the
       // whole thing is an authored line to the letter, that verdict stands.
       const exact = whole.correct && whole.recommended === null;
-      const answer = gradeReply(split.rest, current.yourLines, current.accepts);
+      const answer = gradeAllowingFillers(split.rest, current.yourLines, current.accepts, fillerWords);
       // Already answered once, on its own: they don't say it all again.
       settle(exact || !answer.correct ? whole : answer, typed.trim(), !aside);
       return;
@@ -1192,6 +1287,7 @@ export default function ConversationMode({
             huh={segment.huh}
             aside={segment.aside}
             preShown={Number.POSITIVE_INFINITY}
+            tailShown
             locale={locale}
             english={english}
             openKey={openKey}
@@ -1214,6 +1310,7 @@ export default function ConversationMode({
         huh={huh}
         aside={aside}
         preShown={preShown}
+        tailShown={tailShown}
         locale={locale}
         english={english}
         openKey={openKey}

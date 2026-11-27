@@ -23,6 +23,7 @@ import {
 } from "../../lib/progress";
 import { registerOf, REGISTER_LABEL } from "../../lib/register";
 import { saysTheLine } from "../../lib/conversationTypes";
+import { answeredAllowingFillers, fillerWordsOfItems } from "../../lib/fillerTypes";
 
 /**
  * Lines listed on the round summary before it turns into a wall.
@@ -155,6 +156,8 @@ export default function TestMode({
   onFinish,
 }: Props) {
   const [round, setRound] = useState<Question[]>(() => makeRound(items, allItems));
+  /** Fillers that may sit around a typed answer (lib/fillerTypes.ts). */
+  const fillerWords = useMemo(() => fillerWordsOfItems(allItems), [allItems]);
   /**
    * Positions in `round` still to be answered correctly. A wrong answer sends
    * its question to the back rather than dropping it, so a round is not over
@@ -402,8 +405,11 @@ export default function TestMode({
     // A moment you answer ("what do you say?") takes what Talk would take: the
     // key words of any line written for it, or the line with your own name,
     // place or number in the blank. A translation still wants the line itself.
+    // Either way a filler around the line ("Pues, una caña") does not make it
+    // wrong, where the line is in the language: that is how it is said.
     settle(
       answeredIt(typed, q.accepted) ||
+        (q.answerLang === "source" && answeredAllowingFillers(typed, q.accepted, fillerWords)) ||
         (q.saidByYou && q.accepted.some((line) => saysTheLine(typed, line)))
     );
   }

@@ -18,6 +18,8 @@ import {
 } from "./conversationTypes";
 import { indexExchanges, resolveRef, type Indexed } from "./gameScenes";
 import { TALK_SCRIPTS, type TalkRef, type TalkScript, type TalkStep } from "./talkScripts";
+import { TALK_FILLERS, type FillerSlot } from "./talkFillers";
+import { FILLER_SUBSECTIONS, fillerWordsOf } from "./fillerTypes";
 
 /**
  * Turning Talk's scripts into conversations you can hold.
@@ -33,6 +35,8 @@ import { TALK_SCRIPTS, type TalkRef, type TalkScript, type TalkStep } from "./ta
 export type LineIndex = {
   exchanges: Map<string, Indexed>;
   talk: Map<string, ConvLine>;
+  /** Word-list entries, by id: where a filler slot finds its line. */
+  phrases?: Map<string, ConvLine>;
 };
 
 export function indexLines(locale: Locale): LineIndex {
@@ -41,7 +45,30 @@ export function indexLines(locale: Locale): LineIndex {
     // Recorded under the line's own id (scripts/generate-audio.mjs).
     talk.set(line.id, { source: line.es, en: line.en, audioId: null });
   }
-  return { exchanges: indexExchanges(locale), talk };
+  const phrases = new Map<string, ConvLine>();
+  for (const category of getCategories(locale)) {
+    for (const sub of category.subsections) {
+      for (const p of (sub as { phrases?: { id: string; es: string; en: string }[] }).phrases ?? []) {
+        // Recorded under the phrase's own id, like a talk line.
+        phrases.set(p.id, { source: p.es, en: p.en, audioId: p.id });
+      }
+    }
+  }
+  return { exchanges: indexExchanges(locale), talk, phrases };
+}
+
+/** The edition's fillers that may sit around a typed reply (lib/fillerTypes.ts). */
+export function fillerWords(locale: Locale): string[] {
+  const entries: { id: string; subsectionId: string; text: string }[] = [];
+  for (const category of getCategories(locale)) {
+    for (const sub of category.subsections) {
+      if (!FILLER_SUBSECTIONS.has(sub.id)) continue;
+      for (const p of (sub as { phrases?: { id: string; es: string }[] }).phrases ?? []) {
+        entries.push({ id: p.id, subsectionId: sub.id, text: p.es });
+      }
+    }
+  }
+  return fillerWordsOf(entries);
 }
 
 /**
@@ -77,8 +104,15 @@ export function resolveScript(
   index: LineIndex,
   script: TalkScript,
   category: Category,
-  title: string
+  title: string,
+  /** Step id → the fillers that fit there (lib/talkFillers.ts). */
+  fillerSlots: Record<string, FillerSlot[]> = {}
 ): Conversation {
+  for (const stepId of Object.keys(fillerSlots)) {
+    if (!script.steps.some((s) => s.id === stepId)) {
+      throw new Error(`Talk fillers for ${script.id}: no step ${stepId}`);
+    }
+  }
   const position = new Map(script.steps.map((s, i) => [s.id, i]));
 
   /** A step's `next`, as an index: omitted is the following step, null the end. */
@@ -126,6 +160,16 @@ export function resolveScript(
       outros,
       accepts,
       reactions,
+      fillers: (fillerSlots[step.id] ?? []).map((slot) => {
+        const line = index.phrases?.get(slot.phrase);
+        if (!line) throw new Error(`Talk fillers for ${script.id}/${step.id}: no phrase ${slot.phrase}`);
+        for (const at of slot.on ?? []) {
+          if (!Number.isInteger(at) || at < 0 || at >= step.says.length) {
+            throw new Error(`Talk fillers for ${script.id}/${step.id}: no line ${at} to follow`);
+          }
+        }
+        return { line, when: slot.when, on: slot.on ?? null };
+      }),
       theirReply: replies[0] ?? null,
       note: lead?.notes ?? "",
     };
@@ -192,7 +236,9 @@ export function buildConversations(locale: Locale = DEFAULT_LOCALE): Conversatio
       // A subsection with no title of its own is the category's only one —
       // `beer-food-main`, `hotel-checkin` — so the category's title is the
       // honest label rather than a made-up one.
-      out.push(resolveScript(index, script, category, sub.title ?? category.title));
+      out.push(
+        resolveScript(index, script, category, sub.title ?? category.title, TALK_FILLERS[locale]?.[script.id] ?? {})
+      );
     }
   }
 
