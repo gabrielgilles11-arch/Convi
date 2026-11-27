@@ -47,9 +47,4 @@ export const ES_FILLERS: TalkFillerSlots = {
     // hedges first, the way anyone guessing a distance does.
     far: [{ phrase: "slang-heard-01", when: "before-reply" }],
   },
-  "shopping-market": {
-    // "Is this ripe for today?" The stall holder's honest "maybe…" before
-    // steering you to tomorrow. A yes-or-no question answered with a guess.
-    ripe: [{ phrase: "slang-heard-04", when: "before-reply" }],
-  },
 };
