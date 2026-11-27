@@ -1,0 +1,507 @@
+---
+/**
+ * "The app isn't out yet": a floating bar that collects early-access emails.
+ *
+ * The signup form at the foot of the home page is the only other place that
+ * asks, and most visitors never scroll that far. This one comes up from the
+ * bottom of every reading page after a few seconds or a little scrolling, and
+ * goes away for good once you join, or for two weeks once you close it.
+ *
+ * It never renders on Practice: a round has its own answer drawer at the
+ * bottom of the screen, and a bar over it is a bar over the answer. It steps
+ * aside while the home page's own signup section is on screen, so the page
+ * never asks twice at once.
+ *
+ * Without JavaScript it stays hidden (it cannot post the form anyway) and the
+ * home page's signup section is still there.
+ */
+---
+
+<aside class="waitlist" id="waitlist" aria-label="Early access to the app" hidden>
+  <div class="waitlist-card">
+    <div class="waitlist-copy">
+      <span class="waitlist-badge">Coming soon</span>
+      <p class="waitlist-title">The app isn't out yet.</p>
+      <p class="waitlist-sub">Get early access, and the printable phrasebook when it's ready.</p>
+    </div>
+
+    <button type="button" class="waitlist-open" aria-expanded="false" aria-controls="waitlist-form">
+      Get early access
+    </button>
+
+    <form class="waitlist-form" id="waitlist-form" novalidate>
+      <label class="waitlist-label" for="waitlist-email">Email address</label>
+      <input
+        id="waitlist-email"
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        placeholder="you@email.com"
+        required
+      />
+      <button type="submit" class="waitlist-submit">Get early access</button>
+    </form>
+
+    <p class="waitlist-done" role="status" hidden>You're on the list. We'll email you when it's ready.</p>
+    <p class="waitlist-error" role="alert" hidden></p>
+
+    <button type="button" class="waitlist-close" aria-label="Close">
+      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+</aside>
+
+<script>
+  const KEY = "convi:waitlist-bar:v1";
+  /** Closed, it stays away this long. Joined, it stays away for good. */
+  const SNOOZE_MS = 14 * 24 * 60 * 60 * 1000;
+  /** Up after this long on the page, or this much scrolling, whichever first. */
+  const AFTER_MS = 6000;
+  const AFTER_SCROLL = 0.4; // of the viewport height
+
+  const bar = document.getElementById("waitlist");
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function remembered(): string | null {
+    try {
+      return window.localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  function remember(value: string): void {
+    try {
+      window.localStorage.setItem(KEY, value);
+    } catch {
+      // No storage: it may come back next visit, which is the lesser harm.
+    }
+  }
+
+  function suppressed(): boolean {
+    const value = remembered();
+    if (!value) return false;
+    if (value === "joined") return true;
+    const at = Number(value.split(":")[1]);
+    return Number.isFinite(at) && Date.now() - at < SNOOZE_MS;
+  }
+
+  if (bar && !suppressed()) {
+    const form = bar.querySelector<HTMLFormElement>(".waitlist-form")!;
+    const input = bar.querySelector<HTMLInputElement>("#waitlist-email")!;
+    const submit = bar.querySelector<HTMLButtonElement>(".waitlist-submit")!;
+    const opener = bar.querySelector<HTMLButtonElement>(".waitlist-open")!;
+    const close = bar.querySelector<HTMLButtonElement>(".waitlist-close")!;
+    const done = bar.querySelector<HTMLElement>(".waitlist-done")!;
+    const error = bar.querySelector<HTMLElement>(".waitlist-error")!;
+
+    let shown = false;
+    let blocked = false; // the page's own signup section is on screen
+    let finished = false;
+
+    // Room at the bottom of the page while the bar is up, so it never sits
+    // over the footer's last line with no way to scroll past it.
+    const pad = () => {
+      const up = shown && !blocked && !finished;
+      document.documentElement.style.setProperty("--waitlist-space", up ? `${bar.offsetHeight + 24}px` : "0px");
+    };
+    const render = () => {
+      bar.classList.toggle("is-up", shown && !blocked);
+      bar.setAttribute("aria-hidden", shown && !blocked ? "false" : "true");
+      bar.inert = !(shown && !blocked);
+      pad();
+    };
+
+    function show() {
+      if (shown) return;
+      shown = true;
+      bar!.hidden = false;
+      // One frame in the hidden-below position, so the slide has a start.
+      requestAnimationFrame(() => requestAnimationFrame(render));
+      window.removeEventListener("scroll", onScroll);
+      window.clearTimeout(timer);
+    }
+
+    function hide(after?: () => void) {
+      finished = true;
+      bar!.classList.remove("is-up");
+      pad();
+      window.setTimeout(() => {
+        bar!.hidden = true;
+        after?.();
+      }, 450);
+    }
+
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * AFTER_SCROLL) show();
+    };
+    const timer = window.setTimeout(show, AFTER_MS);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Step aside while the page asks the same thing itself.
+    const own = document.querySelector("[data-waitlist-own]");
+    if (own && "IntersectionObserver" in window) {
+      new IntersectionObserver((entries) => {
+        blocked = entries.some((e) => e.isIntersecting);
+        if (shown && !finished) render();
+      }, { threshold: 0.2 }).observe(own);
+    }
+
+    window.addEventListener("resize", pad, { passive: true });
+
+    // On a phone the bar starts as a slim pill; this opens the form.
+    opener.addEventListener("click", () => {
+      bar.classList.add("is-open");
+      opener.setAttribute("aria-expanded", "true");
+      pad();
+      input.focus();
+    });
+
+    close.addEventListener("click", () => {
+      remember(`dismissed:${Date.now()}`);
+      hide();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && shown && !finished && bar.contains(document.activeElement)) {
+        remember(`dismissed:${Date.now()}`);
+        hide();
+      }
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      error.hidden = true;
+      const email = input.value.trim();
+      if (!EMAIL_RE.test(email)) {
+        error.textContent = "That email doesn't look right.";
+        error.hidden = false;
+        input.focus();
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = "Joining…";
+      try {
+        const res = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        remember("joined");
+        bar.classList.add("is-done");
+        form.hidden = true;
+        done.hidden = false;
+        pad();
+        window.setTimeout(() => hide(), 3200);
+      } catch {
+        error.textContent = "Something went wrong. Try again in a moment.";
+        error.hidden = false;
+        submit.disabled = false;
+        submit.textContent = "Get early access";
+      }
+    });
+  }
+</script>
+
+<style>
+  .waitlist {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    padding: 0 var(--shell-pad) max(1rem, env(safe-area-inset-bottom));
+    pointer-events: none;
+    transform: translateY(calc(100% + 1rem));
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  }
+
+  .waitlist.is-up {
+    transform: none;
+    opacity: 1;
+  }
+
+  .waitlist-card {
+    position: relative;
+    pointer-events: auto;
+    max-width: var(--shell-text);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    padding: 1rem 3.25rem 1rem 1.35rem;
+    border-radius: 18px;
+    background: #241610;
+    color: #fff;
+    box-shadow:
+      0 18px 40px rgba(36, 22, 16, 0.28),
+      0 2px 6px rgba(36, 22, 16, 0.18);
+  }
+
+  .waitlist-copy {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .waitlist-badge {
+    display: inline-block;
+    margin-bottom: 0.3rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffd9bf;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .waitlist-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .waitlist-sub {
+    margin: 0.15rem 0 0;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .waitlist-form {
+    flex: 0 1 auto;
+    min-width: 0;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .waitlist-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .waitlist-form input {
+    width: 14rem;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-button);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font: inherit;
+    font-size: 0.95rem;
+  }
+
+  .waitlist-form input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .waitlist-form input:focus {
+    outline: none;
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .waitlist-submit,
+  .waitlist-open {
+    min-height: 44px;
+    padding: 0.6rem 1.1rem;
+    border: 0;
+    border-radius: var(--radius-button);
+    background: var(--color-primary);
+    color: #fff;
+    font: inherit;
+    font-weight: 800;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--color-primary-dark);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .waitlist-submit:hover,
+  .waitlist-open:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 var(--color-primary-dark);
+  }
+
+  .waitlist-submit:disabled {
+    opacity: 0.75;
+    cursor: progress;
+  }
+
+  .waitlist-submit:focus-visible,
+  .waitlist-open:focus-visible,
+  .waitlist-close:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
+
+  /* Only on a phone, where the bar starts as a pill. */
+  .waitlist-open {
+    display: none;
+  }
+
+  .waitlist-done,
+  .waitlist-error {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .waitlist-error {
+    position: absolute;
+    left: 1.35rem;
+    bottom: -1.6rem;
+    color: #241610;
+    background: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+  }
+
+  .waitlist-close {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+  }
+
+  .waitlist-close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .waitlist-close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Below a laptop: the form goes under the words. */
+  @media (max-width: 760px) {
+    .waitlist-card {
+      flex-wrap: wrap;
+    }
+
+    .waitlist-form {
+      flex: 1 1 100%;
+    }
+
+    .waitlist-form input {
+      flex: 1 1 auto;
+      width: auto;
+    }
+
+    .waitlist-close {
+      top: 0.4rem;
+      transform: none;
+    }
+  }
+
+  /* A phone: a slim pill that opens into the form, so it never covers half
+     the screen before anyone has asked for it. */
+  @media (max-width: 560px) {
+    .waitlist-card {
+      padding: 0.75rem 3rem 0.75rem 1rem;
+      gap: 0.6rem;
+    }
+
+    .waitlist-sub,
+    .waitlist-badge {
+      display: none;
+    }
+
+    .waitlist-title {
+      font-size: 1.02rem;
+    }
+
+    .waitlist-open {
+      display: inline-block;
+    }
+
+    .waitlist:not(.is-open) .waitlist-form {
+      display: none;
+    }
+
+    .waitlist.is-open .waitlist-open,
+    .waitlist.is-done .waitlist-open {
+      display: none;
+    }
+
+    .waitlist-close {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* Open, the close button moves up beside the title, so the form gets the
+       card's whole width. */
+    .waitlist.is-open .waitlist-card {
+      padding-right: 1rem;
+    }
+
+    .waitlist.is-open .waitlist-close {
+      top: 0.3rem;
+      transform: none;
+    }
+
+    .waitlist-submit {
+      padding: 0.6rem 0.9rem;
+    }
+
+    /* Clear of the close button's tap area, which reaches below the title. */
+    .waitlist.is-open .waitlist-form {
+      margin-top: 0.75rem;
+    }
+  }
+
+  /* The narrowest phones: the field and the button each get the full width. */
+  @media (max-width: 380px) {
+    .waitlist-form {
+      flex-wrap: wrap;
+    }
+
+    .waitlist-form input,
+    .waitlist-submit {
+      flex: 1 1 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .waitlist {
+      transition: opacity 0.2s linear;
+      transform: none;
+    }
+
+    .waitlist-submit,
+    .waitlist-open {
+      transition: none;
+    }
+  }
+
+  /* While the bar is up, the page gets room under it. */
+  :global(body) {
+    padding-bottom: var(--waitlist-space, 0px);
+    transition: padding-bottom 0.3s ease;
+  }
+</style>

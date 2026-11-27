@@ -257,6 +257,14 @@ export default function QuizApp({ locale }: Props) {
     if (!payload || welcomeChecked.current) return;
     welcomeChecked.current = true;
     const loc = locale ?? "es-ES";
+    // Arriving from a "Try Talk mode" link (/practice#talk): straight into
+    // Talk, with its own first-visit welcome, rather than Practice's.
+    if (window.location.hash === "#talk") {
+      setConvoId(null);
+      setTalkWelcome(!welcomeSeen("talk", loc));
+      setMode("talk");
+      return;
+    }
     if (welcomeSeen("practice", loc)) return;
     const scores = loadProgress().bestScores;
     const practicedHere = stages.some((stage) => (scores[stage.id] ?? 0) > 0);

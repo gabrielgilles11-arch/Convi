@@ -1,6 +1,7 @@
 ---
 import Logo from "../components/Logo.astro";
 import LangMenu from "../components/LangMenu.astro";
+import WaitlistBar from "../components/WaitlistBar.astro";
 import { localePath, localeFromSlug, getLocaleInfo, DEFAULT_LOCALE, type Locale } from "../lib/content";
 import { canonicalUrl } from "../lib/seo";
 
@@ -170,6 +171,10 @@ const structuredData = {
         </nav>
       </div>
     </footer>
+
+    {/* Early access to the app, floating. Not on Practice, where the bottom
+        of the screen is the answer drawer's. */}
+    {!/\/practice\/?$/.test(Astro.url.pathname) && <WaitlistBar />}
 
     {/* One anonymous tick per page, from every page on the site. It carries
         nothing: which country and whether this browser has been here before

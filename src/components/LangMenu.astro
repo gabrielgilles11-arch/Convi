@@ -5,8 +5,12 @@ interface Props {
   /** In-site path inside each edition, e.g. "/scenarios" or "/practice". */
   path: string;
   label: string;
-  /** Visual treatment: header nav link, or a hero/tier-card button. */
-  variant?: "nav" | "primary" | "secondary";
+  /**
+   * Visual treatment: header nav link, a hero/tier-card button, or `quiet`, a
+   * small outlined pill for a choice that sits beside a bigger one and should
+   * not compete with it ("Another language" next to the start button).
+   */
+  variant?: "nav" | "primary" | "secondary" | "quiet";
   /** Edition currently being read, so the menu can mark it. */
   current?: Locale;
 }
@@ -142,6 +146,25 @@ const id = `lang-menu-${path.replace(/\W+/g, "-")}-${variant}`;
     background: transparent;
     color: var(--color-ink);
     border: 2px solid var(--color-ink);
+  }
+
+  /* --- quiet: present, tappable, and clearly the second choice --- */
+  .lang-menu--quiet summary {
+    min-height: 44px;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-card);
+    color: var(--color-ink-soft);
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .lang-menu--quiet summary:hover,
+  .lang-menu--quiet[open] summary {
+    border-color: var(--color-primary);
+    color: var(--color-primary-dark);
   }
 
   /* --- the panel --- */
