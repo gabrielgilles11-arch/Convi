@@ -19,15 +19,12 @@
 
 <aside class="waitlist" id="waitlist" aria-label="Early access to the app" hidden>
   <div class="waitlist-card">
+    <span class="waitlist-icon" aria-hidden="true">¡!</span>
     <div class="waitlist-copy">
       <span class="waitlist-badge">Coming soon</span>
       <p class="waitlist-title">The app isn't out yet.</p>
       <p class="waitlist-sub">Get early access, and the printable phrasebook when it's ready.</p>
     </div>
-
-    <button type="button" class="waitlist-open" aria-expanded="false" aria-controls="waitlist-form">
-      Get early access
-    </button>
 
     <form class="waitlist-form" id="waitlist-form" novalidate>
       <label class="waitlist-label" for="waitlist-email">Email address</label>
@@ -93,7 +90,6 @@
     const form = bar.querySelector<HTMLFormElement>(".waitlist-form")!;
     const input = bar.querySelector<HTMLInputElement>("#waitlist-email")!;
     const submit = bar.querySelector<HTMLButtonElement>(".waitlist-submit")!;
-    const opener = bar.querySelector<HTMLButtonElement>(".waitlist-open")!;
     const close = bar.querySelector<HTMLButtonElement>(".waitlist-close")!;
     const done = bar.querySelector<HTMLElement>(".waitlist-done")!;
     const error = bar.querySelector<HTMLElement>(".waitlist-error")!;
@@ -152,13 +148,6 @@
 
     window.addEventListener("resize", pad, { passive: true });
 
-    // On a phone the bar starts as a slim pill; this opens the form.
-    opener.addEventListener("click", () => {
-      bar.classList.add("is-open");
-      opener.setAttribute("aria-expanded", "true");
-      pad();
-      input.focus();
-    });
 
     close.addEventListener("click", () => {
       remember(`dismissed:${Date.now()}`);
@@ -208,17 +197,23 @@
 </script>
 
 <style>
+  /*
+   * Frosted glass over the page: the page shows through, blurred, so the bar
+   * reads as floating above the content rather than covering it. The glass is
+   * opaque enough (0.72 over warm white) that the ink text keeps AA contrast
+   * whatever passes behind it, the orange phrase band included.
+   */
   .waitlist {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 30;
-    padding: 0 var(--shell-pad) max(1rem, env(safe-area-inset-bottom));
+    padding: 0 var(--shell-pad) max(1.1rem, env(safe-area-inset-bottom));
     pointer-events: none;
     transform: translateY(calc(100% + 1rem));
     opacity: 0;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
   }
 
   .waitlist.is-up {
@@ -233,28 +228,57 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 1rem 1.5rem;
-    padding: 1rem 3.25rem 1rem 1.35rem;
-    border-radius: 18px;
-    background: #241610;
-    color: #fff;
+    gap: 1.1rem;
+    padding: 0.85rem 0.85rem 0.85rem 1rem;
+    border-radius: 22px;
+    color: var(--color-ink);
+    background: rgba(255, 248, 242, 0.72);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.75);
     box-shadow:
-      0 18px 40px rgba(36, 22, 16, 0.28),
-      0 2px 6px rgba(36, 22, 16, 0.18);
+      0 24px 60px rgba(36, 22, 16, 0.18),
+      0 2px 8px rgba(36, 22, 16, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  /* No blur available: the glass turns solid rather than see-through, so the
+     text never sits on unblurred content. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .waitlist-card {
+      background: rgba(255, 248, 242, 0.97);
+    }
+  }
+
+  .waitlist-icon {
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, #e0612a, #b8410f);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 10px rgba(184, 65, 15, 0.25);
   }
 
   .waitlist-copy {
     flex: 1 1 auto;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
   }
 
   .waitlist-badge {
-    display: inline-block;
-    margin-bottom: 0.3rem;
-    padding: 0.15rem 0.55rem;
+    align-self: flex-start;
+    padding: 0.12rem 0.55rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.14);
-    color: #ffd9bf;
+    background: rgba(203, 74, 22, 0.12);
+    color: #993b18;
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.06em;
@@ -264,19 +288,19 @@
   .waitlist-title {
     margin: 0;
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.2;
   }
 
   .waitlist-sub {
-    margin: 0.15rem 0 0;
+    margin: 0;
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.82);
+    color: var(--color-ink-soft);
   }
 
   .waitlist-form {
-    flex: 0 1 auto;
+    flex: none;
     min-width: 0;
     display: flex;
     gap: 0.5rem;
@@ -292,49 +316,55 @@
   }
 
   .waitlist-form input {
-    width: 14rem;
+    width: 13.5rem;
     min-width: 0;
-    min-height: 44px;
-    padding: 0.6rem 0.85rem;
-    border-radius: var(--radius-button);
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    height: 46px;
+    box-sizing: border-box;
+    padding: 0 0.9rem;
+    border-radius: 12px;
+    border: 1px solid rgba(36, 22, 16, 0.14);
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--color-ink);
     font: inherit;
     font-size: 0.95rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   }
 
   .waitlist-form input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: #8a7566;
   }
 
   .waitlist-form input:focus {
     outline: none;
-    border-color: #fff;
-    background: rgba(255, 255, 255, 0.14);
+    background: #fff;
+    border-color: #cb4a16;
+    box-shadow: 0 0 0 3px rgba(203, 74, 22, 0.18);
   }
 
-  .waitlist-submit,
-  .waitlist-open {
-    min-height: 44px;
-    padding: 0.6rem 1.1rem;
+  .waitlist-submit {
+    height: 46px;
+    padding: 0 1.15rem;
     border: 0;
-    border-radius: var(--radius-button);
-    background: var(--color-primary);
+    border-radius: 12px;
+    background: #cb4a16;
     color: #fff;
     font: inherit;
-    font-weight: 800;
     font-size: 0.95rem;
+    font-weight: 800;
     white-space: nowrap;
     cursor: pointer;
-    box-shadow: 0 3px 0 var(--color-primary-dark);
+    box-shadow: 0 3px 0 #993b18;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .waitlist-submit:hover,
-  .waitlist-open:hover {
+  .waitlist-submit:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 0 var(--color-primary-dark);
+    box-shadow: 0 4px 0 #993b18;
+  }
+
+  .waitlist-submit:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #993b18;
   }
 
   .waitlist-submit:disabled {
@@ -343,40 +373,34 @@
   }
 
   .waitlist-submit:focus-visible,
-  .waitlist-open:focus-visible,
   .waitlist-close:focus-visible {
-    outline: 3px solid #fff;
+    outline: 3px solid #cb4a16;
     outline-offset: 2px;
   }
 
-  /* Only on a phone, where the bar starts as a pill. */
-  .waitlist-open {
-    display: none;
+  .waitlist-done {
+    margin: 0;
+    flex: none;
+    padding-right: 0.5rem;
+    font-weight: 800;
+    color: #993b18;
   }
 
-  .waitlist-done,
   .waitlist-error {
+    position: absolute;
+    left: 1rem;
+    bottom: calc(100% + 0.5rem);
     margin: 0;
-    font-size: 0.9rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 10px;
+    background: var(--color-ink);
+    color: #fff;
+    font-size: 0.8125rem;
     font-weight: 700;
   }
 
-  .waitlist-error {
-    position: absolute;
-    left: 1.35rem;
-    bottom: -1.6rem;
-    color: #241610;
-    background: #fff;
-    padding: 0.2rem 0.6rem;
-    border-radius: 8px;
-    font-size: 0.8125rem;
-  }
-
   .waitlist-close {
-    position: absolute;
-    top: 50%;
-    right: 0.5rem;
-    transform: translateY(-50%);
+    flex: none;
     width: 44px;
     height: 44px;
     display: grid;
@@ -384,13 +408,14 @@
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-ink-soft);
     cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
   }
 
   .waitlist-close:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(36, 22, 16, 0.07);
+    color: var(--color-ink);
   }
 
   .waitlist-close svg {
@@ -398,13 +423,33 @@
     height: 16px;
   }
 
-  /* Below a laptop: the form goes under the words. */
+  /* Below a laptop: words and close on one row, the form under them. */
   @media (max-width: 760px) {
     .waitlist-card {
       flex-wrap: wrap;
+      gap: 0.6rem 0.75rem;
+      padding: 0.7rem 0.6rem 0.75rem 0.75rem;
+      border-radius: 20px;
     }
 
-    .waitlist-form {
+    .waitlist-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 1.25rem;
+    }
+
+    .waitlist-copy {
+      flex: 1 1 0;
+    }
+
+    .waitlist-close {
+      order: 2;
+    }
+
+    .waitlist-form,
+    .waitlist-done {
+      order: 3;
       flex: 1 1 100%;
     }
 
@@ -412,70 +457,25 @@
       flex: 1 1 auto;
       width: auto;
     }
-
-    .waitlist-close {
-      top: 0.4rem;
-      transform: none;
-    }
   }
 
-  /* A phone: a slim pill that opens into the form, so it never covers half
-     the screen before anyone has asked for it. */
+  /* A phone: the title alone beside the icon. */
   @media (max-width: 560px) {
-    .waitlist-card {
-      padding: 0.75rem 3rem 0.75rem 1rem;
-      gap: 0.6rem;
-    }
-
-    .waitlist-sub,
-    .waitlist-badge {
+    .waitlist-badge,
+    .waitlist-sub {
       display: none;
     }
 
     .waitlist-title {
-      font-size: 1.02rem;
-    }
-
-    .waitlist-open {
-      display: inline-block;
-    }
-
-    .waitlist:not(.is-open) .waitlist-form {
-      display: none;
-    }
-
-    .waitlist.is-open .waitlist-open,
-    .waitlist.is-done .waitlist-open {
-      display: none;
-    }
-
-    .waitlist-close {
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    /* Open, the close button moves up beside the title, so the form gets the
-       card's whole width. */
-    .waitlist.is-open .waitlist-card {
-      padding-right: 1rem;
-    }
-
-    .waitlist.is-open .waitlist-close {
-      top: 0.3rem;
-      transform: none;
+      font-size: 1.06rem;
     }
 
     .waitlist-submit {
-      padding: 0.6rem 0.9rem;
-    }
-
-    /* Clear of the close button's tap area, which reaches below the title. */
-    .waitlist.is-open .waitlist-form {
-      margin-top: 0.75rem;
+      padding: 0 0.9rem;
     }
   }
 
-  /* The narrowest phones: the field and the button each get the full width. */
+  /* The narrowest phones: the field and the button each take the full width. */
   @media (max-width: 380px) {
     .waitlist-form {
       flex-wrap: wrap;
@@ -489,12 +489,13 @@
 
   @media (prefers-reduced-motion: reduce) {
     .waitlist {
-      transition: opacity 0.2s linear;
       transform: none;
+      transition: opacity 0.2s linear;
     }
 
     .waitlist-submit,
-    .waitlist-open {
+    .waitlist-close,
+    .waitlist-form input {
       transition: none;
     }
   }
